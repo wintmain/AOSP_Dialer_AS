@@ -14,8 +14,8 @@ android {
         // AAPT: error: <adaptive-icon> elements require a sdk version of at least 26.
         minSdk 26
         targetSdk 34
-        versionCode 1
-        versionName 'V20240222'
+        versionCode 20240415
+        versionName 'V20240415'
     }
 
     compileOptions {
@@ -125,18 +125,24 @@ dependencies {
 }
 
 protobuf {
+    // MAC arch(Mac OS X) needs a different artifact
+    def isMac = System.properties['os.name'].toLowerCase().contains('mac')
     protoc {
         // You still need protoc like in the non-Android case
-        if (project.hasProperty('protoc_platform')) {
-            artifact = 'com.google.protobuf:protoc:3.7.0:${protoc_platform}'
-        } else{
+        if (isMac) {
+            artifact = 'com.google.protobuf:protoc:3.7.0:osx-x86_64'
+        } else {
             artifact = 'com.google.protobuf:protoc:3.7.0'
         }
     }
     plugins {
         javalite {
             // The codegen for lite comes as a separate artifact
-            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+            if (isMac) {
+                artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0:osx-x86_64'
+            } else {
+                artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+            }
         }
     }
     generateProtoTasks {
