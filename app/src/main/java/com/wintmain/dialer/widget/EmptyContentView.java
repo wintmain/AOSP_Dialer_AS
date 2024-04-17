@@ -20,6 +20,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ public class EmptyContentView extends LinearLayout implements View.OnClickListen
     public static final int NO_IMAGE = 0;
     private final ImageView imageView;
     private final TextView descriptionView;
-    private final TextView actionView;
+    private final Button actionView;
     private OnEmptyViewActionButtonClickedListener onActionButtonClickedListener;
     private @StringRes
     int actionLabel;
@@ -59,7 +60,7 @@ public class EmptyContentView extends LinearLayout implements View.OnClickListen
         setClickable(true);
         imageView = (ImageView) findViewById(R.id.empty_list_view_image);
         descriptionView = (TextView) findViewById(R.id.empty_list_view_message);
-        actionView = (TextView) findViewById(R.id.empty_list_view_action);
+        actionView = findViewById(R.id.empty_list_view_action);
         actionView.setOnClickListener(this);
     }
 

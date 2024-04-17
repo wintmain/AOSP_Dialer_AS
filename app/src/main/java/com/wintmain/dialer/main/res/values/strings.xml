@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_dialer_text" translatable="false">You must set Dialer as the default phone app to use it.</string>
+    <string name="default_dialer_action" translatable="false">Set as default</string>
+</resources>

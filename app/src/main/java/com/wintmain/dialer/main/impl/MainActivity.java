@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.telecom.TelecomManager;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.wintmain.dialer.R;
@@ -42,6 +41,7 @@ import com.wintmain.dialer.interactions.PhoneNumberInteraction.DisambigDialogDis
 import com.wintmain.dialer.interactions.PhoneNumberInteraction.InteractionErrorCode;
 import com.wintmain.dialer.interactions.PhoneNumberInteraction.InteractionErrorListener;
 import com.wintmain.dialer.main.impl.bottomnav.BottomNavBar;
+import com.wintmain.dialer.telecom.TelecomUtil;
 import com.wintmain.dialer.util.TransactionSafeActivity;
 
 import java.util.Objects;
@@ -163,6 +163,13 @@ public class MainActivity extends TransactionSafeActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (!TelecomUtil.isDefaultDialer(this)) {
+                startActivity(new Intent(this, DefaultDialerActivity.class));
+                return;
+            }
+        }
+
         activePeer.onActivityResume();
 
         LocalBroadcastManager.getInstance(this)

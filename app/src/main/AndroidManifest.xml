@@ -107,6 +107,11 @@
         <!-- The entrance point for Phone UI.
              stateAlwaysHidden is set to suppress keyboard show up on dialpad screen. -->
         <activity
+            android:name=".main.impl.DefaultDialerActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/MainActivityTheme" />
+        <activity
             android:name=".main.impl.MainActivity"
             android:clearTaskOnLaunch="true"
             android:directBootAware="true"

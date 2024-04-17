@@ -442,9 +442,11 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
     }
 
     private void showPostCallPrompt() {
-        if (TelecomUtil.isInManagedCall(activity)) {
-            // No prompt to show if the user is in a call
-            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (TelecomUtil.isInManagedCall(activity)) {
+                // No prompt to show if the user is in a call
+                return;
+            }
         }
 
         if (searchController.isInSearch()) {

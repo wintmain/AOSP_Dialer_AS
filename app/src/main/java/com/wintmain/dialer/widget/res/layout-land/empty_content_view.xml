@@ -5,8 +5,10 @@
         android:id="@id/empty_list_view_image"
         android:layout_width="fill_parent"
         android:layout_height="108.0dip"
+        android:layout_weight="1.0"
         android:contentDescription="TODO"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:maxHeight="126.0dip" />
 
     <TextView
         android:id="@id/empty_list_view_message"
@@ -20,19 +22,13 @@
         android:textColor="?android:textColorSecondary"
         android:textSize="@dimen/empty_list_message_text_size" />
 
-    <TextView
+    <Button
         android:id="@id/empty_list_view_action"
-        style="@style/TextActionStyle"
+        style="@style/DialerPrimaryFlatButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="?android:selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_horizontal"
-        android:paddingLeft="16.0dip"
-        android:paddingTop="8.0dip"
-        android:paddingRight="16.0dip"
-        android:paddingBottom="8.0dip" />
+        android:layout_marginTop="16dp"/>
 
     <View
         android:layout_width="fill_parent"

@@ -18,11 +18,13 @@ package com.wintmain.dialer.telecom;
 
 import android.Manifest;
 import android.Manifest.permission;
+import android.app.role.RoleManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CallLog.Calls;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
@@ -34,6 +36,7 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
@@ -52,6 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * otherwise return the value from TelecomManager.
  */
 @SuppressWarnings({"MissingPermission", "Guava"})
+@RequiresApi(api = Build.VERSION_CODES.Q)
 public abstract class TelecomUtil {
 
     private static final String TAG = "TelecomUtil";
@@ -371,19 +375,17 @@ public abstract class TelecomUtil {
         }
 
         public boolean isDefaultDialer(Context context) {
-            final boolean result =
-                    TextUtils.equals(
-                            context.getPackageName(), getTelecomManager(context).getDefaultDialerPackage());
-            if (result) {
-                warningLogged = false;
-            } else {
+            final RoleManager rm = (RoleManager) context.getSystemService(Context.ROLE_SERVICE);
+            if (rm == null || !rm.isRoleHeld(RoleManager.ROLE_DIALER)) {
                 if (!warningLogged) {
                     // Log only once to prevent spam.
                     LogUtil.w(TAG, "Dialer is not currently set to be default dialer");
                     warningLogged = true;
                 }
+                return false;
             }
-            return result;
+            warningLogged = false;
+            return true;
         }
     }
 }
