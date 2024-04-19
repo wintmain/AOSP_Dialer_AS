@@ -14,8 +14,8 @@ android {
         // AAPT: error: <adaptive-icon> elements require a sdk version of at least 26.
         minSdk 26
         targetSdk 34
-        versionCode 20240415
-        versionName 'V20240415'
+        versionCode 20240419
+        versionName 'V20240419'
     }
 
     compileOptions {
