@@ -164,7 +164,7 @@ public class MainActivity extends TransactionSafeActivity
     protected void onResume() {
         super.onResume();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (!TelecomUtil.isDefaultDialer(this)) {
+            if (Build.TYPE.equals("user") && !TelecomUtil.isDefaultDialer(this)) {
                 startActivity(new Intent(this, DefaultDialerActivity.class));
                 return;
             }
