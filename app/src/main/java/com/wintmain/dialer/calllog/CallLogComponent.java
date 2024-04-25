@@ -16,18 +16,15 @@
 package com.wintmain.dialer.calllog;
 
 import android.content.Context;
+
 import com.wintmain.dialer.calllog.notifier.RefreshAnnotatedCallLogNotifier;
 import com.wintmain.dialer.inject.HasRootComponent;
+
 import dagger.Subcomponent;
 
 /** Dagger component for the call log package. */
 @Subcomponent
 public abstract class CallLogComponent {
-
-    public static CallLogComponent get(Context context) {
-        return ((HasComponent) ((HasRootComponent) context.getApplicationContext()).component())
-                .callLogComponent();
-    }
 
     public abstract CallLogFramework callLogFramework();
 
@@ -36,6 +33,11 @@ public abstract class CallLogComponent {
     public abstract RefreshAnnotatedCallLogWorker getRefreshAnnotatedCallLogWorker();
 
     public abstract ClearMissedCalls getClearMissedCalls();
+
+    public static CallLogComponent get(Context context) {
+        return ((HasComponent) ((HasRootComponent) context.getApplicationContext()).component())
+                .callLogComponent();
+    }
 
     /** Used to refer to the root application component. */
     public interface HasComponent {

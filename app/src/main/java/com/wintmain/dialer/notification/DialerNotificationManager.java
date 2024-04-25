@@ -22,9 +22,11 @@ import android.content.Context;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.os.BuildCompat;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -39,19 +41,14 @@ public final class DialerNotificationManager {
 
     private static final Set<StatusBarNotification> throttledNotificationSet = new HashSet<>();
 
-    private DialerNotificationManager() {
-    }
-
-    public static void notify(@NonNull Context context, int id,
-            @NonNull Notification notification) {
+    public static void notify(@NonNull Context context, int id, @NonNull Notification notification) {
         Assert.isNotNull(context);
         Assert.isNotNull(notification);
         throw Assert.createUnsupportedOperationFailException("all notifications must have tags");
     }
 
     public static void notify(
-            @NonNull Context context, @NonNull String tag, int id,
-            @NonNull Notification notification) {
+            @NonNull Context context, @NonNull String tag, int id, @NonNull Notification notification) {
         Assert.isNotNull(context);
         Assert.isNotNull(notification);
         Assert.checkArgument(!TextUtils.isEmpty(tag));
@@ -145,4 +142,6 @@ public final class DialerNotificationManager {
     public static Set<StatusBarNotification> getThrottledNotificationSet() {
         return throttledNotificationSet;
     }
+
+    private DialerNotificationManager() {}
 }

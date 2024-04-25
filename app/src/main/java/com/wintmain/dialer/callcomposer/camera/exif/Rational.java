@@ -59,7 +59,8 @@ public class Rational {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof Rational data) {
+        if (obj instanceof Rational) {
+            Rational data = (Rational) obj;
             return numerator == data.numerator && denominator == data.denominator;
         }
         return false;

@@ -21,15 +21,14 @@ import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.simulator.SimulatorEnrichedCall;
 import dagger.Binds;
 import dagger.Module;
-
 import javax.inject.Singleton;
 
 /** Provides a stub instance of SimulatorEnrichedCall. */
 @InstallIn(variants = {DialerVariant.DIALER_TEST})
 @Module
 public abstract class StubSimulatorEnrichedCallModule {
-    @Binds
-    @Singleton
-    public abstract SimulatorEnrichedCall bindsSimulatorEnrichedCall(
-            SimulatorEnrichedCallStub simulatorEnrichedCall);
+  @Binds
+  @Singleton
+  public abstract SimulatorEnrichedCall bindsSimulatorEnrichedCall(
+      SimulatorEnrichedCallStub simulatorEnrichedCall);
 }

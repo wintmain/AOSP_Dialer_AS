@@ -23,6 +23,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
+
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo;
 
 /**
@@ -115,8 +116,7 @@ final class Cp2Projections {
         // Phone.getTypeLabel returns "Custom" if given (0, null) which is not of any use. Just
         // omit setting the label if there's no information for it.
         if (type != 0 || !TextUtils.isEmpty(label)) {
-            infoBuilder.setLabel(
-                    Phone.getTypeLabel(appContext.getResources(), type, label).toString());
+            infoBuilder.setLabel(Phone.getTypeLabel(appContext.getResources(), type, label).toString());
         }
         infoBuilder.setContactId(contactId);
         if (!TextUtils.isEmpty(lookupKey)) {
@@ -124,8 +124,7 @@ final class Cp2Projections {
                     Contacts.getLookupUri(contactId, lookupKey)
                             .buildUpon()
                             .appendQueryParameter(
-                                    ContactsContract.DIRECTORY_PARAM_KEY,
-                                    String.valueOf(directoryId))
+                                    ContactsContract.DIRECTORY_PARAM_KEY, String.valueOf(directoryId))
                             .build()
                             .toString());
         }

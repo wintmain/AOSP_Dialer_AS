@@ -17,13 +17,14 @@
 package com.wintmain.dialer.calllog;
 
 import android.content.SharedPreferences;
+
 import androidx.annotation.AnyThread;
 import androidx.annotation.VisibleForTesting;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.storage.Unencrypted;
-
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Inject;
 

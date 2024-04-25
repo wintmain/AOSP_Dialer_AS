@@ -22,9 +22,9 @@ import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+
 import androidx.annotation.IntDef;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blockreportspam.BlockReportSpamDialogInfo;
 import com.wintmain.dialer.callintent.CallInitiationType;
@@ -39,6 +39,8 @@ import com.wintmain.dialer.spam.Spam;
 import com.wintmain.dialer.util.CallUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
 import com.wintmain.dialer.util.UriUtils;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -94,8 +96,7 @@ public final class HistoryItemActionModulesBuilder {
             new ImmutableMap.Builder<Integer, DialerImpression.Type>()
                     .put(Event.ADD_TO_CONTACT, DialerImpression.Type.ADD_TO_A_CONTACT_FROM_CALL_LOG)
                     .put(Event.BLOCK_NUMBER, DialerImpression.Type.CALL_LOG_BLOCK_NUMBER)
-                    .put(Event.BLOCK_NUMBER_AND_REPORT_SPAM,
-                            DialerImpression.Type.CALL_LOG_BLOCK_REPORT_SPAM)
+                    .put(Event.BLOCK_NUMBER_AND_REPORT_SPAM, DialerImpression.Type.CALL_LOG_BLOCK_REPORT_SPAM)
                     .put(Event.REPORT_NOT_SPAM, DialerImpression.Type.CALL_LOG_REPORT_AS_NOT_SPAM)
                     .put(
                             Event.REQUEST_CARRIER_VIDEO_CALL,
@@ -113,8 +114,7 @@ public final class HistoryItemActionModulesBuilder {
     private final HistoryItemActionModuleInfo moduleInfo;
     private final List<HistoryItemActionModule> modules;
 
-    public HistoryItemActionModulesBuilder(Context context,
-            HistoryItemActionModuleInfo moduleInfo) {
+    public HistoryItemActionModulesBuilder(Context context, HistoryItemActionModuleInfo moduleInfo) {
         Assert.checkArgument(
                 moduleInfo.getHost() != HistoryItemActionModuleInfo.Host.UNKNOWN,
                 "A host must be specified.");
@@ -139,8 +139,7 @@ public final class HistoryItemActionModulesBuilder {
         }
 
         // TODO(zachh): Support post-dial digits; consider using DialerPhoneNumber.
-        // Do not set PhoneAccountHandle so that regular PreCall logic will be used. The account
-        // used to
+        // Do not set PhoneAccountHandle so that regular PreCall logic will be used. The account used to
         // place or receive the call should be ignored for voice calls.
         CallIntentBuilder callIntentBuilder =
                 new CallIntentBuilder(moduleInfo.getNormalizedNumber(), getCallInitiationType())
@@ -172,8 +171,7 @@ public final class HistoryItemActionModulesBuilder {
      * <p>If the provided module info is for a voice call and the device has carrier video call
      * capability, add a carrier video call module.
      *
-     * <p>If the provided module info is for a voice call, the device doesn't have carrier video
-     * call
+     * <p>If the provided module info is for a voice call, the device doesn't have carrier video call
      * capability, and Duo is available, add a Duo video call module.
      */
     public HistoryItemActionModulesBuilder addModuleForVideoCall() {
@@ -184,8 +182,7 @@ public final class HistoryItemActionModulesBuilder {
             return this;
         }
 
-        // Do not set PhoneAccountHandle so that regular PreCall logic will be used. The account
-        // used to
+        // Do not set PhoneAccountHandle so that regular PreCall logic will be used. The account used to
         // place or receive the call should be ignored for carrier video calls.
         // TODO(a bug): figure out the correct video call behavior
         CallIntentBuilder callIntentBuilder =
@@ -206,21 +203,18 @@ public final class HistoryItemActionModulesBuilder {
             return this;
         }
 
-        // At this point, the module info is for an audio call. We will also add a video call
-        // module if
+        // At this point, the module info is for an audio call. We will also add a video call module if
         // the video capability is present.
         //
         // The carrier video call module takes precedence over the Duo module.
         if (canPlaceCarrierVideoCall()) {
             modules.add(
                     IntentModule.newCallModule(
-                            context, callIntentBuilder,
-                            getImpressions(Event.REQUEST_CARRIER_VIDEO_CALL)));
+                            context, callIntentBuilder, getImpressions(Event.REQUEST_CARRIER_VIDEO_CALL)));
         } else if (canPlaceDuoCall()) {
             modules.add(
                     IntentModule.newCallModule(
-                            context, callIntentBuilder.setIsDuoCall(true),
-                            getImpressionsForDuoVideoCall()));
+                            context, callIntentBuilder.setIsDuoCall(true), getImpressionsForDuoVideoCall()));
         }
         return this;
     }
@@ -233,7 +227,7 @@ public final class HistoryItemActionModulesBuilder {
         return isExistingContact()
                 ? getImpressions(Event.REQUEST_DUO_VIDEO_CALL)
                 : getImpressions(
-                        Event.REQUEST_DUO_VIDEO_CALL, Event.REQUEST_DUO_VIDEO_CALL_FOR_NON_CONTACT);
+                Event.REQUEST_DUO_VIDEO_CALL, Event.REQUEST_DUO_VIDEO_CALL_FOR_NON_CONTACT);
     }
 
     /**
@@ -262,8 +256,7 @@ public final class HistoryItemActionModulesBuilder {
 
         modules.add(
                 IntentModule.newModuleForSendingTextMessage(
-                        context, moduleInfo.getNormalizedNumber(),
-                        getImpressions(Event.SEND_TEXT_MESSAGE)));
+                        context, moduleInfo.getNormalizedNumber(), getImpressions(Event.SEND_TEXT_MESSAGE)));
         return this;
     }
 
@@ -342,11 +335,9 @@ public final class HistoryItemActionModulesBuilder {
      *   <li>"Not spam" and "Unblock".
      * </ul>
      *
-     * <p>If the number is blocked but the call should not be shown as spam, add the "Unblock"
-     * module.
+     * <p>If the number is blocked but the call should not be shown as spam, add the "Unblock" module.
      *
-     * <p>If the number is not blocked and the call should not be shown as spam, add the
-     * "Block/Report
+     * <p>If the number is not blocked and the call should not be shown as spam, add the "Block/Report
      * spam" module.
      */
     public HistoryItemActionModulesBuilder addModuleForBlockedOrSpamNumber() {
@@ -369,15 +360,13 @@ public final class HistoryItemActionModulesBuilder {
         if (Spam.shouldShowAsSpam(moduleInfo.getIsSpam(), moduleInfo.getCallType())) {
             modules.add(
                     BlockReportSpamModules.moduleForMarkingNumberAsNotSpam(
-                            context, blockReportSpamDialogInfo,
-                            getImpression(Event.REPORT_NOT_SPAM)));
+                            context, blockReportSpamDialogInfo, getImpression(Event.REPORT_NOT_SPAM)));
             modules.add(
                     moduleInfo.getIsBlocked()
                             ? BlockReportSpamModules.moduleForUnblockingNumber(
                             context, blockReportSpamDialogInfo, getImpression(Event.UNBLOCK_NUMBER))
                             : BlockReportSpamModules.moduleForBlockingNumber(
-                                    context, blockReportSpamDialogInfo,
-                                    getImpression(Event.BLOCK_NUMBER)));
+                            context, blockReportSpamDialogInfo, getImpression(Event.BLOCK_NUMBER)));
             return this;
         }
 
@@ -386,18 +375,15 @@ public final class HistoryItemActionModulesBuilder {
         if (moduleInfo.getIsBlocked()) {
             modules.add(
                     BlockReportSpamModules.moduleForUnblockingNumber(
-                            context, blockReportSpamDialogInfo,
-                            getImpression(Event.UNBLOCK_NUMBER)));
+                            context, blockReportSpamDialogInfo, getImpression(Event.UNBLOCK_NUMBER)));
             return this;
         }
 
-        // For a number that is not blocked and is associated with a call that should not be
-        // shown as
+        // For a number that is not blocked and is associated with a call that should not be shown as
         // spam, add the "Block/Report spam" module.
         modules.add(
                 BlockReportSpamModules.moduleForBlockingNumberAndOptionallyReportingSpam(
-                        context, blockReportSpamDialogInfo,
-                        getImpression(Event.BLOCK_NUMBER_AND_REPORT_SPAM)));
+                        context, blockReportSpamDialogInfo, getImpression(Event.BLOCK_NUMBER_AND_REPORT_SPAM)));
         return this;
     }
 
@@ -469,8 +455,7 @@ public final class HistoryItemActionModulesBuilder {
      * Lookup URIs are currently fetched from the cached column of the system call log. This URI
      * contains encoded information for non-contacts for the purposes of populating contact cards.
      *
-     * <p>We infer whether a contact is existing or not by checking if the lookup URI is
-     * "encoded" or
+     * <p>We infer whether a contact is existing or not by checking if the lookup URI is "encoded" or
      * not.
      *
      * <p>TODO(zachh): We should revisit this once the contact URI is no longer being read from the
@@ -530,8 +515,7 @@ public final class HistoryItemActionModulesBuilder {
     }
 
     /**
-     * Returns an impression to be logged for the given {@link Event}, or
-     * {@link Optional#empty()} if
+     * Returns an impression to be logged for the given {@link Event}, or {@link Optional#empty()} if
      * no impression is available for the event.
      */
     private Optional<DialerImpression.Type> getImpression(@Event int event) {

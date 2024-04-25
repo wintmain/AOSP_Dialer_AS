@@ -21,8 +21,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.auto.value.AutoValue;
 import com.wintmain.dialer.common.LogUtil;
+import com.google.auto.value.AutoValue;
 
 /** Holds data associated with a call. */
 @AutoValue

@@ -17,8 +17,10 @@
 package com.wintmain.dialer.callintent;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.protos.ProtoParsers;
 
@@ -49,8 +51,7 @@ public class CallIntentParser {
         }
 
         return ProtoParsers.getTrusted(
-                extras, Constants.EXTRA_CALL_SPECIFIC_APP_DATA,
-                CallSpecificAppData.getDefaultInstance());
+                extras, Constants.EXTRA_CALL_SPECIFIC_APP_DATA, CallSpecificAppData.getDefaultInstance());
     }
 
     public static void putCallSpecificAppData(

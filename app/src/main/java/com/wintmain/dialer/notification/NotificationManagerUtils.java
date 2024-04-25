@@ -20,24 +20,24 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.common.Assert;
 
 /** Utilities to manage notifications. */
 public final class NotificationManagerUtils {
-    private NotificationManagerUtils() {
-    }
-
     public static void cancelAllInGroup(@NonNull Context context, @NonNull String groupKey) {
         Assert.isNotNull(context);
         Assert.checkArgument(!TextUtils.isEmpty(groupKey));
 
-        NotificationManager notificationManager = context.getSystemService(
-                NotificationManager.class);
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         for (StatusBarNotification notification : notificationManager.getActiveNotifications()) {
             if (TextUtils.equals(groupKey, notification.getNotification().getGroup())) {
                 notificationManager.cancel(notification.getTag(), notification.getId());
             }
         }
     }
+
+    private NotificationManagerUtils() {}
 }

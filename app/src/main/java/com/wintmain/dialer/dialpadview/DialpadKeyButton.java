@@ -129,8 +129,7 @@ public class DialpadKeyButton extends FrameLayout {
         // the description (for example "double tap and hold to call voicemail").
         if (!TextUtils.isEmpty(longHoverContentDesc)) {
             AccessibilityAction longClickAction =
-                    new AccessibilityAction(AccessibilityNodeInfo.ACTION_LONG_CLICK,
-                            longHoverContentDesc);
+                    new AccessibilityAction(AccessibilityNodeInfo.ACTION_LONG_CLICK, longHoverContentDesc);
             info.addAction(longClickAction);
         }
     }

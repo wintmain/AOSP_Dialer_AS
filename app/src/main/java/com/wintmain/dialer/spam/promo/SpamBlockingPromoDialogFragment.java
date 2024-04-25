@@ -19,10 +19,12 @@ package com.wintmain.dialer.spam.promo;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
 import com.wintmain.dialer.R;
 
 import java.util.Objects;

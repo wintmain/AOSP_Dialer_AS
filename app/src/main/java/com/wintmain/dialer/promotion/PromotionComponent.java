@@ -17,9 +17,11 @@
 package com.wintmain.dialer.promotion;
 
 import android.content.Context;
-import com.google.common.collect.ImmutableList;
+
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
+import com.google.common.collect.ImmutableList;
+
 import dagger.Subcomponent;
 
 /**

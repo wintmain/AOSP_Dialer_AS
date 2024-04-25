@@ -18,18 +18,20 @@ package com.wintmain.dialer.common.concurrent;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.FailureListener;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.SuccessListener;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 
 /**
@@ -72,8 +74,7 @@ public class UiListener<OutputT> extends Fragment {
         if (uiListener == null) {
             LogUtil.i("UiListener.create", "creating new UiListener for " + taskId);
             uiListener = new UiListener<>();
-            // When launching an activity with the screen off, its onSaveInstanceState() is
-            // called before
+            // When launching an activity with the screen off, its onSaveInstanceState() is called before
             // its fragments are created, which means we can't use commit() and need to use
             // commitAllowingStateLoss(). This is not a problem for UiListener which saves no state.
             fragmentManager.beginTransaction().add(uiListener, taskId).commitAllowingStateLoss();
@@ -94,8 +95,7 @@ public class UiListener<OutputT> extends Fragment {
             @NonNull SuccessListener<OutputT> successListener,
             @NonNull FailureListener failureListener) {
         callbackWrapper =
-                new CallbackWrapper<>(Assert.isNotNull(successListener),
-                        Assert.isNotNull(failureListener));
+                new CallbackWrapper<>(Assert.isNotNull(successListener), Assert.isNotNull(failureListener));
         Futures.addCallback(
                 Assert.isNotNull(future),
                 callbackWrapper,

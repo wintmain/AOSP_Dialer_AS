@@ -16,8 +16,10 @@
 package com.wintmain.dialer.phonelookup.database;
 
 import android.content.Context;
+
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
+
 import dagger.Subcomponent;
 
 /**

@@ -18,16 +18,18 @@ package com.wintmain.dialer.phonenumbergeoutil.impl;
 
 import android.content.Context;
 import android.text.TextUtils;
+
+import com.wintmain.dialer.common.LogUtil;
+import com.wintmain.dialer.i18n.LocaleUtils;
+import com.wintmain.dialer.phonenumbergeoutil.PhoneNumberGeoUtil;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.google.i18n.phonenumbers.geocoding.PhoneNumberOfflineGeocoder;
-import com.wintmain.dialer.common.LogUtil;
-import com.wintmain.dialer.i18n.LocaleUtils;
-import com.wintmain.dialer.phonenumbergeoutil.PhoneNumberGeoUtil;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
-import java.util.Locale;
 
 /**
  * Implementation of {@link PhoneNumberGeoUtil}.
@@ -40,7 +42,7 @@ public class PhoneNumberGeoUtilImpl implements PhoneNumberGeoUtil {
 
     @Override
     public String getGeoDescription(Context context, String number, String countryIso) {
-        LogUtil.v("PhoneNumberGeoUtilImpl.getGeoDescription", LogUtil.sanitizePii(number));
+        LogUtil.v("PhoneNumberGeoUtilImpl.getGeoDescription", "" + LogUtil.sanitizePii(number));
 
         if (TextUtils.isEmpty(number)) {
             return null;
@@ -54,8 +56,7 @@ public class PhoneNumberGeoUtilImpl implements PhoneNumberGeoUtil {
         try {
             LogUtil.v(
                     "PhoneNumberGeoUtilImpl.getGeoDescription",
-                    "parsing '" + LogUtil.sanitizePii(number) + "' for countryIso '" + countryIso
-                            + "'...");
+                    "parsing '" + LogUtil.sanitizePii(number) + "' for countryIso '" + countryIso + "'...");
             pn = util.parse(number, countryIso);
             LogUtil.v(
                     "PhoneNumberGeoUtilImpl.getGeoDescription",
@@ -71,8 +72,7 @@ public class PhoneNumberGeoUtilImpl implements PhoneNumberGeoUtil {
         if (pn != null) {
             String description = geocoder.getDescriptionForNumber(pn, locale);
             LogUtil.v(
-                    "PhoneNumberGeoUtilImpl.getGeoDescription",
-                    "- got description: '" + description + "'");
+                    "PhoneNumberGeoUtilImpl.getGeoDescription", "- got description: '" + description + "'");
             return description;
         }
 

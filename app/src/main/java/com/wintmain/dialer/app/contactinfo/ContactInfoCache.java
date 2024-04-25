@@ -20,8 +20,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.logging.ContactSource.Type;
 import com.wintmain.dialer.oem.CequintCallerIdManager;
@@ -94,22 +96,19 @@ public class ContactInfoCache {
             info = callLogContactInfo;
             // The db request should happen on a non-UI thread.
             // Request the contact details immediately since they are currently missing.
-            enqueueRequest(number, countryIso, callLogContactInfo, /* immediate */ true,
-                    requestType);
+            enqueueRequest(number, countryIso, callLogContactInfo, /* immediate */ true, requestType);
             // We will format the phone number when we make the background request.
         } else {
             if (cachedInfo.isExpired()) {
                 // The contact info is no longer up to date, we should request it. However, we
                 // do not need to request them immediately.
-                enqueueRequest(number, countryIso, callLogContactInfo, /* immediate */ false,
-                        requestType);
+                enqueueRequest(number, countryIso, callLogContactInfo, /* immediate */ false, requestType);
             } else if (!callLogInfoMatches(callLogContactInfo, info)) {
                 // The call log information does not match the one we have, look it up again.
                 // We could simply update the call log directly, but that needs to be done in a
                 // background thread, so it is easier to simply request a new lookup, which will, as
                 // a side-effect, update the call log.
-                enqueueRequest(number, countryIso, callLogContactInfo, /* immediate */ false,
-                        requestType);
+                enqueueRequest(number, countryIso, callLogContactInfo, /* immediate */ false, requestType);
             }
 
             if (Objects.equals(info, ContactInfo.EMPTY)) {
@@ -128,8 +127,7 @@ public class ContactInfoCache {
      *
      * <p>The number might be either a SIP address or a phone number.
      *
-     * <p>It returns true if it updated the content of the cache and we should therefore tell the
-     * view
+     * <p>It returns true if it updated the content of the cache and we should therefore tell the view
      * to update its content.
      */
     private boolean queryContactInfo(ContactInfoRequest request) {
@@ -142,16 +140,13 @@ public class ContactInfoCache {
         if (request.isLocalRequest()) {
             info = contactInfoHelper.lookupNumber(request.number, request.countryIso);
             if (info != null && !info.contactExists) {
-                // TODO(wangqi): Maybe skip look up if it's already available in cached number
-                //  lookup
+                // TODO(wangqi): Maybe skip look up if it's already available in cached number lookup
                 // service.
                 long start = SystemClock.elapsedRealtime();
-                contactInfoHelper.updateFromCequintCallerId(cequintCallerIdManager, info,
-                        request.number);
+                contactInfoHelper.updateFromCequintCallerId(cequintCallerIdManager, info, request.number);
                 long time = SystemClock.elapsedRealtime() - start;
                 LogUtil.d(
-                        "ContactInfoCache.queryContactInfo",
-                        "Cequint Caller Id look up takes %d ms", time);
+                        "ContactInfoCache.queryContactInfo", "Cequint Caller Id look up takes %d ms", time);
             }
             if (request.type == ContactInfoRequest.TYPE_LOCAL_AND_REMOTE) {
                 if (!contactInfoHelper.hasName(info)) {
@@ -165,8 +160,7 @@ public class ContactInfoCache {
                 }
             }
         } else {
-            info = contactInfoHelper.lookupNumberInRemoteDirectory(request.number,
-                    request.countryIso);
+            info = contactInfoHelper.lookupNumberInRemoteDirectory(request.number, request.countryIso);
         }
 
         if (info == null) {
@@ -271,10 +265,8 @@ public class ContactInfoCache {
      *
      * <p>It also provides the current contact info stored in the call log for this number.
      *
-     * <p>If the {@code immediate} parameter is true, it will start immediately the thread that
-     * looks
-     * up the contact information (if it has not been already started). Otherwise, it will be
-     * started
+     * <p>If the {@code immediate} parameter is true, it will start immediately the thread that looks
+     * up the contact information (if it has not been already started). Otherwise, it will be started
      * with a delay. See {@link #START_PROCESSING_REQUESTS_DELAY_MS}.
      */
     private void enqueueRequest(
@@ -311,8 +303,7 @@ public class ContactInfoCache {
     }
 
     @VisibleForTesting
-    public void injectContactInfoForTest(String number, String countryIso,
-            ContactInfo contactInfo) {
+    public void injectContactInfoForTest(String number, String countryIso, ContactInfo contactInfo) {
         NumberWithCountryIso numberCountryIso = new NumberWithCountryIso(number, countryIso);
         cache.put(numberCountryIso, contactInfo);
     }
@@ -377,8 +368,7 @@ public class ContactInfoCache {
                     shouldRedraw |= queryContactInfo(request);
                     if (shouldRedraw
                             && (updateRequests.isEmpty()
-                            || (request.isLocalRequest() && !Objects.requireNonNull(
-                            updateRequests.peek()).isLocalRequest()))) {
+                            || (request.isLocalRequest() && !Objects.requireNonNull(updateRequests.peek()).isLocalRequest()))) {
                         shouldRedraw = false;
                         handler.sendEmptyMessage(REDRAW);
                     }

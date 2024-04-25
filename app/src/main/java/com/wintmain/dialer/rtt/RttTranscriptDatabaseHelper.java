@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.SystemClock;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.rtt.RttTranscriptContract.RttTranscriptColumn;
 

@@ -18,6 +18,7 @@ package com.wintmain.dialer.calllog.database.contract;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import com.wintmain.dialer.constants.Constants;
 
 /**
@@ -62,8 +63,7 @@ public class AnnotatedCallLogContract {
 
         /**
          * The phone number called or number the call came from, encoded as a {@link
-         * com.wintmain.dialer.DialerPhoneNumber} proto. The number may be empty if it was an
-         * incoming
+         * com.wintmain.dialer.DialerPhoneNumber} proto. The number may be empty if it was an incoming
          * call and the number was unknown.
          *
          * <p>Type: BLOB
@@ -71,8 +71,7 @@ public class AnnotatedCallLogContract {
         public static final String NUMBER = "number";
 
         /**
-         * The number formatted as it should be displayed to the user. Note that it may not
-         * always be
+         * The number formatted as it should be displayed to the user. Note that it may not always be
          * displayed, for example if the number has a corresponding person or business name.
          *
          * <p>Type: TEXT

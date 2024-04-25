@@ -46,9 +46,10 @@ import com.wintmain.dialer.simulator.stub.StubSimulatorEnrichedCallModule;
 import com.wintmain.dialer.spam.stub.StubSpamModule;
 import com.wintmain.dialer.storage.StorageModule;
 import com.wintmain.dialer.strictmode.impl.SystemStrictModeModule;
-import dagger.Component;
 
 import javax.inject.Singleton;
+
+import dagger.Component;
 
 /** Root component for the AOSP Dialer application. */
 @Singleton
@@ -84,5 +85,4 @@ import javax.inject.Singleton;
                 SystemStrictModeModule.class,
                 VoicemailModule.class,
         })
-public interface AospDialerRootComponent extends BaseDialerRootComponent {
-}
+public interface AospDialerRootComponent extends BaseDialerRootComponent {}

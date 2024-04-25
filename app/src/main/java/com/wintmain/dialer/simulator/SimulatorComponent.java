@@ -25,20 +25,20 @@ import dagger.Subcomponent;
 @Subcomponent
 public abstract class SimulatorComponent {
 
-    public static SimulatorComponent get(Context context) {
-        return ((HasComponent) ((HasRootComponent) context.getApplicationContext()).component())
-                .simulatorComponent();
-    }
+  public abstract Simulator getSimulator();
 
-    public abstract Simulator getSimulator();
+  public abstract SimulatorEnrichedCall getSimulatorEnrichedCall();
 
-    public abstract SimulatorEnrichedCall getSimulatorEnrichedCall();
+  public abstract SimulatorConnectionsBank getSimulatorConnectionsBank();
 
-    public abstract SimulatorConnectionsBank getSimulatorConnectionsBank();
+  public static SimulatorComponent get(Context context) {
+    return ((HasComponent) ((HasRootComponent) context.getApplicationContext()).component())
+        .simulatorComponent();
+  }
 
-    /** Used to refer to the root application component. */
-    @IncludeInDialerRoot
-    public interface HasComponent {
-        SimulatorComponent simulatorComponent();
-    }
+  /** Used to refer to the root application component. */
+  @IncludeInDialerRoot
+  public interface HasComponent {
+    SimulatorComponent simulatorComponent();
+  }
 }

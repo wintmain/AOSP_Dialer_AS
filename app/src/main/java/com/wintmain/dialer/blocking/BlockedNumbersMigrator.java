@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.BlockedNumberContract.BlockedNumbers;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.database.FilteredNumberContract;
 import com.wintmain.dialer.database.FilteredNumberContract.FilteredNumber;
@@ -39,8 +40,7 @@ public class BlockedNumbersMigrator {
     private final Context context;
 
     /**
-     * Creates a new BlockedNumbersMigrate, using the given {@link ContentResolver} to perform
-     * queries
+     * Creates a new BlockedNumbersMigrate, using the given {@link ContentResolver} to perform queries
      * against the blocked numbers tables.
      */
     public BlockedNumbersMigrator(Context context) {
@@ -57,8 +57,7 @@ public class BlockedNumbersMigrator {
                              null)) {
             if (cursor == null) {
                 LogUtil.i(
-                        "BlockedNumbersMigrator.migrateToNewBlockingInBackground",
-                        "migrate - cursor was null");
+                        "BlockedNumbersMigrator.migrateToNewBlockingInBackground", "migrate - cursor was null");
                 return false;
             }
 
@@ -139,15 +138,13 @@ public class BlockedNumbersMigrator {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            LogUtil.i("BlockedNumbersMigrator.doInBackground",
-                    "migrate - start background migration");
+            LogUtil.i("BlockedNumbersMigrator.doInBackground", "migrate - start background migration");
             return migrateToNewBlockingInBackground(context.getContentResolver());
         }
 
         @Override
         protected void onPostExecute(Boolean isSuccessful) {
-            LogUtil.i("BlockedNumbersMigrator.onPostExecute",
-                    "migrate - marking migration complete");
+            LogUtil.i("BlockedNumbersMigrator.onPostExecute", "migrate - marking migration complete");
             FilteredNumberCompat.setHasMigratedToNewBlocking(context, isSuccessful);
             LogUtil.i("BlockedNumbersMigrator.onPostExecute", "migrate - calling listener");
             listener.onComplete();

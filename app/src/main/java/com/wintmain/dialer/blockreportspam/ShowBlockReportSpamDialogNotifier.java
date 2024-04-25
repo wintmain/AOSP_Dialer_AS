@@ -18,7 +18,9 @@ package com.wintmain.dialer.blockreportspam;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.protos.ProtoParsers;
 
@@ -31,22 +33,19 @@ public final class ShowBlockReportSpamDialogNotifier {
     }
 
     /**
-     * Notifies that a dialog for blocking a number and optionally report it as spam should be
-     * shown.
+     * Notifies that a dialog for blocking a number and optionally report it as spam should be shown.
      */
     public static void notifyShowDialogToBlockNumberAndOptionallyReportSpam(
             Context context, BlockReportSpamDialogInfo blockReportSpamDialogInfo) {
         LogUtil.enterBlock(
-                "ShowBlockReportSpamDialogNotifier"
-                        + ".notifyShowDialogToBlockNumberAndOptionallyReportSpam");
+                "ShowBlockReportSpamDialogNotifier.notifyShowDialogToBlockNumberAndOptionallyReportSpam");
 
         Intent intent = new Intent();
         intent.setAction(
                 ShowBlockReportSpamDialogReceiver
                         .ACTION_SHOW_DIALOG_TO_BLOCK_NUMBER_AND_OPTIONALLY_REPORT_SPAM);
         ProtoParsers.put(
-                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO,
-                blockReportSpamDialogInfo);
+                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO, blockReportSpamDialogInfo);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
@@ -61,8 +60,7 @@ public final class ShowBlockReportSpamDialogNotifier {
         Intent intent = new Intent();
         intent.setAction(ShowBlockReportSpamDialogReceiver.ACTION_SHOW_DIALOG_TO_BLOCK_NUMBER);
         ProtoParsers.put(
-                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO,
-                blockReportSpamDialogInfo);
+                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO, blockReportSpamDialogInfo);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
@@ -77,8 +75,7 @@ public final class ShowBlockReportSpamDialogNotifier {
         Intent intent = new Intent();
         intent.setAction(ShowBlockReportSpamDialogReceiver.ACTION_SHOW_DIALOG_TO_REPORT_NOT_SPAM);
         ProtoParsers.put(
-                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO,
-                blockReportSpamDialogInfo);
+                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO, blockReportSpamDialogInfo);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
@@ -93,8 +90,7 @@ public final class ShowBlockReportSpamDialogNotifier {
         Intent intent = new Intent();
         intent.setAction(ShowBlockReportSpamDialogReceiver.ACTION_SHOW_DIALOG_TO_UNBLOCK_NUMBER);
         ProtoParsers.put(
-                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO,
-                blockReportSpamDialogInfo);
+                intent, ShowBlockReportSpamDialogReceiver.EXTRA_DIALOG_INFO, blockReportSpamDialogInfo);
 
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }

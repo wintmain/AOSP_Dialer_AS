@@ -19,7 +19,9 @@ package com.wintmain.dialer.calllogutils;
 import android.content.Context;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
+
 import androidx.annotation.IntDef;
+
 import com.wintmain.dialer.duo.DuoComponent;
 
 import java.lang.annotation.Retention;
@@ -33,28 +35,10 @@ public class CallbackActionHelper {
     /**
      * Returns the {@link CallbackAction} that can be associated with a call.
      *
-     * @param number                    The phone number in column
-     *                                  {@link android.provider.CallLog.Calls#NUMBER}.
-     * @param features                  Value of features in column
-     *                                  {@link android.provider.CallLog.Calls#FEATURES}.
-     * @param phoneAccountComponentName Account name in column
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *                          {@link android.provider.CallLog.Calls#PHONE_ACCOUNT_COMPONENT_NAME}.
+     * @param number                    The phone number in column {@link android.provider.CallLog.Calls#NUMBER}.
+     * @param features                  Value of features in column {@link android.provider.CallLog.Calls#FEATURES}.
+     * @param phoneAccountComponentName Account name in column {@link
+     *                                  android.provider.CallLog.Calls#PHONE_ACCOUNT_COMPONENT_NAME}.
      * @return One of the values in {@link CallbackAction}
      */
     public static @CallbackAction
@@ -97,8 +81,7 @@ public class CallbackActionHelper {
      * Specifies the action a user can take to make a callback.
      */
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({CallbackAction.NONE, CallbackAction.IMS_VIDEO, CallbackAction.DUO,
-            CallbackAction.VOICE})
+    @IntDef({CallbackAction.NONE, CallbackAction.IMS_VIDEO, CallbackAction.DUO, CallbackAction.VOICE})
     public @interface CallbackAction {
         int NONE = 0;
         int IMS_VIDEO = 1;

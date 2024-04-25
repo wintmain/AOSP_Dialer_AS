@@ -21,8 +21,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.telecom.PhoneAccountHandle;
 import android.telephony.TelephonyManager;
+
 import androidx.annotation.Nullable;
 import androidx.core.os.BuildCompat;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.telecom.TelecomUtil;
 
@@ -38,8 +40,7 @@ public class TelephonyManagerCompat {
             "android.telephony.event.EVENT_HANDOVER_VIDEO_FROM_LTE_TO_WIFI";
     public static final String EVENT_HANDOVER_TO_WIFI_FAILED =
             "android.telephony.event.EVENT_HANDOVER_TO_WIFI_FAILED";
-    public static final String EVENT_CALL_REMOTELY_HELD =
-            "android.telecom.event.CALL_REMOTELY_HELD";
+    public static final String EVENT_CALL_REMOTELY_HELD = "android.telecom.event.CALL_REMOTELY_HELD";
     public static final String EVENT_CALL_REMOTELY_UNHELD =
             "android.telecom.event.CALL_REMOTELY_UNHELD";
     public static final String EVENT_MERGE_START = "android.telecom.event.MERGE_START";
@@ -47,15 +48,13 @@ public class TelephonyManagerCompat {
 
     public static final String EVENT_NOTIFY_INTERNATIONAL_CALL_ON_WFC =
             "android.telephony.event.EVENT_NOTIFY_INTERNATIONAL_CALL_ON_WFC";
-    public static final String EVENT_CALL_FORWARDED =
-            "android.telephony.event.EVENT_CALL_FORWARDED";
+    public static final String EVENT_CALL_FORWARDED = "android.telephony.event.EVENT_CALL_FORWARDED";
 
     public static final String TELEPHONY_MANAGER_CLASS = "android.telephony.TelephonyManager";
     /**
      * Indicates that the call being placed originated from a known contact.
      *
-     * <p>This signals to the telephony platform that an outgoing call qualifies for assisted
-     * dialing.
+     * <p>This signals to the telephony platform that an outgoing call qualifies for assisted dialing.
      */
     public static final String USE_ASSISTED_DIALING = "android.telecom.extra.USE_ASSISTED_DIALING";
 
@@ -136,15 +135,13 @@ public class TelephonyManagerCompat {
         } else {
             // System service call is not supported pre-O, so must use a broadcast for N-.
             Intent intent =
-                    new Intent(SECRET_CODE_ACTION,
-                            Uri.parse("android_secret_code://" + secretCode));
+                    new Intent(SECRET_CODE_ACTION, Uri.parse("android_secret_code://" + secretCode));
             context.sendBroadcast(intent);
         }
     }
 
     /**
-     * Returns network country iso for given {@code PhoneAccountHandle} for O+ devices and
-     * country iso
+     * Returns network country iso for given {@code PhoneAccountHandle} for O+ devices and country iso
      * for default sim for pre-O devices.
      */
     public static String getNetworkCountryIsoForPhoneAccountHandle(
@@ -154,8 +151,7 @@ public class TelephonyManagerCompat {
     }
 
     /**
-     * Returns TelephonyManager for given {@code PhoneAccountHandle} for O+ devices and default
-     * {@code
+     * Returns TelephonyManager for given {@code PhoneAccountHandle} for O+ devices and default {@code
      * TelephonyManager} for pre-O devices.
      */
     public static TelephonyManager getTelephonyManagerForPhoneAccountHandle(

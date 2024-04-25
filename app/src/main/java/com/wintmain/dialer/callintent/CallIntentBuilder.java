@@ -28,14 +28,16 @@ import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.protobuf.InvalidProtocolBufferException;
+
 import com.wintmain.dialer.callintent.CallInitiationType.Type;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.performancereport.PerformanceReport;
 import com.wintmain.dialer.util.CallUtil;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 /**
  * Creates an intent to start a new outgoing call.
@@ -71,8 +73,7 @@ public class CallIntentBuilder implements Parcelable {
         this.uri = Assert.isNotNull(uri);
         Assert.isNotNull(callSpecificAppData);
         Assert.checkArgument(
-                callSpecificAppData.getCallInitiationType()
-                        != CallInitiationType.Type.UNKNOWN_INITIATION);
+                callSpecificAppData.getCallInitiationType() != CallInitiationType.Type.UNKNOWN_INITIATION);
 
         CallSpecificAppData.Builder builder =
                 CallSpecificAppData.newBuilder(callSpecificAppData)
@@ -80,8 +81,7 @@ public class CallIntentBuilder implements Parcelable {
                                 lightbringerButtonAppearInExpandedCallLogItemCount)
                         .setLightbringerButtonAppearInCollapsedCallLogItemCount(
                                 lightbringerButtonAppearInCollapsedCallLogItemCount)
-                        .setLightbringerButtonAppearInSearchCount(
-                                lightbringerButtonAppearInSearchCount);
+                        .setLightbringerButtonAppearInSearchCount(lightbringerButtonAppearInSearchCount);
         lightbringerButtonAppearInExpandedCallLogItemCount = 0;
         lightbringerButtonAppearInCollapsedCallLogItemCount = 0;
         lightbringerButtonAppearInSearchCount = 0;
@@ -132,8 +132,7 @@ public class CallIntentBuilder implements Parcelable {
     }
 
     public static CallIntentBuilder forVoicemail(
-            @Nullable PhoneAccountHandle phoneAccountHandle,
-            CallInitiationType.Type callInitiationType) {
+            @Nullable PhoneAccountHandle phoneAccountHandle, CallInitiationType.Type callInitiationType) {
         return new CallIntentBuilder(
                 Uri.fromParts(PhoneAccount.SCHEME_VOICEMAIL, "", null), callInitiationType)
                 .setPhoneAccountHandle(phoneAccountHandle);
@@ -255,8 +254,7 @@ public class CallIntentBuilder implements Parcelable {
     }
 
     /**
-     * Other extras that should be used with {@link TelecomManager#placeCall(Uri, Bundle)}. This
-     * will
+     * Other extras that should be used with {@link TelecomManager#placeCall(Uri, Bundle)}. This will
      * override everything set by the CallIntentBuilder
      */
     public Bundle getPlaceCallExtras() {

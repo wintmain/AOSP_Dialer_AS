@@ -20,9 +20,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.cp2.DirectoryUtils;
@@ -49,8 +51,7 @@ public final class DirectoryContactsCursor extends MergeCursor implements Search
     /**
      * {@link SearchCursor#HEADER_PROJECTION} with {@link #COLUMN_DIRECTORY_ID} appended on the end.
      *
-     * <p>This is needed to get the directoryId associated with each contact. directoryIds are
-     * needed
+     * <p>This is needed to get the directoryId associated with each contact. directoryIds are needed
      * to load the correct quick contact card.
      */
     private static final String[] PROJECTION = buildProjection();
@@ -60,8 +61,7 @@ public final class DirectoryContactsCursor extends MergeCursor implements Search
     }
 
     /**
-     * Returns a single cursor with headers inserted between each non-empty cursor. If all
-     * cursors are
+     * Returns a single cursor with headers inserted between each non-empty cursor. If all cursors are
      * empty, null or closed, this method returns null.
      */
     @Nullable
@@ -97,8 +97,7 @@ public final class DirectoryContactsCursor extends MergeCursor implements Search
                 continue;
             }
 
-            cursorList.add(
-                    createHeaderCursor(context, directory.getDisplayName(), directory.getId()));
+            cursorList.add(createHeaderCursor(context, directory.getDisplayName(), directory.getId()));
             cursorList.add(cursor);
         }
         return cursorList.toArray(new Cursor[0]);
@@ -153,8 +152,7 @@ public final class DirectoryContactsCursor extends MergeCursor implements Search
 
     @Override
     public boolean updateQuery(@NonNull String query) {
-        // When the query changes, a new network request is made for nearby places. Meaning this
-        // cursor
+        // When the query changes, a new network request is made for nearby places. Meaning this cursor
         // will be closed and another created, so return false.
         return false;
     }

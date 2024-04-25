@@ -25,7 +25,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -63,8 +65,7 @@ public class GalleryGridAdapter extends CursorAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // At position 0, we want to insert a header. If position == 0, we don't need the cursor.
-        // If position != 0, then we need to move the cursor to position - 1 to account for the
-        // offset
+        // If position != 0, then we need to move the cursor to position - 1 to account for the offset
         // of the header.
         if (position != 0 && !getCursor().moveToPosition(position - 1)) {
             Assert.fail("couldn't move cursor to position " + (position - 1));
@@ -99,8 +100,7 @@ public class GalleryGridAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         GalleryGridItemView view =
                 (GalleryGridItemView)
-                        LayoutInflater.from(context).inflate(R.layout.gallery_grid_item_view,
-                                parent, false);
+                        LayoutInflater.from(context).inflate(R.layout.gallery_grid_item_view, parent, false);
         view.setOnClickListener(onClickListener);
         views.add(view);
         return view;

@@ -20,17 +20,20 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.CallLog.Calls;
+
 import androidx.annotation.VisibleForTesting;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.inject.ApplicationContext;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Locale;
 
 /**
  * {@link SQLiteOpenHelper} for the AnnotatedCallLog database.
@@ -76,8 +79,7 @@ public class AnnotatedCallLogDatabaseHelper extends SQLiteOpenHelper {
                     + (AnnotatedCallLog.CALL_MAPPING_ID + " text")
                     + ");";
     /**
-     * Deletes all but the first maxRows rows (by timestamp, excluding voicemails) to keep the
-     * table a
+     * Deletes all but the first maxRows rows (by timestamp, excluding voicemails) to keep the table a
      * manageable size.
      */
     private static final String CREATE_TRIGGER_SQL =

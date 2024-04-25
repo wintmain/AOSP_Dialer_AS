@@ -18,13 +18,15 @@ package com.wintmain.dialer.preferredsim.suggestion;
 
 import android.content.Context;
 import android.telecom.PhoneAccountHandle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-import com.google.common.base.Optional;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
+import com.google.common.base.Optional;
 
 /**
  * Provides hints to the user when selecting a SIM to make a call.
@@ -35,12 +37,10 @@ public interface SuggestionProvider {
     String EXTRA_SIM_SUGGESTION_REASON = "sim_suggestion_reason";
 
     /**
-     * Return the hint for {@code phoneAccountHandle}. Absent if no hint is available for the
-     * account.
+     * Return the hint for {@code phoneAccountHandle}. Absent if no hint is available for the account.
      */
     static Optional<String> getHint(
-            Context context, PhoneAccountHandle phoneAccountHandle,
-            @Nullable Suggestion suggestion) {
+            Context context, PhoneAccountHandle phoneAccountHandle, @Nullable Suggestion suggestion) {
         if (suggestion == null) {
             return Optional.absent();
         }
@@ -50,14 +50,11 @@ public interface SuggestionProvider {
         switch (suggestion.reason) {
             case INTRA_CARRIER:
                 return Optional.of(
-                        context.getString(
-                                R.string.pre_call_select_phone_account_hint_intra_carrier));
+                        context.getString(R.string.pre_call_select_phone_account_hint_intra_carrier));
             case FREQUENT:
-                return Optional.of(
-                        context.getString(R.string.pre_call_select_phone_account_hint_frequent));
+                return Optional.of(context.getString(R.string.pre_call_select_phone_account_hint_frequent));
             default:
-                LogUtil.w("CallingAccountSelector.getHint",
-                        "unhandled reason " + suggestion.reason);
+                LogUtil.w("CallingAccountSelector.getHint", "unhandled reason " + suggestion.reason);
                 return Optional.absent();
         }
     }
@@ -75,8 +72,7 @@ public interface SuggestionProvider {
 
     @WorkerThread
     void reportIncorrectSuggestion(
-            @NonNull Context context, @NonNull String number,
-            @NonNull PhoneAccountHandle newAccount);
+            @NonNull Context context, @NonNull String number, @NonNull PhoneAccountHandle newAccount);
 
     /**
      * The reason the suggestion is made.

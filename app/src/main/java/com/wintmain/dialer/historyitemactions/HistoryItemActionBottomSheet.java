@@ -30,15 +30,17 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.common.collect.ImmutableSet;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.compat.android.support.design.bottomsheet.BottomSheetStateCompat;
 import com.wintmain.dialer.widget.ContactPhotoView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,10 +65,8 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
      *   <li>the bottom sheet is fully expanded.
      * </ul>
      *
-     * <p>The reason an {@link OnPreDrawListener} instead of a {@link BottomSheetCallback} is
-     * used to
-     * handle this is that the initial state of the bottom sheet will be STATE_EXPANDED when the
-     * touch
+     * <p>The reason an {@link OnPreDrawListener} instead of a {@link BottomSheetCallback} is used to
+     * handle this is that the initial state of the bottom sheet will be STATE_EXPANDED when the touch
      * exploration (e.g., TalkBack) is enabled and {@link BottomSheetCallback} won't be triggered in
      * this case. See {@link #setupBottomSheetBehavior()} for details.
      */
@@ -74,14 +74,11 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
             () -> {
                 View contactLayout = findViewById(R.id.contact_layout_root);
                 View background = findViewById(com.google.android.material.R.id.touch_outside);
-                View bottomSheet = findViewById(
-                        com.google.android.material.R.id.design_bottom_sheet);
+                View bottomSheet = findViewById(com.google.android.material.R.id.design_bottom_sheet);
 
-                BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(
-                        Objects.requireNonNull(bottomSheet));
+                BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(Objects.requireNonNull(bottomSheet));
 
-                // If the height of the background is equal to that of the bottom sheet, the
-                // bottom sheet
+                // If the height of the background is equal to that of the bottom sheet, the bottom sheet
                 // *can* be expanded to full screen.
                 Objects.requireNonNull(contactLayout).setElevation(
                         Objects.requireNonNull(background).getHeight() == bottomSheet.getHeight()
@@ -111,24 +108,21 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
             HistoryItemBottomSheetHeaderInfo historyItemBottomSheetHeaderInfo,
             List<HistoryItemActionModule> modules) {
         HistoryItemActionBottomSheet sheet =
-                new HistoryItemActionBottomSheet(context, historyItemBottomSheetHeaderInfo,
-                        modules);
+                new HistoryItemActionBottomSheet(context, historyItemBottomSheetHeaderInfo, modules);
         sheet.show();
         return sheet;
     }
 
     @Override
     protected void onCreate(Bundle bundle) {
-        contactLayout = (LinearLayout) Assert.isNotNull(
-                (View) findViewById(R.id.contact_layout_root));
+        contactLayout = (LinearLayout) Assert.isNotNull((View) findViewById(R.id.contact_layout_root));
 
         initBottomSheetState();
         setupBottomSheetBehavior();
         setupWindow();
         setupContactLayout();
 
-        LinearLayout container = (LinearLayout) Assert.isNotNull(
-                (View) findViewById(R.id.action_container));
+        LinearLayout container = (LinearLayout) Assert.isNotNull((View) findViewById(R.id.action_container));
         for (HistoryItemActionModule module : modules) {
             if (module instanceof DividerModule) {
                 container.addView(getDividerView(container));
@@ -147,19 +141,16 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        contactLayout.getViewTreeObserver().removeOnPreDrawListener(
-                onPreDrawListenerForContactLayout);
+        contactLayout.getViewTreeObserver().removeOnPreDrawListener(onPreDrawListenerForContactLayout);
     }
 
     private void initBottomSheetState() {
-        // If the touch exploration in the system (e.g., TalkBack) is enabled, the bottom sheet
-        // should
+        // If the touch exploration in the system (e.g., TalkBack) is enabled, the bottom sheet should
         // be fully expanded because sometimes services like TalkBack won't read all items when the
         // bottom sheet is not fully expanded.
         if (isTouchExplorationEnabled()) {
             BottomSheetBehavior<View> behavior =
-                    BottomSheetBehavior.from(Objects.requireNonNull(
-                            findViewById(com.google.android.material.R.id.design_bottom_sheet)));
+                    BottomSheetBehavior.from(Objects.requireNonNull(findViewById(com.google.android.material.R.id.design_bottom_sheet)));
             behavior.setState(BottomSheetStateCompat.STATE_EXPANDED);
         }
     }
@@ -167,10 +158,8 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
     /**
      * Configures the bottom sheet behavior when its state changes.
      *
-     * <p>If the touch exploration in the system (e.g., TalkBack) is enabled, the bottom sheet
-     * will be
-     * canceled if it is in a final state other than {@link BottomSheetBehavior#STATE_EXPANDED}.
-     * This
+     * <p>If the touch exploration in the system (e.g., TalkBack) is enabled, the bottom sheet will be
+     * canceled if it is in a final state other than {@link BottomSheetBehavior#STATE_EXPANDED}. This
      * is because sometimes services like TalkBack won't read all items when the bottom sheet is not
      * fully expanded.
      *
@@ -179,8 +168,7 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
      */
     private void setupBottomSheetBehavior() {
         BottomSheetBehavior<View> behavior =
-                BottomSheetBehavior.from(Objects.requireNonNull(
-                        findViewById(com.google.android.material.R.id.design_bottom_sheet)));
+                BottomSheetBehavior.from(Objects.requireNonNull(findViewById(com.google.android.material.R.id.design_bottom_sheet)));
         behavior.setBottomSheetCallback(
                 new BottomSheetCallback() {
                     @Override
@@ -197,8 +185,7 @@ public class HistoryItemActionBottomSheet extends BottomSheetDialog implements O
                             cancel();
                         }
 
-                        // TODO(calderwoodra): set the status bar color when expanded, else
-                        //  translucent
+                        // TODO(calderwoodra): set the status bar color when expanded, else translucent
                     }
 
                     @Override

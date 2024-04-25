@@ -17,7 +17,9 @@
 package com.wintmain.dialer.strictmode;
 
 import android.content.Context;
+
 import com.wintmain.dialer.inject.HasRootComponent;
+
 import dagger.Subcomponent;
 
 /**

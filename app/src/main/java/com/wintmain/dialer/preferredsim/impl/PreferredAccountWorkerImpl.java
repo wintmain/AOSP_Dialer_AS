@@ -24,22 +24,23 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract.*;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.PhoneLookup;
+import android.provider.ContactsContract.QuickContact;
+import android.provider.ContactsContract.RawContacts;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
+
 import com.android.contacts.common.widget.SelectPhoneAccountDialogOptions;
 import com.android.contacts.common.widget.SelectPhoneAccountDialogOptionsUtil;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.activecalls.ActiveCallInfo;
 import com.wintmain.dialer.activecalls.ActiveCallsComponent;
@@ -59,10 +60,16 @@ import com.wintmain.dialer.preferredsim.suggestion.SimSuggestionComponent;
 import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider;
 import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider.Suggestion;
 import com.wintmain.dialer.util.PermissionsUtil;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 /**
  * Implements {@link PreferredAccountWorker}.
@@ -93,8 +100,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
         }
         try (Cursor cursor =
                      contentResolver.query(
-                             ContentUris.withAppendedId(RawContacts.CONTENT_URI,
-                                     rawContactId.get()),
+                             ContentUris.withAppendedId(RawContacts.CONTENT_URI, rawContactId.get()),
                              new String[]{RawContacts.ACCOUNT_TYPE},
                              null,
                              null,
@@ -170,8 +176,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
                 || resolveInfo.activityInfo == null
                 || resolveInfo.activityInfo.applicationInfo == null
                 || resolveInfo.activityInfo.applicationInfo.metaData == null) {
-            LogUtil.e("CallingAccountSelector.isPreferredSimEnabled",
-                    "cannot resolve quick contact app");
+            LogUtil.e("CallingAccountSelector.isPreferredSimEnabled", "cannot resolve quick contact app");
             return false;
         }
         if (!resolveInfo.activityInfo.applicationInfo.metaData.getBoolean(
@@ -235,8 +240,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
 
         Builder resultBuilder =
                 Result.builder(
-                        createDialogOptionsBuilder(candidates, dataId.orNull(),
-                                suggestion.orNull()));
+                        createDialogOptionsBuilder(candidates, dataId.orNull(), suggestion.orNull()));
         if (suggestion.isPresent()) {
             resultBuilder.setSuggestion(suggestion.get());
         }
@@ -254,8 +258,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
             resultBuilder = Result.builder(preferred);
         } else {
             Logger.get(appContext).logImpression(Type.DUAL_SIM_SELECTION_PREFERRED_NOT_SELECTABLE);
-            LogUtil.i("CallingAccountSelector.usePreferredAccount",
-                    "preferred account not selectable");
+            LogUtil.i("CallingAccountSelector.usePreferredAccount", "preferred account not selectable");
             resultBuilder = Result.builder(createDialogOptionsBuilder(candidates, dataId, null));
         }
         resultBuilder.setDataId(dataId);
@@ -271,8 +274,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
             return Result.builder(defaultPhoneAccount).build();
         } else {
             Logger.get(appContext).logImpression(Type.DUAL_SIM_SELECTION_GLOBAL_NOT_SELECTABLE);
-            LogUtil.i("CallingAccountSelector.usePreferredAccount",
-                    "global account not selectable");
+            LogUtil.i("CallingAccountSelector.usePreferredAccount", "global account not selectable");
             return Result.builder(createDialogOptionsBuilder(candidates, dataId, null)).build();
         }
     }
@@ -285,12 +287,9 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
             resultBuilder = Result.builder(suggestedPhoneAccount);
             Logger.get(appContext).logImpression(Type.DUAL_SIM_SELECTION_SUGGESTION_AUTO_SELECTED);
         } else {
-            Logger.get(appContext).logImpression(
-                    Type.DUAL_SIM_SELECTION_SUGGESTION_AUTO_NOT_SELECTABLE);
-            LogUtil.i("CallingAccountSelector.usePreferredAccount",
-                    "global account not selectable");
-            resultBuilder = Result.builder(
-                    createDialogOptionsBuilder(candidates, dataId, suggestion));
+            Logger.get(appContext).logImpression(Type.DUAL_SIM_SELECTION_SUGGESTION_AUTO_NOT_SELECTABLE);
+            LogUtil.i("CallingAccountSelector.usePreferredAccount", "global account not selectable");
+            resultBuilder = Result.builder(createDialogOptionsBuilder(candidates, dataId, suggestion));
             return resultBuilder.build();
         }
         resultBuilder.setSuggestion(suggestion);
@@ -312,8 +311,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
                     Logger.get(appContext).logImpression(Type.DUAL_SIM_SELECTION_SUGGESTED_CARRIER);
                     break;
                 case FREQUENT:
-                    Logger.get(appContext).logImpression(
-                            Type.DUAL_SIM_SELECTION_SUGGESTED_FREQUENCY);
+                    Logger.get(appContext).logImpression(Type.DUAL_SIM_SELECTION_SUGGESTED_FREQUENCY);
                     break;
                 default:
             }
@@ -327,8 +325,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
         for (PhoneAccountHandle phoneAccountHandle : candidates) {
             SelectPhoneAccountDialogOptions.Entry.Builder entryBuilder =
                     SelectPhoneAccountDialogOptions.Entry.newBuilder();
-            SelectPhoneAccountDialogOptionsUtil.setPhoneAccountHandle(entryBuilder,
-                    phoneAccountHandle);
+            SelectPhoneAccountDialogOptionsUtil.setPhoneAccountHandle(entryBuilder, phoneAccountHandle);
             if (isSelectable(phoneAccountHandle)) {
                 Optional<String> hint =
                         SuggestionProvider.getHint(appContext, phoneAccountHandle, suggestion);
@@ -371,8 +368,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
                      appContext
                              .getContentResolver()
                              .query(
-                                     Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
-                                             Uri.encode(phoneNumber)),
+                                     Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)),
                                      new String[]{PhoneLookup.DATA_ID},
                                      null,
                                      null,
@@ -388,16 +384,13 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
                         getAccountType(appContext.getContentResolver(), cursor.getLong(0));
                 if (accountType.isPresent() && !validAccountTypes.contains(accountType.get())) {
                     // Empty accountType is treated as writable
-                    LogUtil.i("CallingAccountSelector.getDataId",
-                            "ignoring non-writable " + accountType);
+                    LogUtil.i("CallingAccountSelector.getDataId", "ignoring non-writable " + accountType);
                     continue;
                 }
                 if (result != null && !result.equals(cursor.getString(0))) {
-                    // TODO(twyen): if there are multiple entries attempt to grab from the
-                    //  contact that
+                    // TODO(twyen): if there are multiple entries attempt to grab from the contact that
                     // initiated the call.
-                    LogUtil.i("CallingAccountSelector.getDataId",
-                            "lookup result not unique, ignoring");
+                    LogUtil.i("CallingAccountSelector.getDataId", "lookup result not unique, ignoring");
                     return Optional.absent();
                 }
                 result = cursor.getString(0);
@@ -434,8 +427,7 @@ public class PreferredAccountWorkerImpl implements PreferredAccountWorker {
         }
         ActiveCallInfo activeCall = activeCalls.get(0);
         if (!activeCall.phoneAccountHandle().isPresent()) {
-            LogUtil.e("CallingAccountSelector.getActiveCallLabel",
-                    "active call has no phone account");
+            LogUtil.e("CallingAccountSelector.getActiveCallLabel", "active call has no phone account");
             return Optional.absent();
         }
         PhoneAccount phoneAccount =

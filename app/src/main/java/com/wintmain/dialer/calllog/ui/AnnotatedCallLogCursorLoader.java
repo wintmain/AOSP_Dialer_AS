@@ -18,7 +18,9 @@ package com.wintmain.dialer.calllog.ui;
 
 import android.content.Context;
 import android.provider.CallLog.Calls;
+
 import androidx.loader.content.CursorLoader;
+
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
 
 /** Cursor loader for {@link AnnotatedCallLog}. */
@@ -30,7 +32,7 @@ final class AnnotatedCallLogCursorLoader extends CursorLoader {
                 AnnotatedCallLog.CONTENT_URI,
                 /* projection = */ null,
                 /* selection = */ AnnotatedCallLog.CALL_TYPE + " != ?",
-                /* selectionArgs = */ new String[]{Integer.toString(Calls.VOICEMAIL_TYPE)},
+                /* selectionArgs = */ new String[] {Integer.toString(Calls.VOICEMAIL_TYPE)},
                 /* sortOrder = */ AnnotatedCallLog.TIMESTAMP + " DESC");
     }
 }

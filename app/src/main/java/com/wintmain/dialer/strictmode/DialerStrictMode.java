@@ -17,6 +17,7 @@
 package com.wintmain.dialer.strictmode;
 
 import android.app.Application;
+
 import androidx.annotation.MainThread;
 
 /**

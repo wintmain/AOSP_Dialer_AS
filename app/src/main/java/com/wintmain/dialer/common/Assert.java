@@ -17,6 +17,7 @@
 package com.wintmain.dialer.common;
 
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -70,8 +71,7 @@ public class Assert {
     }
 
     @CheckReturnValue
-    public static UnsupportedOperationException createUnsupportedOperationFailException(
-            String msg) {
+    public static UnsupportedOperationException createUnsupportedOperationFailException(String msg) {
         return new UnsupportedOperationException(msg);
     }
 

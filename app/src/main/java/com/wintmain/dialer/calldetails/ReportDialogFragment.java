@@ -25,10 +25,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.DialogFragment;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.SuccessListener;
@@ -74,8 +76,7 @@ public class ReportDialogFragment extends DialogFragment {
         super.onCreate(bundle);
         setRetainInstance(true);
         number = Objects.requireNonNull(getArguments()).getString(KEY_NUMBER);
-        cachedNumberLookupService = PhoneNumberCache.get(getContext())
-                .getCachedNumberLookupService();
+        cachedNumberLookupService = PhoneNumberCache.get(getContext()).getCachedNumberLookupService();
     }
 
     @NonNull
@@ -91,10 +92,8 @@ public class ReportDialogFragment extends DialogFragment {
         AlertDialog reportDialog =
                 new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.report_caller_id_dialog_title)
-                        .setPositiveButton(android.R.string.ok,
-                                (dialog, which) -> positiveClick(dialog))
-                        .setNegativeButton(android.R.string.cancel,
-                                (dialog, which) -> dialog.dismiss())
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> positiveClick(dialog))
+                        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                         .setView(view)
                         .create();
 
@@ -109,13 +108,11 @@ public class ReportDialogFragment extends DialogFragment {
 
     private void lookupContactInfo(String number) {
         Worker<String, CachedContactInfo> worker =
-                number1 -> cachedNumberLookupService.lookupCachedContactFromNumber(getContext(),
-                        number1);
+                number1 -> cachedNumberLookupService.lookupCachedContactFromNumber(getContext(), number1);
         SuccessListener<CachedContactInfo> successListener = this::setCachedContactInfo;
         DialerExecutorComponent.get(Objects.requireNonNull(getContext()))
                 .dialerExecutorFactory()
-                .createUiTaskBuilder(Objects.requireNonNull(getFragmentManager()),
-                        "lookup_contact_info", worker)
+                .createUiTaskBuilder(Objects.requireNonNull(getFragmentManager()), "lookup_contact_info", worker)
                 .onSuccess(successListener)
                 .build()
                 .executeParallel(number);
@@ -137,8 +134,7 @@ public class ReportDialogFragment extends DialogFragment {
         SuccessListener<Pair<Context, Boolean>> successListener = this::onReportCallerId;
         DialerExecutorComponent.get(Objects.requireNonNull(getContext()))
                 .dialerExecutorFactory()
-                .createUiTaskBuilder(Objects.requireNonNull(getFragmentManager()),
-                        "report_caller_id", worker)
+                .createUiTaskBuilder(Objects.requireNonNull(getFragmentManager()), "report_caller_id", worker)
                 .onSuccess(successListener)
                 .build()
                 .executeParallel(getActivity());

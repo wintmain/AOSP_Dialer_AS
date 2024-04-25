@@ -26,11 +26,13 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.AsyncTaskExecutor;
@@ -54,8 +56,7 @@ public class ShortcutUsageReporter {
      * Called when an outgoing call is added to the call list in order to report outgoing calls as
      * shortcut usage. This should be called exactly once for each outgoing call.
      *
-     * <p>Asynchronously queries the contacts database for the contact's lookup key which
-     * corresponds
+     * <p>Asynchronously queries the contacts database for the contact's lookup key which corresponds
      * to the provided phone number, and uses that to report shortcut usage.
      *
      * @param context     used to access ShortcutManager system service
@@ -96,10 +97,8 @@ public class ShortcutUsageReporter {
                 ShortcutManager shortcutManager =
                         (ShortcutManager) context.getSystemService(Context.SHORTCUT_SERVICE);
 
-                // Note: There may not currently exist a shortcut with the provided key, but it
-                // is logged
-                // anyway, so that launcher applications at least have the information should the
-                // shortcut
+                // Note: There may not currently exist a shortcut with the provided key, but it is logged
+                // anyway, so that launcher applications at least have the information should the shortcut
                 // be created in the future.
                 shortcutManager.reportShortcutUsed(lookupKey);
             }

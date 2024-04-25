@@ -18,8 +18,10 @@ package com.wintmain.dialer.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
+
 import dagger.Subcomponent;
 
 /**

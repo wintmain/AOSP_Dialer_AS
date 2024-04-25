@@ -15,6 +15,8 @@
  */
 package com.wintmain.dialer.app.list;
 
+import static android.Manifest.permission.READ_CONTACTS;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -29,9 +31,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.ListView;
+
 import androidx.annotation.NonNull;
 import androidx.collection.LongSparseArray;
 import androidx.fragment.app.Fragment;
@@ -39,6 +46,7 @@ import androidx.legacy.app.FragmentCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
 import com.android.contacts.common.ContactTileLoaderFactory;
 import com.android.contacts.common.list.ContactTileView;
 import com.android.contacts.common.list.OnPhoneNumberPickerActionListener;
@@ -53,8 +61,6 @@ import com.wintmain.dialer.widget.EmptyContentView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * This fragment displays the user's favorite/frequent contacts in a grid.
@@ -119,8 +125,7 @@ public class OldSpeedDialFragment extends Fragment
         super.onResume();
         if (PermissionsUtil.hasContactsReadPermissions(getContext())) {
             if (LoaderManager.getInstance(this).getLoader(LOADER_ID_CONTACT_TILE) == null) {
-                LoaderManager.getInstance(this).initLoader(LOADER_ID_CONTACT_TILE, null,
-                        contactTileLoaderListener);
+                LoaderManager.getInstance(this).initLoader(LOADER_ID_CONTACT_TILE, null, contactTileLoaderListener);
 
             } else {
                 LoaderManager.getInstance(this).getLoader(LOADER_ID_CONTACT_TILE).forceLoad();
@@ -188,8 +193,7 @@ public class OldSpeedDialFragment extends Fragment
         final int listViewVisibility = visible ? View.GONE : View.VISIBLE;
 
         if (previousVisibility != emptyViewVisibility) {
-            final FrameLayout.LayoutParams params =
-                    (LayoutParams) contactTileFrame.getLayoutParams();
+            final FrameLayout.LayoutParams params = (LayoutParams) contactTileFrame.getLayoutParams();
             params.height = visible ? LayoutParams.WRAP_CONTENT : LayoutParams.MATCH_PARENT;
             contactTileFrame.setLayoutParams(params);
             emptyView.setVisibility(emptyViewVisibility);
@@ -202,8 +206,7 @@ public class OldSpeedDialFragment extends Fragment
         super.onStart();
         listView
                 .getDragDropController()
-                .addOnDragDropListener(
-                        FragmentUtils.getParentUnsafe(this, OnDragDropListener.class));
+                .addOnDragDropListener(FragmentUtils.getParentUnsafe(this, OnDragDropListener.class));
         FragmentUtils.getParentUnsafe(this, HostInterface.class)
                 .setDragDropController(listView.getDragDropController());
 
@@ -211,8 +214,7 @@ public class OldSpeedDialFragment extends Fragment
         // This method call implicitly assures ContactTileLoaderListener's onLoadFinished() will
         // be called, on which we'll check if "all" contacts should be reloaded again or not.
         if (PermissionsUtil.hasContactsReadPermissions(getContext())) {
-            LoaderManager.getInstance(this).initLoader(LOADER_ID_CONTACT_TILE, null,
-                    contactTileLoaderListener);
+            LoaderManager.getInstance(this).initLoader(LOADER_ID_CONTACT_TILE, null, contactTileLoaderListener);
         } else {
             setEmptyViewVisibility(true);
         }
@@ -285,8 +287,7 @@ public class OldSpeedDialFragment extends Fragment
 
                         // Since we are getting the position from mListView and then querying
                         // mContactTileAdapter, its very possible that things are out of sync
-                        // and we might index out of bounds.  Let's make sure that this doesn't
-                        // happen.
+                        // and we might index out of bounds.  Let's make sure that this doesn't happen.
                         if (!contactTileAdapter.isIndexInBound(position)) {
                             continue;
                         }
@@ -307,18 +308,14 @@ public class OldSpeedDialFragment extends Fragment
                             if (startLeft != null) {
                                 if (startLeft != left) {
                                     deltaX = startLeft - left;
-                                    animators.add(
-                                            ObjectAnimator.ofFloat(child, "translationX", deltaX,
-                                                    0.0f));
+                                    animators.add(ObjectAnimator.ofFloat(child, "translationX", deltaX, 0.0f));
                                 }
                             }
 
                             if (startTop != null) {
                                 if (startTop != top) {
                                     deltaY = startTop - top;
-                                    animators.add(
-                                            ObjectAnimator.ofFloat(child, "translationY", deltaY,
-                                                    0.0f));
+                                    animators.add(ObjectAnimator.ofFloat(child, "translationY", deltaY, 0.0f));
                                 }
                             }
                         }
@@ -400,8 +397,7 @@ public class OldSpeedDialFragment extends Fragment
         private final OldSpeedDialFragment fragment;
         private final PhoneFavoritesTileAdapter adapter;
 
-        ContactTileLoaderListener(OldSpeedDialFragment fragment,
-                PhoneFavoritesTileAdapter adapter) {
+        ContactTileLoaderListener(OldSpeedDialFragment fragment, PhoneFavoritesTileAdapter adapter) {
             this.fragment = fragment;
             this.adapter = adapter;
         }
@@ -441,8 +437,7 @@ public class OldSpeedDialFragment extends Fragment
         }
 
         @Override
-        public void onCallNumberDirectly(String phoneNumber,
-                CallSpecificAppData callSpecificAppData) {
+        public void onCallNumberDirectly(String phoneNumber, CallSpecificAppData callSpecificAppData) {
             FragmentUtils.getParentUnsafe(fragment, OnPhoneNumberPickerActionListener.class)
                     .onPickPhoneNumber(phoneNumber, false /* isVideoCall */, callSpecificAppData);
         }

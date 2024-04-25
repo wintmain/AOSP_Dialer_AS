@@ -19,6 +19,7 @@ package com.wintmain.dialer.app.list;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
 import androidx.viewpager.widget.ViewPager;
 
 /**

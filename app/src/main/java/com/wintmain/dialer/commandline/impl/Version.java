@@ -19,15 +19,18 @@ package com.wintmain.dialer.commandline.impl;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+
 import androidx.annotation.NonNull;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.commandline.Arguments;
 import com.wintmain.dialer.commandline.Command;
 import com.wintmain.dialer.inject.ApplicationContext;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
-import java.util.Locale;
 
 /**
  * Print the version name and code.

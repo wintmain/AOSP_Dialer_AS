@@ -19,8 +19,10 @@ package com.wintmain.dialer.searchfragment.common;
 import android.content.Context;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
+
 import com.wintmain.dialer.dialpadview.DialpadCharMappings;
 
 import java.util.regex.Pattern;
@@ -43,8 +45,7 @@ public class QueryFilteringUtil {
     private static final Pattern T9_PATTERN = Pattern.compile("[\\-()2-9]+");
 
     /**
-     * Returns true if the query is of T9 format and the name's T9 representation belongs to the
-     * query
+     * Returns true if the query is of T9 format and the name's T9 representation belongs to the query
      *
      * <p>Examples:
      *
@@ -55,12 +56,9 @@ public class QueryFilteringUtil {
      *   <li>#nameMatchesT9Query("7", "Jessica Jones") returns false, no names start with P,Q,R or S
      * </ul>
      *
-     * <p>When the 1st language preference uses a non-Latin alphabet (e.g., Russian) and the
-     * character
-     * mappings for the alphabet is defined in {@link DialpadCharMappings}, the Latin alphabet
-     * will be
-     * used first to check if the name matches the query. If they don't match, the non-Latin
-     * alphabet
+     * <p>When the 1st language preference uses a non-Latin alphabet (e.g., Russian) and the character
+     * mappings for the alphabet is defined in {@link DialpadCharMappings}, the Latin alphabet will be
+     * used first to check if the name matches the query. If they don't match, the non-Latin alphabet
      * will be used.
      *
      * <p>Examples (when the 1st language preference is Russian):
@@ -68,8 +66,7 @@ public class QueryFilteringUtil {
      * <ul>
      *   <li>#nameMatchesT9Query("7", "John Smith") returns true, 7 -> 'S'
      *   <li>#nameMatchesT9Query("7", "Павел Чехов") returns true, 7 -> 'Ч'
-     *   <li>#nameMatchesT9Query("77", "Pavel Чехов") returns true, 7 -> 'P' (in the Latin
-     *   alphabet),
+     *   <li>#nameMatchesT9Query("77", "Pavel Чехов") returns true, 7 -> 'P' (in the Latin alphabet),
      *       7 -> 'Ч' (in the Russian alphabet)
      * </ul>
      */
@@ -109,8 +106,7 @@ public class QueryFilteringUtil {
      * <ul>
      *   <li>#getIndexOfT9Substring("76", "John Smith") returns 5, 76 -> 'Sm'
      *   <li>#nameMatchesT9Query("2226", "AAA Mom") returns 0, 2226 -> 'AAAM'
-     *   <li>#nameMatchesT9Query("2", "Jessica Jones") returns -1, Neither 'Jessica' nor 'Jones'
-     *   start
+     *   <li>#nameMatchesT9Query("2", "Jessica Jones") returns -1, Neither 'Jessica' nor 'Jones' start
      *       with A, B or C
      * </ul>
      */
@@ -211,10 +207,8 @@ public class QueryFilteringUtil {
     /**
      * Returns the digit on a T9 keyboard which is associated with the given lower case character.
      *
-     * <p>The default character-key mapping will be used first to find a digit. If no digit is
-     * found,
-     * try the mapping of the current default locale if it is defined in
-     * {@link DialpadCharMappings}.
+     * <p>The default character-key mapping will be used first to find a digit. If no digit is found,
+     * try the mapping of the current default locale if it is defined in {@link DialpadCharMappings}.
      * If the second attempt fails, return the original character.
      */
     static char getDigit(char c, Context context) {

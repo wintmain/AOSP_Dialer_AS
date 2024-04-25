@@ -27,9 +27,11 @@ import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.WindowManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+
 import com.wintmain.dialer.callcomposer.camera.camerafocus.FocusOverlayManager;
 import com.wintmain.dialer.callcomposer.camera.camerafocus.RenderOverlay;
 import com.wintmain.dialer.common.Assert;
@@ -103,11 +105,9 @@ public class CameraManager implements FocusOverlayManager.Listener {
      */
     private OrientationHandler orientationHandler;
     /**
-     * The task for opening the camera, so it doesn't block the UI thread Using AsyncTask rather
-     * than
+     * The task for opening the camera, so it doesn't block the UI thread Using AsyncTask rather than
      * SafeAsyncTask because the tasks need to be serialized, but don't need to be on the UI thread
-     * TODO(blemmon): If we have other AyncTasks (not SafeAsyncTasks) this may contend and we may
-     * need
+     * TODO(blemmon): If we have other AyncTasks (not SafeAsyncTasks) this may contend and we may need
      * to create a dedicated thread, or synchronize the threads in the thread pool
      */
     private AsyncTask<Integer, Void, Camera> openCameraTask;
@@ -233,8 +233,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
     }
 
     /**
-     * Sets the surface to use to display the preview This must only be called AFTER the
-     * CameraPreview
+     * Sets the surface to use to display the preview This must only be called AFTER the CameraPreview
      * has a texture ready
      *
      * @param preview The preview surface view
@@ -319,8 +318,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
                 openCamera();
             }
         } catch (final RuntimeException e) {
-            LogUtil.e("CameraManager.selectCamera",
-                    "RuntimeException in CameraManager.selectCamera", e);
+            LogUtil.e("CameraManager.selectCamera", "RuntimeException in CameraManager.selectCamera", e);
             if (listener != null) {
                 listener.onCameraError(ERROR_OPENING_CAMERA, e);
             }
@@ -403,8 +401,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
                                     "Opening camera " + CameraManager.this.cameraIndex);
                             return Camera.open(cameraIndex);
                         } catch (final Exception e) {
-                            LogUtil.e("CameraManager.doInBackground",
-                                    "Exception while opening camera", e);
+                            LogUtil.e("CameraManager.doInBackground", "Exception while opening camera", e);
                             exception = e;
                             return null;
                         }
@@ -423,8 +420,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
 
                         LogUtil.v(
                                 "CameraManager.onPostExecute",
-                                "Opened camera " + CameraManager.this.cameraIndex + " " + (camera
-                                        != null));
+                                "Opened camera " + CameraManager.this.cameraIndex + " " + (camera != null));
                         setCamera(camera);
                         if (camera == null) {
                             if (listener != null) {
@@ -442,8 +438,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
 
                     private void cleanup() {
                         pendingOpenCameraIndex = NO_CAMERA_SELECTED;
-                        if (openCameraTask != null
-                                && openCameraTask.getStatus() == Status.PENDING) {
+                        if (openCameraTask != null && openCameraTask.getStatus() == Status.PENDING) {
                             // If there's another task waiting on this one to complete, start it now
                             openCameraTask.execute(CameraManager.this.cameraIndex);
                         } else {
@@ -518,25 +513,20 @@ public class CameraManager implements FocusOverlayManager.Listener {
                         height = size.height;
                     }
                     LogUtil.i(
-                            "CameraManager.onPictureTaken",
-                            "taken picture size: " + bytes.length + " bytes");
+                            "CameraManager.onPictureTaken", "taken picture size: " + bytes.length + " bytes");
                     DialerExecutorComponent.get(cameraPreview.getContext())
                             .dialerExecutorFactory()
                             .createNonUiTaskBuilder(
                                     new ImagePersistWorker(
-                                            width, height, heightPercent, bytes,
-                                            cameraPreview.getContext()))
+                                            width, height, heightPercent, bytes, cameraPreview.getContext()))
                             .onSuccess(
                                     (result) -> {
                                         callback.onMediaReady(
-                                                result.getUri(), "image/jpeg", result.getWidth(),
-                                                result.getHeight());
+                                                result.getUri(), "image/jpeg", result.getWidth(), result.getHeight());
                                     })
                             .onFailure(
                                     (throwable) -> {
-                                        callback.onMediaFailed(
-                                                new Exception("Persisting image failed",
-                                                        throwable));
+                                        callback.onMediaFailed(new Exception("Persisting image failed", throwable));
                                     })
                             .build()
                             .executeSerial(null);
@@ -548,8 +538,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
                     // A shutter callback is required to enable shutter sound
                     DUMMY_SHUTTER_CALLBACK, null /* raw */, null /* postView */, jpegCallback);
         } catch (final RuntimeException e) {
-            LogUtil.e("CameraManager.takePicture", "RuntimeException in CameraManager.takePicture",
-                    e);
+            LogUtil.e("CameraManager.takePicture", "RuntimeException in CameraManager.takePicture", e);
             takingPicture = false;
             if (listener != null) {
                 listener.onCameraError(ERROR_TAKING_PICTURE, e);
@@ -647,15 +636,13 @@ public class CameraManager implements FocusOverlayManager.Listener {
                 orientationHandler.enable();
             }
         } catch (final IOException e) {
-            LogUtil.e("CameraManager.tryShowPreview", "IOException in CameraManager.tryShowPreview",
-                    e);
+            LogUtil.e("CameraManager.tryShowPreview", "IOException in CameraManager.tryShowPreview", e);
             if (listener != null) {
                 listener.onCameraError(ERROR_SHOWING_PREVIEW, e);
             }
         } catch (final RuntimeException e) {
             LogUtil.e(
-                    "CameraManager.tryShowPreview",
-                    "RuntimeException in CameraManager.tryShowPreview", e);
+                    "CameraManager.tryShowPreview", "RuntimeException in CameraManager.tryShowPreview", e);
             if (listener != null) {
                 listener.onCameraError(ERROR_SHOWING_PREVIEW, e);
             }
@@ -675,8 +662,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
     }
 
     /**
-     * Choose the best picture size by trying to find a size close to the MmsConfig's max size,
-     * which
+     * Choose the best picture size by trying to find a size close to the MmsConfig's max size, which
      * is closest to the screen aspect ratio. In case of RCS conversation returns default size.
      */
     private Camera.Size chooseBestPictureSize() {
@@ -684,8 +670,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
     }
 
     /**
-     * Chose the best preview size based on the picture size. Try to find a size with the same
-     * aspect
+     * Chose the best preview size based on the picture size. Try to find a size with the same aspect
      * ratio and size as the picture if possible
      */
     private Camera.Size chooseBestPreviewSize(final Camera.Size pictureSize) {
@@ -695,8 +680,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
         final int capturePixels = pictureSize.width * pictureSize.height;
 
         // Sort the sizes so the best size is first
-        sizes.sort(new SizeComparator(Integer.MAX_VALUE, Integer.MAX_VALUE, aspectRatio,
-                capturePixels));
+        sizes.sort(new SizeComparator(Integer.MAX_VALUE, Integer.MAX_VALUE, aspectRatio, capturePixels));
 
         return sizes.get(0);
     }
@@ -709,8 +693,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
 
         try {
             this.camera.autoFocus(
-                    (success, camera) -> focusOverlayManager.onAutoFocus(success,
-                            false /* shutterDown */));
+                    (success, camera) -> focusOverlayManager.onAutoFocus(success, false /* shutterDown */));
         } catch (final RuntimeException e) {
             LogUtil.e("CameraManager.autoFocus", "RuntimeException in CameraManager.autoFocus", e);
             // If autofocus fails, the camera should have called the callback with success=false,
@@ -729,8 +712,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
         } catch (final RuntimeException e) {
             // Ignore
             LogUtil.e(
-                    "CameraManager.cancelAutoFocus",
-                    "RuntimeException in CameraManager.cancelAutoFocus", e);
+                    "CameraManager.cancelAutoFocus", "RuntimeException in CameraManager.cancelAutoFocus", e);
         }
     }
 
@@ -774,8 +756,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
         // failures
         LogUtil.i(
                 "CameraManager.logCameraSize",
-                prefix + size.width + "x" + size.height + " (" + (size.width / (float) size.height)
-                        + ")");
+                prefix + size.width + "x" + size.height + " (" + (size.width / (float) size.height) + ")");
     }
 
     @VisibleForTesting
@@ -832,8 +813,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
         }
 
         /**
-         * Returns a negative value if left is a better choice than right, or a positive value if
-         * right
+         * Returns a negative value if left is a better choice than right, or a positive value if right
          * is a better choice is better than left. 0 if they are equal
          */
         @Override
@@ -850,8 +830,7 @@ public class CameraManager implements FocusOverlayManager.Listener {
             final float leftAspectRatioDiff = Math.abs(leftAspectRatio - targetAspectRatio);
             final float rightAspectRatioDiff = Math.abs(rightAspectRatio - targetAspectRatio);
             if (leftAspectRatioDiff != rightAspectRatioDiff) {
-                return (leftAspectRatioDiff - rightAspectRatioDiff) < 0 ? PREFER_LEFT
-                        : PREFER_RIGHT;
+                return (leftAspectRatioDiff - rightAspectRatioDiff) < 0 ? PREFER_LEFT : PREFER_RIGHT;
             }
 
             // At this point they have the same aspect ratio diff and are either both bigger

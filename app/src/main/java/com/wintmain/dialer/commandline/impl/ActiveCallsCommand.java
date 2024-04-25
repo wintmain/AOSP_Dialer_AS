@@ -17,13 +17,15 @@
 package com.wintmain.dialer.commandline.impl;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.activecalls.ActiveCallsComponent;
 import com.wintmain.dialer.commandline.Arguments;
 import com.wintmain.dialer.commandline.Command;
 import com.wintmain.dialer.inject.ApplicationContext;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.inject.Inject;
 

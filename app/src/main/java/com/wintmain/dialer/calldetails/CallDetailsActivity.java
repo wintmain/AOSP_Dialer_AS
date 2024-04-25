@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import com.wintmain.dialer.CoalescedIds;
 import com.wintmain.dialer.calldetails.CallDetailsEntryViewHolder.CallDetailsEntryListener;
 import com.wintmain.dialer.calldetails.CallDetailsFooterViewHolder.DeleteCallDetailsListener;
@@ -68,8 +69,7 @@ public final class CallDetailsActivity extends CallDetailsActivityCommon {
             boolean canSupportAssistedDialing) {
         Intent intent = new Intent(context, CallDetailsActivity.class);
         ProtoParsers.put(
-                intent, EXTRA_COALESCED_CALL_LOG_IDS,
-                Assert.isNotNull(coalescedAnnotatedCallLogIds));
+                intent, EXTRA_COALESCED_CALL_LOG_IDS, Assert.isNotNull(coalescedAnnotatedCallLogIds));
         ProtoParsers.put(intent, EXTRA_HEADER_INFO, Assert.isNotNull(callDetailsHeaderInfo));
         intent.putExtra(EXTRA_CAN_REPORT_CALLER_ID, canReportCallerId);
         intent.putExtra(EXTRA_CAN_SUPPORT_ASSISTED_DIALING, canSupportAssistedDialing);
@@ -93,8 +93,7 @@ public final class CallDetailsActivity extends CallDetailsActivityCommon {
 
         getLoaderManager()
                 .initLoader(
-                        CALL_DETAILS_LOADER_ID, /* args = */ null,
-                        new CallDetailsLoaderCallbacks(this));
+                        CALL_DETAILS_LOADER_ID, /* args = */ null, new CallDetailsLoaderCallbacks(this));
     }
 
     @Override
@@ -133,8 +132,7 @@ public final class CallDetailsActivity extends CallDetailsActivityCommon {
 
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            return new CallDetailsCursorLoader(activity,
-                    Assert.isNotNull(activity.coalescedCallLogIds));
+            return new CallDetailsCursorLoader(activity, Assert.isNotNull(activity.coalescedCallLogIds));
         }
 
         @Override

@@ -17,6 +17,7 @@ package com.wintmain.dialer.calllogutils;
 
 import android.app.Activity;
 import android.provider.CallLog.Calls;
+
 import com.wintmain.dialer.callintent.CallInitiationType;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.calllog.model.CoalescedRow;
@@ -40,8 +41,7 @@ public final class CallLogRowActions {
                 activity,
                 new CallIntentBuilder(
                         row.getNumber().getNormalizedNumber(), CallInitiationType.Type.CALL_LOG)
-                        .setIsVideoCall(
-                                (row.getFeatures() & Calls.FEATURES_VIDEO) == Calls.FEATURES_VIDEO)
+                        .setIsVideoCall((row.getFeatures() & Calls.FEATURES_VIDEO) == Calls.FEATURES_VIDEO)
                         .setIsDuoCall(
                                 DuoComponent.get(activity)
                                         .getDuo()

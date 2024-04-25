@@ -17,6 +17,7 @@
 package com.wintmain.dialer.smartdial.map;
 
 import androidx.collection.SimpleArrayMap;
+
 import com.google.common.base.Optional;
 
 import java.util.Objects;
@@ -60,8 +61,7 @@ abstract class SmartDialMap {
      * <p>The provided character is expected to be a normalized character. See {@link
      * SmartDialMap#normalizeCharacter(char)} for details.
      *
-     * <p>An {@link Optional#absent()} is returned if the provided character can't be mapped to a
-     * key
+     * <p>An {@link Optional#absent()} is returned if the provided character can't be mapped to a key
      * on the dialpad.
      */
     protected Optional<Byte> getDialpadIndex(char ch) {
@@ -82,8 +82,7 @@ abstract class SmartDialMap {
      * <p>The provided character is expected to be a normalized character. See {@link
      * SmartDialMap#normalizeCharacter(char)} for details.
      *
-     * <p>An {@link Optional#absent()} is returned if the provided character can't be mapped to a
-     * key
+     * <p>An {@link Optional#absent()} is returned if the provided character can't be mapped to a key
      * on the dialpad.
      */
     protected Optional<Character> getDialpadNumericCharacter(char ch) {
@@ -96,8 +95,7 @@ abstract class SmartDialMap {
      * Converts uppercase characters to lower case ones, and on a best effort basis, strips accents
      * from accented characters.
      *
-     * <p>An {@link Optional#absent()} is returned if the provided character can't be mapped to a
-     * key
+     * <p>An {@link Optional#absent()} is returned if the provided character can't be mapped to a key
      * on the dialpad.
      */
     abstract Optional<Character> normalizeCharacter(char ch);

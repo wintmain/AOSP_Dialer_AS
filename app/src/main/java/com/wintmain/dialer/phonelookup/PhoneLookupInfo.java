@@ -19,8 +19,7 @@ package com.wintmain.dialer.phonelookup;
 public final class PhoneLookupInfo extends
         com.google.protobuf.GeneratedMessageLite<
                 PhoneLookupInfo, PhoneLookupInfo.Builder> implements
-        // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-        // .PhoneLookupInfo)
+        // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo)
         PhoneLookupInfoOrBuilder {
     public static final int DEFAULT_CP2_INFO_FIELD_NUMBER = 1;
     public static final int EXTENDED_CP2_INFO_FIELD_NUMBER = 6;
@@ -45,8 +44,7 @@ public final class PhoneLookupInfo extends
     private com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extendedCp2Info_;
     private com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spamInfo_;
     private com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo peopleApiInfo_;
-    private com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-            systemBlockedNumberInfo_;
+    private com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo systemBlockedNumberInfo_;
     private com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnapInfo_;
     private com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequintInfo_;
     private com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergencyInfo_;
@@ -84,8 +82,7 @@ public final class PhoneLookupInfo extends
                 DEFAULT_INSTANCE, data, extensionRegistry);
     }
 
-    public static com.wintmain.dialer.phonelookup.PhoneLookupInfo parseFrom(
-            java.io.InputStream input)
+    public static com.wintmain.dialer.phonelookup.PhoneLookupInfo parseFrom(java.io.InputStream input)
             throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageLite.parseFrom(
                 DEFAULT_INSTANCE, input);
@@ -99,8 +96,7 @@ public final class PhoneLookupInfo extends
                 DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public static com.wintmain.dialer.phonelookup.PhoneLookupInfo parseDelimitedFrom(
-            java.io.InputStream input)
+    public static com.wintmain.dialer.phonelookup.PhoneLookupInfo parseDelimitedFrom(java.io.InputStream input)
             throws java.io.IOException {
         return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
@@ -149,8 +145,7 @@ public final class PhoneLookupInfo extends
      * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info =
-     * 1;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
      */
     public boolean hasDefaultCp2Info() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
@@ -162,13 +157,10 @@ public final class PhoneLookupInfo extends
      * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info =
-     * 1;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info getDefaultCp2Info() {
-        return defaultCp2Info_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance()
-                : defaultCp2Info_;
+        return defaultCp2Info_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance() : defaultCp2Info_;
     }
 
     /**
@@ -177,8 +169,7 @@ public final class PhoneLookupInfo extends
      * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info =
-     * 1;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
      */
     private void setDefaultCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
         if (value == null) {
@@ -194,8 +185,7 @@ public final class PhoneLookupInfo extends
      * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info =
-     * 1;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
      */
     private void setDefaultCp2Info(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder builderForValue) {
@@ -209,17 +199,13 @@ public final class PhoneLookupInfo extends
      * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info =
-     * 1;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
      */
-    private void mergeDefaultCp2Info(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
+    private void mergeDefaultCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
         if (defaultCp2Info_ != null &&
-                defaultCp2Info_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance()) {
+                defaultCp2Info_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance()) {
             defaultCp2Info_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.newBuilder(
-                            defaultCp2Info_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.newBuilder(defaultCp2Info_).mergeFrom(value).buildPartial();
         } else {
             defaultCp2Info_ = value;
         }
@@ -232,8 +218,7 @@ public final class PhoneLookupInfo extends
      * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info =
-     * 1;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
      */
     private void clearDefaultCp2Info() {
         defaultCp2Info_ = null;
@@ -246,8 +231,7 @@ public final class PhoneLookupInfo extends
      * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info
-     * = 6;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
      */
     public boolean hasExtendedCp2Info() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
@@ -259,13 +243,10 @@ public final class PhoneLookupInfo extends
      * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info
-     * = 6;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info getExtendedCp2Info() {
-        return extendedCp2Info_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance()
-                : extendedCp2Info_;
+        return extendedCp2Info_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance() : extendedCp2Info_;
     }
 
     /**
@@ -274,8 +255,7 @@ public final class PhoneLookupInfo extends
      * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info
-     * = 6;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
      */
     private void setExtendedCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
         if (value == null) {
@@ -291,8 +271,7 @@ public final class PhoneLookupInfo extends
      * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info
-     * = 6;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
      */
     private void setExtendedCp2Info(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder builderForValue) {
@@ -306,17 +285,13 @@ public final class PhoneLookupInfo extends
      * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info
-     * = 6;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
      */
-    private void mergeExtendedCp2Info(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
+    private void mergeExtendedCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
         if (extendedCp2Info_ != null &&
-                extendedCp2Info_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance()) {
+                extendedCp2Info_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.getDefaultInstance()) {
             extendedCp2Info_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.newBuilder(
-                            extendedCp2Info_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.newBuilder(extendedCp2Info_).mergeFrom(value).buildPartial();
         } else {
             extendedCp2Info_ = value;
         }
@@ -329,8 +304,7 @@ public final class PhoneLookupInfo extends
      * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
      * </pre>
      *
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info
-     * = 6;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
      */
     private void clearExtendedCp2Info() {
         extendedCp2Info_ = null;
@@ -338,26 +312,21 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
      */
     public boolean hasSpamInfo() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo getSpamInfo() {
-        return spamInfo_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.getDefaultInstance()
-                : spamInfo_;
+        return spamInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.getDefaultInstance() : spamInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
      */
     private void setSpamInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo value) {
         if (value == null) {
@@ -368,8 +337,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
      */
     private void setSpamInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.Builder builderForValue) {
@@ -378,16 +346,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
      */
     private void mergeSpamInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo value) {
         if (spamInfo_ != null &&
-                spamInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.getDefaultInstance()) {
+                spamInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.getDefaultInstance()) {
             spamInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.newBuilder(spamInfo_)
-                            .mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.newBuilder(spamInfo_).mergeFrom(value).buildPartial();
         } else {
             spamInfo_ = value;
         }
@@ -395,8 +360,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
      */
     private void clearSpamInfo() {
         spamInfo_ = null;
@@ -404,29 +368,23 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-     * people_api_info = 3;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
      */
     public boolean hasPeopleApiInfo() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-     * people_api_info = 3;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo getPeopleApiInfo() {
-        return peopleApiInfo_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.getDefaultInstance()
-                : peopleApiInfo_;
+        return peopleApiInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.getDefaultInstance() : peopleApiInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-     * people_api_info = 3;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
      */
-    private void setPeopleApiInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
+    private void setPeopleApiInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
         if (value == null) {
             throw new NullPointerException();
         }
@@ -435,8 +393,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-     * people_api_info = 3;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
      */
     private void setPeopleApiInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.Builder builderForValue) {
@@ -445,17 +402,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-     * people_api_info = 3;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
      */
-    private void mergePeopleApiInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
+    private void mergePeopleApiInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
         if (peopleApiInfo_ != null &&
-                peopleApiInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.getDefaultInstance()) {
+                peopleApiInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.getDefaultInstance()) {
             peopleApiInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.newBuilder(
-                            peopleApiInfo_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.newBuilder(peopleApiInfo_).mergeFrom(value).buildPartial();
         } else {
             peopleApiInfo_ = value;
         }
@@ -463,8 +416,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-     * people_api_info = 3;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
      */
     private void clearPeopleApiInfo() {
         peopleApiInfo_ = null;
@@ -472,30 +424,23 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-     * system_blocked_number_info = 4;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
      */
     public boolean hasSystemBlockedNumberInfo() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-     * system_blocked_number_info = 4;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo getSystemBlockedNumberInfo() {
-        return systemBlockedNumberInfo_ == null
-                ?
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.getDefaultInstance()
-                : systemBlockedNumberInfo_;
+        return systemBlockedNumberInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.getDefaultInstance() : systemBlockedNumberInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-     * system_blocked_number_info = 4;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
      */
-    private void setSystemBlockedNumberInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
+    private void setSystemBlockedNumberInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
         if (value == null) {
             throw new NullPointerException();
         }
@@ -504,8 +449,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-     * system_blocked_number_info = 4;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
      */
     private void setSystemBlockedNumberInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.Builder builderForValue) {
@@ -514,17 +458,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-     * system_blocked_number_info = 4;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
      */
-    private void mergeSystemBlockedNumberInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
+    private void mergeSystemBlockedNumberInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
         if (systemBlockedNumberInfo_ != null &&
-                systemBlockedNumberInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.getDefaultInstance()) {
+                systemBlockedNumberInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.getDefaultInstance()) {
             systemBlockedNumberInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.newBuilder(
-                            systemBlockedNumberInfo_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.newBuilder(systemBlockedNumberInfo_).mergeFrom(value).buildPartial();
         } else {
             systemBlockedNumberInfo_ = value;
         }
@@ -532,8 +472,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-     * system_blocked_number_info = 4;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
      */
     private void clearSystemBlockedNumberInfo() {
         systemBlockedNumberInfo_ = null;
@@ -541,26 +480,21 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
      */
     public boolean hasCnapInfo() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo getCnapInfo() {
-        return cnapInfo_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.getDefaultInstance()
-                : cnapInfo_;
+        return cnapInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.getDefaultInstance() : cnapInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
      */
     private void setCnapInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo value) {
         if (value == null) {
@@ -571,8 +505,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
      */
     private void setCnapInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.Builder builderForValue) {
@@ -581,16 +514,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
      */
     private void mergeCnapInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo value) {
         if (cnapInfo_ != null &&
-                cnapInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.getDefaultInstance()) {
+                cnapInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.getDefaultInstance()) {
             cnapInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.newBuilder(cnapInfo_)
-                            .mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.newBuilder(cnapInfo_).mergeFrom(value).buildPartial();
         } else {
             cnapInfo_ = value;
         }
@@ -598,8 +528,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;
-     * </code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
      */
     private void clearCnapInfo() {
         cnapInfo_ = null;
@@ -607,26 +536,21 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info =
-     * 8;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
      */
     public boolean hasCequintInfo() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info =
-     * 8;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo getCequintInfo() {
-        return cequintInfo_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.getDefaultInstance()
-                : cequintInfo_;
+        return cequintInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.getDefaultInstance() : cequintInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info =
-     * 8;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
      */
     private void setCequintInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
         if (value == null) {
@@ -637,8 +561,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info =
-     * 8;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
      */
     private void setCequintInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.Builder builderForValue) {
@@ -647,17 +570,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info =
-     * 8;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
      */
-    private void mergeCequintInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
+    private void mergeCequintInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
         if (cequintInfo_ != null &&
-                cequintInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.getDefaultInstance()) {
+                cequintInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.getDefaultInstance()) {
             cequintInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.newBuilder(
-                            cequintInfo_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.newBuilder(cequintInfo_).mergeFrom(value).buildPartial();
         } else {
             cequintInfo_ = value;
         }
@@ -665,8 +584,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info =
-     * 8;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
      */
     private void clearCequintInfo() {
         cequintInfo_ = null;
@@ -674,29 +592,23 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-     * emergency_info = 9;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
      */
     public boolean hasEmergencyInfo() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-     * emergency_info = 9;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo getEmergencyInfo() {
-        return emergencyInfo_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.getDefaultInstance()
-                : emergencyInfo_;
+        return emergencyInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.getDefaultInstance() : emergencyInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-     * emergency_info = 9;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
      */
-    private void setEmergencyInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
+    private void setEmergencyInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
         if (value == null) {
             throw new NullPointerException();
         }
@@ -705,8 +617,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-     * emergency_info = 9;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
      */
     private void setEmergencyInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.Builder builderForValue) {
@@ -715,17 +626,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-     * emergency_info = 9;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
      */
-    private void mergeEmergencyInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
+    private void mergeEmergencyInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
         if (emergencyInfo_ != null &&
-                emergencyInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.getDefaultInstance()) {
+                emergencyInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.getDefaultInstance()) {
             emergencyInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.newBuilder(
-                            emergencyInfo_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.newBuilder(emergencyInfo_).mergeFrom(value).buildPartial();
         } else {
             emergencyInfo_ = value;
         }
@@ -733,8 +640,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-     * emergency_info = 9;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
      */
     private void clearEmergencyInfo() {
         emergencyInfo_ = null;
@@ -742,29 +648,23 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info
-     * = 10;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
      */
     public boolean hasMigratedInfo() {
         return ((bitField0_ & 0x00000100) == 0x00000100);
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info
-     * = 10;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
      */
     public com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo getMigratedInfo() {
-        return migratedInfo_ == null
-                ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.getDefaultInstance()
-                : migratedInfo_;
+        return migratedInfo_ == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.getDefaultInstance() : migratedInfo_;
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info
-     * = 10;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
      */
-    private void setMigratedInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
+    private void setMigratedInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
         if (value == null) {
             throw new NullPointerException();
         }
@@ -773,8 +673,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info
-     * = 10;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
      */
     private void setMigratedInfo(
             com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.Builder builderForValue) {
@@ -783,17 +682,13 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info
-     * = 10;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
      */
-    private void mergeMigratedInfo(
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
+    private void mergeMigratedInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
         if (migratedInfo_ != null &&
-                migratedInfo_
-                        != com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.getDefaultInstance()) {
+                migratedInfo_ != com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.getDefaultInstance()) {
             migratedInfo_ =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.newBuilder(
-                            migratedInfo_).mergeFrom(value).buildPartial();
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.newBuilder(migratedInfo_).mergeFrom(value).buildPartial();
         } else {
             migratedInfo_ = value;
         }
@@ -801,8 +696,7 @@ public final class PhoneLookupInfo extends
     }
 
     /**
-     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info
-     * = 10;</code>
+     * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
      */
     private void clearMigratedInfo() {
         migratedInfo_ = null;
@@ -843,9 +737,7 @@ public final class PhoneLookupInfo extends
 
     public int getSerializedSize() {
         int size = memoizedSerializedSize;
-        if (size != -1) {
-            return size;
-        }
+        if (size != -1) return size;
 
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -907,14 +799,12 @@ public final class PhoneLookupInfo extends
             }
             case VISIT: {
                 Visitor visitor = (Visitor) arg0;
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo other =
-                        (com.wintmain.dialer.phonelookup.PhoneLookupInfo) arg1;
+                com.wintmain.dialer.phonelookup.PhoneLookupInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo) arg1;
                 defaultCp2Info_ = visitor.visitMessage(defaultCp2Info_, other.defaultCp2Info_);
                 extendedCp2Info_ = visitor.visitMessage(extendedCp2Info_, other.extendedCp2Info_);
                 spamInfo_ = visitor.visitMessage(spamInfo_, other.spamInfo_);
                 peopleApiInfo_ = visitor.visitMessage(peopleApiInfo_, other.peopleApiInfo_);
-                systemBlockedNumberInfo_ = visitor.visitMessage(systemBlockedNumberInfo_,
-                        other.systemBlockedNumberInfo_);
+                systemBlockedNumberInfo_ = visitor.visitMessage(systemBlockedNumberInfo_, other.systemBlockedNumberInfo_);
                 cnapInfo_ = visitor.visitMessage(cnapInfo_, other.cnapInfo_);
                 cequintInfo_ = visitor.visitMessage(cequintInfo_, other.cequintInfo_);
                 emergencyInfo_ = visitor.visitMessage(emergencyInfo_, other.emergencyInfo_);
@@ -945,14 +835,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 10: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
                                     subBuilder = defaultCp2Info_.toBuilder();
                                 }
-                                defaultCp2Info_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.parser(),
-                                        extensionRegistry);
+                                defaultCp2Info_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(defaultCp2Info_);
                                     defaultCp2Info_ = subBuilder.buildPartial();
@@ -961,14 +848,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 18: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000004) == 0x00000004)) {
                                     subBuilder = spamInfo_.toBuilder();
                                 }
-                                spamInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.parser(),
-                                        extensionRegistry);
+                                spamInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(spamInfo_);
                                     spamInfo_ = subBuilder.buildPartial();
@@ -977,14 +861,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 26: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000008) == 0x00000008)) {
                                     subBuilder = peopleApiInfo_.toBuilder();
                                 }
-                                peopleApiInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.parser(),
-                                        extensionRegistry);
+                                peopleApiInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(peopleApiInfo_);
                                     peopleApiInfo_ = subBuilder.buildPartial();
@@ -993,14 +874,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 34: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000010) == 0x00000010)) {
                                     subBuilder = systemBlockedNumberInfo_.toBuilder();
                                 }
-                                systemBlockedNumberInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.parser(),
-                                        extensionRegistry);
+                                systemBlockedNumberInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(systemBlockedNumberInfo_);
                                     systemBlockedNumberInfo_ = subBuilder.buildPartial();
@@ -1009,14 +887,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 50: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000002) == 0x00000002)) {
                                     subBuilder = extendedCp2Info_.toBuilder();
                                 }
-                                extendedCp2Info_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.parser(),
-                                        extensionRegistry);
+                                extendedCp2Info_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(extendedCp2Info_);
                                     extendedCp2Info_ = subBuilder.buildPartial();
@@ -1025,14 +900,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 58: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000020) == 0x00000020)) {
                                     subBuilder = cnapInfo_.toBuilder();
                                 }
-                                cnapInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.parser(),
-                                        extensionRegistry);
+                                cnapInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(cnapInfo_);
                                     cnapInfo_ = subBuilder.buildPartial();
@@ -1041,14 +913,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 66: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000040) == 0x00000040)) {
                                     subBuilder = cequintInfo_.toBuilder();
                                 }
-                                cequintInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.parser(),
-                                        extensionRegistry);
+                                cequintInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(cequintInfo_);
                                     cequintInfo_ = subBuilder.buildPartial();
@@ -1057,14 +926,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 74: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000080) == 0x00000080)) {
                                     subBuilder = emergencyInfo_.toBuilder();
                                 }
-                                emergencyInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.parser(),
-                                        extensionRegistry);
+                                emergencyInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(emergencyInfo_);
                                     emergencyInfo_ = subBuilder.buildPartial();
@@ -1073,14 +939,11 @@ public final class PhoneLookupInfo extends
                                 break;
                             }
                             case 82: {
-                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.Builder
-                                        subBuilder = null;
+                                com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.Builder subBuilder = null;
                                 if (((bitField0_ & 0x00000100) == 0x00000100)) {
                                     subBuilder = migratedInfo_.toBuilder();
                                 }
-                                migratedInfo_ = input.readMessage(
-                                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.parser(),
-                                        extensionRegistry);
+                                migratedInfo_ = input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.parser(), extensionRegistry);
                                 if (subBuilder != null) {
                                     subBuilder.mergeFrom(migratedInfo_);
                                     migratedInfo_ = subBuilder.buildPartial();
@@ -1190,13 +1053,11 @@ public final class PhoneLookupInfo extends
             return value;
         }
 
-        // @@protoc_insertion_point(enum_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .BlockedState)
+        // @@protoc_insertion_point(enum_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState)
     }
 
     public interface Cp2InfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.Cp2Info)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1206,8 +1067,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         java.util.List<com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo>
         getCp2ContactInfoList();
@@ -1219,11 +1079,9 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
-        com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo getCp2ContactInfo(
-                int index);
+        com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo getCp2ContactInfo(int index);
 
         /**
          * <pre>
@@ -1232,8 +1090,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         int getCp2ContactInfoCount();
 
@@ -1263,8 +1120,7 @@ public final class PhoneLookupInfo extends
     }
 
     public interface SpamInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.SpamInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1279,8 +1135,7 @@ public final class PhoneLookupInfo extends
     }
 
     public interface PeopleApiInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.PeopleApiInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1441,8 +1296,7 @@ public final class PhoneLookupInfo extends
          * business.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-         * info_type = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
          */
         boolean hasInfoType();
 
@@ -1452,8 +1306,7 @@ public final class PhoneLookupInfo extends
          * business.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-         * info_type = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
          */
         com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType getInfoType();
 
@@ -1493,26 +1346,22 @@ public final class PhoneLookupInfo extends
     }
 
     public interface SystemBlockedNumberInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.SystemBlockedNumberInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-         * blocked_state = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
          */
         boolean hasBlockedState();
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-         * blocked_state = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
          */
         com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState getBlockedState();
     }
 
     public interface CnapInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.CnapInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1533,8 +1382,7 @@ public final class PhoneLookupInfo extends
     }
 
     public interface CequintInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.CequintInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1599,8 +1447,7 @@ public final class PhoneLookupInfo extends
     }
 
     public interface EmergencyInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.EmergencyInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1615,8 +1462,7 @@ public final class PhoneLookupInfo extends
     }
 
     public interface MigratedInfoOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.MigratedInfo)
+            // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo)
             com.google.protobuf.MessageLiteOrBuilder {
 
         /**
@@ -1730,15 +1576,12 @@ public final class PhoneLookupInfo extends
     public static final class Cp2Info extends
             com.google.protobuf.GeneratedMessageLite<
                     Cp2Info, Cp2Info.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.Cp2Info)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info)
             Cp2InfoOrBuilder {
         public static final int CP2_CONTACT_INFO_FIELD_NUMBER = 1;
         public static final int IS_INCOMPLETE_FIELD_NUMBER = 2;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .Cp2Info)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<Cp2Info> PARSER;
 
         static {
@@ -1747,8 +1590,7 @@ public final class PhoneLookupInfo extends
         }
 
         private int bitField0_;
-        private com.google.protobuf.Internal.ProtobufList<com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo>
-                cp2ContactInfo_;
+        private com.google.protobuf.Internal.ProtobufList<com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> cp2ContactInfo_;
         private boolean isIncomplete_;
 
         private Cp2Info() {
@@ -1785,8 +1627,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -1800,8 +1641,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -1832,8 +1672,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -1852,8 +1691,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         public java.util.List<com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> getCp2ContactInfoList() {
             return cp2ContactInfo_;
@@ -1866,11 +1704,9 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
-        public java.util.List<?
-                extends com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfoOrBuilder>
+        public java.util.List<? extends com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfoOrBuilder>
         getCp2ContactInfoOrBuilderList() {
             return cp2ContactInfo_;
         }
@@ -1882,8 +1718,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         public int getCp2ContactInfoCount() {
             return cp2ContactInfo_.size();
@@ -1896,11 +1731,9 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
-        public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo getCp2ContactInfo(
-                int index) {
+        public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo getCp2ContactInfo(int index) {
             return cp2ContactInfo_.get(index);
         }
 
@@ -1911,8 +1744,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfoOrBuilder getCp2ContactInfoOrBuilder(
                 int index) {
@@ -1933,12 +1765,10 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void setCp2ContactInfo(
-                int index,
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
+                int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
             if (value == null) {
                 throw new NullPointerException();
             }
@@ -1953,12 +1783,10 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void setCp2ContactInfo(
-                int index,
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
+                int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
             ensureCp2ContactInfoIsMutable();
             cp2ContactInfo_.set(index, builderForValue.build());
         }
@@ -1970,11 +1798,9 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
-        private void addCp2ContactInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
+        private void addCp2ContactInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
             if (value == null) {
                 throw new NullPointerException();
             }
@@ -1989,12 +1815,10 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void addCp2ContactInfo(
-                int index,
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
+                int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
             if (value == null) {
                 throw new NullPointerException();
             }
@@ -2009,8 +1833,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void addCp2ContactInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
@@ -2025,12 +1848,10 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void addCp2ContactInfo(
-                int index,
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
+                int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
             ensureCp2ContactInfoIsMutable();
             cp2ContactInfo_.add(index, builderForValue.build());
         }
@@ -2042,12 +1863,10 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void addAllCp2ContactInfo(
-                java.lang.Iterable<?
-                        extends com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> values) {
+                java.lang.Iterable<? extends com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> values) {
             ensureCp2ContactInfoIsMutable();
             com.google.protobuf.AbstractMessageLite.addAll(
                     values, cp2ContactInfo_);
@@ -2060,8 +1879,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void clearCp2ContactInfo() {
             cp2ContactInfo_ = emptyProtobufList();
@@ -2074,8 +1892,7 @@ public final class PhoneLookupInfo extends
          * Empty if there is no CP2 contact information for the number.
          * </pre>
          *
-         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-         * cp2_contact_info = 1;</code>
+         * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
          */
         private void removeCp2ContactInfo(int index) {
             ensureCp2ContactInfoIsMutable();
@@ -2153,9 +1970,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             for (int i = 0; i < cp2ContactInfo_.size(); i++) {
@@ -2190,8 +2005,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info) arg1;
                     cp2ContactInfo_ = visitor.visitList(cp2ContactInfo_, other.cp2ContactInfo_);
                     isIncomplete_ = visitor.visitBoolean(
                             hasIsIncomplete(), isIncomplete_,
@@ -2224,13 +2038,10 @@ public final class PhoneLookupInfo extends
                                 case 10: {
                                     if (!cp2ContactInfo_.isModifiable()) {
                                         cp2ContactInfo_ =
-                                                com.google.protobuf.GeneratedMessageLite.mutableCopy(
-                                                        cp2ContactInfo_);
+                                                com.google.protobuf.GeneratedMessageLite.mutableCopy(cp2ContactInfo_);
                                     }
                                     cp2ContactInfo_.add(
-                                            input.readMessage(
-                                                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.parser(),
-                                                    extensionRegistry));
+                                            input.readMessage(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.parser(), extensionRegistry));
                                     break;
                                 }
                                 case 16: {
@@ -2266,8 +2077,7 @@ public final class PhoneLookupInfo extends
         }
 
         public interface Cp2ContactInfoOrBuilder extends
-                // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
+                // @@protoc_insertion_point(interface_extends:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
                 com.google.protobuf.MessageLiteOrBuilder {
 
             /**
@@ -2549,14 +2359,12 @@ public final class PhoneLookupInfo extends
          * Next ID: 9
          * </pre>
          * <p>
-         * Protobuf type {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * .Cp2ContactInfo}
+         * Protobuf type {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo}
          */
         public static final class Cp2ContactInfo extends
                 com.google.protobuf.GeneratedMessageLite<
                         Cp2ContactInfo, Cp2ContactInfo.Builder> implements
-                // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
+                // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
                 Cp2ContactInfoOrBuilder {
             public static final int NAME_FIELD_NUMBER = 1;
             public static final int PHOTO_THUMBNAIL_URI_FIELD_NUMBER = 2;
@@ -2566,10 +2374,8 @@ public final class PhoneLookupInfo extends
             public static final int CONTACT_ID_FIELD_NUMBER = 6;
             public static final int LOOKUP_URI_FIELD_NUMBER = 7;
             public static final int CAN_SUPPORT_CARRIER_VIDEO_CALL_FIELD_NUMBER = 8;
-            // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
-            private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-                    DEFAULT_INSTANCE;
+            // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
+            private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo DEFAULT_INSTANCE;
             private static volatile com.google.protobuf.Parser<Cp2ContactInfo> PARSER;
 
             static {
@@ -2613,8 +2419,7 @@ public final class PhoneLookupInfo extends
                         DEFAULT_INSTANCE, data, extensionRegistry);
             }
 
-            public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo parseFrom(
-                    byte[] data)
+            public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo parseFrom(byte[] data)
                     throws com.google.protobuf.InvalidProtocolBufferException {
                 return com.google.protobuf.GeneratedMessageLite.parseFrom(
                         DEFAULT_INSTANCE, data);
@@ -2628,8 +2433,7 @@ public final class PhoneLookupInfo extends
                         DEFAULT_INSTANCE, data, extensionRegistry);
             }
 
-            public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo parseFrom(
-                    java.io.InputStream input)
+            public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo parseFrom(java.io.InputStream input)
                     throws java.io.IOException {
                 return com.google.protobuf.GeneratedMessageLite.parseFrom(
                         DEFAULT_INSTANCE, input);
@@ -2643,8 +2447,7 @@ public final class PhoneLookupInfo extends
                         DEFAULT_INSTANCE, input, extensionRegistry);
             }
 
-            public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo parseDelimitedFrom(
-                    java.io.InputStream input)
+            public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo parseDelimitedFrom(java.io.InputStream input)
                     throws java.io.IOException {
                 return parseDelimitedFrom(DEFAULT_INSTANCE, input);
             }
@@ -2675,8 +2478,7 @@ public final class PhoneLookupInfo extends
                 return DEFAULT_INSTANCE.toBuilder();
             }
 
-            public static Builder newBuilder(
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo prototype) {
+            public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo prototype) {
                 return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
             }
 
@@ -3403,9 +3205,7 @@ public final class PhoneLookupInfo extends
 
             public int getSerializedSize() {
                 int size = memoizedSerializedSize;
-                if (size != -1) {
-                    return size;
-                }
+                if (size != -1) return size;
 
                 size = 0;
                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -3463,9 +3263,7 @@ public final class PhoneLookupInfo extends
                     }
                     case VISIT: {
                         Visitor visitor = (Visitor) arg0;
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo
-                                other =
-                                (com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo) arg1;
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo) arg1;
                         name_ = visitor.visitString(
                                 hasName(), name_,
                                 other.hasName(), other.name_);
@@ -3489,8 +3287,7 @@ public final class PhoneLookupInfo extends
                                 other.hasLookupUri(), other.lookupUri_);
                         canSupportCarrierVideoCall_ = visitor.visitBoolean(
                                 hasCanSupportCarrierVideoCall(), canSupportCarrierVideoCall_,
-                                other.hasCanSupportCarrierVideoCall(),
-                                other.canSupportCarrierVideoCall_);
+                                other.hasCanSupportCarrierVideoCall(), other.canSupportCarrierVideoCall_);
                         if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
                                 .INSTANCE) {
                             bitField0_ |= other.bitField0_;
@@ -3594,18 +3391,14 @@ public final class PhoneLookupInfo extends
              * Next ID: 9
              * </pre>
              * <p>
-             * Protobuf type {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo}
+             * Protobuf type {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo}
              */
             public static final class Builder extends
                     com.google.protobuf.GeneratedMessageLite.Builder<
-                            com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo, Builder>
-                    implements
-                    // @@protoc_insertion_point(builder_implements:com.wintmain.dialer
-                    // .phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
+                            com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo, Builder> implements
+                    // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
                     com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfoOrBuilder {
-                // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-                // .Cp2ContactInfo.newBuilder()
+                // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.newBuilder()
                 private Builder() {
                     super(DEFAULT_INSTANCE);
                 }
@@ -4286,8 +4079,7 @@ public final class PhoneLookupInfo extends
                     return this;
                 }
 
-                // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
+                // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo)
             }
         }
 
@@ -4301,8 +4093,7 @@ public final class PhoneLookupInfo extends
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
                         com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info, Builder> implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.Cp2Info)
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2InfoOrBuilder {
             // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.newBuilder()
             private Builder() {
@@ -4317,8 +4108,7 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public java.util.List<com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> getCp2ContactInfoList() {
                 return java.util.Collections.unmodifiableList(
@@ -4332,8 +4122,7 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public int getCp2ContactInfoCount() {
                 return instance.getCp2ContactInfoCount();
@@ -4346,11 +4135,9 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
-            public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo getCp2ContactInfo(
-                    int index) {
+            public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo getCp2ContactInfo(int index) {
                 return instance.getCp2ContactInfo(index);
             }
 
@@ -4361,12 +4148,10 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder setCp2ContactInfo(
-                    int index,
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
+                    int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
                 copyOnWrite();
                 instance.setCp2ContactInfo(index, value);
                 return this;
@@ -4379,12 +4164,10 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder setCp2ContactInfo(
-                    int index,
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
+                    int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
                 copyOnWrite();
                 instance.setCp2ContactInfo(index, builderForValue);
                 return this;
@@ -4397,11 +4180,9 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
-            public Builder addCp2ContactInfo(
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
+            public Builder addCp2ContactInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
                 copyOnWrite();
                 instance.addCp2ContactInfo(value);
                 return this;
@@ -4414,12 +4195,10 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder addCp2ContactInfo(
-                    int index,
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
+                    int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo value) {
                 copyOnWrite();
                 instance.addCp2ContactInfo(index, value);
                 return this;
@@ -4432,8 +4211,7 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder addCp2ContactInfo(
                     com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
@@ -4449,12 +4227,10 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder addCp2ContactInfo(
-                    int index,
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
+                    int index, com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo.Builder builderForValue) {
                 copyOnWrite();
                 instance.addCp2ContactInfo(index, builderForValue);
                 return this;
@@ -4467,12 +4243,10 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder addAllCp2ContactInfo(
-                    java.lang.Iterable<?
-                            extends com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> values) {
+                    java.lang.Iterable<? extends com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo> values) {
                 copyOnWrite();
                 instance.addAllCp2ContactInfo(values);
                 return this;
@@ -4485,8 +4259,7 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder clearCp2ContactInfo() {
                 copyOnWrite();
@@ -4501,8 +4274,7 @@ public final class PhoneLookupInfo extends
              * Empty if there is no CP2 contact information for the number.
              * </pre>
              *
-             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-             * .Cp2ContactInfo cp2_contact_info = 1;</code>
+             * <code>repeated .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo cp2_contact_info = 1;</code>
              */
             public Builder removeCp2ContactInfo(int index) {
                 copyOnWrite();
@@ -4570,8 +4342,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.Cp2Info)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info)
         }
     }
 
@@ -4586,14 +4357,11 @@ public final class PhoneLookupInfo extends
     public static final class SpamInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     SpamInfo, SpamInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.SpamInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo)
             SpamInfoOrBuilder {
         public static final int IS_SPAM_FIELD_NUMBER = 1;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .SpamInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<SpamInfo> PARSER;
 
         static {
@@ -4623,8 +4391,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -4638,8 +4405,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -4653,8 +4419,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -4685,8 +4450,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -4738,9 +4502,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -4770,8 +4532,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo) arg1;
                     isSpam_ = visitor.visitBoolean(
                             hasIsSpam(), isSpam_,
                             other.hasIsSpam(), other.isSpam_);
@@ -4842,10 +4603,8 @@ public final class PhoneLookupInfo extends
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo, Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.SpamInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfoOrBuilder {
             // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.newBuilder()
             private Builder() {
@@ -4885,8 +4644,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.SpamInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo)
         }
     }
 
@@ -4900,8 +4658,7 @@ public final class PhoneLookupInfo extends
     public static final class PeopleApiInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     PeopleApiInfo, PeopleApiInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.PeopleApiInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo)
             PeopleApiInfoOrBuilder {
         public static final int DISPLAY_NAME_FIELD_NUMBER = 1;
         public static final int NUMBER_TYPE_FIELD_NUMBER = 2;
@@ -4910,10 +4667,8 @@ public final class PhoneLookupInfo extends
         public static final int PERSON_ID_FIELD_NUMBER = 5;
         public static final int INFO_TYPE_FIELD_NUMBER = 6;
         public static final int LOOKUP_URI_FIELD_NUMBER = 7;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .PeopleApiInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<PeopleApiInfo> PARSER;
 
         static {
@@ -4955,8 +4710,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -4970,8 +4724,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -4985,8 +4738,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -5017,8 +4769,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -5450,8 +5201,7 @@ public final class PhoneLookupInfo extends
          * business.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-         * info_type = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
          */
         public boolean hasInfoType() {
             return ((bitField0_ & 0x00000020) == 0x00000020);
@@ -5463,16 +5213,11 @@ public final class PhoneLookupInfo extends
          * business.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-         * info_type = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType getInfoType() {
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType result =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType.forNumber(
-                            infoType_);
-            return result == null
-                    ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType.UNKNOWN
-                    : result;
+            com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType result = com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType.forNumber(infoType_);
+            return result == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType.UNKNOWN : result;
         }
 
         /**
@@ -5481,11 +5226,9 @@ public final class PhoneLookupInfo extends
          * business.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-         * info_type = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
          */
-        private void setInfoType(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType value) {
+        private void setInfoType(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType value) {
             if (value == null) {
                 throw new NullPointerException();
             }
@@ -5499,8 +5242,7 @@ public final class PhoneLookupInfo extends
          * business.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-         * info_type = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
          */
         private void clearInfoType() {
             bitField0_ = (bitField0_ & ~0x00000020);
@@ -5625,9 +5367,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -5681,8 +5421,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo) arg1;
                     displayName_ = visitor.visitString(
                             hasDisplayName(), displayName_,
                             other.hasDisplayName(), other.displayName_);
@@ -5760,10 +5499,7 @@ public final class PhoneLookupInfo extends
                                 }
                                 case 48: {
                                     int rawValue = input.readEnum();
-                                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType
-                                            value =
-                                            com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType.forNumber(
-                                                    rawValue);
+                                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType value = com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType.forNumber(rawValue);
                                     if (value == null) {
                                         super.mergeVarintField(6, rawValue);
                                     } else {
@@ -5806,8 +5542,7 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * Protobuf enum {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * .InfoType}
+         * Protobuf enum {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType}
          */
         public enum InfoType
                 implements com.google.protobuf.Internal.EnumLite {
@@ -5892,8 +5627,7 @@ public final class PhoneLookupInfo extends
                 return value;
             }
 
-            // @@protoc_insertion_point(enum_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.PeopleApiInfo.InfoType)
+            // @@protoc_insertion_point(enum_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType)
         }
 
         /**
@@ -5905,13 +5639,10 @@ public final class PhoneLookupInfo extends
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo, Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.PeopleApiInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfoOrBuilder {
-            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-            // .newBuilder()
+            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.newBuilder()
             private Builder() {
                 super(DEFAULT_INSTANCE);
             }
@@ -6322,8 +6053,7 @@ public final class PhoneLookupInfo extends
              * business.
              * </pre>
              *
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-             * .InfoType info_type = 6;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
              */
             public boolean hasInfoType() {
                 return instance.hasInfoType();
@@ -6335,8 +6065,7 @@ public final class PhoneLookupInfo extends
              * business.
              * </pre>
              *
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-             * .InfoType info_type = 6;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
              */
             public com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType getInfoType() {
                 return instance.getInfoType();
@@ -6348,11 +6077,9 @@ public final class PhoneLookupInfo extends
              * business.
              * </pre>
              *
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-             * .InfoType info_type = 6;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
              */
-            public Builder setInfoType(
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType value) {
+            public Builder setInfoType(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType value) {
                 copyOnWrite();
                 instance.setInfoType(value);
                 return this;
@@ -6364,8 +6091,7 @@ public final class PhoneLookupInfo extends
              * business.
              * </pre>
              *
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-             * .InfoType info_type = 6;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType info_type = 6;</code>
              */
             public Builder clearInfoType() {
                 copyOnWrite();
@@ -6460,8 +6186,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.PeopleApiInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo)
         }
     }
 
@@ -6476,14 +6201,11 @@ public final class PhoneLookupInfo extends
     public static final class SystemBlockedNumberInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     SystemBlockedNumberInfo, SystemBlockedNumberInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.SystemBlockedNumberInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo)
             SystemBlockedNumberInfoOrBuilder {
         public static final int BLOCKED_STATE_FIELD_NUMBER = 1;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .SystemBlockedNumberInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<SystemBlockedNumberInfo> PARSER;
 
         static {
@@ -6513,8 +6235,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -6528,8 +6249,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -6543,8 +6263,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -6575,8 +6294,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -6589,31 +6307,24 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-         * blocked_state = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
          */
         public boolean hasBlockedState() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-         * blocked_state = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState getBlockedState() {
-            com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState result =
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState.forNumber(
-                            blockedState_);
-            return result == null
-                    ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState.UNKNOWN : result;
+            com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState result = com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState.forNumber(blockedState_);
+            return result == null ? com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState.UNKNOWN : result;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-         * blocked_state = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
          */
-        private void setBlockedState(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState value) {
+        private void setBlockedState(com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState value) {
             if (value == null) {
                 throw new NullPointerException();
             }
@@ -6622,8 +6333,7 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-         * blocked_state = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
          */
         private void clearBlockedState() {
             bitField0_ = (bitField0_ & ~0x00000001);
@@ -6640,9 +6350,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -6672,8 +6380,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo) arg1;
                     blockedState_ = visitor.visitInt(hasBlockedState(), blockedState_,
                             other.hasBlockedState(), other.blockedState_);
                     if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
@@ -6703,10 +6410,7 @@ public final class PhoneLookupInfo extends
                                 }
                                 case 8: {
                                     int rawValue = input.readEnum();
-                                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-                                            value =
-                                            com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState.forNumber(
-                                                    rawValue);
+                                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState value = com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState.forNumber(rawValue);
                                     if (value == null) {
                                         super.mergeVarintField(1, rawValue);
                                     } else {
@@ -6748,54 +6452,44 @@ public final class PhoneLookupInfo extends
          * N.
          * </pre>
          * <p>
-         * Protobuf type {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo}
+         * Protobuf type {@code com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo}
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo,
-                        Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.SystemBlockedNumberInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfoOrBuilder {
-            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo
-            // .SystemBlockedNumberInfo.newBuilder()
+            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.newBuilder()
             private Builder() {
                 super(DEFAULT_INSTANCE);
             }
 
 
             /**
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-             * blocked_state = 1;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
              */
             public boolean hasBlockedState() {
                 return instance.hasBlockedState();
             }
 
             /**
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-             * blocked_state = 1;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
              */
             public com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState getBlockedState() {
                 return instance.getBlockedState();
             }
 
             /**
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-             * blocked_state = 1;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
              */
-            public Builder setBlockedState(
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState value) {
+            public Builder setBlockedState(com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState value) {
                 copyOnWrite();
                 instance.setBlockedState(value);
                 return this;
             }
 
             /**
-             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState
-             * blocked_state = 1;</code>
+             * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState blocked_state = 1;</code>
              */
             public Builder clearBlockedState() {
                 copyOnWrite();
@@ -6803,8 +6497,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.SystemBlockedNumberInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo)
         }
     }
 
@@ -6820,14 +6513,11 @@ public final class PhoneLookupInfo extends
     public static final class CnapInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     CnapInfo, CnapInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.CnapInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo)
             CnapInfoOrBuilder {
         public static final int NAME_FIELD_NUMBER = 1;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .CnapInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<CnapInfo> PARSER;
 
         static {
@@ -6857,8 +6547,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -6872,8 +6561,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -6887,8 +6575,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -6919,8 +6606,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -6996,9 +6682,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -7028,8 +6712,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo) arg1;
                     name_ = visitor.visitString(
                             hasName(), name_,
                             other.hasName(), other.name_);
@@ -7102,10 +6785,8 @@ public final class PhoneLookupInfo extends
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo, Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.CnapInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfoOrBuilder {
             // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.newBuilder()
             private Builder() {
@@ -7164,8 +6845,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.CnapInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo)
         }
     }
 
@@ -7180,16 +6860,13 @@ public final class PhoneLookupInfo extends
     public static final class CequintInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     CequintInfo, CequintInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.CequintInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo)
             CequintInfoOrBuilder {
         public static final int NAME_FIELD_NUMBER = 1;
         public static final int GEOLOCATION_FIELD_NUMBER = 2;
         public static final int PHOTO_URI_FIELD_NUMBER = 3;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .CequintInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<CequintInfo> PARSER;
 
         static {
@@ -7223,8 +6900,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -7238,8 +6914,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -7253,8 +6928,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -7285,8 +6959,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -7500,9 +7173,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -7540,8 +7211,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo) arg1;
                     name_ = visitor.visitString(
                             hasName(), name_,
                             other.hasName(), other.name_);
@@ -7631,13 +7301,10 @@ public final class PhoneLookupInfo extends
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo, Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.CequintInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfoOrBuilder {
-            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-            // .newBuilder()
+            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.newBuilder()
             private Builder() {
                 super(DEFAULT_INSTANCE);
             }
@@ -7820,8 +7487,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.CequintInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo)
         }
     }
 
@@ -7836,14 +7502,11 @@ public final class PhoneLookupInfo extends
     public static final class EmergencyInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     EmergencyInfo, EmergencyInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.EmergencyInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo)
             EmergencyInfoOrBuilder {
         public static final int IS_EMERGENCY_NUMBER_FIELD_NUMBER = 1;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-        // .EmergencyInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<EmergencyInfo> PARSER;
 
         static {
@@ -7873,8 +7536,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -7888,8 +7550,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -7903,8 +7564,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -7935,8 +7595,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -7988,9 +7647,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -8020,8 +7677,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo) arg1;
                     isEmergencyNumber_ = visitor.visitBoolean(
                             hasIsEmergencyNumber(), isEmergencyNumber_,
                             other.hasIsEmergencyNumber(), other.isEmergencyNumber_);
@@ -8092,13 +7748,10 @@ public final class PhoneLookupInfo extends
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo, Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.EmergencyInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfoOrBuilder {
-            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-            // .newBuilder()
+            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.newBuilder()
             private Builder() {
                 super(DEFAULT_INSTANCE);
             }
@@ -8136,8 +7789,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.EmergencyInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo)
         }
     }
 
@@ -8151,18 +7803,15 @@ public final class PhoneLookupInfo extends
     public static final class MigratedInfo extends
             com.google.protobuf.GeneratedMessageLite<
                     MigratedInfo, MigratedInfo.Builder> implements
-            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.MigratedInfo)
+            // @@protoc_insertion_point(message_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo)
             MigratedInfoOrBuilder {
         public static final int NAME_FIELD_NUMBER = 1;
         public static final int LABEL_FIELD_NUMBER = 2;
         public static final int PHOTO_URI_FIELD_NUMBER = 3;
         public static final int IS_BUSINESS_FIELD_NUMBER = 4;
         public static final int SOURCE_TYPE_FIELD_NUMBER = 5;
-        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo
-// .MigratedInfo)
-        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-                DEFAULT_INSTANCE;
+        // @@protoc_insertion_point(class_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo)
+        private static final com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo DEFAULT_INSTANCE;
         private static volatile com.google.protobuf.Parser<MigratedInfo> PARSER;
 
         static {
@@ -8200,8 +7849,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo parseFrom(
-                byte[] data)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo parseFrom(byte[] data)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, data);
@@ -8215,8 +7863,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, data, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo parseFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo parseFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return com.google.protobuf.GeneratedMessageLite.parseFrom(
                     DEFAULT_INSTANCE, input);
@@ -8230,8 +7877,7 @@ public final class PhoneLookupInfo extends
                     DEFAULT_INSTANCE, input, extensionRegistry);
         }
 
-        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo parseDelimitedFrom(
-                java.io.InputStream input)
+        public static com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo parseDelimitedFrom(java.io.InputStream input)
                 throws java.io.IOException {
             return parseDelimitedFrom(DEFAULT_INSTANCE, input);
         }
@@ -8262,8 +7908,7 @@ public final class PhoneLookupInfo extends
             return DEFAULT_INSTANCE.toBuilder();
         }
 
-        public static Builder newBuilder(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo prototype) {
+        public static Builder newBuilder(com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo prototype) {
             return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
         }
 
@@ -8583,9 +8228,7 @@ public final class PhoneLookupInfo extends
 
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
-            if (size != -1) {
-                return size;
-            }
+            if (size != -1) return size;
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -8631,8 +8274,7 @@ public final class PhoneLookupInfo extends
                 }
                 case VISIT: {
                     Visitor visitor = (Visitor) arg0;
-                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo other =
-                            (com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo) arg1;
+                    com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo other = (com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo) arg1;
                     name_ = visitor.visitString(
                             hasName(), name_,
                             other.hasName(), other.name_);
@@ -8737,13 +8379,10 @@ public final class PhoneLookupInfo extends
          */
         public static final class Builder extends
                 com.google.protobuf.GeneratedMessageLite.Builder<
-                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo, Builder>
-                implements
-                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-                // .PhoneLookupInfo.MigratedInfo)
+                        com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo, Builder> implements
+                // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo)
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfoOrBuilder {
-            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-            // .newBuilder()
+            // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.newBuilder()
             private Builder() {
                 super(DEFAULT_INSTANCE);
             }
@@ -9030,8 +8669,7 @@ public final class PhoneLookupInfo extends
                 return this;
             }
 
-            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo.MigratedInfo)
+            // @@protoc_insertion_point(builder_scope:com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo)
         }
     }
 
@@ -9051,8 +8689,7 @@ public final class PhoneLookupInfo extends
     public static final class Builder extends
             com.google.protobuf.GeneratedMessageLite.Builder<
                     com.wintmain.dialer.phonelookup.PhoneLookupInfo, Builder> implements
-            // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup
-            // .PhoneLookupInfo)
+            // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.phonelookup.PhoneLookupInfo)
             com.wintmain.dialer.phonelookup.PhoneLookupInfoOrBuilder {
         // Construct using com.wintmain.dialer.phonelookup.PhoneLookupInfo.newBuilder()
         private Builder() {
@@ -9066,8 +8703,7 @@ public final class PhoneLookupInfo extends
          * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * default_cp2_info = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
          */
         public boolean hasDefaultCp2Info() {
             return instance.hasDefaultCp2Info();
@@ -9079,8 +8715,7 @@ public final class PhoneLookupInfo extends
          * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * default_cp2_info = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info getDefaultCp2Info() {
             return instance.getDefaultCp2Info();
@@ -9092,11 +8727,9 @@ public final class PhoneLookupInfo extends
          * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * default_cp2_info = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
          */
-        public Builder setDefaultCp2Info(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
+        public Builder setDefaultCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
             copyOnWrite();
             instance.setDefaultCp2Info(value);
             return this;
@@ -9108,8 +8741,7 @@ public final class PhoneLookupInfo extends
          * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * default_cp2_info = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
          */
         public Builder setDefaultCp2Info(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder builderForValue) {
@@ -9124,11 +8756,9 @@ public final class PhoneLookupInfo extends
          * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * default_cp2_info = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
          */
-        public Builder mergeDefaultCp2Info(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
+        public Builder mergeDefaultCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
             copyOnWrite();
             instance.mergeDefaultCp2Info(value);
             return this;
@@ -9140,8 +8770,7 @@ public final class PhoneLookupInfo extends
          * Cp2DefaultDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * default_cp2_info = 1;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info default_cp2_info = 1;</code>
          */
         public Builder clearDefaultCp2Info() {
             copyOnWrite();
@@ -9155,8 +8784,7 @@ public final class PhoneLookupInfo extends
          * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * extended_cp2_info = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
          */
         public boolean hasExtendedCp2Info() {
             return instance.hasExtendedCp2Info();
@@ -9168,8 +8796,7 @@ public final class PhoneLookupInfo extends
          * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * extended_cp2_info = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info getExtendedCp2Info() {
             return instance.getExtendedCp2Info();
@@ -9181,11 +8808,9 @@ public final class PhoneLookupInfo extends
          * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * extended_cp2_info = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
          */
-        public Builder setExtendedCp2Info(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
+        public Builder setExtendedCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
             copyOnWrite();
             instance.setExtendedCp2Info(value);
             return this;
@@ -9197,8 +8822,7 @@ public final class PhoneLookupInfo extends
          * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * extended_cp2_info = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
          */
         public Builder setExtendedCp2Info(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Builder builderForValue) {
@@ -9213,11 +8837,9 @@ public final class PhoneLookupInfo extends
          * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * extended_cp2_info = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
          */
-        public Builder mergeExtendedCp2Info(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
+        public Builder mergeExtendedCp2Info(com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info value) {
             copyOnWrite();
             instance.mergeExtendedCp2Info(value);
             return this;
@@ -9229,8 +8851,7 @@ public final class PhoneLookupInfo extends
          * Cp2ExtendedDirectoryPhoneLookup is responsible for populating this field.
          * </pre>
          *
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info
-         * extended_cp2_info = 6;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info extended_cp2_info = 6;</code>
          */
         public Builder clearExtendedCp2Info() {
             copyOnWrite();
@@ -9239,24 +8860,21 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info =
-         * 2;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
          */
         public boolean hasSpamInfo() {
             return instance.hasSpamInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info =
-         * 2;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo getSpamInfo() {
             return instance.getSpamInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info =
-         * 2;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
          */
         public Builder setSpamInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo value) {
             copyOnWrite();
@@ -9265,8 +8883,7 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info =
-         * 2;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
          */
         public Builder setSpamInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo.Builder builderForValue) {
@@ -9276,19 +8893,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info =
-         * 2;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
          */
-        public Builder mergeSpamInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo value) {
+        public Builder mergeSpamInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo value) {
             copyOnWrite();
             instance.mergeSpamInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info =
-         * 2;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo spam_info = 2;</code>
          */
         public Builder clearSpamInfo() {
             copyOnWrite();
@@ -9297,35 +8911,30 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * people_api_info = 3;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
          */
         public boolean hasPeopleApiInfo() {
             return instance.hasPeopleApiInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * people_api_info = 3;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo getPeopleApiInfo() {
             return instance.getPeopleApiInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * people_api_info = 3;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
          */
-        public Builder setPeopleApiInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
+        public Builder setPeopleApiInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
             copyOnWrite();
             instance.setPeopleApiInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * people_api_info = 3;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
          */
         public Builder setPeopleApiInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.Builder builderForValue) {
@@ -9335,19 +8944,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * people_api_info = 3;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
          */
-        public Builder mergePeopleApiInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
+        public Builder mergePeopleApiInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo value) {
             copyOnWrite();
             instance.mergePeopleApiInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo
-         * people_api_info = 3;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo people_api_info = 3;</code>
          */
         public Builder clearPeopleApiInfo() {
             copyOnWrite();
@@ -9356,35 +8962,30 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
          */
         public boolean hasSystemBlockedNumberInfo() {
             return instance.hasSystemBlockedNumberInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo getSystemBlockedNumberInfo() {
             return instance.getSystemBlockedNumberInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
          */
-        public Builder setSystemBlockedNumberInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
+        public Builder setSystemBlockedNumberInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
             copyOnWrite();
             instance.setSystemBlockedNumberInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
          */
         public Builder setSystemBlockedNumberInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo.Builder builderForValue) {
@@ -9394,19 +8995,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
          */
-        public Builder mergeSystemBlockedNumberInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
+        public Builder mergeSystemBlockedNumberInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo value) {
             copyOnWrite();
             instance.mergeSystemBlockedNumberInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo
-         * .SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo system_blocked_number_info = 4;</code>
          */
         public Builder clearSystemBlockedNumberInfo() {
             copyOnWrite();
@@ -9415,24 +9013,21 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info =
-         * 7;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
          */
         public boolean hasCnapInfo() {
             return instance.hasCnapInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info =
-         * 7;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo getCnapInfo() {
             return instance.getCnapInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info =
-         * 7;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
          */
         public Builder setCnapInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo value) {
             copyOnWrite();
@@ -9441,8 +9036,7 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info =
-         * 7;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
          */
         public Builder setCnapInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo.Builder builderForValue) {
@@ -9452,19 +9046,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info =
-         * 7;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
          */
-        public Builder mergeCnapInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo value) {
+        public Builder mergeCnapInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo value) {
             copyOnWrite();
             instance.mergeCnapInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info =
-         * 7;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo cnap_info = 7;</code>
          */
         public Builder clearCnapInfo() {
             copyOnWrite();
@@ -9473,35 +9064,30 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-         * cequint_info = 8;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
          */
         public boolean hasCequintInfo() {
             return instance.hasCequintInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-         * cequint_info = 8;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo getCequintInfo() {
             return instance.getCequintInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-         * cequint_info = 8;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
          */
-        public Builder setCequintInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
+        public Builder setCequintInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
             copyOnWrite();
             instance.setCequintInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-         * cequint_info = 8;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
          */
         public Builder setCequintInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo.Builder builderForValue) {
@@ -9511,19 +9097,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-         * cequint_info = 8;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
          */
-        public Builder mergeCequintInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
+        public Builder mergeCequintInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo value) {
             copyOnWrite();
             instance.mergeCequintInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo
-         * cequint_info = 8;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo cequint_info = 8;</code>
          */
         public Builder clearCequintInfo() {
             copyOnWrite();
@@ -9532,35 +9115,30 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-         * emergency_info = 9;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
          */
         public boolean hasEmergencyInfo() {
             return instance.hasEmergencyInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-         * emergency_info = 9;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo getEmergencyInfo() {
             return instance.getEmergencyInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-         * emergency_info = 9;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
          */
-        public Builder setEmergencyInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
+        public Builder setEmergencyInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
             copyOnWrite();
             instance.setEmergencyInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-         * emergency_info = 9;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
          */
         public Builder setEmergencyInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo.Builder builderForValue) {
@@ -9570,19 +9148,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-         * emergency_info = 9;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
          */
-        public Builder mergeEmergencyInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
+        public Builder mergeEmergencyInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo value) {
             copyOnWrite();
             instance.mergeEmergencyInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo
-         * emergency_info = 9;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo emergency_info = 9;</code>
          */
         public Builder clearEmergencyInfo() {
             copyOnWrite();
@@ -9591,35 +9166,30 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-         * migrated_info = 10;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
          */
         public boolean hasMigratedInfo() {
             return instance.hasMigratedInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-         * migrated_info = 10;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
          */
         public com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo getMigratedInfo() {
             return instance.getMigratedInfo();
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-         * migrated_info = 10;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
          */
-        public Builder setMigratedInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
+        public Builder setMigratedInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
             copyOnWrite();
             instance.setMigratedInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-         * migrated_info = 10;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
          */
         public Builder setMigratedInfo(
                 com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo.Builder builderForValue) {
@@ -9629,19 +9199,16 @@ public final class PhoneLookupInfo extends
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-         * migrated_info = 10;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
          */
-        public Builder mergeMigratedInfo(
-                com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
+        public Builder mergeMigratedInfo(com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo value) {
             copyOnWrite();
             instance.mergeMigratedInfo(value);
             return this;
         }
 
         /**
-         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo
-         * migrated_info = 10;</code>
+         * <code>optional .com.wintmain.dialer.phonelookup.PhoneLookupInfo.MigratedInfo migrated_info = 10;</code>
          */
         public Builder clearMigratedInfo() {
             copyOnWrite();

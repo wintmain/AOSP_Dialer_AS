@@ -24,17 +24,20 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.RawContacts;
+
 import androidx.annotation.VisibleForTesting;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.common.database.Selection;
 import com.wintmain.dialer.inject.ApplicationContext;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Use the contacts sync adapter to load high resolution photos for a Google account.

@@ -27,10 +27,13 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Directory;
 import android.provider.ContactsContract.DisplayNameSources;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import com.android.contacts.common.util.Constants;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,14 +77,14 @@ public class ContactBuilder {
         this.formattedNumber = formattedNumber;
     }
 
+    public static ContactBuilder forForwardLookup(String number) {
+        return new ContactBuilder(number);
+    }
+
     private ContactBuilder(long directoryId, String normalizedNumber, String formattedNumber) {
         this.directoryId = directoryId;
         this.normalizedNumber = normalizedNumber;
         this.formattedNumber = formattedNumber;
-    }
-
-    public static ContactBuilder forForwardLookup(String number) {
-        return new ContactBuilder(number);
     }
 
     public static ContactBuilder forReverseLookup(String normalizedNumber, String formattedNumber) {
@@ -89,9 +92,7 @@ public class ContactBuilder {
     }
 
     public ContactBuilder addAddress(Address address) {
-        if (DEBUG) {
-            Log.d(TAG, "Adding address");
-        }
+        if (DEBUG) Log.d(TAG, "Adding address");
         if (address != null) {
             addresses.add(address);
         }
@@ -99,9 +100,7 @@ public class ContactBuilder {
     }
 
     public ContactBuilder addPhoneNumber(PhoneNumber phoneNumber) {
-        if (DEBUG) {
-            Log.d(TAG, "Adding phone number");
-        }
+        if (DEBUG) Log.d(TAG, "Adding phone number");
         if (phoneNumber != null) {
             phoneNumbers.add(phoneNumber);
         }
@@ -109,9 +108,7 @@ public class ContactBuilder {
     }
 
     public ContactBuilder addWebsite(WebsiteUrl website) {
-        if (DEBUG) {
-            Log.d(TAG, "Adding website");
-        }
+        if (DEBUG) Log.d(TAG, "Adding website");
         if (website != null) {
             websites.add(website);
         }
@@ -119,9 +116,7 @@ public class ContactBuilder {
     }
 
     public ContactBuilder setName(Name name) {
-        if (DEBUG) {
-            Log.d(TAG, "Setting name");
-        }
+        if (DEBUG) Log.d(TAG, "Setting name");
         if (name != null) {
             this.name = name;
         }
@@ -136,9 +131,7 @@ public class ContactBuilder {
     }
 
     public void setPhotoUri(Uri photoUri) {
-        if (DEBUG) {
-            Log.d(TAG, "Setting photo URI");
-        }
+        if (DEBUG) Log.d(TAG, "Setting photo URI");
         this.photoUri = photoUri;
     }
 
@@ -296,8 +289,7 @@ public class ContactBuilder {
 
         public Name(JSONObject json) throws JSONException {
             if (json != null) {
-                displayName = json.optString(StructuredName.DISPLAY_NAME,
-                        StructuredName.DISPLAY_NAME);
+                displayName = json.optString(StructuredName.DISPLAY_NAME, StructuredName.DISPLAY_NAME);
             }
         }
 

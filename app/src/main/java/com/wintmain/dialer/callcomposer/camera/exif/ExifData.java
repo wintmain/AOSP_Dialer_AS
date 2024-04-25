@@ -54,8 +54,7 @@ public class ExifData {
     }
 
     /**
-     * Adds the given ExifTag to its default IFD and returns an existing ExifTag with the same
-     * TID or
+     * Adds the given ExifTag to its default IFD and returns an existing ExifTag with the same TID or
      * null if none exist.
      */
     ExifTag addTag(ExifTag tag) {
@@ -79,8 +78,7 @@ public class ExifData {
     }
 
     /**
-     * Returns the {@link IfdData} object corresponding to a given IFD or generates one if none
-     * exist.
+     * Returns the {@link IfdData} object corresponding to a given IFD or generates one if none exist.
      */
     private IfdData getOrCreateIfdData(int ifdId) {
         IfdData ifdData = ifdDatas[ifdId];

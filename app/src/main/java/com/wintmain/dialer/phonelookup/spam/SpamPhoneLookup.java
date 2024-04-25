@@ -17,14 +17,10 @@
 package com.wintmain.dialer.phonelookup.spam;
 
 import android.content.SharedPreferences;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
@@ -35,9 +31,16 @@ import com.wintmain.dialer.phonelookup.PhoneLookupInfo.SpamInfo;
 import com.wintmain.dialer.spam.Spam;
 import com.wintmain.dialer.spam.status.SpamStatus;
 import com.wintmain.dialer.storage.Unencrypted;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
-import java.util.Map.Entry;
 
 /**
  * PhoneLookup implementation for Spam info.
@@ -73,8 +76,7 @@ public final class SpamPhoneLookup implements PhoneLookup<SpamInfo> {
                 spam.batchCheckSpamStatus(ImmutableSet.of(dialerPhoneNumber)),
                 spamStatusMap ->
                         SpamInfo.newBuilder()
-                                .setIsSpam(Assert.isNotNull(spamStatusMap.get(dialerPhoneNumber))
-                                        .isSpam())
+                                .setIsSpam(Assert.isNotNull(spamStatusMap.get(dialerPhoneNumber)).isSpam())
                                 .build(),
                 lightweightExecutorService);
     }
@@ -105,20 +107,17 @@ public final class SpamPhoneLookup implements PhoneLookup<SpamInfo> {
 
                     for (Entry<DialerPhoneNumber, SpamStatus> dialerPhoneNumberAndSpamStatus :
                             spamStatusMap.entrySet()) {
-                        DialerPhoneNumber dialerPhoneNumber =
-                                dialerPhoneNumberAndSpamStatus.getKey();
+                        DialerPhoneNumber dialerPhoneNumber = dialerPhoneNumberAndSpamStatus.getKey();
                         SpamStatus spamStatus = dialerPhoneNumberAndSpamStatus.getValue();
                         mostRecentSpamInfo.put(
-                                dialerPhoneNumber,
-                                SpamInfo.newBuilder().setIsSpam(spamStatus.isSpam()).build());
+                                dialerPhoneNumber, SpamInfo.newBuilder().setIsSpam(spamStatus.isSpam()).build());
 
                         Optional<Long> timestampMillis = spamStatus.getTimestampMillis();
                         if (timestampMillis.isPresent()) {
                             currentLastTimestampProcessed =
                                     currentLastTimestampProcessed == null
                                             ? timestampMillis.get()
-                                            : Math.max(timestampMillis.get(),
-                                                    currentLastTimestampProcessed);
+                                            : Math.max(timestampMillis.get(), currentLastTimestampProcessed);
                         }
                     }
 
@@ -152,8 +151,7 @@ public final class SpamPhoneLookup implements PhoneLookup<SpamInfo> {
                     sharedPreferences
                             .edit()
                             .putLong(
-                                    PREF_LAST_TIMESTAMP_PROCESSED,
-                                    Assert.isNotNull(currentLastTimestampProcessed))
+                                    PREF_LAST_TIMESTAMP_PROCESSED, Assert.isNotNull(currentLastTimestampProcessed))
                             .apply();
                     return null;
                 });

@@ -19,7 +19,11 @@ package com.wintmain.dialer.dialpadview;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -46,21 +50,33 @@ import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.*;
+import android.view.HapticFeedbackConstants;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
 import com.android.contacts.common.dialog.CallSubjectDialog;
 import com.android.contacts.common.util.StopWatch;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.common.base.Ascii;
-import com.google.common.base.Optional;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
 import com.wintmain.dialer.animation.AnimUtils.AnimationCallback;
@@ -84,6 +100,9 @@ import com.wintmain.dialer.util.CallUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
 import com.wintmain.dialer.util.ViewUtil;
 import com.wintmain.dialer.widget.FloatingActionButtonController;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.common.base.Ascii;
+import com.google.common.base.Optional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -134,14 +153,11 @@ public class DialpadFragment extends Fragment
      */
     private static final String ADD_CALL_MODE_KEY = "add_call_mode";
     /**
-     * Identifier for intent extra for sending an empty Flash message for CDMA networks. This
-     * message
-     * is used by the network to simulate a press/depress of the "hookswitch" of a landline phone
-     * . Aka
+     * Identifier for intent extra for sending an empty Flash message for CDMA networks. This message
+     * is used by the network to simulate a press/depress of the "hookswitch" of a landline phone. Aka
      * "empty flash".
      *
-     * <p>TODO: Using an intent extra to tell the phone to send this flash is a temporary measure
-     * . To
+     * <p>TODO: Using an intent extra to tell the phone to send this flash is a temporary measure. To
      * be replaced with an Telephony/TelecomManager call in the future. TODO: Keep in sync with the
      * string defined in OutgoingCallBroadcaster.java in Phone app until this is replaced with the
      * Telephony/Telecom API.
@@ -189,10 +205,8 @@ public class DialpadFragment extends Fragment
     private CallStateReceiver callStateReceiver;
     private boolean wasEmptyBeforeTextChange;
     /**
-     * This field is set to true while processing an incoming DIAL intent, in order to make sure
-     * that
-     * SpecialCharSequenceMgr actions can be triggered by user input but *not* by a tel: URI
-     * passed by
+     * This field is set to true while processing an incoming DIAL intent, in order to make sure that
+     * SpecialCharSequenceMgr actions can be triggered by user input but *not* by a tel: URI passed by
      * some other app. It will be set to false when all digits are cleared.
      */
     private boolean digitsFilledByIntent;
@@ -232,8 +246,7 @@ public class DialpadFragment extends Fragment
      * early if start == -1 or start is larger than end.
      */
     @VisibleForTesting
-    /* package */ static boolean canAddDigit(CharSequence digits, int start, int end,
-            char newDigit) {
+    /* package */ static boolean canAddDigit(CharSequence digits, int start, int end, char newDigit) {
         if (newDigit != WAIT && newDigit != PAUSE) {
             throw new IllegalArgumentException(
                     "Should not be called for anything other than PAUSE & WAIT");
@@ -268,8 +281,7 @@ public class DialpadFragment extends Fragment
     }
 
     /**
-     * Only show the "emergency call not available" warning when on wifi call and carrier
-     * requires it.
+     * Only show the "emergency call not available" warning when on wifi call and carrier requires it.
      *
      * <p>internal method tested because the conditions cannot be setup in espresso, and the layout
      * cannot be inflated in robolectric.
@@ -290,10 +302,8 @@ public class DialpadFragment extends Fragment
             return false;
         }
 
-        // TelephonyManager.getVoiceNetworkType() Doesn't always return NETWORK_TYPE_IWLAN when
-        // on wifi.
-        // other wifi calling checks are hidden API. Emergency calling is not available without
-        // service
+        // TelephonyManager.getVoiceNetworkType() Doesn't always return NETWORK_TYPE_IWLAN when on wifi.
+        // other wifi calling checks are hidden API. Emergency calling is not available without service
         // regardless of the wifi state so this check is omitted.
 
         switch (telephonyManager.getServiceState().getState()) {
@@ -304,8 +314,7 @@ public class DialpadFragment extends Fragment
             case ServiceState.STATE_IN_SERVICE:
                 return false;
             default:
-                throw new AssertionError(
-                        "unknown state " + telephonyManager.getServiceState().getState());
+                throw new AssertionError("unknown state " + telephonyManager.getServiceState().getState());
         }
     }
 
@@ -326,8 +335,7 @@ public class DialpadFragment extends Fragment
      * @param dialString       String of characters to format
      * @param normalizedNumber the E164 format number whose country code is used if the given
      *                         phoneNumber doesn't have the country code.
-     * @param countryIso       The country code representing the format to use if the provided
-     *                         normalized
+     * @param countryIso       The country code representing the format to use if the provided normalized
      *                         number is null or invalid.
      * @return the provided string of digits as a formatted phone number, retaining any post-dial
      * portion of the string.
@@ -352,8 +360,7 @@ public class DialpadFragment extends Fragment
     }
 
     private TelephonyManager getTelephonyManager() {
-        return (TelephonyManager) Objects.requireNonNull(getActivity()).getSystemService(
-                Context.TELEPHONY_SERVICE);
+        return (TelephonyManager) Objects.requireNonNull(getActivity()).getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     @Override
@@ -426,8 +433,7 @@ public class DialpadFragment extends Fragment
             IntentFilter callStateIntentFilter =
                     new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
             callStateReceiver = new CallStateReceiver();
-            Objects.requireNonNull(getActivity()).registerReceiver(callStateReceiver,
-                    callStateIntentFilter);
+            Objects.requireNonNull(getActivity()).registerReceiver(callStateReceiver, callStateIntentFilter);
         }
 
         initPhoneNumberFormattingTextWatcherExecutor =
@@ -437,8 +443,7 @@ public class DialpadFragment extends Fragment
                                 Objects.requireNonNull(getFragmentManager()),
                                 "DialpadFragment.initPhoneNumberFormattingTextWatcher",
                                 new InitPhoneNumberFormattingTextWatcherWorker())
-                        .onSuccess(
-                                watcher -> dialpadView.getDigits().addTextChangedListener(watcher))
+                        .onSuccess(watcher -> dialpadView.getDigits().addTextChangedListener(watcher))
                         .build();
         Trace.endSection();
     }
@@ -490,8 +495,7 @@ public class DialpadFragment extends Fragment
                         (v, event) -> {
                             if (isDigitsEmpty()) {
                                 if (getActivity() != null) {
-                                    LogUtil.i("DialpadFragment.onCreateView",
-                                            "dialpad spacer touched");
+                                    LogUtil.i("DialpadFragment.onCreateView", "dialpad spacer touched");
                                     return FragmentUtils.getParentUnsafe(this, HostInterface.class)
                                             .onDialpadSpacerTouchWithEmptyQuery();
                                 }
@@ -509,16 +513,14 @@ public class DialpadFragment extends Fragment
         floatingActionButton = fragmentView.findViewById(R.id.dialpad_floating_action_button);
         floatingActionButton.setOnClickListener(this);
         floatingActionButtonController =
-                new FloatingActionButtonController(Objects.requireNonNull(getActivity()),
-                        floatingActionButton);
+                new FloatingActionButtonController(Objects.requireNonNull(getActivity()), floatingActionButton);
         Trace.endSection();
         Trace.endSection();
         return fragmentView;
     }
 
     /**
-     * The dialpad hint is a TextView overlaid above the digit EditText.
-     * {@link EditText#setHint(int)}
+     * The dialpad hint is a TextView overlaid above the digit EditText. {@link EditText#setHint(int)}
      * is not used because the digits has auto resize and makes setting the size of the hint
      * difficult.
      */
@@ -529,8 +531,7 @@ public class DialpadFragment extends Fragment
         }
 
         if (shouldShowEmergencyCallWarning(getContext())) {
-            String hint = Objects.requireNonNull(getContext()).getString(
-                    R.string.dialpad_hint_emergency_calling_not_available);
+            String hint = Objects.requireNonNull(getContext()).getString(R.string.dialpad_hint_emergency_calling_not_available);
             digits.setContentDescription(hint);
             digitsHint.setText(hint);
             digitsHint.setVisibility(View.VISIBLE);
@@ -546,8 +547,7 @@ public class DialpadFragment extends Fragment
         super.onAttach(context);
         isLayoutRtl = ViewUtil.isRtl();
         isLandscape =
-                getResources().getConfiguration().orientation
-                        == Configuration.ORIENTATION_LANDSCAPE;
+                getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     private String getCurrentCountryIso() {
@@ -595,16 +595,14 @@ public class DialpadFragment extends Fragment
                         return false;
                     }
                     String type = intent.getType();
-                    if (People.CONTENT_ITEM_TYPE.equals(type) || Phones.CONTENT_ITEM_TYPE.equals(
-                            type)) {
+                    if (People.CONTENT_ITEM_TYPE.equals(type) || Phones.CONTENT_ITEM_TYPE.equals(type)) {
                         // Query the phone number
                         Cursor c =
                                 Objects.requireNonNull(getActivity())
                                         .getContentResolver()
                                         .query(
                                                 intent.getData(),
-                                                new String[]{PhonesColumns.NUMBER,
-                                                        PhonesColumns.NUMBER_KEY},
+                                                new String[]{PhonesColumns.NUMBER, PhonesColumns.NUMBER_KEY},
                                                 null,
                                                 null,
                                                 null);
@@ -787,8 +785,7 @@ public class DialpadFragment extends Fragment
         Trace.beginSection(TAG + " onResume");
         super.onResume();
 
-        dialpadQueryListener = FragmentUtils.getParentUnsafe(this,
-                OnDialpadQueryChangedListener.class);
+        dialpadQueryListener = FragmentUtils.getParentUnsafe(this, OnDialpadQueryChangedListener.class);
 
         final StopWatch stopWatch = StopWatch.start("Dialpad.onResume");
 
@@ -798,13 +795,11 @@ public class DialpadFragment extends Fragment
 
         stopWatch.lap("qloc");
 
-        final ContentResolver contentResolver = Objects.requireNonNull(getActivity())
-                .getContentResolver();
+        final ContentResolver contentResolver = Objects.requireNonNull(getActivity()).getContentResolver();
 
         // retrieve the DTMF tone play back setting.
         dTMFToneEnabled =
-                Settings.System.getInt(contentResolver, Settings.System.DTMF_TONE_WHEN_DIALING, 1)
-                        == 1;
+                Settings.System.getInt(contentResolver, Settings.System.DTMF_TONE_WHEN_DIALING, 1) == 1;
 
         stopWatch.lap("dtwd");
 
@@ -972,8 +967,7 @@ public class DialpadFragment extends Fragment
 
     /**
      * When a key is pressed, we start playing DTMF tone, do vibration, and enter the digit
-     * immediately. When a key is released, we stop the tone. Note that the "key press" event
-     * will be
+     * immediately. When a key is released, we stop the tone. Note that the "key press" event will be
      * delivered by the system with certain amount of delay, it won't be synced with user's actual
      * "touch-down" behavior.
      */
@@ -1007,8 +1001,7 @@ public class DialpadFragment extends Fragment
                 keyPressed(KeyEvent.KEYCODE_STAR);
             } else {
                 LogUtil.e(
-                        "DialpadFragment.onPressed",
-                        "Unexpected onTouch(ACTION_DOWN) event from: " + view);
+                        "DialpadFragment.onPressed", "Unexpected onTouch(ACTION_DOWN) event from: " + view);
             }
             pressedDialpadKeys.add(view);
         } else {
@@ -1104,21 +1097,16 @@ public class DialpadFragment extends Fragment
                     // Check the current status and show the most appropriate error message.
                     final boolean isAirplaneModeOn =
                             Settings.Global.getInt(
-                                    getActivity().getContentResolver(),
-                                    Settings.Global.AIRPLANE_MODE_ON, 0)
+                                    getActivity().getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0)
                                     != 0;
                     if (isAirplaneModeOn) {
                         androidx.fragment.app.DialogFragment dialogFragment =
-                                ErrorDialogFragment.newInstance(
-                                        R.string.dialog_voicemail_airplane_mode_message);
-                        dialogFragment.show(Objects.requireNonNull(getFragmentManager()),
-                                "voicemail_request_during_airplane_mode");
+                                ErrorDialogFragment.newInstance(R.string.dialog_voicemail_airplane_mode_message);
+                        dialogFragment.show(Objects.requireNonNull(getFragmentManager()), "voicemail_request_during_airplane_mode");
                     } else {
                         DialogFragment dialogFragment =
-                                ErrorDialogFragment.newInstance(
-                                        R.string.dialog_voicemail_not_ready_message);
-                        dialogFragment.show(Objects.requireNonNull(getFragmentManager()),
-                                "voicemail_not_ready");
+                                ErrorDialogFragment.newInstance(R.string.dialog_voicemail_not_ready_message);
+                        dialogFragment.show(Objects.requireNonNull(getFragmentManager()), "voicemail_not_ready");
                     }
                 }
                 return true;
@@ -1160,8 +1148,7 @@ public class DialpadFragment extends Fragment
 
     public void callVoicemail() {
         PreCall.start(
-                getContext(),
-                CallIntentBuilder.forVoicemail(null, CallInitiationType.Type.DIALPAD));
+                getContext(), CallIntentBuilder.forVoicemail(null, CallInitiationType.Type.DIALPAD));
         hideAndClearDialpad();
     }
 
@@ -1177,8 +1164,7 @@ public class DialpadFragment extends Fragment
      * <p>When there is no digit and the phone is CDMA and off hook, we're sending a blank flash for
      * CDMA. CDMA networks use Flash messages when special processing needs to be done, mainly for
      * 3-way or call waiting scenarios. Presumably, here we're in a special 3-way scenario where the
-     * network needs a blank flash before being able to add the new participant. (This is not the
-     * case
+     * network needs a blank flash before being able to add the new participant. (This is not the case
      * with all 3-way calls, just certain CDMA infrastructures.)
      *
      * <p>Otherwise, there is no digit, display the last dialed number. Don't finish since the user
@@ -1196,25 +1182,21 @@ public class DialpadFragment extends Fragment
             // "persist.radio.otaspdial" is a temporary hack needed for one carrier's automated
             // test equipment.
             // TODO: clean it up.
-            if (!TextUtils.isEmpty(prohibitedPhoneNumberRegexp) && number.matches(
-                    prohibitedPhoneNumberRegexp)) {
+            if (!TextUtils.isEmpty(prohibitedPhoneNumberRegexp) && number.matches(prohibitedPhoneNumberRegexp)) {
                 PerformanceReport.recordClick(UiAction.Type.PRESS_CALL_BUTTON_WITHOUT_CALLING);
                 LogUtil.i(
                         "DialpadFragment.handleDialButtonPressed",
                         "The phone number is prohibited explicitly by a rule.");
                 if (getActivity() != null) {
                     androidx.fragment.app.DialogFragment dialogFragment =
-                            ErrorDialogFragment.newInstance(
-                                    R.string.dialog_phone_call_prohibited_message);
-                    dialogFragment.show(Objects.requireNonNull(getFragmentManager()),
-                            "phone_prohibited_dialog");
+                            ErrorDialogFragment.newInstance(R.string.dialog_phone_call_prohibited_message);
+                    dialogFragment.show(Objects.requireNonNull(getFragmentManager()), "phone_prohibited_dialog");
                 }
 
                 // Clear the digits just in case.
                 clearDialpad();
             } else {
-                PreCall.start(getContext(),
-                        new CallIntentBuilder(number, CallInitiationType.Type.DIALPAD));
+                PreCall.start(getContext(), new CallIntentBuilder(number, CallInitiationType.Type.DIALPAD));
                 hideAndClearDialpad();
             }
         }
@@ -1274,13 +1256,11 @@ public class DialpadFragment extends Fragment
     /**
      * Play the specified tone for the specified milliseconds
      *
-     * <p>The tone is played locally, using the audio stream for phone calls. Tones are played
-     * only if
+     * <p>The tone is played locally, using the audio stream for phone calls. Tones are played only if
      * the "Audible touch tones" user preference is checked, and are NOT played if the device is in
      * silent mode.
      *
-     * <p>The tone length can be -1, meaning "keep playing the tone." If the caller does so, it
-     * should
+     * <p>The tone length can be -1, meaning "keep playing the tone." If the caller does so, it should
      * call stopTone() afterward.
      *
      * @param tone       a tone code from {@link ToneGenerator}
@@ -1298,8 +1278,7 @@ public class DialpadFragment extends Fragment
         // onResume(), since it's possible to toggle silent mode without
         // leaving the current activity (via the ENDCALL-longpress menu.)
         AudioManager audioManager =
-                (AudioManager) Objects.requireNonNull(getActivity()).getSystemService(
-                        Context.AUDIO_SERVICE);
+                (AudioManager) Objects.requireNonNull(getActivity()).getSystemService(Context.AUDIO_SERVICE);
         int ringerMode = audioManager.getRingerMode();
         if ((ringerMode == AudioManager.RINGER_MODE_SILENT)
                 || (ringerMode == AudioManager.RINGER_MODE_VIBRATE)) {
@@ -1335,14 +1314,11 @@ public class DialpadFragment extends Fragment
     }
 
     /**
-     * Brings up the "dialpad chooser" UI in place of the usual Dialer elements (the
-     * textfield/button
+     * Brings up the "dialpad chooser" UI in place of the usual Dialer elements (the textfield/button
      * and the dialpad underneath).
      *
-     * <p>We show this UI if the user brings up the Dialer while a call is already in progress,
-     * since
-     * there's a good chance we got here accidentally (and the user really wanted the in-call
-     * dialpad
+     * <p>We show this UI if the user brings up the Dialer while a call is already in progress, since
+     * there's a good chance we got here accidentally (and the user really wanted the in-call dialpad
      * instead). So in this situation we display an intermediate UI that lets the user explicitly
      * choose between the in-call dialpad ("Use touch tone keypad") and the regular Dialer ("Add
      * call"). (Or, the option "Return to call in progress" just goes back to the in-call UI with no
@@ -1428,8 +1404,7 @@ public class DialpadFragment extends Fragment
     }
 
     /**
-     * Returns to the in-call UI (where there's presumably a call in progress) in response to the
-     * user
+     * Returns to the in-call UI (where there's presumably a call in progress) in response to the user
      * selecting "use touch tone keypad" or "return to call" from the dialpad chooser.
      */
     private void returnToInCallScreen(boolean showDialpad) {
@@ -1453,8 +1428,7 @@ public class DialpadFragment extends Fragment
     private boolean isPhoneInUse() {
         return getContext() != null
                 && TelecomUtil.isInManagedCall(getContext())
-                && FragmentUtils.getParentUnsafe(this, HostInterface.class)
-                .shouldShowDialpadChooser();
+                && FragmentUtils.getParentUnsafe(this, HostInterface.class).shouldShowDialpadChooser();
     }
 
     /**
@@ -1483,8 +1457,7 @@ public class DialpadFragment extends Fragment
     }
 
     /**
-     * Updates the dial string (mDigits) after inserting a Pause character (,) or Wait character
-     * (;).
+     * Updates the dial string (mDigits) after inserting a Pause character (,) or Wait character (;).
      */
     private void updateDialString(char newDigit) {
         if (newDigit != WAIT && newDigit != PAUSE) {
@@ -1546,8 +1519,7 @@ public class DialpadFragment extends Fragment
                     new AnimationCallback() {
                         @Override
                         public void onAnimationEnd() {
-                            // AnimUtils will set the visibility to GONE and cause the layout to
-                            // move around.
+                            // AnimUtils will set the visibility to GONE and cause the layout to move around.
                             overflowMenuButton.setVisibility(View.INVISIBLE);
                         }
                     });
@@ -1557,15 +1529,13 @@ public class DialpadFragment extends Fragment
     /**
      * Check if voicemail is enabled/accessible.
      *
-     * @return true if voicemail is enabled and accessible. Note that this can be false
-     * "temporarily"
+     * @return true if voicemail is enabled and accessible. Note that this can be false "temporarily"
      * after the app boot.
      */
     private boolean isVoicemailAvailable() {
         try {
             PhoneAccountHandle defaultUserSelectedAccount =
-                    TelecomUtil.getDefaultOutgoingPhoneAccount(getActivity(),
-                            PhoneAccount.SCHEME_VOICEMAIL);
+                    TelecomUtil.getDefaultOutgoingPhoneAccount(getActivity(), PhoneAccount.SCHEME_VOICEMAIL);
             if (defaultUserSelectedAccount == null) {
                 // In a single-SIM phone, there is no default outgoing phone account selected by
                 // the user, so just call TelephonyManager#getVoicemailNumber directly.
@@ -1592,8 +1562,7 @@ public class DialpadFragment extends Fragment
 
     /**
      * Starts the asyn query to get the last dialed/outgoing number. When the background query
-     * finishes, mLastNumberDialed is set to the last dialed number or an empty string if none
-     * exists
+     * finishes, mLastNumberDialed is set to the last dialed number or an empty string if none exists
      * yet.
      */
     private void queryLastOutgoingCall() {
@@ -1604,13 +1573,10 @@ public class DialpadFragment extends Fragment
         FragmentUtils.getParentUnsafe(this, DialpadListener.class)
                 .getLastOutgoingCall(
                         number -> {
-                            // TODO: Filter out emergency numbers if the carrier does not want
-                            //  redial for these.
+                            // TODO: Filter out emergency numbers if the carrier does not want redial for these.
 
-                            // If the fragment has already been detached since the last time we
-                            // called
-                            // queryLastOutgoingCall in onResume there is no point doing anything
-                            // here.
+                            // If the fragment has already been detached since the last time we called
+                            // queryLastOutgoingCall in onResume there is no point doing anything here.
                             if (getActivity() == null) {
                                 return;
                             }
@@ -1620,8 +1586,7 @@ public class DialpadFragment extends Fragment
     }
 
     private Intent newFlashIntent() {
-        Intent intent = new CallIntentBuilder(EMPTY_NUMBER,
-                CallInitiationType.Type.DIALPAD).build();
+        Intent intent = new CallIntentBuilder(EMPTY_NUMBER, CallInitiationType.Type.DIALPAD).build();
         intent.putExtra(EXTRA_SEND_EMPTY_FLASH, true);
         return intent;
     }
@@ -1693,8 +1658,7 @@ public class DialpadFragment extends Fragment
         isDialpadSlideUp = false;
         int animation;
         if (isLandscape) {
-            animation =
-                    isLayoutRtl ? R.anim.dialpad_slide_out_left : R.anim.dialpad_slide_out_right;
+            animation = isLayoutRtl ? R.anim.dialpad_slide_out_left : R.anim.dialpad_slide_out_right;
         } else {
             animation = R.anim.dialpad_slide_out_bottom;
         }
@@ -1758,8 +1722,7 @@ public class DialpadFragment extends Fragment
     public interface HostInterface {
 
         /**
-         * Notifies the parent activity that the space above the dialpad has been tapped with no
-         * query
+         * Notifies the parent activity that the space above the dialpad has been tapped with no query
          * in the dialpad present. In most situations this will cause the dialpad to be dismissed,
          * unless there happens to be content showing.
          */
@@ -1991,11 +1954,9 @@ public class DialpadFragment extends Fragment
      * skips formatting Argentina mobile numbers for domestic calls.
      *
      * <p>As of Nov. 28, 2017, the as-you-type-formatting provided by libphonenumber's
-     * AsYouTypeFormatter (which {@link PhoneNumberFormattingTextWatcher} depends on) can't
-     * correctly
+     * AsYouTypeFormatter (which {@link PhoneNumberFormattingTextWatcher} depends on) can't correctly
      * format Argentina mobile numbers for domestic calls (a bug). We temporarily disable the
-     * formatting for such numbers until libphonenumber is fixed (which will come as early as the
-     * next
+     * formatting for such numbers until libphonenumber is fixed (which will come as early as the next
      * Android release).
      */
     @VisibleForTesting
@@ -2007,8 +1968,7 @@ public class DialpadFragment extends Fragment
         // numbers:
         // (1) Local calls: 15 <local number>
         // (2) Long distance calls: <area code> 15 <local number>
-        // See https://en.wikipedia.org/wiki/Telephone_numbers_in_Argentina for detailed
-        // explanations.
+        // See https://en.wikipedia.org/wiki/Telephone_numbers_in_Argentina for detailed explanations.
         static {
             String regex =
                     "0?("
@@ -2134,16 +2094,14 @@ public class DialpadFragment extends Fragment
 
         @Override
         public synchronized void afterTextChanged(Editable s) {
-            // When the country code is NOT "AR", Android telephony's
-            // PhoneNumberFormattingTextWatcher can
+            // When the country code is NOT "AR", Android telephony's PhoneNumberFormattingTextWatcher can
             // correctly handle the input so we will let it do its job.
             if (!Ascii.toUpperCase(countryCode).equals("AR")) {
                 super.afterTextChanged(s);
                 return;
             }
 
-            // When the country code is "AR", PhoneNumberFormattingTextWatcher can also format
-            // the input
+            // When the country code is "AR", PhoneNumberFormattingTextWatcher can also format the input
             // correctly if the number is NOT for a domestic call to a mobile phone.
             String rawNumber = getRawNumber(s);
             Matcher matcher = AR_DOMESTIC_CALL_MOBILE_NUMBER_PATTERN.matcher(rawNumber);
@@ -2152,18 +2110,15 @@ public class DialpadFragment extends Fragment
                 return;
             }
 
-            // As modifying the input will trigger another call to afterTextChanged(Editable), we
-            // must
+            // As modifying the input will trigger another call to afterTextChanged(Editable), we must
             // check whether the input's format has already been removed and return if it has
             // been to avoid infinite recursion.
             if (rawNumber.contentEquals(s)) {
                 return;
             }
 
-            // If we reach this point, the country code must be "AR" and variable "s" represents
-            // a number
-            // for a domestic call to a mobile phone. "s" is incorrectly formatted by Android
-            // telephony's
+            // If we reach this point, the country code must be "AR" and variable "s" represents a number
+            // for a domestic call to a mobile phone. "s" is incorrectly formatted by Android telephony's
             // PhoneNumberFormattingTextWatcher so we remove its format by replacing it with the raw
             // number.
             s.replace(0, s.length(), rawNumber);
@@ -2193,8 +2148,7 @@ public class DialpadFragment extends Fragment
                 // one of the choices, which would be confusing.  (But at
                 // least that's better than leaving the dialpad chooser
                 // onscreen, but useless...)
-                LogUtil.i("CallStateReceiver.onReceive", "hiding dialpad chooser, state: %s",
-                        state);
+                LogUtil.i("CallStateReceiver.onReceive", "hiding dialpad chooser, state: %s", state);
                 showDialpadChooser(false);
             }
         }

@@ -22,10 +22,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.searchfragment.common.RowClickListener;
@@ -55,8 +57,7 @@ public final class SearchAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public SearchAdapter(
-            Context context, SearchCursorManager searchCursorManager,
-            RowClickListener rowClickListener) {
+            Context context, SearchCursorManager searchCursorManager, RowClickListener rowClickListener) {
         this.context = context;
         this.searchCursorManager = searchCursorManager;
         this.rowClickListener = rowClickListener;
@@ -68,13 +69,11 @@ public final class SearchAdapter extends RecyclerView.Adapter<ViewHolder> {
         switch (rowType) {
             case RowType.CONTACT_ROW:
                 return new SearchContactViewHolder(
-                        LayoutInflater.from(context)
-                                .inflate(R.layout.search_contact_row, root, false),
+                        LayoutInflater.from(context).inflate(R.layout.search_contact_row, root, false),
                         rowClickListener);
             case RowType.NEARBY_PLACES_ROW:
                 return new NearbyPlaceViewHolder(
-                        LayoutInflater.from(context)
-                                .inflate(R.layout.search_contact_row, root, false),
+                        LayoutInflater.from(context).inflate(R.layout.search_contact_row, root, false),
                         rowClickListener);
             case RowType.CONTACT_HEADER:
             case RowType.DIRECTORY_HEADER:
@@ -83,18 +82,15 @@ public final class SearchAdapter extends RecyclerView.Adapter<ViewHolder> {
                         LayoutInflater.from(context).inflate(R.layout.header_layout, root, false));
             case RowType.DIRECTORY_ROW:
                 return new DirectoryContactViewHolder(
-                        LayoutInflater.from(context)
-                                .inflate(R.layout.search_contact_row, root, false),
+                        LayoutInflater.from(context).inflate(R.layout.search_contact_row, root, false),
                         rowClickListener);
             case RowType.SEARCH_ACTION:
                 return new SearchActionViewHolder(
-                        LayoutInflater.from(context)
-                                .inflate(R.layout.search_action_layout, root, false),
+                        LayoutInflater.from(context).inflate(R.layout.search_action_layout, root, false),
                         rowClickListener);
             case RowType.LOCATION_REQUEST:
                 return new LocationPermissionViewHolder(
-                        LayoutInflater.from(context)
-                                .inflate(R.layout.location_permission_row, root, false),
+                        LayoutInflater.from(context).inflate(R.layout.location_permission_row, root, false),
                         allowClickListener,
                         dismissClickListener);
             case RowType.INVALID:
@@ -116,12 +112,10 @@ public final class SearchAdapter extends RecyclerView.Adapter<ViewHolder> {
         } else if (holder instanceof NearbyPlaceViewHolder) {
             ((NearbyPlaceViewHolder) holder).bind(searchCursorManager.getCursor(position), query);
         } else if (holder instanceof DirectoryContactViewHolder) {
-            ((DirectoryContactViewHolder) holder).bind(searchCursorManager.getCursor(position),
-                    query);
+            ((DirectoryContactViewHolder) holder).bind(searchCursorManager.getCursor(position), query);
         } else if (holder instanceof HeaderViewHolder) {
             String header =
-                    searchCursorManager.getCursor(position).getString(
-                            SearchCursor.HEADER_TEXT_POSITION);
+                    searchCursorManager.getCursor(position).getString(SearchCursor.HEADER_TEXT_POSITION);
             ((HeaderViewHolder) holder).setHeader(header);
         } else if (holder instanceof SearchActionViewHolder) {
             ((SearchActionViewHolder) holder)
@@ -213,8 +207,7 @@ public final class SearchAdapter extends RecyclerView.Adapter<ViewHolder> {
     private static class LocationPermissionViewHolder extends RecyclerView.ViewHolder {
 
         LocationPermissionViewHolder(
-                View itemView, OnClickListener allowClickListener,
-                OnClickListener dismissClickListener) {
+                View itemView, OnClickListener allowClickListener, OnClickListener dismissClickListener) {
             super(itemView);
             Assert.isNotNull(allowClickListener);
             Assert.isNotNull(dismissClickListener);

@@ -15,7 +15,11 @@
  */
 package com.wintmain.dialer.app.list;
 
-import android.content.*;
+import android.content.ContentProviderOperation;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,11 +33,12 @@ import android.util.LongSparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import androidx.annotation.VisibleForTesting;
+
 import com.android.contacts.common.ContactTileLoaderFactory;
 import com.android.contacts.common.list.ContactEntry;
 import com.android.contacts.common.list.ContactTileView;
-import com.google.common.collect.ComparisonChain;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;
@@ -44,8 +49,14 @@ import com.wintmain.dialer.logging.InteractionEvent;
 import com.wintmain.dialer.logging.Logger;
 import com.wintmain.dialer.shortcuts.ShortcutRefresher;
 import com.wintmain.dialer.strictmode.StrictModeUtils;
+import com.google.common.collect.ComparisonChain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.PriorityQueue;
 
 /**
  * Also allows for a configurable number of columns as well as a maximum row of tiled contacts.
@@ -208,8 +219,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
             int lookupKeyColumn = cursor.getColumnIndexOrThrow(Contacts.LOOKUP_KEY);
             int pinnedColumn = cursor.getColumnIndexOrThrow(Contacts.PINNED);
             int nameColumn = cursor.getColumnIndexOrThrow(Contacts.DISPLAY_NAME_PRIMARY);
-            int nameAlternativeColumn = cursor.getColumnIndexOrThrow(
-                    Contacts.DISPLAY_NAME_ALTERNATIVE);
+            int nameAlternativeColumn = cursor.getColumnIndexOrThrow(Contacts.DISPLAY_NAME_ALTERNATIVE);
             int isDefaultNumberColumn = cursor.getColumnIndexOrThrow(Phone.IS_SUPER_PRIMARY);
             int phoneTypeColumn = cursor.getColumnIndexOrThrow(Phone.TYPE);
             int phoneLabelColumn = cursor.getColumnIndexOrThrow(Phone.LABEL);
@@ -228,8 +238,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
 
                 final ContactEntry existing = (ContactEntry) duplicates.get(id);
                 if (existing != null) {
-                    // Check if the existing number is a default number. If not, clear the phone
-                    // number
+                    // Check if the existing number is a default number. If not, clear the phone number
                     // and label fields so that the disambiguation dialog will show up.
                     if (!existing.isDefaultNumber) {
                         existing.phoneLabel = null;
@@ -250,8 +259,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
 
                 contact.id = id;
                 contact.namePrimary =
-                        (!TextUtils.isEmpty(name)) ? name : resources.getString(
-                                R.string.missing_name);
+                        (!TextUtils.isEmpty(name)) ? name : resources.getString(R.string.missing_name);
                 contact.nameAlternative =
                         (!TextUtils.isEmpty(nameAlternative))
                                 ? nameAlternative
@@ -268,8 +276,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
                 final int phoneNumberType = cursor.getInt(phoneTypeColumn);
                 final String phoneNumberCustomLabel = cursor.getString(phoneLabelColumn);
                 contact.phoneLabel =
-                        (String) Phone.getTypeLabel(resources, phoneNumberType,
-                                phoneNumberCustomLabel);
+                        (String) Phone.getTypeLabel(resources, phoneNumberType, phoneNumberCustomLabel);
                 contact.phoneNumber = cursor.getString(phoneNumberColumn);
 
                 contact.pinned = pinned;
@@ -395,8 +402,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
     /**
      * For the top row of tiled contacts, the item id is the position of the row of contacts. For
      * frequent contacts, the item id is the maximum number of rows of tiled contacts + the actual
-     * contact id. Since contact ids are always greater than 0, this guarantees that all items
-     * within
+     * contact id. Since contact ids are always greater than 0, this guarantees that all items within
      * this adapter will always have unique ids.
      */
     @Override
@@ -441,8 +447,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
 
         if (tileView == null) {
             tileView =
-                    (PhoneFavoriteTileView) View.inflate(context, R.layout.phone_favorite_tile_view,
-                            null);
+                    (PhoneFavoriteTileView) View.inflate(context, R.layout.phone_favorite_tile_view, null);
         }
         tileView.setPhotoManager(photoManager);
         tileView.setListener(listener);
@@ -462,8 +467,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
     }
 
     /**
-     * Temporarily removes a contact from the list for UI refresh. Stores data for this contact
-     * in the
+     * Temporarily removes a contact from the list for UI refresh. Stores data for this contact in the
      * back-up variable.
      *
      * @param index Position of the contact to be removed.
@@ -511,8 +515,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
     private void handleDrop() {
         boolean changed = false;
         if (draggedEntry != null) {
-            if (isIndexInBound(dragEnteredEntryIndex)
-                    && dragEnteredEntryIndex != draggedEntryIndex) {
+            if (isIndexInBound(dragEnteredEntryIndex) && dragEnteredEntryIndex != draggedEntryIndex) {
                 // Don't add the ContactEntry here (to prevent a double animation from occuring).
                 // When we receive a new cursor the list of contact entries will automatically be
                 // populated with the dragged ContactEntry at the correct spot.
@@ -531,8 +534,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
 
             if (changed && dropEntryIndex < PIN_LIMIT) {
                 ArrayList<ContentProviderOperation> operations =
-                        getReflowedPinningOperations(contactEntries, draggedEntryIndex,
-                                dropEntryIndex);
+                        getReflowedPinningOperations(contactEntries, draggedEntryIndex, dropEntryIndex);
                 StrictModeUtils.bypass(() -> updateDatabaseWithPinnedPositions(operations));
             }
             draggedEntry = null;
@@ -553,10 +555,8 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
     }
 
     /**
-     * Used when a contact is removed from speeddial. This will both unstar and set pinned
-     * position of
-     * the contact to PinnedPosition.DEMOTED so that it doesn't show up anymore in the favorites
-     * list.
+     * Used when a contact is removed from speeddial. This will both unstar and set pinned position of
+     * the contact to PinnedPosition.DEMOTED so that it doesn't show up anymore in the favorites list.
      */
     private void unstarAndUnpinContact(Uri contactUri) {
         final ContentValues values = new ContentValues(2);
@@ -567,17 +567,12 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
     }
 
     /**
-     * Given a list of contacts that each have pinned positions, rearrange the list (destructive)
-     * such
-     * that all pinned contacts are in their defined pinned positions, and unpinned contacts take
-     * the
-     * spaces between those pinned contacts. Demoted contacts should not appear in the resulting
-     * list.
+     * Given a list of contacts that each have pinned positions, rearrange the list (destructive) such
+     * that all pinned contacts are in their defined pinned positions, and unpinned contacts take the
+     * spaces between those pinned contacts. Demoted contacts should not appear in the resulting list.
      *
-     * <p>This method also updates the pinned positions of pinned contacts so that they are all
-     * unique
-     * positive integers within range from 0 to toArrange.size() - 1. This is because when the
-     * contact
+     * <p>This method also updates the pinned positions of pinned contacts so that they are all unique
+     * positive integers within range from 0 to toArrange.size() - 1. This is because when the contact
      * entries are read from the database, it is possible for them to have overlapping pin positions
      * due to sync or modifications by third party apps.
      */
@@ -634,8 +629,7 @@ public class PhoneFavoritesTileAdapter extends BaseAdapter implements OnDragDrop
     /**
      * Given an existing list of contact entries and a single entry that is to be pinned at a
      * particular position, return a list of {@link ContentProviderOperation}s that contains new
-     * pinned positions for all contacts that are forced to be pinned at new positions, trying as
-     * much
+     * pinned positions for all contacts that are forced to be pinned at new positions, trying as much
      * as possible to keep pinned contacts at their original location.
      *
      * <p>At this point in time the pinned position of each contact in the list has already been

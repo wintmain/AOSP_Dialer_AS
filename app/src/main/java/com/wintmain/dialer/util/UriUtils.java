@@ -76,8 +76,7 @@ public class UriUtils {
     }
 
     /**
-     * @return {@code uri} as-is if the authority is of contacts provider. Otherwise or {@code
-     * uri} is
+     * @return {@code uri} as-is if the authority is of contacts provider. Otherwise or {@code uri} is
      * null, return null otherwise
      */
     public static Uri nullForNonContactsUri(Uri uri) {

@@ -22,12 +22,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blocking.BlockedNumbersMigrator;
 import com.wintmain.dialer.blocking.FilteredNumberCompat;
@@ -60,10 +62,8 @@ public class BlockedNumbersFragment extends ListFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        getListView().addHeaderView(
-                View.inflate(getContext(), R.layout.blocked_number_header, null));
-        getListView().addFooterView(
-                View.inflate(getContext(), R.layout.blocked_number_footer, null));
+        getListView().addHeaderView(View.inflate(getContext(), R.layout.blocked_number_header, null));
+        getListView().addFooterView(View.inflate(getContext(), R.layout.blocked_number_footer, null));
 
         if (adapter == null) {
             adapter =
@@ -179,8 +179,7 @@ public class BlockedNumbersFragment extends ListFragment
 
     @Override
     public void onClick(final View view) {
-        final BlockedNumbersSettingsActivity activity =
-                (BlockedNumbersSettingsActivity) getActivity();
+        final BlockedNumbersSettingsActivity activity = (BlockedNumbersSettingsActivity) getActivity();
         if (activity == null) {
             return;
         }
@@ -199,8 +198,7 @@ public class BlockedNumbersFragment extends ListFragment
                             () -> {
                                 requireContext()
                                         .startActivity(
-                                                FilteredNumberCompat.createManageBlockedNumbersIntent(
-                                                        getContext()));
+                                                FilteredNumberCompat.createManageBlockedNumbersIntent(getContext()));
                                 // Remove this activity from the backstack
                                 activity.finish();
                             });

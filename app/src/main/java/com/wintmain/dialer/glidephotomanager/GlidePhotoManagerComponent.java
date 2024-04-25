@@ -17,7 +17,9 @@
 package com.wintmain.dialer.glidephotomanager;
 
 import android.content.Context;
+
 import com.wintmain.dialer.inject.HasRootComponent;
+
 import dagger.Subcomponent;
 
 /**

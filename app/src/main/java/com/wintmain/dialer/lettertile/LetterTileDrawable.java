@@ -18,15 +18,23 @@ package com.wintmain.dialer.lettertile;
 
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Outline;
+import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.telecom.TelecomManager;
 import android.text.TextUtils;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 
@@ -304,8 +312,7 @@ public class LetterTileDrawable extends Drawable {
     /**
      * Scale the drawn letter tile to a ratio of its default size
      *
-     * @param scale The ratio the letter tile should be scaled to as a percentage of its default
-     *              size,
+     * @param scale The ratio the letter tile should be scaled to as a percentage of its default size,
      *              from a scale of 0 to 2.0f. The default is 1.0f.
      */
     public void setScale(float scale) {
@@ -316,14 +323,10 @@ public class LetterTileDrawable extends Drawable {
      * Assigns the vertical offset of the position of the letter tile to the ContactDrawable
      *
      * @param offset The provided offset must be within the range of -0.5f to 0.5f. If set to -0.5f,
-     *               the letter will be shifted upwards by 0.5 times the height of the canvas it
-     *               is being drawn
-     *               on, which means it will be drawn with the center of the letter starting at
-     *               the top edge of
-     *               the canvas. If set to 0.5f, the letter will be shifted downwards by 0.5
-     *               times the height of
-     *               the canvas it is being drawn on, which means it will be drawn with the
-     *               center of the letter
+     *               the letter will be shifted upwards by 0.5 times the height of the canvas it is being drawn
+     *               on, which means it will be drawn with the center of the letter starting at the top edge of
+     *               the canvas. If set to 0.5f, the letter will be shifted downwards by 0.5 times the height of
+     *               the canvas it is being drawn on, which means it will be drawn with the center of the letter
      *               starting at the bottom edge of the canvas. The default is 0.0f.
      */
     public void setOffset(float offset) {
@@ -370,8 +373,7 @@ public class LetterTileDrawable extends Drawable {
     /**
      * Creates a canonical letter tile for use across dialer fragments.
      *
-     * @param displayName            The display name to produce the letter in the tile. Null
-     *                               values or numbers
+     * @param displayName            The display name to produce the letter in the tile. Null values or numbers
      *                               yield no letter.
      * @param identifierForTileColor The string used to produce the tile color.
      * @param shape                  The shape of the tile.
@@ -417,8 +419,7 @@ public class LetterTileDrawable extends Drawable {
     }
 
     /**
-     * Shape indicates the letter tile shape. It can be either a {@link #SHAPE_CIRCLE},
-     * otherwise, it
+     * Shape indicates the letter tile shape. It can be either a {@link #SHAPE_CIRCLE}, otherwise, it
      * is a {@link #SHAPE_RECTANGLE}.
      */
     @Retention(RetentionPolicy.SOURCE)

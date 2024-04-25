@@ -24,7 +24,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
+
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.glidephotomanager.GlidePhotoManager;
@@ -77,20 +79,17 @@ public final class ContactPhotoView extends FrameLayout {
 
         // We require both the height and the width to be WRAP_CONTENT to prevent users of
         // this widget from clipping the view (by setting a size that is too small) or altering the
-        // relative position of the contact photo and its badge (by setting a size that is too
-        // large).
+        // relative position of the contact photo and its badge (by setting a size that is too large).
         ViewGroup.LayoutParams layoutParams = Assert.isNotNull(getLayoutParams());
         Assert.checkState(
                 layoutParams.height == LayoutParams.WRAP_CONTENT,
                 "The layout height must be WRAP_CONTENT!");
         Assert.checkState(
-                layoutParams.width == LayoutParams.WRAP_CONTENT,
-                "The layout width must be WRAP_CONTENT!");
+                layoutParams.width == LayoutParams.WRAP_CONTENT, "The layout width must be WRAP_CONTENT!");
     }
 
     private void inflateLayout() {
-        LayoutInflater inflater = Assert.isNotNull(
-                getContext().getSystemService(LayoutInflater.class));
+        LayoutInflater inflater = Assert.isNotNull(getContext().getSystemService(LayoutInflater.class));
         inflater.inflate(R.layout.contact_photo_view, /* root = */ this);
     }
 
@@ -120,8 +119,7 @@ public final class ContactPhotoView extends FrameLayout {
             videoCallBadge.setVisibility(View.VISIBLE);
             // Normally a video call can't be RTT call and vice versa.
             // (a bug): In theory a video call could be downgraded to voice and upgraded to RTT call
-            // again, this might end up a call with video and RTT features both set. Update logic
-            // here if
+            // again, this might end up a call with video and RTT features both set. Update logic here if
             // that could happen. Also update {@link Coalescer#meetsCallFeatureCriteria}.
             rttCallBadge.setVisibility(View.GONE);
         } else if (photoInfo.getIsRtt()) {

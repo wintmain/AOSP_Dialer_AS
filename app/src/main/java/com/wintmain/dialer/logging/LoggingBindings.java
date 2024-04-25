@@ -17,7 +17,6 @@ package com.wintmain.dialer.logging;
 import android.app.Activity;
 import android.widget.QuickContactBadge;
 import com.google.auto.value.AutoValue;
-
 import java.util.Collection;
 
 /** Allows the container application to gather analytics. */
@@ -41,8 +40,8 @@ public interface LoggingBindings {
     /**
      * Logs an impression for a general dialer event that's associated with a specific call.
      *
-     * @param dialerImpression    an integer representing what event occurred.
-     * @param callId              unique ID of the call.
+     * @param dialerImpression an integer representing what event occurred.
+     * @param callId unique ID of the call.
      * @param callStartTimeMillis the absolute time when the call started.
      */
     void logCallImpression(
@@ -60,7 +59,7 @@ public interface LoggingBindings {
      * Logs an event indicating that a screen was displayed.
      *
      * @param screenEvent an integer representing the displayed screen.
-     * @param activity    Parent activity of the displayed screen.
+     * @param activity Parent activity of the displayed screen.
      * @see com.wintmain.dialer.logging.ScreenEvent
      */
     void logScreenView(com.wintmain.dialer.logging.ScreenEvent.Type screenEvent, Activity activity);
@@ -106,13 +105,6 @@ public interface LoggingBindings {
     /** Input type for {@link #logContactsProviderMetrics(Collection)}. */
     @AutoValue
     abstract class ContactsProviderMatchInfo {
-        public static Builder builder() {
-            return new AutoValue_LoggingBindings_ContactsProviderMatchInfo.Builder()
-                    .setMatchedContact(false)
-                    .setMatchedNumberLength(0)
-                    .setMatchedNumberHasPostdialDigits(false);
-        }
-
         public abstract boolean matchedContact();
 
         public abstract boolean inputNumberValid();
@@ -124,6 +116,13 @@ public interface LoggingBindings {
         public abstract boolean inputNumberHasPostdialDigits();
 
         public abstract boolean matchedNumberHasPostdialDigits();
+
+        public static Builder builder() {
+            return new AutoValue_LoggingBindings_ContactsProviderMatchInfo.Builder()
+                    .setMatchedContact(false)
+                    .setMatchedNumberLength(0)
+                    .setMatchedNumberHasPostdialDigits(false);
+        }
 
         /** Builder. */
         @AutoValue.Builder

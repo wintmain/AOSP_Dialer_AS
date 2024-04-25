@@ -18,6 +18,7 @@ package com.wintmain.dialer.calldetails;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.wintmain.dialer.calldetails.CallDetailsEntryViewHolder.CallDetailsEntryListener;
 import com.wintmain.dialer.calldetails.CallDetailsFooterViewHolder.DeleteCallDetailsListener;
 import com.wintmain.dialer.calldetails.CallDetailsFooterViewHolder.ReportCallIdListener;
@@ -46,8 +47,7 @@ public final class OldCallDetailsActivity extends CallDetailsActivityCommon {
 
     public static boolean isLaunchIntent(Intent intent) {
         return intent.getComponent() != null
-                && OldCallDetailsActivity.class.getName().equals(
-                intent.getComponent().getClassName());
+                && OldCallDetailsActivity.class.getName().equals(intent.getComponent().getClassName());
     }
 
     /**
@@ -74,12 +74,10 @@ public final class OldCallDetailsActivity extends CallDetailsActivityCommon {
         Assert.checkArgument(intent.hasExtra(EXTRA_CAN_REPORT_CALLER_ID));
         Assert.checkArgument(intent.hasExtra(EXTRA_CAN_SUPPORT_ASSISTED_DIALING));
 
-        contact = ProtoParsers.getTrusted(intent, EXTRA_CONTACT,
-                DialerContact.getDefaultInstance());
+        contact = ProtoParsers.getTrusted(intent, EXTRA_CONTACT, DialerContact.getDefaultInstance());
         setCallDetailsEntries(
                 ProtoParsers.getTrusted(
-                        intent, EXTRA_CALL_DETAILS_ENTRIES,
-                        CallDetailsEntries.getDefaultInstance()));
+                        intent, EXTRA_CALL_DETAILS_ENTRIES, CallDetailsEntries.getDefaultInstance()));
         loadRttTranscriptAvailability();
     }
 

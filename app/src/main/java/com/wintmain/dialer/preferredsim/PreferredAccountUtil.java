@@ -21,12 +21,14 @@ import android.content.Context;
 import android.telecom.PhoneAccountHandle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Utilities for looking up and validating preferred {@link PhoneAccountHandle}. Contacts should
@@ -40,8 +42,7 @@ public class PreferredAccountUtil {
      */
     @NonNull
     public static Optional<PhoneAccountHandle> getValidPhoneAccount(
-            @NonNull Context context, @Nullable String componentNameString,
-            @Nullable String idString) {
+            @NonNull Context context, @Nullable String componentNameString, @Nullable String idString) {
         if (TextUtils.isEmpty(componentNameString) || TextUtils.isEmpty(idString)) {
             LogUtil.i("PreferredAccountUtil.getValidPhoneAccount", "empty componentName or id");
             return Optional.absent();
@@ -69,8 +70,7 @@ public class PreferredAccountUtil {
     }
 
     /**
-     * Return a set of {@link android.accounts.Account#type} that is known to have writable
-     * contacts.
+     * Return a set of {@link android.accounts.Account#type} that is known to have writable contacts.
      * This is a light weight implementation of {@link
      * com.android.contacts.common.model.AccountTypeManager#getAccountTypes(boolean)}. External
      * accounts are not supported.

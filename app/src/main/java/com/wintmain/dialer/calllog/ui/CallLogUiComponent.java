@@ -23,12 +23,12 @@ import dagger.Subcomponent;
 @Subcomponent
 public abstract class CallLogUiComponent {
 
+    public abstract RealtimeRowProcessor realtimeRowProcessor();
+
     public static CallLogUiComponent get(Context context) {
         return ((HasComponent) ((HasRootComponent) context.getApplicationContext()).component())
                 .callLogUiComponent();
     }
-
-    public abstract RealtimeRowProcessor realtimeRowProcessor();
 
     /** Used to refer to the root application component. */
     public interface HasComponent {

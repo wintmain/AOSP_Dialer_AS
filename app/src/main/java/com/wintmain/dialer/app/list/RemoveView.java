@@ -25,6 +25,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.wintmain.dialer.R;
 
 public class RemoveView extends FrameLayout {
@@ -78,15 +79,13 @@ public class RemoveView extends FrameLayout {
                 break;
             case DragEvent.ACTION_DRAG_LOCATION:
                 if (dragDropController != null) {
-                    dragDropController.handleDragHovered(this, (int) event.getX(),
-                            (int) event.getY());
+                    dragDropController.handleDragHovered(this, (int) event.getX(), (int) event.getY());
                 }
                 break;
             case DragEvent.ACTION_DROP:
                 sendAccessibilityEvent(AccessibilityEvent.TYPE_ANNOUNCEMENT);
                 if (dragDropController != null) {
-                    dragDropController.handleDragFinished((int) event.getX(), (int) event.getY(),
-                            true);
+                    dragDropController.handleDragFinished((int) event.getX(), (int) event.getY(), true);
                 }
                 setAppearanceNormal();
                 break;

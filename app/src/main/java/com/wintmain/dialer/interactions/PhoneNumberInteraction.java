@@ -17,8 +17,16 @@ package com.wintmain.dialer.interactions;
 
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
-import android.app.*;
-import android.content.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.Loader;
 import android.content.Loader.OnLoadCompleteListener;
 import android.database.Cursor;
 import android.net.Uri;
@@ -37,11 +45,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import com.android.contacts.common.Collapser;
 import com.android.contacts.common.Collapser.Collapsible;
 import com.android.contacts.common.MoreContactUtils;
@@ -143,8 +153,7 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
                             context,
                             new CallIntentBuilder(phoneNumber, callSpecificAppData)
                                     .setIsVideoCall(isVideoCall)
-                                    .setAllowAssistedDial(
-                                            callSpecificAppData.getAllowAssistedDialing()));
+                                    .setAllowAssistedDial(callSpecificAppData.getAllowAssistedDialing()));
         }
         DialerUtils.startActivityWithErrorToast(context, intent);
     }
@@ -176,14 +185,11 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
      * @param uri Contact Uri
      */
     private void startInteraction(Uri uri) {
-        // It's possible for a shortcut to have been created, and then permissions revoked. To
-        // avoid a
-        // crash when the user tries to use such a shortcut, check for this condition and ask the
-        // user
+        // It's possible for a shortcut to have been created, and then permissions revoked. To avoid a
+        // crash when the user tries to use such a shortcut, check for this condition and ask the user
         // for the permission.
         if (!PermissionsUtil.hasPhonePermissions(context)) {
-            LogUtil.i("PhoneNumberInteraction.startInteraction",
-                    "Need phone permission: CALL_PHONE");
+            LogUtil.i("PhoneNumberInteraction.startInteraction", "Need phone permission: CALL_PHONE");
             ActivityCompat.requestPermissions(
                     (Activity) context, new String[]{permission.CALL_PHONE}, REQUEST_CALL_PHONE);
             return;
@@ -221,8 +227,7 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
 
         loader =
                 new CursorLoader(
-                        context, queryUri, PHONE_NUMBER_PROJECTION, PHONE_NUMBER_SELECTION, null,
-                        null);
+                        context, queryUri, PHONE_NUMBER_PROJECTION, PHONE_NUMBER_SELECTION, null, null);
         loader.registerListener(0, this);
         loader.startLoading();
     }
@@ -348,8 +353,7 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
 
     /**
      * Activities which use this class must implement this. They will be notified if there was an
-     * error performing the interaction. For example, this callback will be invoked on the
-     * activity if
+     * error performing the interaction. For example, this callback will be invoked on the activity if
      * the contact URI provided points to a deleted contact, or to a contact without a phone number.
      */
     public interface InteractionErrorListener {
@@ -358,8 +362,7 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
     }
 
     /**
-     * Activities which use this class must implement this. They will be notified if the phone
-     * number
+     * Activities which use this class must implement this. They will be notified if the phone number
      * disambiguation dialog is dismissed.
      */
     public interface DisambigDialogDismissedListener {
@@ -432,8 +435,7 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
         @Override
         public boolean shouldCollapseWith(PhoneItem phoneItem, Context context) {
             return MoreContactUtils.shouldCollapse(
-                    Phone.CONTENT_ITEM_TYPE, phoneNumber, Phone.CONTENT_ITEM_TYPE,
-                    phoneItem.phoneNumber);
+                    Phone.CONTENT_ITEM_TYPE, phoneNumber, Phone.CONTENT_ITEM_TYPE, phoneItem.phoneNumber);
         }
 
         @NonNull
@@ -548,8 +550,7 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
                 final PhoneItem phoneItem = phoneList.get(which);
                 final CheckBox checkBox = (CheckBox) alertDialog.findViewById(R.id.setPrimary);
                 if (checkBox.isChecked()) {
-                    if (callSpecificAppData.getCallInitiationType()
-                            == CallInitiationType.Type.SPEED_DIAL) {
+                    if (callSpecificAppData.getCallInitiationType() == CallInitiationType.Type.SPEED_DIAL) {
                         Logger.get(getContext())
                                 .logInteraction(
                                         InteractionEvent.Type.SPEED_DIAL_SET_DEFAULT_NUMBER_FOR_AMBIGUOUS_CONTACT);
@@ -557,14 +558,12 @@ public class PhoneNumberInteraction implements OnLoadCompleteListener<Cursor> {
 
                     // Request to mark the data as primary in the background.
                     final Intent serviceIntent =
-                            ContactUpdateService.createSetSuperPrimaryIntent(activity,
-                                    phoneItem.id);
+                            ContactUpdateService.createSetSuperPrimaryIntent(activity, phoneItem.id);
                     activity.startService(serviceIntent);
                 }
 
                 PhoneNumberInteraction.performAction(
-                        activity, phoneItem.phoneNumber, interactionType, isVideoCall,
-                        callSpecificAppData);
+                        activity, phoneItem.phoneNumber, interactionType, isVideoCall, callSpecificAppData);
             } else {
                 dialog.dismiss();
             }

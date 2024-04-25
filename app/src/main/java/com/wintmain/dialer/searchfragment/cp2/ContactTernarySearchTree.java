@@ -17,6 +17,7 @@
 package com.wintmain.dialer.searchfragment.cp2;
 
 import android.text.TextUtils;
+
 import androidx.collection.ArraySet;
 
 import java.util.Set;

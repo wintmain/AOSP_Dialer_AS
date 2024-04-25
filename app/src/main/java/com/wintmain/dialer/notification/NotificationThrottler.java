@@ -21,13 +21,20 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Utility to ensure that only a certain number of notifications are shown for a particular
@@ -36,8 +43,7 @@ import java.util.*;
 class NotificationThrottler {
     /**
      * For gropued bundled notifications, the system UI will only display the last 8. For grouped
-     * unbundled notifications, the system displays all notifications until a global maximum of
-     * 50 is
+     * unbundled notifications, the system displays all notifications until a global maximum of 50 is
      * reached.
      */
     private static final int MAX_NOTIFICATIONS_PER_TAG = 8;
@@ -45,9 +51,6 @@ class NotificationThrottler {
     private static final int HIGH_GLOBAL_NOTIFICATION_COUNT = 45;
 
     private static boolean didLogHighGlobalNotificationCountReached;
-
-    private NotificationThrottler() {
-    }
 
     /**
      * For all the active notifications in the same group as the provided notification, cancel the
@@ -68,8 +71,7 @@ class NotificationThrottler {
             return throttledNotificationSet;
         }
 
-        NotificationManager notificationManager = context.getSystemService(
-                NotificationManager.class);
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         StatusBarNotification[] activeNotifications = notificationManager.getActiveNotifications();
         if (activeNotifications.length > HIGH_GLOBAL_NOTIFICATION_COUNT
                 && !didLogHighGlobalNotificationCountReached) {
@@ -97,11 +99,9 @@ class NotificationThrottler {
                     groupKey,
                     count,
                     MAX_NOTIFICATIONS_PER_TAG);
-            List<StatusBarNotification> notifications = getSortedMatchingNotifications(context,
-                    groupKey);
+            List<StatusBarNotification> notifications = getSortedMatchingNotifications(context, groupKey);
             for (int i = 0; i < (count - MAX_NOTIFICATIONS_PER_TAG); i++) {
-                notificationManager.cancel(notifications.get(i).getTag(),
-                        notifications.get(i).getId());
+                notificationManager.cancel(notifications.get(i).getTag(), notifications.get(i).getId());
                 throttledNotificationSet.add(notifications.get(i));
             }
         }
@@ -111,8 +111,7 @@ class NotificationThrottler {
     private static List<StatusBarNotification> getSortedMatchingNotifications(
             @NonNull Context context, @NonNull String groupKey) {
         List<StatusBarNotification> notifications = new ArrayList<>();
-        NotificationManager notificationManager = context.getSystemService(
-                NotificationManager.class);
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         for (StatusBarNotification notification : notificationManager.getActiveNotifications()) {
             if (isNotificationInGroup(notification, groupKey)) {
                 notifications.add(notification);
@@ -138,4 +137,6 @@ class NotificationThrottler {
 
         return TextUtils.equals(groupKey, notification.getNotification().getGroup());
     }
+
+    private NotificationThrottler() {}
 }

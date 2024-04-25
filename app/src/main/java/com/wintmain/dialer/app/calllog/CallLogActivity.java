@@ -15,6 +15,8 @@
  */
 package com.wintmain.dialer.app.calllog;
 
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.ActionBar;
@@ -33,8 +36,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import com.android.contacts.common.list.ViewPagerTabs;
-import com.google.android.material.snackbar.Snackbar;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.settings.DialerSettingsActivityCompt;
 import com.wintmain.dialer.calldetails.OldCallDetailsActivity;
@@ -49,10 +52,9 @@ import com.wintmain.dialer.main.impl.MainActivityPeer;
 import com.wintmain.dialer.performancereport.PerformanceReport;
 import com.wintmain.dialer.postcall.PostCall;
 import com.wintmain.dialer.util.ViewUtil;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
-
-import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
 
 /**
  * Activity for viewing call history.
@@ -80,15 +82,12 @@ public class CallLogActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         Boolean conf = MainActivity.getBoolConfigUsingLatestAbout();
         if (!conf) {
-            DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior mThemeBehavior =
-                    getThemeButtonBehavior(MainActivityPeer.themeprefs);
+            DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior mThemeBehavior = getThemeButtonBehavior(MainActivityPeer.themeprefs);
 
-            if (mThemeBehavior
-                    == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK) {
+            if (mThemeBehavior == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK) {
                 getTheme().applyStyle(R.style.DialerDark, true);
             }
-            if (mThemeBehavior
-                    == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT) {
+            if (mThemeBehavior == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT) {
                 getTheme().applyStyle(R.style.DialerLight, true);
             }
         }
@@ -257,18 +256,13 @@ public class CallLogActivity extends AppCompatActivity
         if (requestCode == ActivityRequestCodes.DIALTACTS_CALL_DETAILS) {
             if (resultCode == RESULT_OK
                     && data != null
-                    && data.getBooleanExtra(OldCallDetailsActivity.EXTRA_HAS_ENRICHED_CALL_DATA,
-                    false)) {
+                    && data.getBooleanExtra(OldCallDetailsActivity.EXTRA_HAS_ENRICHED_CALL_DATA, false)) {
                 String number = data.getStringExtra(OldCallDetailsActivity.EXTRA_PHONE_NUMBER);
-                Snackbar.make(findViewById(R.id.calllog_frame), getString(R.string.ec_data_deleted),
-                                5_000)
+                Snackbar.make(findViewById(R.id.calllog_frame), getString(R.string.ec_data_deleted), 5_000)
                         .setAction(
                                 R.string.view_conversation,
-                                v -> startActivity(IntentProvider.getSendSmsIntentProvider(number)
-                                        .getIntent(this)))
-                        .setActionTextColor(
-                                getResources().getColor(R.color.dialer_snackbar_action_text_color,
-                                        null))
+                                v -> startActivity(IntentProvider.getSendSmsIntentProvider(number).getIntent(this)))
+                        .setActionTextColor(getResources().getColor(R.color.dialer_snackbar_action_text_color, null))
                         .show();
             }
         }
@@ -313,8 +307,7 @@ public class CallLogActivity extends AppCompatActivity
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            final CallLogFragment fragment = (CallLogFragment) super.instantiateItem(container,
-                    position);
+            final CallLogFragment fragment = (CallLogFragment) super.instantiateItem(container, position);
             switch (getRtlPosition(position)) {
                 case TAB_INDEX_ALL:
                 case TAB_INDEX_DIVIDER:

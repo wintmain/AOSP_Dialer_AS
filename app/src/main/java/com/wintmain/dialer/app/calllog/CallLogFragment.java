@@ -16,6 +16,9 @@
 
 package com.wintmain.dialer.app.calllog;
 
+import static android.Manifest.permission.READ_CALL_LOG;
+import static com.wintmain.dialer.app.contactinfo.ExpirableCacheHeadlessFragment.attach;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -41,6 +44,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -49,6 +53,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.Bindings;
 import com.wintmain.dialer.app.calllog.CallLogAdapter.CallFetcher;
@@ -77,9 +82,6 @@ import com.wintmain.dialer.widget.EmptyContentView;
 import com.wintmain.dialer.widget.EmptyContentView.OnEmptyViewActionButtonClickedListener;
 
 import java.util.Objects;
-
-import static android.Manifest.permission.READ_CALL_LOG;
-import static com.wintmain.dialer.app.contactinfo.ExpirableCacheHeadlessFragment.attach;
 
 /**
  * Displays a list of call log entries. To filter for a particular kind of call (all, missed or
@@ -160,7 +162,19 @@ public class CallLogFragment extends Fragment
 
     public CallLogFragment(int filterType) {
         this(filterType, NO_LOG_LIMIT);
-    }
+    }    @SuppressLint("HandlerLeak")
+    private final Handler displayUpdateHandler =
+            new Handler(Looper.myLooper()) {
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == EVENT_UPDATE_DISPLAY) {
+                        refreshData();
+                        rescheduleDisplayUpdate();
+                    } else {
+                        throw Assert.createAssertionFailException("Invalid message: " + msg);
+                    }
+                }
+            };
 
     public CallLogFragment(int filterType, boolean isCallLogActivity) {
         this(filterType, NO_LOG_LIMIT);
@@ -220,8 +234,7 @@ public class CallLogFragment extends Fragment
                     recyclerView.getPaddingStart(),
                     0,
                     recyclerView.getPaddingEnd(),
-                    getResources().getDimensionPixelSize(
-                            R.dimen.floating_action_button_list_bottom_padding));
+                    getResources().getDimensionPixelSize(R.dimen.floating_action_button_list_bottom_padding));
             emptyListView.setVisibility(View.GONE);
         } else {
             recyclerView.setPaddingRelative(
@@ -283,22 +296,19 @@ public class CallLogFragment extends Fragment
 
     protected void setupView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view);
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(50,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(50, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView,
-                    @NonNull RecyclerView.ViewHolder viewHolder,
-                    @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
-                if (holder instanceof CallLogListItemViewHolder viewHolder) {
+                if (holder instanceof CallLogListItemViewHolder) {
+                    CallLogListItemViewHolder viewHolder = ((CallLogListItemViewHolder) holder);
                     if (direction == ItemTouchHelper.LEFT) {
-                        requireContext().startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.fromParts("sms", viewHolder.number, null)));
+                        requireContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", viewHolder.number, null)));
                         adapter.notifyItemChanged(holder.getAdapterPosition());
                     } else {
                         //TODO: Make it thread safe
@@ -306,50 +316,32 @@ public class CallLogFragment extends Fragment
                                 .getContentResolver()
                                 .delete(
                                         CallLog.Calls.CONTENT_URI,
-                                        CallLog.Calls._ID + " IN (" + concatCallIds(
-                                                viewHolder.callIds) + ")" /* where */,
+                                        CallLog.Calls._ID + " IN (" + concatCallIds(viewHolder.callIds) + ")" /* where */,
                                         null /* selectionArgs */);
                     }
                 }
             }
 
             @Override
-            public void onChildDraw(@NonNull Canvas canvas, @NonNull RecyclerView recyclerView,
-                    @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
-                    int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(@NonNull Canvas canvas, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     boolean isTowardsRight = dX > 0;
-                    Drawable icon = isTowardsRight ? ContextCompat.getDrawable(
-                            recyclerView.getContext(), R.drawable.quantum_ic_delete_vd_theme_24)
-                            : ContextCompat.getDrawable(recyclerView.getContext(),
-                                    R.drawable.quantum_ic_message_vd_theme_24);
+                    Drawable icon = isTowardsRight ? ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.quantum_ic_delete_vd_theme_24) : ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.quantum_ic_message_vd_theme_24);
                     int iconHorizontalMargin = 20;
                     int halfIconSize = Objects.requireNonNull(icon).getIntrinsicHeight() / 2;
-                    int top = viewHolder.itemView.getTop() + (
-                            (viewHolder.itemView.getBottom() - viewHolder.itemView.getTop()) / 2
-                                    - halfIconSize);
+                    int top = viewHolder.itemView.getTop() + ((viewHolder.itemView.getBottom() - viewHolder.itemView.getTop()) / 2 - halfIconSize);
                     if (dX > 0) { // Right swipe
-                        canvas.clipRect(viewHolder.itemView.getLeft(), viewHolder.itemView.getTop(),
-                                viewHolder.itemView.getLeft() + (int) dX,
-                                viewHolder.itemView.getBottom());
-                        icon.setBounds(viewHolder.itemView.getLeft() + iconHorizontalMargin, top,
-                                viewHolder.itemView.getLeft() + iconHorizontalMargin
-                                        + icon.getIntrinsicWidth(), top + icon.getIntrinsicHeight()
+                        canvas.clipRect(viewHolder.itemView.getLeft(), viewHolder.itemView.getTop(), viewHolder.itemView.getLeft() + (int) dX, viewHolder.itemView.getBottom());
+                        icon.setBounds(viewHolder.itemView.getLeft() + iconHorizontalMargin, top, viewHolder.itemView.getLeft() + iconHorizontalMargin + icon.getIntrinsicWidth(), top + icon.getIntrinsicHeight()
                         );
                     } else if (dX < 0) { // Left swipe
-                        canvas.clipRect(viewHolder.itemView.getRight() + (int) dX,
-                                viewHolder.itemView.getTop(), viewHolder.itemView.getRight(),
-                                viewHolder.itemView.getBottom());
-                        int imgLeft = viewHolder.itemView.getRight() - iconHorizontalMargin
-                                - halfIconSize * 2;
-                        icon.setBounds(imgLeft, top,
-                                viewHolder.itemView.getRight() - iconHorizontalMargin,
-                                top + icon.getIntrinsicHeight());
+                        canvas.clipRect(viewHolder.itemView.getRight() + (int) dX, viewHolder.itemView.getTop(), viewHolder.itemView.getRight(), viewHolder.itemView.getBottom());
+                        int imgLeft = viewHolder.itemView.getRight() - iconHorizontalMargin - halfIconSize * 2;
+                        icon.setBounds(imgLeft, top, viewHolder.itemView.getRight() - iconHorizontalMargin, top + icon.getIntrinsicHeight());
                     }
                     icon.draw(canvas);
                 }
-                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState,
-                        isCurrentlyActive);
+                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
 
@@ -363,8 +355,7 @@ public class CallLogFragment extends Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(
                 new RecyclerViewJankLogger(
-                        MetricsComponent.get(requireContext()).metrics(),
-                        Metrics.OLD_CALL_LOG_JANK_EVENT_NAME));
+                        MetricsComponent.get(requireContext()).metrics(), Metrics.OLD_CALL_LOG_JANK_EVENT_NAME));
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         PerformanceReport.logOnScrollStateChange(recyclerView);
@@ -373,8 +364,7 @@ public class CallLogFragment extends Fragment
         emptyListView.setActionClickedListener(this);
         modalAlertView = view.findViewById(R.id.modal_message_container);
         modalAlertManager =
-                new CallLogModalAlertManager(LayoutInflater.from(getContext()), modalAlertView,
-                        this);
+                new CallLogModalAlertManager(LayoutInflater.from(getContext()), modalAlertView, this);
         multiSelectUnSelectAllViewContent =
                 view.findViewById(R.id.multi_select_select_all_view_content);
         TextView selectUnselectAllViewText = view.findViewById(R.id.select_all_view_text);
@@ -402,12 +392,10 @@ public class CallLogFragment extends Fragment
                                 recyclerView,
                                 this,
                                 this,
-                                // We aren't calling getParentUnsafe because CallLogActivity
-                                // doesn't need to
+                                // We aren't calling getParentUnsafe because CallLogActivity doesn't need to
                                 // implement this listener
                                 FragmentUtils.getParent(
-                                        this,
-                                        CallLogAdapter.OnActionModeStateChangedListener.class),
+                                        this, CallLogAdapter.OnActionModeStateChangedListener.class),
                                 new CallLogCache(getActivity()),
                                 contactInfoCache,
                                 new FilteredNumberAsyncQueryHandler(requireActivity()),
@@ -426,19 +414,7 @@ public class CallLogFragment extends Fragment
         setupData();
         updateSelectAllState(savedInstanceState);
         adapter.onRestoreInstanceState(savedInstanceState);
-    }    @SuppressLint("HandlerLeak")
-    private final Handler displayUpdateHandler =
-            new Handler(Looper.myLooper()) {
-                @Override
-                public void handleMessage(Message msg) {
-                    if (msg.what == EVENT_UPDATE_DISPLAY) {
-                        refreshData();
-                        rescheduleDisplayUpdate();
-                    } else {
-                        throw Assert.createAssertionFailException("Invalid message: " + msg);
-                    }
-                }
-            };
+    }
 
     private void updateSelectAllState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -561,8 +537,7 @@ public class CallLogFragment extends Fragment
                 && getActivity() != null
                 && !getActivity().isFinishing()
                 && FragmentUtils.getParent(this, CallLogFragmentListener.class) != null) {
-            FragmentUtils.getParentUnsafe(this, CallLogFragmentListener.class)
-                    .updateTabUnreadCounts();
+            FragmentUtils.getParentUnsafe(this, CallLogFragmentListener.class).updateTabUnreadCounts();
         }
     }
 
@@ -671,8 +646,7 @@ public class CallLogFragment extends Fragment
             // This value allows us to change the display relatively close to when the time changes
             // from one minute to the next.
             long millisUtilNextMinute = MILLIS_IN_MINUTE - (time % MILLIS_IN_MINUTE);
-            displayUpdateHandler.sendEmptyMessageDelayed(EVENT_UPDATE_DISPLAY,
-                    millisUtilNextMinute);
+            displayUpdateHandler.sendEmptyMessageDelayed(EVENT_UPDATE_DISPLAY, millisUtilNextMinute);
         }
     }
 
@@ -745,10 +719,8 @@ public class CallLogFragment extends Fragment
             FragmentUtils.getParentUnsafe(this, CallLogFragmentListener.class)
                     .showMultiSelectRemoveView(true);
         } else {
-            // This method is called after onDestroy. In DialtactsActivity, ListsFragment
-            // implements this
-            // interface and never goes away with configuration changes so this is safe.
-            // MainActivity
+            // This method is called after onDestroy. In DialtactsActivity, ListsFragment implements this
+            // interface and never goes away with configuration changes so this is safe. MainActivity
             // removes that extra layer though, so we need to check if the parent is still there.
             CallLogFragmentListener listener =
                     FragmentUtils.getParent(this, CallLogFragmentListener.class);
@@ -778,8 +750,7 @@ public class CallLogFragment extends Fragment
         if (selectAllMode) {
             Logger.get(v.getContext()).logImpression(DialerImpression.Type.MULTISELECT_SELECT_ALL);
         } else {
-            Logger.get(v.getContext()).logImpression(
-                    DialerImpression.Type.MULTISELECT_UNSELECT_ALL);
+            Logger.get(v.getContext()).logImpression(DialerImpression.Type.MULTISELECT_UNSELECT_ALL);
         }
         updateSelectAllIcon();
     }
@@ -809,10 +780,8 @@ public class CallLogFragment extends Fragment
     public interface CallLogFragmentListener {
 
         /**
-         * External method to update unread count because the unread count changes when the user
-         * expands
-         * a voicemail in the call log or when the user expands an unread call in the call
-         * history tab.
+         * External method to update unread count because the unread count changes when the user expands
+         * a voicemail in the call log or when the user expands an unread call in the call history tab.
          */
         void updateTabUnreadCounts();
 

@@ -17,6 +17,7 @@
 package com.wintmain.dialer.feedback.stub;
 
 import android.content.Context;
+
 import com.android.incallui.call.CallList;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.feedback.FeedbackSender;
@@ -26,6 +27,7 @@ import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.logging.LoggingBindings;
 import com.wintmain.dialer.logging.LoggingBindingsFactory;
 import com.wintmain.dialer.logging.LoggingBindingsStub;
+
 import dagger.Module;
 import dagger.Provides;
 

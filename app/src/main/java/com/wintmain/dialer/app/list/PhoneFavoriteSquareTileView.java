@@ -22,6 +22,7 @@ import android.provider.ContactsContract.QuickContact;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.android.contacts.common.list.ContactEntry;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.logging.InteractionEvent;

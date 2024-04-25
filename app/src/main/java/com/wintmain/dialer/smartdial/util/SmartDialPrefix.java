@@ -20,8 +20,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceManager;
+
 import com.wintmain.dialer.smartdial.map.CompositeSmartDialMap;
 
 import java.util.ArrayList;
@@ -39,10 +41,8 @@ public class SmartDialPrefix {
 
     /**
      * The number of starting and ending tokens in a contact's name considered for initials. For
-     * example, if both constants are set to 2, and a contact's name is "Albert Ben Charles
-     * Daniel Ed
-     * Foster", the first two tokens "Albert" "Ben", and last two tokens "Ed" "Foster" can be
-     * replaced
+     * example, if both constants are set to 2, and a contact's name is "Albert Ben Charles Daniel Ed
+     * Foster", the first two tokens "Albert" "Ben", and last two tokens "Ed" "Foster" can be replaced
      * by their initials in contact name matching. Users can look up this contact by combinations of
      * his initials such as "AF" "BF" "EF" "ABF" "BEF" "ABEF" etc, but can not use combinations such
      * as "CF" "DF" "ACF" "ADF" etc.
@@ -173,11 +173,9 @@ public class SmartDialPrefix {
      * Computes a list of number strings based on tokens of a given phone number. Any prefix of any
      * string in the list can be used to look up the phone number. The list include the full phone
      * number, the national number if there is a country code in the phone number, and the local
-     * number if there is an area code in the phone number following the NANP format. For
-     * example, if
+     * number if there is an area code in the phone number following the NANP format. For example, if
      * a user has phone number +41 71 394 8392, the list will contain 41713948392 and 713948392. Any
-     * prefix to either of the strings can be used to look up the phone number. If a user has a
-     * phone
+     * prefix to either of the strings can be used to look up the phone number. If a user has a phone
      * number +1 555-302-3029 (NANP format), the list will contain 15553023029, 5553023029, and
      * 3023029.
      *

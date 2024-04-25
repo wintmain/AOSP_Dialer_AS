@@ -16,15 +16,18 @@
 
 package com.wintmain.dialer.calllog;
 
-import android.content.*;
+import android.content.ContentProviderOperation;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+
 import androidx.annotation.VisibleForTesting;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.NumberAttributes;
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
@@ -33,11 +36,13 @@ import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.protos.ProtoParsers;
-
-import javax.inject.Inject;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
+import javax.inject.Inject;
 
 /**
  * Update {@link Calls#CACHED_NAME} and other cached columns after the annotated call log has been
@@ -45,17 +50,16 @@ import java.util.stream.Stream;
  */
 public final class CallLogCacheUpdater {
 
-    /**
-     * Maximum numbers of operations the updater can do. Each transaction to the system call log
-     * will
-     * trigger a call log refresh, so the updater can only do a single batch. If there are more
-     * operations it will be truncated. Under normal circumstances there will only be 1 operation
-     */
-    @VisibleForTesting
-    static final int CACHE_UPDATE_LIMIT = 100;
     private final Context appContext;
     private final ListeningExecutorService backgroundExecutor;
     private final CallLogState callLogState;
+
+    /**
+     * Maximum numbers of operations the updater can do. Each transaction to the system call log will
+     * trigger a call log refresh, so the updater can only do a single batch. If there are more
+     * operations it will be truncated. Under normal circumstances there will only be 1 operation
+     */
+    @VisibleForTesting static final int CACHE_UPDATE_LIMIT = 100;
 
     @Inject
     CallLogCacheUpdater(
@@ -79,13 +83,10 @@ public final class CallLogCacheUpdater {
                 callLogState.isBuilt(),
                 isBuilt -> {
                     if (!isBuilt) {
-                        // Initial build might need to update 1000 caches, which may overflow the
-                        // batch
-                        // operation limit. The initial data was already built with the cache,
-                        // there's no need
+                        // Initial build might need to update 1000 caches, which may overflow the batch
+                        // operation limit. The initial data was already built with the cache, there's no need
                         // to update it.
-                        LogUtil.i("CallLogCacheUpdater.updateCache",
-                                "not updating cache for initial build");
+                        LogUtil.i("CallLogCacheUpdater.updateCache", "not updating cache for initial build");
                         return null;
                     }
                     updateCacheInternal(mutations);
@@ -97,8 +98,7 @@ public final class CallLogCacheUpdater {
     private void updateCacheInternal(CallLogMutations mutations) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         Stream.concat(
-                        mutations.getInserts().entrySet().stream(),
-                        mutations.getUpdates().entrySet().stream())
+                        mutations.getInserts().entrySet().stream(), mutations.getUpdates().entrySet().stream())
                 .limit(CACHE_UPDATE_LIMIT)
                 .forEach(
                         entry -> {
@@ -109,8 +109,7 @@ public final class CallLogCacheUpdater {
                             }
                             DialerPhoneNumber dialerPhoneNumber =
                                     ProtoParsers.getTrusted(
-                                            values, AnnotatedCallLog.NUMBER,
-                                            DialerPhoneNumber.getDefaultInstance());
+                                            values, AnnotatedCallLog.NUMBER, DialerPhoneNumber.getDefaultInstance());
                             NumberAttributes numberAttributes =
                                     ProtoParsers.getTrusted(
                                             values,
@@ -118,43 +117,31 @@ public final class CallLogCacheUpdater {
                                             NumberAttributes.getDefaultInstance());
                             operations.add(
                                     ContentProviderOperation.newUpdate(
-                                                    ContentUris.withAppendedId(Calls.CONTENT_URI,
-                                                            entry.getKey()))
+                                                    ContentUris.withAppendedId(Calls.CONTENT_URI, entry.getKey()))
                                             .withValue(
                                                     Calls.CACHED_FORMATTED_NUMBER,
-                                                    values.getAsString(
-                                                            AnnotatedCallLog.FORMATTED_NUMBER))
-                                            .withValue(Calls.CACHED_LOOKUP_URI,
-                                                    numberAttributes.getLookupUri())
+                                                    values.getAsString(AnnotatedCallLog.FORMATTED_NUMBER))
+                                            .withValue(Calls.CACHED_LOOKUP_URI, numberAttributes.getLookupUri())
                                             // Calls.CACHED_MATCHED_NUMBER is not available.
-                                            .withValue(Calls.CACHED_NAME,
-                                                    numberAttributes.getName())
+                                            .withValue(Calls.CACHED_NAME, numberAttributes.getName())
                                             .withValue(
-                                                    Calls.CACHED_NORMALIZED_NUMBER,
-                                                    dialerPhoneNumber.getNormalizedNumber())
-                                            .withValue(Calls.CACHED_NUMBER_LABEL,
-                                                    numberAttributes.getNumberTypeLabel())
-                                            // NUMBER_TYPE is lost in NumberAttributes when it is
-                                            // converted to a string
-                                            // label, Use TYPE_CUSTOM so the label will be
-                                            // displayed.
+                                                    Calls.CACHED_NORMALIZED_NUMBER, dialerPhoneNumber.getNormalizedNumber())
+                                            .withValue(Calls.CACHED_NUMBER_LABEL, numberAttributes.getNumberTypeLabel())
+                                            // NUMBER_TYPE is lost in NumberAttributes when it is converted to a string
+                                            // label, Use TYPE_CUSTOM so the label will be displayed.
                                             .withValue(Calls.CACHED_NUMBER_TYPE, Phone.TYPE_CUSTOM)
-                                            .withValue(Calls.CACHED_PHOTO_ID,
-                                                    numberAttributes.getPhotoId())
-                                            .withValue(Calls.CACHED_PHOTO_URI,
-                                                    numberAttributes.getPhotoUri())
-                                            // Avoid writing to the call log for insignificant
-                                            // changes to avoid triggering
+                                            .withValue(Calls.CACHED_PHOTO_ID, numberAttributes.getPhotoId())
+                                            .withValue(Calls.CACHED_PHOTO_URI, numberAttributes.getPhotoUri())
+                                            // Avoid writing to the call log for insignificant changes to avoid triggering
                                             // other content observers such as the voicemail client.
                                             .withSelection(
                                                     Calls.CACHED_NAME + " IS NOT ?",
-                                                    new String[]{numberAttributes.getName()})
+                                                    new String[] {numberAttributes.getName()})
                                             .build());
                         });
         try {
             int count =
-                    Arrays.stream(appContext.getContentResolver()
-                                    .applyBatch(CallLog.AUTHORITY, operations))
+                    Arrays.stream(appContext.getContentResolver().applyBatch(CallLog.AUTHORITY, operations))
                             .mapToInt(result -> result.count)
                             .sum();
             LogUtil.i("CallLogCacheUpdater.updateCache", "updated %d rows", count);

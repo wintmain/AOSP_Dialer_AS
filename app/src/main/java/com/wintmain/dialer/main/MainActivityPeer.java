@@ -18,6 +18,7 @@ package com.wintmain.dialer.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 
 /** Interface for peers of MainActivity. */
@@ -40,8 +41,8 @@ public interface MainActivityPeer {
     void onSaveInstanceState(Bundle bundle);
 
     void onRequestPermissionsResult(int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults);
+                                    @NonNull String[] permissions,
+                                    @NonNull int[] grantResults);
 
     boolean onBackPressed();
 

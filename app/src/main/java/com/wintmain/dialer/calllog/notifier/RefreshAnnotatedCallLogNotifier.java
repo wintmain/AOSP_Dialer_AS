@@ -19,7 +19,9 @@ package com.wintmain.dialer.calllog.notifier;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.wintmain.dialer.calllog.constants.IntentNames;
 import com.wintmain.dialer.calllog.constants.SharedPrefKeys;
 import com.wintmain.dialer.common.LogUtil;
@@ -46,8 +48,7 @@ public class RefreshAnnotatedCallLogNotifier {
 
     @Inject
     RefreshAnnotatedCallLogNotifier(
-            @ApplicationContext Context appContext,
-            @Unencrypted SharedPreferences sharedPreferences) {
+            @ApplicationContext Context appContext, @Unencrypted SharedPreferences sharedPreferences) {
         this.appContext = appContext;
         this.sharedPreferences = sharedPreferences;
     }
@@ -67,8 +68,7 @@ public class RefreshAnnotatedCallLogNotifier {
     /**
      * Notifies that the annotated call log needs to be refreshed.
      *
-     * <p>Note that the notification is sent as a broadcast, which means the annotated call log
-     * might
+     * <p>Note that the notification is sent as a broadcast, which means the annotated call log might
      * not be refreshed if there is no corresponding receiver registered.
      *
      * @param checkDirty Whether to check if the annotated call log is "dirty" before proceeding to

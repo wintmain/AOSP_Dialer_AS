@@ -17,6 +17,7 @@
 package com.wintmain.dialer.phonelookup.database.contract;
 
 import android.net.Uri;
+
 import com.wintmain.dialer.constants.Constants;
 
 /**
@@ -44,19 +45,16 @@ public class PhoneLookupHistoryContract {
         /**
          * The MIME type of a {@link android.content.ContentProvider#getType(Uri)} single entry.
          */
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/phone_lookup_history";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/phone_lookup_history";
         /**
-         * The phone number's E164 representation if it has one, or otherwise normalized number
-         * if it
+         * The phone number's E164 representation if it has one, or otherwise normalized number if it
          * cannot be normalized to E164. Required, primary key for the table.
          *
          * <p>Type: TEXT
          */
         public static final String NORMALIZED_NUMBER = "normalized_number";
         /**
-         * The {@link com.wintmain.dialer.phonelookup.PhoneLookupInfo} proto for the number.
-         * Required.
+         * The {@link com.wintmain.dialer.phonelookup.PhoneLookupInfo} proto for the number. Required.
          *
          * <p>Type: BLOB
          */

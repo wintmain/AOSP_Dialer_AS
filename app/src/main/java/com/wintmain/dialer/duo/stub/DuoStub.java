@@ -20,17 +20,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.telecom.Call;
 import android.telecom.PhoneAccountHandle;
-import androidx.annotation.*;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+
+import com.wintmain.dialer.common.Assert;
+import com.wintmain.dialer.duo.Duo;
+import com.wintmain.dialer.duo.DuoListener;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.wintmain.dialer.common.Assert;
-import com.wintmain.dialer.duo.Duo;
-import com.wintmain.dialer.duo.DuoListener;
+
+import java.util.List;
 
 import javax.inject.Inject;
-import java.util.List;
 
 public class DuoStub implements Duo {
 

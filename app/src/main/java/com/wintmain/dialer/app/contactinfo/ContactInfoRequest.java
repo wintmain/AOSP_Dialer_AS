@@ -17,7 +17,9 @@
 package com.wintmain.dialer.app.contactinfo;
 
 import android.text.TextUtils;
+
 import androidx.annotation.IntDef;
+
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
 
 import java.lang.annotation.Retention;
@@ -73,9 +75,11 @@ public final class ContactInfoRequest implements Comparable<ContactInfoRequest> 
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof ContactInfoRequest other)) {
+        if (!(obj instanceof ContactInfoRequest)) {
             return false;
         }
+
+        ContactInfoRequest other = (ContactInfoRequest) obj;
 
         if (!TextUtils.equals(number, other.number)) {
             return false;

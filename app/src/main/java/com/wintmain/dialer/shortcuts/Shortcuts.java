@@ -17,7 +17,9 @@
 package com.wintmain.dialer.shortcuts;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
 
 /**

@@ -18,12 +18,25 @@ package com.wintmain.dialer.persistentlog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.*;
+
+import androidx.annotation.AnyThread;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 import androidx.core.os.UserManagerCompat;
 import androidx.preference.PreferenceManager;
+
 import com.wintmain.dialer.common.LogUtil;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,8 +114,7 @@ final class PersistentLogFileHandler {
     }
 
     /**
-     * Write the list of byte arrays to the current log file, prefixing each entry with its'
-     * length. A
+     * Write the list of byte arrays to the current log file, prefixing each entry with its' length. A
      * new file will only be selected when the batch is completed, so the resulting file might be
      * larger then {@code fileSizeLimit}
      */

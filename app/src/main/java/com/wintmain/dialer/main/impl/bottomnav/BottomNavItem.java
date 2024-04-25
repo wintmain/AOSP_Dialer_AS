@@ -24,10 +24,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StringRes;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.ThemeUtils;
 import com.wintmain.dialer.common.Assert;
@@ -59,19 +61,13 @@ public final class BottomNavItem extends LinearLayout {
     public void setSelected(boolean selected) {
         super.setSelected(selected);
         if (selected) {
-            image.setBackgroundTintList(ColorStateList.valueOf(
-                    ThemeUtils.resolveColor(getContext(), R.attr.colorPrimary)));
-            image.setImageTintList(
-                    ColorStateList.valueOf(getResources().getColor(R.color.white, null)));
-            text.setTextColor(ColorStateList.valueOf(
-                    ThemeUtils.resolveColor(getContext(), R.attr.colorPrimary)));
+            image.setBackgroundTintList(ColorStateList.valueOf(ThemeUtils.resolveColor(getContext(), R.attr.colorPrimary)));
+            image.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.white, null)));
+            text.setTextColor(ColorStateList.valueOf(ThemeUtils.resolveColor(getContext(), R.attr.colorPrimary)));
         } else {
-            image.setBackgroundTintList(ColorStateList.valueOf(
-                    getResources().getColor(android.R.color.transparent, null)));
-            image.setImageTintList(ColorStateList.valueOf(
-                    ThemeUtils.resolveColor(getContext(), android.R.attr.colorControlNormal)));
-            text.setTextColor(ColorStateList.valueOf(
-                    ThemeUtils.resolveColor(getContext(), android.R.attr.colorControlNormal)));
+            image.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.transparent, null)));
+            image.setImageTintList(ColorStateList.valueOf(ThemeUtils.resolveColor(getContext(), android.R.attr.colorControlNormal)));
+            text.setTextColor(ColorStateList.valueOf(ThemeUtils.resolveColor(getContext(), android.R.attr.colorControlNormal)));
         }
     }
 
@@ -103,14 +99,11 @@ public final class BottomNavItem extends LinearLayout {
 
             @Px int margin;
             if (countString.length() == 1) {
-                margin = getContext().getResources().getDimensionPixelSize(
-                        R.dimen.badge_margin_length_1);
+                margin = getContext().getResources().getDimensionPixelSize(R.dimen.badge_margin_length_1);
             } else if (countString.length() == 2) {
-                margin = getContext().getResources().getDimensionPixelSize(
-                        R.dimen.badge_margin_length_2);
+                margin = getContext().getResources().getDimensionPixelSize(R.dimen.badge_margin_length_2);
             } else {
-                margin = getContext().getResources().getDimensionPixelSize(
-                        R.dimen.badge_margin_length_3);
+                margin = getContext().getResources().getDimensionPixelSize(R.dimen.badge_margin_length_3);
             }
 
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) image.getLayoutParams();

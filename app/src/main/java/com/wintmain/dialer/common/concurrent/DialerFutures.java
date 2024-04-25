@@ -17,9 +17,14 @@
 package com.wintmain.dialer.common.concurrent;
 
 import androidx.annotation.NonNull;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.*;
+import com.google.common.util.concurrent.AbstractFuture;
+import com.google.common.util.concurrent.Atomics;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,8 +63,7 @@ public class DialerFutures {
         for (final ListenableFuture<? extends T> future : output.futures) {
             future.addListener(
                     () -> {
-                        // Call get() and then set() instead of getAndSet() because a volatile
-                        // read/write is
+                        // Call get() and then set() instead of getAndSet() because a volatile read/write is
                         // cheaper than a CAS and atomicity is guaranteed by setFuture.
                         AggregateFuture<T> output1 = ref.get();
                         if (output1 != null) {
@@ -73,11 +77,9 @@ public class DialerFutures {
                             }
                             if (!predicate.apply(value)) {
                                 if (pending.decrementAndGet() == 0) {
-                                    // we are the last future (and every other future hasn't
-                                    // matched or failed).
+                                    // we are the last future (and every other future hasn't matched or failed).
                                     output1.set(defaultValue);
-                                    // no point in clearing the ref, every other listener has
-                                    // already run
+                                    // no point in clearing the ref, every other listener has already run
                                 }
                             } else {
                                 ref.set(null); // unpin
@@ -94,8 +96,7 @@ public class DialerFutures {
         ImmutableList<ListenableFuture<? extends T>> futures;
 
         AggregateFuture(Iterable<? extends ListenableFuture<? extends T>> futures) {
-            ImmutableList<ListenableFuture<? extends T>> futuresCopy = ImmutableList.copyOf(
-                    futures);
+            ImmutableList<ListenableFuture<? extends T>> futuresCopy = ImmutableList.copyOf(futures);
             if (futuresCopy.isEmpty()) {
                 throw new IllegalArgumentException("Expected at least one future, got 0.");
             }
@@ -130,10 +131,8 @@ public class DialerFutures {
         protected void afterDone() {
             ImmutableList<ListenableFuture<? extends T>> localFutures = futures;
             futures = null; // unpin
-            // even though afterDone is only called once, it is possible that the 'futures' field
-            // is null
-            // because it isn't final and thus the write might not be visible if the future
-            // instance was
+            // even though afterDone is only called once, it is possible that the 'futures' field is null
+            // because it isn't final and thus the write might not be visible if the future instance was
             // unsafely published.  See the comment at the top of Futures.java on memory visibility.
             if (localFutures != null) {
                 boolean interrupt = !isCancelled() | wasInterrupted();

@@ -16,14 +16,16 @@
 package com.wintmain.dialer.common.concurrent;
 
 import androidx.annotation.NonNull;
+
 import com.google.common.util.concurrent.AbstractListeningExecutorService;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 /**
  * An ExecutorService that delegates to the UI thread. Rejects attempts to shut down, and all

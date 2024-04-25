@@ -19,6 +19,7 @@ package com.wintmain.dialer.common;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -26,8 +27,7 @@ import androidx.annotation.NonNull;
  */
 public class PackageUtils {
 
-    private static boolean isPackageInstalled(@NonNull String packageName,
-            @NonNull Context context) {
+    private static boolean isPackageInstalled(@NonNull String packageName, @NonNull Context context) {
         Assert.isNotNull(packageName);
         Assert.isNotNull(context);
         try {

@@ -20,10 +20,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.collection.ArrayMap;
 import androidx.collection.ArraySet;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.Assert;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.Map;
 import java.util.Set;
@@ -42,8 +43,7 @@ public final class PartitionedNumbers {
             invalidNumbersToDialerPhoneNumbers;
 
     /**
-     * Divides a set of {@link DialerPhoneNumber DialerPhoneNumbers} according to those that are
-     * valid
+     * Divides a set of {@link DialerPhoneNumber DialerPhoneNumbers} according to those that are valid
      * according to libphonenumber, and those that are not.
      *
      * <p>Numbers with post-dial portions are always considered invalid as most systems store E164
@@ -57,15 +57,11 @@ public final class PartitionedNumbers {
 
         for (DialerPhoneNumber dialerPhoneNumber : dialerPhoneNumbers) {
             /*
-             * Numbers with post-dial digits are considered valid and can be converted to E164,
-             * but their
-             * post dial digits are lost in the process. For example, the normalized version of a
-             *  number
-             * with a post-dial portion in the contacts database is stored without the post-dial
-             * portion.
+             * Numbers with post-dial digits are considered valid and can be converted to E164, but their
+             * post dial digits are lost in the process. For example, the normalized version of a number
+             * with a post-dial portion in the contacts database is stored without the post-dial portion.
              */
-            if (dialerPhoneNumber.getIsValid() && dialerPhoneNumber.getPostDialPortion()
-                    .isEmpty()) {
+            if (dialerPhoneNumber.getIsValid() && dialerPhoneNumber.getPostDialPortion().isEmpty()) {
                 String validE164 = dialerPhoneNumber.getNormalizedNumber();
                 Set<DialerPhoneNumber> currentNumbers = e164MapBuilder.get(validE164);
                 if (currentNumbers == null) {
@@ -114,8 +110,7 @@ public final class PartitionedNumbers {
     }
 
     /**
-     * Returns the corresponding set of original DialerPhoneNumbers that map to the valid E164
-     * number
+     * Returns the corresponding set of original DialerPhoneNumbers that map to the valid E164 number
      * from {@link #validE164Numbers()}.
      *
      * @throws NullPointerException if there are no numbers found

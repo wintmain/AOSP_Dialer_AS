@@ -25,8 +25,9 @@ import android.content.DialogInterface.OnDismissListener;
 import android.graphics.drawable.Icon;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.fragment.app.FragmentManager;
-import com.google.android.material.snackbar.Snackbar;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.ThemeUtils;
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
@@ -37,6 +38,7 @@ import com.wintmain.dialer.notification.NotificationChannelId;
 import com.wintmain.dialer.spam.SpamSettings;
 import com.wintmain.dialer.spam.promo.SpamBlockingPromoDialogFragment.OnEnableListener;
 import com.wintmain.dialer.storage.StorageComponent;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * Helper class for showing spam blocking on-boarding promotions.
@@ -47,8 +49,7 @@ public class SpamBlockingPromoHelper {
     public static final String ENABLE_AFTER_CALL_SPAM_BLOCKING_PROMO =
             "enable_after_call_spam_blocking_promo";
     static final String SPAM_BLOCKING_PROMO_PERIOD_MILLIS = "spam_blocking_promo_period_millis";
-    static final String SPAM_BLOCKING_PROMO_LAST_SHOW_MILLIS =
-            "spam_blocking_promo_last_show_millis";
+    static final String SPAM_BLOCKING_PROMO_LAST_SHOW_MILLIS = "spam_blocking_promo_last_show_millis";
     private final Context context;
     private final SpamSettings spamSettings;
 
@@ -84,8 +85,7 @@ public class SpamBlockingPromoHelper {
                 ConfigProviderComponent.get(context)
                         .getConfigProvider()
                         .getLong(SPAM_BLOCKING_PROMO_PERIOD_MILLIS, Long.MAX_VALUE);
-        return lastShowMillis == 0
-                || System.currentTimeMillis() - lastShowMillis > showPeriodMillis;
+        return lastShowMillis == 0 || System.currentTimeMillis() - lastShowMillis > showPeriodMillis;
     }
 
     /* Returns true if we should show a spam blocking promo in after call notification scenario. */
@@ -109,8 +109,7 @@ public class SpamBlockingPromoHelper {
             OnDismissListener onDismissListener) {
         updateLastShowSpamTimestamp();
         SpamBlockingPromoDialogFragment.newInstance(onEnableListener, onDismissListener)
-                .show(fragmentManager,
-                        SpamBlockingPromoDialogFragment.SPAM_BLOCKING_PROMO_DIALOG_TAG);
+                .show(fragmentManager, SpamBlockingPromoDialogFragment.SPAM_BLOCKING_PROMO_DIALOG_TAG);
     }
 
     private void updateLastShowSpamTimestamp() {
@@ -135,11 +134,9 @@ public class SpamBlockingPromoHelper {
         Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG)
                 .setAction(
                         R.string.spam_blocking_setting_prompt,
-                        v -> context.startActivity(
-                                spamSettings.getSpamBlockingSettingIntent(context)))
+                        v -> context.startActivity(spamSettings.getSpamBlockingSettingIntent(context)))
                 .setActionTextColor(
-                        context.getResources()
-                                .getColor(R.color.dialer_snackbar_action_text_color, null))
+                        context.getResources().getColor(R.color.dialer_snackbar_action_text_color, null))
                 .show();
     }
 
@@ -169,8 +166,7 @@ public class SpamBlockingPromoHelper {
             PendingIntent actionIntent) {
         updateLastShowSpamTimestamp();
         Logger.get(context)
-                .logImpression(
-                        DialerImpression.Type.SPAM_BLOCKING_AFTER_CALL_NOTIFICATION_PROMO_SHOWN);
+                .logImpression(DialerImpression.Type.SPAM_BLOCKING_AFTER_CALL_NOTIFICATION_PROMO_SHOWN);
         DialerNotificationManager.notify(
                 context,
                 notificationTag,
@@ -194,18 +190,15 @@ public class SpamBlockingPromoHelper {
                         .setPriority(Notification.PRIORITY_DEFAULT)
                         .setColor(ThemeUtils.resolveColor(context, android.R.attr.colorAccent))
                         .setSmallIcon(R.drawable.quantum_ic_call_vd_theme_24)
-                        .setLargeIcon(Icon.createWithResource(context,
-                                R.drawable.spam_blocking_promo_icon))
+                        .setLargeIcon(Icon.createWithResource(context, R.drawable.spam_blocking_promo_icon))
                         .setContentText(context.getString(R.string.spam_blocking_promo_text))
                         .setStyle(
                                 new Notification.BigTextStyle()
-                                        .bigText(context.getString(
-                                                R.string.spam_blocking_promo_text)))
+                                        .bigText(context.getString(R.string.spam_blocking_promo_text)))
                         .addAction(
                                 new Notification.Action.Builder(
                                         R.drawable.quantum_ic_block_vd_theme_24,
-                                        context.getString(
-                                                R.string.spam_blocking_promo_action_filter_spam),
+                                        context.getString(R.string.spam_blocking_promo_action_filter_spam),
                                         actionIntent)
                                         .build())
                         .setContentTitle(context.getString(R.string.spam_blocking_promo_title));

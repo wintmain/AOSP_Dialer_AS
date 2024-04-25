@@ -16,6 +16,8 @@
 
 package com.wintmain.dialer.main.impl;
 
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
+
 import android.app.Activity;
 import android.app.role.RoleManager;
 import android.content.Context;
@@ -24,8 +26,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.telecom.TelecomManager;
+
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.settings.DialerSettingsActivityCompt;
 import com.wintmain.dialer.blockreportspam.ShowBlockReportSpamDialogReceiver;
@@ -42,8 +46,6 @@ import com.wintmain.dialer.util.TransactionSafeActivity;
 
 import java.util.Objects;
 
-import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
-
 
 public class MainActivity extends TransactionSafeActivity
         implements com.wintmain.dialer.main.MainActivityPeer.PeerSupplier,
@@ -51,10 +53,11 @@ public class MainActivity extends TransactionSafeActivity
         InteractionErrorListener,
         DisambigDialogDismissedListener {
 
+    private com.wintmain.dialer.main.MainActivityPeer activePeer;
+
     public static Activity main;
     public static Boolean boolConfigUsingLatestAbout;
     public static Boolean boolConfigUsingLatestPeer;
-    private com.wintmain.dialer.main.MainActivityPeer activePeer;
     /**
      * {@link android.content.BroadcastReceiver} that shows a dialog to block a number and/or report
      * it as spam when notified.
@@ -95,18 +98,14 @@ public class MainActivity extends TransactionSafeActivity
         boolConfigUsingLatestAbout = getApplicationContext().
                 getResources().getBoolean(R.bool.config_using_latest_about);
         if (!boolConfigUsingLatestAbout) {
-            SharedPreferences themeprefs =
-                    DialerSettingsActivityCompt.PrefsFragment.getSharedPreferences(this);
-            DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior mThemeBehavior =
-                    getThemeButtonBehavior(themeprefs);
+            SharedPreferences themeprefs = DialerSettingsActivityCompt.PrefsFragment.getSharedPreferences(this);
+            DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior mThemeBehavior = getThemeButtonBehavior(themeprefs);
 
-            if (mThemeBehavior
-                    == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK) {
+            if (mThemeBehavior == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK) {
                 LogUtil.enterBlock("MainActivity.dark");
                 this.getTheme().applyStyle(R.style.MainActivityThemeDark, true);
             }
-            if (mThemeBehavior
-                    == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT) {
+            if (mThemeBehavior == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT) {
                 LogUtil.enterBlock("MainActivity.light");
                 this.getTheme().applyStyle(R.style.MainActivityThemeLight, true);
             }
@@ -175,14 +174,13 @@ public class MainActivity extends TransactionSafeActivity
 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(
-                        showBlockReportSpamDialogReceiver,
-                        ShowBlockReportSpamDialogReceiver.getIntentFilter());
+                        showBlockReportSpamDialogReceiver, ShowBlockReportSpamDialogReceiver.getIntentFilter());
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         activePeer.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -198,8 +196,7 @@ public class MainActivity extends TransactionSafeActivity
         super.onPause();
         activePeer.onActivityPause();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(
-                showBlockReportSpamDialogReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(showBlockReportSpamDialogReceiver);
     }
 
     @Override
@@ -232,15 +229,13 @@ public class MainActivity extends TransactionSafeActivity
     public void interactionError(@InteractionErrorCode int interactionErrorCode) {
         switch (interactionErrorCode) {
             case InteractionErrorCode.USER_LEAVING_ACTIVITY:
-                // This is expected to happen if the user exits the activity before the
-                // interaction occurs.
+                // This is expected to happen if the user exits the activity before the interaction occurs.
                 return;
             case InteractionErrorCode.CONTACT_NOT_FOUND:
             case InteractionErrorCode.CONTACT_HAS_NO_NUMBER:
             case InteractionErrorCode.OTHER_ERROR:
             default:
-                // All other error codes are unexpected. For example, it should be impossible to
-                // start an
+                // All other error codes are unexpected. For example, it should be impossible to start an
                 // interaction with an invalid contact from this activity.
                 throw Assert.createIllegalStateFailException(
                         "PhoneNumberInteraction error: " + interactionErrorCode);

@@ -17,11 +17,7 @@
 package com.wintmain.dialer.spam.stub;
 
 import androidx.annotation.Nullable;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.logging.ContactLookupResult;
@@ -30,6 +26,11 @@ import com.wintmain.dialer.logging.ReportingLocation;
 import com.wintmain.dialer.spam.Spam;
 import com.wintmain.dialer.spam.status.SimpleSpamStatus;
 import com.wintmain.dialer.spam.status.SpamStatus;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 
 import javax.inject.Inject;
 

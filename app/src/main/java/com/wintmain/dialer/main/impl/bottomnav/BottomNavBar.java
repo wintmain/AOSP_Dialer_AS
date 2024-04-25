@@ -20,8 +20,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.logging.DialerImpression;
@@ -57,8 +59,7 @@ public final class BottomNavBar extends LinearLayout {
         contacts = findViewById(R.id.contacts_tab);
 
         speedDial.setup(R.string.tab_title_speed_dial, R.drawable.quantum_ic_star_vd_theme_24);
-        callLog.setup(R.string.tab_title_call_history,
-                R.drawable.quantum_ic_access_time_vd_theme_24);
+        callLog.setup(R.string.tab_title_call_history, R.drawable.quantum_ic_access_time_vd_theme_24);
         contacts.setup(R.string.tab_title_contacts, R.drawable.quantum_ic_people_vd_theme_24);
 
         speedDial.setOnClickListener(v -> {

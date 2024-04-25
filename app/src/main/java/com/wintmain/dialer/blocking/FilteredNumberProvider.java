@@ -25,7 +25,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+
 import androidx.annotation.VisibleForTesting;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.database.Database;
 import com.wintmain.dialer.database.DialerDatabaseHelper;
@@ -62,8 +64,7 @@ public class FilteredNumberProvider extends ContentProvider {
 
     @Override
     public Cursor query(
-            Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
+            Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final SQLiteDatabase db = dialerDatabaseHelper.getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(DialerDatabaseHelper.Tables.FILTERED_NUMBER_TABLE);
@@ -80,8 +81,7 @@ public class FilteredNumberProvider extends ContentProvider {
         final Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, null);
         if (c != null) {
             c.setNotificationUri(
-                    getContext().getContentResolver(),
-                    FilteredNumberContract.FilteredNumber.CONTENT_URI);
+                    getContext().getContentResolver(), FilteredNumberContract.FilteredNumber.CONTENT_URI);
         } else {
             LogUtil.d("FilteredNumberProvider.query", "CURSOR WAS NULL");
         }
@@ -112,8 +112,7 @@ public class FilteredNumberProvider extends ContentProvider {
 
     private void setDefaultValues(ContentValues values) {
         if (values.getAsString(FilteredNumberColumns.COUNTRY_ISO) == null) {
-            values.put(FilteredNumberColumns.COUNTRY_ISO,
-                    GeoUtil.getCurrentCountryIso(getContext()));
+            values.put(FilteredNumberColumns.COUNTRY_ISO, GeoUtil.getCurrentCountryIso(getContext()));
         }
         if (values.getAsInteger(FilteredNumberColumns.TIMES_FILTERED) == null) {
             values.put(FilteredNumberContract.FilteredNumberColumns.TIMES_FILTERED, 0);
@@ -137,8 +136,7 @@ public class FilteredNumberProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown uri: " + uri);
         }
         int rows =
-                db.delete(DialerDatabaseHelper.Tables.FILTERED_NUMBER_TABLE, selection,
-                        selectionArgs);
+                db.delete(DialerDatabaseHelper.Tables.FILTERED_NUMBER_TABLE, selection, selectionArgs);
         if (rows > 0) {
             notifyChange(uri);
         }
@@ -160,8 +158,7 @@ public class FilteredNumberProvider extends ContentProvider {
         }
         int rows =
                 db.update(
-                        DialerDatabaseHelper.Tables.FILTERED_NUMBER_TABLE, values, selection,
-                        selectionArgs);
+                        DialerDatabaseHelper.Tables.FILTERED_NUMBER_TABLE, values, selection, selectionArgs);
         if (rows > 0) {
             notifyChange(uri);
         }

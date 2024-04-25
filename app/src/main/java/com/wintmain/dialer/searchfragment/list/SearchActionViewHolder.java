@@ -22,10 +22,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.logging.DialerImpression;
@@ -82,8 +84,7 @@ final class SearchActionViewHolder extends RecyclerView.ViewHolder implements On
                 actionImage.setImageResource(R.drawable.quantum_ic_message_vd_theme_24);
                 break;
             case Action.MAKE_VOICE_CALL:
-                actionText.setText(
-                        context.getString(R.string.search_shortcut_make_voice_call, query));
+                actionText.setText(context.getString(R.string.search_shortcut_make_voice_call, query));
                 actionImage.setImageResource(R.drawable.quantum_ic_phone_vd_theme_24);
                 break;
             case Action.INVALID:
@@ -102,16 +103,14 @@ final class SearchActionViewHolder extends RecyclerView.ViewHolder implements On
     public void onClick(View v) {
         switch (action) {
             case Action.ADD_TO_CONTACT:
-                Logger.get(context).logImpression(
-                        DialerImpression.Type.ADD_TO_A_CONTACT_FROM_DIALPAD);
+                Logger.get(context).logImpression(DialerImpression.Type.ADD_TO_A_CONTACT_FROM_DIALPAD);
                 Intent intent = IntentUtil.getAddToExistingContactIntent(query);
                 @StringRes int errorString = R.string.add_contact_not_available;
                 DialerUtils.startActivityWithErrorToast(context, intent, errorString);
                 break;
 
             case Action.CREATE_NEW_CONTACT:
-                Logger.get(context).logImpression(
-                        DialerImpression.Type.CREATE_NEW_CONTACT_FROM_DIALPAD);
+                Logger.get(context).logImpression(DialerImpression.Type.CREATE_NEW_CONTACT_FROM_DIALPAD);
                 intent = IntentUtil.getNewContactIntent(query);
                 DialerUtils.startActivityWithErrorToast(context, intent);
                 break;

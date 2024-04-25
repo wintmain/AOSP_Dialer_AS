@@ -17,6 +17,7 @@
 package com.wintmain.dialer.app;
 
 import android.content.Context;
+
 import com.wintmain.dialer.app.legacybindings.DialerLegacyBindings;
 import com.wintmain.dialer.app.legacybindings.DialerLegacyBindingsFactory;
 import com.wintmain.dialer.app.legacybindings.DialerLegacyBindingsStub;

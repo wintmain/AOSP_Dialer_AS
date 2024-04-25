@@ -17,20 +17,23 @@
 package com.wintmain.dialer.commandline.impl;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.commandline.Arguments;
 import com.wintmain.dialer.commandline.Command;
 import com.wintmain.dialer.commandline.CommandLineComponent;
 import com.wintmain.dialer.inject.ApplicationContext;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
-import javax.inject.Inject;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+
+import javax.inject.Inject;
 
 /**
  * List available commands
@@ -87,8 +90,7 @@ public class Help implements Command {
             if (!showHidden && description.startsWith("@hide ")) {
                 continue;
             }
-            stringBuilder.append(
-                    String.format(Locale.US, "  %20s  %s\n", entry.getKey(), description));
+            stringBuilder.append(String.format(Locale.US, "  %20s  %s\n", entry.getKey(), description));
         }
 
         return Futures.immediateFuture(stringBuilder.toString());

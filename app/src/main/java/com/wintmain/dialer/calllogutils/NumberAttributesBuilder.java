@@ -17,6 +17,7 @@
 package com.wintmain.dialer.calllogutils;
 
 import android.text.TextUtils;
+
 import com.wintmain.dialer.NumberAttributes;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.consolidator.PhoneLookupInfoConsolidator;
@@ -47,8 +48,7 @@ public final class NumberAttributesBuilder {
                 .setCanReportAsInvalidNumber(phoneLookupInfoConsolidator.canReportAsInvalidNumber())
                 .setIsCp2InfoIncomplete(phoneLookupInfoConsolidator.isDefaultCp2InfoIncomplete())
                 .setContactSource(phoneLookupInfoConsolidator.getContactSource())
-                .setCanSupportCarrierVideoCall(
-                        phoneLookupInfoConsolidator.canSupportCarrierVideoCall())
+                .setCanSupportCarrierVideoCall(phoneLookupInfoConsolidator.canSupportCarrierVideoCall())
                 .setGeolocation(phoneLookupInfoConsolidator.getGeolocation())
                 .setIsEmergencyNumber(phoneLookupInfoConsolidator.isEmergencyNumber());
     }

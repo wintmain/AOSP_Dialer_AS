@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.telecom.PhoneAccount;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
+
 import com.wintmain.dialer.assisteddialing.AssistedDialingMediator;
 import com.wintmain.dialer.assisteddialing.ConcreteCreator;
 import com.wintmain.dialer.assisteddialing.TransformationInfo;
@@ -74,18 +75,15 @@ public class AssistedDialAction implements PreCallAction {
             Bundle assistedDialingExtras = transformedNumber.get().toBundle();
             builder
                     .getInCallUiIntentExtras()
-                    .putBundle(TelephonyManagerCompat.ASSISTED_DIALING_EXTRAS,
-                            assistedDialingExtras);
+                    .putBundle(TelephonyManagerCompat.ASSISTED_DIALING_EXTRAS, assistedDialingExtras);
             builder.setUri(
-                    CallUtil.getCallUri(
-                            Assert.isNotNull(transformedNumber.get().transformedNumber())));
+                    CallUtil.getCallUri(Assert.isNotNull(transformedNumber.get().transformedNumber())));
             LogUtil.i("AssistedDialAction.runWithoutUi", "assisted dialing was used.");
         }
     }
 
     /**
-     * A convenience method to return the proper TelephonyManager in possible multi-sim
-     * environments.
+     * A convenience method to return the proper TelephonyManager in possible multi-sim environments.
      */
     private TelephonyManager getAssistedDialingTelephonyManager(
             Context context, CallIntentBuilder builder) {
@@ -106,13 +104,11 @@ public class AssistedDialAction implements PreCallAction {
                 TelecomUtil.getSubscriptionInfo(context, builder.getPhoneAccountHandle());
         if (!subscriptionInfo.isPresent()) {
             LogUtil.i(
-                    "AssistedDialAction.getAssistedDialingTelephonyManager",
-                    "subcriptionInfo was absent.");
+                    "AssistedDialAction.getAssistedDialingTelephonyManager", "subcriptionInfo was absent.");
             return telephonyManager;
         }
         TelephonyManager pinnedtelephonyManager =
-                telephonyManager.createForSubscriptionId(
-                        subscriptionInfo.get().getSubscriptionId());
+                telephonyManager.createForSubscriptionId(subscriptionInfo.get().getSubscriptionId());
         if (pinnedtelephonyManager == null) {
             LogUtil.i(
                     "AssistedDialAction.getAssistedDialingTelephonyManager",

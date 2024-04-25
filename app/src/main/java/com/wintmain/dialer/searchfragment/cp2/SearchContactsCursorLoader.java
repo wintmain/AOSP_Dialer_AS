@@ -24,9 +24,11 @@ import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Directory;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.content.CursorLoader;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.contacts.ContactsComponent;
@@ -116,15 +118,13 @@ public final class SearchContactsCursorLoader extends CursorLoader {
         static SmartDialCursor newInstance(Context context, Cursor smartDialCursor) {
             if (smartDialCursor == null || smartDialCursor.getCount() == 0) {
                 LogUtil.i("SmartDialCursor.newInstance", "Cursor was null or empty");
-                return new SmartDialCursor(
-                        new Cursor[]{new MatrixCursor(Projections.CP2_PROJECTION)});
+                return new SmartDialCursor(new Cursor[]{new MatrixCursor(Projections.CP2_PROJECTION)});
             }
 
             MatrixCursor headerCursor = new MatrixCursor(HEADER_PROJECTION);
             headerCursor.addRow(new String[]{context.getString(R.string.all_contacts)});
             return new SmartDialCursor(
-                    new Cursor[]{headerCursor,
-                            convertSmartDialCursorToSearchCursor(smartDialCursor)});
+                    new Cursor[]{headerCursor, convertSmartDialCursorToSearchCursor(smartDialCursor)});
         }
 
         private static MatrixCursor convertSmartDialCursorToSearchCursor(Cursor smartDialCursor) {
@@ -189,8 +189,7 @@ public final class SearchContactsCursorLoader extends CursorLoader {
         static RegularSearchCursor newInstance(Context context, Cursor regularSearchCursor) {
             if (regularSearchCursor == null || regularSearchCursor.getCount() == 0) {
                 LogUtil.i("RegularSearchCursor.newInstance", "Cursor was null or empty");
-                return new RegularSearchCursor(
-                        new Cursor[]{new MatrixCursor(Projections.CP2_PROJECTION)});
+                return new RegularSearchCursor(new Cursor[]{new MatrixCursor(Projections.CP2_PROJECTION)});
             }
 
             MatrixCursor headerCursor = new MatrixCursor(HEADER_PROJECTION);

@@ -17,10 +17,11 @@
 package com.wintmain.dialer.preferredsim.suggestion.stub;
 
 import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider;
-import dagger.Binds;
-import dagger.Module;
 
 import javax.inject.Singleton;
+
+import dagger.Binds;
+import dagger.Module;
 
 /**
  * Stub module for {@link com.wintmain.dialer.preferredsim.suggestion.SimSuggestionComponent}

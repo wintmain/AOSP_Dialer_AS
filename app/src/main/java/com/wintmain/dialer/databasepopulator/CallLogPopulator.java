@@ -23,10 +23,12 @@ import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
-import com.google.auto.value.AutoValue;
+
 import com.wintmain.dialer.common.Assert;
+import com.google.auto.value.AutoValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,9 +141,7 @@ public final class CallLogPopulator {
                     .applyBatch(
                             CallLog.AUTHORITY,
                             new ArrayList<>(
-                                    Collections.singletonList(
-                                            ContentProviderOperation.newDelete(Calls.CONTENT_URI)
-                                                    .build())));
+                                    Collections.singletonList(ContentProviderOperation.newDelete(Calls.CONTENT_URI).build())));
         } catch (RemoteException | OperationApplicationException e) {
             Assert.fail("failed to delete call log: " + e);
         }

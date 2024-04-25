@@ -19,6 +19,7 @@ package com.wintmain.dialer.calllog.datasources;
 import android.content.ContentValues;
 import android.util.ArrayMap;
 import android.util.ArraySet;
+
 import com.wintmain.dialer.common.Assert;
 
 /**
@@ -36,8 +37,7 @@ public final class CallLogMutations {
      *                               update, or delete with the provided id
      */
     public void insert(long id, ContentValues contentValues) {
-        Assert.checkArgument(!inserts.containsKey(id),
-                "Can't insert row already scheduled for insert");
+        Assert.checkArgument(!inserts.containsKey(id), "Can't insert row already scheduled for insert");
         Assert.checkArgument(!updates.containsKey(id), "Can't insert row scheduled for update");
         Assert.checkArgument(!deletes.contains(id), "Can't insert row scheduled for delete");
 
@@ -46,10 +46,8 @@ public final class CallLogMutations {
 
     /**
      * Stores a database update using the provided ID and content values. If this {@link
-     * CallLogMutations} object already contains an update with the specified ID, the existing
-     * content
-     * values are merged with the provided ones, with the provided ones overwriting the existing
-     * ones
+     * CallLogMutations} object already contains an update with the specified ID, the existing content
+     * values are merged with the provided ones, with the provided ones overwriting the existing ones
      * for values with the same key.
      *
      * @param contentValues the specific columns to update, not including the ID.
@@ -75,8 +73,7 @@ public final class CallLogMutations {
     public void delete(long id) {
         Assert.checkArgument(!inserts.containsKey(id), "Can't delete row scheduled for insert");
         Assert.checkArgument(!updates.containsKey(id), "Can't delete row scheduled for update");
-        Assert.checkArgument(!deletes.contains(id),
-                "Can't delete row already scheduled for delete");
+        Assert.checkArgument(!deletes.contains(id), "Can't delete row already scheduled for delete");
 
         deletes.add(id);
     }
@@ -88,8 +85,7 @@ public final class CallLogMutations {
     /**
      * Get the pending inserts.
      *
-     * @return the pending inserts where the key is the annotated call log database ID and the
-     * values
+     * @return the pending inserts where the key is the annotated call log database ID and the values
      * are values to be inserted (not including the ID)
      */
     public ArrayMap<Long, ContentValues> getInserts() {
@@ -99,8 +95,7 @@ public final class CallLogMutations {
     /**
      * Get the pending updates.
      *
-     * @return the pending updates where the key is the annotated call log database ID and the
-     * values
+     * @return the pending updates where the key is the annotated call log database ID and the values
      * are values to be updated (not including the ID)
      */
     public ArrayMap<Long, ContentValues> getUpdates() {

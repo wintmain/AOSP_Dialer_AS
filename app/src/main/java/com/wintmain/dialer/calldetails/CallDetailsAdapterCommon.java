@@ -20,11 +20,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
 import com.wintmain.dialer.calldetails.CallDetailsEntryViewHolder.CallDetailsEntryListener;
@@ -106,12 +108,10 @@ abstract class CallDetailsAdapterCommon extends RecyclerView.Adapter<RecyclerVie
         switch (viewType) {
             case HEADER_VIEW_TYPE:
                 return createCallDetailsHeaderViewHolder(
-                        inflater.inflate(R.layout.contact_container, parent, false),
-                        callDetailsHeaderListener);
+                        inflater.inflate(R.layout.contact_container, parent, false), callDetailsHeaderListener);
             case CALL_ENTRY_VIEW_TYPE:
                 return new CallDetailsEntryViewHolder(
-                        inflater.inflate(R.layout.call_details_entry, parent, false),
-                        callDetailsEntryListener);
+                        inflater.inflate(R.layout.call_details_entry, parent, false), callDetailsEntryListener);
             case FOOTER_VIEW_TYPE:
                 return new CallDetailsFooterViewHolder(
                         inflater.inflate(R.layout.call_details_footer, parent, false),

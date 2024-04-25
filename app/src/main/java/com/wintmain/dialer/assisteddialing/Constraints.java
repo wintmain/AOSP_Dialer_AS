@@ -19,16 +19,18 @@ package com.wintmain.dialer.assisteddialing;
 import android.content.Context;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber.CountryCodeSource;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
 import com.wintmain.dialer.phonenumberutil.PhoneNumberHelper;
 import com.wintmain.dialer.strictmode.StrictModeUtils;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber.CountryCodeSource;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -44,8 +46,7 @@ final class Constraints {
     /**
      * Create a new instance of Constraints.
      *
-     * @param context             The context used to determine whether or not a number is an
-     *                            emergency number.
+     * @param context             The context used to determine whether or not a number is an emergency number.
      * @param countryCodeProvider A csv of supported country codes, e.g. "US,CA"
      */
     public Constraints(@NonNull Context context, @NonNull CountryCodeProvider countryCodeProvider) {
@@ -56,12 +57,10 @@ final class Constraints {
     }
 
     /**
-     * Determines whether or not we think Assisted Dialing is possible given the provided
-     * parameters.
+     * Determines whether or not we think Assisted Dialing is possible given the provided parameters.
      *
      * @param numberToCheck          A string containing the phone number.
-     * @param userHomeCountryCode    A string containing an ISO 3166-1 alpha-2 country code
-     *                               representing
+     * @param userHomeCountryCode    A string containing an ISO 3166-1 alpha-2 country code representing
      *                               the user's home country.
      * @param userRoamingCountryCode A string containing an ISO 3166-1 alpha-2 country code
      *                               representing the user's roaming country.
@@ -91,8 +90,7 @@ final class Constraints {
         userHomeCountryCode = userHomeCountryCode.toUpperCase(Locale.US);
         userRoamingCountryCode = userRoamingCountryCode.toUpperCase(Locale.US);
 
-        Optional<PhoneNumber> parsedPhoneNumber = parsePhoneNumber(numberToCheck,
-                userHomeCountryCode);
+        Optional<PhoneNumber> parsedPhoneNumber = parsePhoneNumber(numberToCheck, userHomeCountryCode);
 
         if (!parsedPhoneNumber.isPresent()) {
             LogUtil.i("Constraints.meetsPreconditions", "parsedPhoneNumber was empty");
@@ -150,12 +148,10 @@ final class Constraints {
                 () -> {
                     try {
                         return Optional.of(
-                                phoneNumberUtil.parseAndKeepRawInput(numberToParse,
-                                        userHomeCountryCode));
+                                phoneNumberUtil.parseAndKeepRawInput(numberToParse, userHomeCountryCode));
                     } catch (NumberParseException e) {
                         Logger.get(context)
-                                .logImpression(
-                                        DialerImpression.Type.ASSISTED_DIALING_CONSTRAINT_PARSING_FAILURE);
+                                .logImpression(DialerImpression.Type.ASSISTED_DIALING_CONSTRAINT_PARSING_FAILURE);
                         LogUtil.i("Constraints.parsePhoneNumber", "could not parse the number");
                         return Optional.empty();
                     }
@@ -171,11 +167,9 @@ final class Constraints {
                 && parsedPhoneNumber.get().getCountryCodeSource()
                 != CountryCodeSource.FROM_DEFAULT_COUNTRY) {
             Logger.get(context)
-                    .logImpression(
-                            DialerImpression.Type.ASSISTED_DIALING_CONSTRAINT_NUMBER_HAS_COUNTRY_CODE);
+                    .logImpression(DialerImpression.Type.ASSISTED_DIALING_CONSTRAINT_NUMBER_HAS_COUNTRY_CODE);
             LogUtil.i(
-                    "Constraints.isNotInternationalNumber",
-                    "phone number already provided the country code");
+                    "Constraints.isNotInternationalNumber", "phone number already provided the country code");
             return false;
         }
         return true;
@@ -192,8 +186,7 @@ final class Constraints {
         if (parsedPhoneNumber.get().hasExtension()
                 && !TextUtils.isEmpty(parsedPhoneNumber.get().getExtension())) {
             Logger.get(context)
-                    .logImpression(
-                            DialerImpression.Type.ASSISTED_DIALING_CONSTRAINT_NUMBER_HAS_EXTENSION);
+                    .logImpression(DialerImpression.Type.ASSISTED_DIALING_CONSTRAINT_NUMBER_HAS_EXTENSION);
             LogUtil.i("Constraints.doesNotHaveExtension", "phone number has an extension");
             return false;
         }
@@ -205,8 +198,7 @@ final class Constraints {
      */
     private boolean isValidNumber(@NonNull Optional<PhoneNumber> parsedPhoneNumber) {
         boolean result =
-                StrictModeUtils.bypass(
-                        () -> phoneNumberUtil.isValidNumber(parsedPhoneNumber.get()));
+                StrictModeUtils.bypass(() -> phoneNumberUtil.isValidNumber(parsedPhoneNumber.get()));
         LogUtil.i("Constraints.isValidNumber", String.valueOf(result));
 
         return result;

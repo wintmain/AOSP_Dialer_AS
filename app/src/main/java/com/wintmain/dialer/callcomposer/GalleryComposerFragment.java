@@ -16,6 +16,8 @@
 
 package com.wintmain.dialer.callcomposer;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest.permission;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,11 +33,13 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor;
@@ -47,8 +51,6 @@ import com.wintmain.dialer.util.PermissionsUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Fragment used to compose call with image from the user's gallery.
@@ -87,11 +89,9 @@ public class GalleryComposerFragment extends CallComposerFragment
         permissionView = view.findViewById(R.id.permission_view);
 
         if (!PermissionsUtil.hasPermission(getContext(), permission.READ_EXTERNAL_STORAGE)) {
-            Logger.get(getContext()).logImpression(
-                    DialerImpression.Type.STORAGE_PERMISSION_DISPLAYED);
+            Logger.get(getContext()).logImpression(DialerImpression.Type.STORAGE_PERMISSION_DISPLAYED);
             LogUtil.i("GalleryComposerFragment.onCreateView", "Permission view shown.");
-            ImageView permissionImage = (ImageView) permissionView.findViewById(
-                    R.id.permission_icon);
+            ImageView permissionImage = (ImageView) permissionView.findViewById(R.id.permission_icon);
             TextView permissionText = (TextView) permissionView.findViewById(R.id.permission_text);
             allowPermission = permissionView.findViewById(R.id.allow);
 
@@ -125,8 +125,7 @@ public class GalleryComposerFragment extends CallComposerFragment
                         .onSuccess(
                                 output -> {
                                     GalleryGridItemData data1 =
-                                            adapter.insertEntry(Objects.requireNonNull(
-                                                    output).first.getAbsolutePath(), output.second);
+                                            adapter.insertEntry(Objects.requireNonNull(output).first.getAbsolutePath(), output.second);
                                     insertedImages.add(0, data1);
                                     setSelected(data1, true);
                                 })
@@ -134,8 +133,7 @@ public class GalleryComposerFragment extends CallComposerFragment
                                 throwable -> {
                                     // TODO(a bug) - gracefully handle message failure
                                     LogUtil.e(
-                                            "GalleryComposerFragment.onFailure",
-                                            "data preparation failed", throwable);
+                                            "GalleryComposerFragment.onFailure", "data preparation failed", throwable);
                                 })
                         .build();
     }
@@ -169,24 +167,18 @@ public class GalleryComposerFragment extends CallComposerFragment
     @Override
     public void onClick(View view) {
         if (view == allowPermission) {
-            // Checks to see if the user has permanently denied this permission. If this is their
-            // first
-            // time seeing this permission or they've only pressed deny previously, they will see
-            // the
-            // permission request. If they've permanently denied the permission, they will be
-            // sent to
+            // Checks to see if the user has permanently denied this permission. If this is their first
+            // time seeing this permission or they've only pressed deny previously, they will see the
+            // permission request. If they've permanently denied the permission, they will be sent to
             // Dialer settings in order to enable the permission.
             if (PermissionsUtil.isFirstRequest(Objects.requireNonNull(getContext()), permissions[0])
                     || shouldShowRequestPermissionRationale(permissions[0])) {
                 LogUtil.i("GalleryComposerFragment.onClick", "Storage permission requested.");
-                Logger.get(getContext()).logImpression(
-                        DialerImpression.Type.STORAGE_PERMISSION_REQUESTED);
+                Logger.get(getContext()).logImpression(DialerImpression.Type.STORAGE_PERMISSION_REQUESTED);
                 requestPermissions(permissions, STORAGE_PERMISSION);
             } else {
-                LogUtil.i("GalleryComposerFragment.onClick",
-                        "Settings opened to enable permission.");
-                Logger.get(getContext()).logImpression(
-                        DialerImpression.Type.STORAGE_PERMISSION_SETTINGS);
+                LogUtil.i("GalleryComposerFragment.onClick", "Settings opened to enable permission.");
+                Logger.get(getContext()).logImpression(DialerImpression.Type.STORAGE_PERMISSION_SETTINGS);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.parse("package:" + getContext().getPackageName()));
@@ -197,8 +189,7 @@ public class GalleryComposerFragment extends CallComposerFragment
             if (itemView.isGallery()) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_MIME_TYPES,
-                        GalleryCursorLoader.ACCEPTABLE_IMAGE_TYPES);
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, GalleryCursorLoader.ACCEPTABLE_IMAGE_TYPES);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, RESULT_LOAD_IMAGE);
             } else if (itemView.getData().equals(selectedData)) {
@@ -265,14 +256,12 @@ public class GalleryComposerFragment extends CallComposerFragment
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (permissions.length > 0 && permissions[0].equals(this.permissions[0])) {
-            PermissionsUtil.permissionRequested(Objects.requireNonNull(getContext()),
-                    permissions[0]);
+            PermissionsUtil.permissionRequested(Objects.requireNonNull(getContext()), permissions[0]);
         }
         if (requestCode == STORAGE_PERMISSION
                 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Logger.get(getContext()).logImpression(
-                    DialerImpression.Type.STORAGE_PERMISSION_GRANTED);
+            Logger.get(getContext()).logImpression(DialerImpression.Type.STORAGE_PERMISSION_GRANTED);
             LogUtil.i("GalleryComposerFragment.onRequestPermissionsResult", "Permission granted.");
             permissionView.setVisibility(View.GONE);
             setupGallery();

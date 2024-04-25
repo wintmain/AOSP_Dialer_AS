@@ -16,6 +16,8 @@
 
 package com.wintmain.dialer.postcall;
 
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
+
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.Intent;
@@ -24,9 +26,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.SmsManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.settings.DialerSettingsActivityCompt;
 import com.wintmain.dialer.common.Assert;
@@ -40,8 +44,6 @@ import com.wintmain.dialer.widget.DialerToolbar;
 import com.wintmain.dialer.widget.MessageFragment;
 
 import java.util.Objects;
-
-import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
 
 /**
  * Activity used to send post call messages after a phone call.
@@ -86,9 +88,8 @@ public class PostCallActivity extends AppCompatActivity implements MessageFragme
         useRcs = getIntent().getBooleanExtra(KEY_RCS_POST_CALL, false);
         LogUtil.i("PostCallActivity.onCreate", "useRcs: %b", useRcs);
 
-        int postCallCharLimit = useRcs ? getResources().getInteger(R.integer.post_call_char_limit)
-                : MessageFragment.NO_CHAR_LIMIT;
-        String[] messages = new String[]{
+        int postCallCharLimit = useRcs ? getResources().getInteger(R.integer.post_call_char_limit) : MessageFragment.NO_CHAR_LIMIT;
+        String[] messages = new String[] {
                 getString(R.string.post_call_message_1),
                 getString(R.string.post_call_message_2),
                 getString(R.string.post_call_message_3)

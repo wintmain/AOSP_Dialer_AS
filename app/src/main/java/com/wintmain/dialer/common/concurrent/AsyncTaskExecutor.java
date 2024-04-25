@@ -17,6 +17,7 @@
 package com.wintmain.dialer.common.concurrent;
 
 import android.os.AsyncTask;
+
 import androidx.annotation.MainThread;
 
 import java.util.concurrent.Executor;
@@ -44,8 +45,7 @@ public interface AsyncTaskExecutor {
      * <p>This method <b>must only be called from the ui thread</b>.
      *
      * <p>The identifier supplied is any Object that can be used to identify the task later. Most
-     * commonly this will be an enum which the tests can also refer to. {@code null} is also
-     * accepted,
+     * commonly this will be an enum which the tests can also refer to. {@code null} is also accepted,
      * though of course this won't help in identifying the task later.
      */
     @MainThread

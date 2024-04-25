@@ -25,9 +25,11 @@ import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.net.Uri;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.os.UserManagerCompat;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.database.FilteredNumberContract.FilteredNumberColumns;
@@ -116,13 +118,11 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
 
     /**
      * Checks if the given number is blocked, calling the given {@link OnCheckBlockedListener} with
-     * the id for the blocked number, {@link #INVALID_ID}, or {@code null} based on the result of
-     * the
+     * the id for the blocked number, {@link #INVALID_ID}, or {@code null} based on the result of the
      * check.
      */
     public void isBlockedNumber(
-            final OnCheckBlockedListener listener, @Nullable final String number,
-            String countryIso) {
+            final OnCheckBlockedListener listener, @Nullable final String number, String countryIso) {
         if (number == null) {
             listener.onCheckComplete(INVALID_ID);
             return;
@@ -152,8 +152,7 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
         }
 
         String e164Number = PhoneNumberUtils.formatNumberToE164(number, countryIso);
-        String formattedNumber = FilteredNumbersUtil.getBlockableNumber(context, e164Number,
-                number);
+        String formattedNumber = FilteredNumbersUtil.getBlockableNumber(context, e164Number, number);
         if (TextUtils.isEmpty(formattedNumber)) {
             listener.onCheckComplete(INVALID_ID);
             blockedNumberCache.put(number, INVALID_ID);
@@ -185,8 +184,7 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
                             listener.onCheckComplete(null);
                             return;
                         }
-                        Integer blockedId = cursor.getInt(
-                                cursor.getColumnIndex(FilteredNumberColumns._ID));
+                        Integer blockedId = cursor.getInt(cursor.getColumnIndex(FilteredNumberColumns._ID));
                         blockedNumberCache.put(number, blockedId);
                         listener.onCheckComplete(blockedId);
                     }
@@ -225,8 +223,7 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
         }
 
         String e164Number = PhoneNumberUtils.formatNumberToE164(number, countryIso);
-        String formattedNumber = FilteredNumbersUtil.getBlockableNumber(context, e164Number,
-                number);
+        String formattedNumber = FilteredNumbersUtil.getBlockableNumber(context, e164Number, number);
         if (TextUtils.isEmpty(formattedNumber)) {
             return null;
         }
@@ -345,8 +342,7 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
      *
      * @param listener (optional) The {@link OnUnblockNumberListener} called after the number is
      *                 unblocked.
-     * @param uri      The uri of row to remove, from
-     *                 {@link FilteredNumberAsyncQueryHandler#blockNumber}.
+     * @param uri      The uri of row to remove, from {@link FilteredNumberAsyncQueryHandler#blockNumber}.
      */
     public void unblock(@Nullable final OnUnblockNumberListener listener, final Uri uri) {
         blockedNumberCache.clear();
@@ -364,8 +360,7 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
                         int rowsReturned = cursor == null ? 0 : cursor.getCount();
                         if (rowsReturned != 1) {
                             throw new SQLiteDatabaseCorruptException(
-                                    "Returned " + rowsReturned + " rows for uri " + uri
-                                            + "where 1 expected.");
+                                    "Returned " + rowsReturned + " rows for uri " + uri + "where 1 expected.");
                         }
                         cursor.moveToFirst();
                         final ContentValues values = new ContentValues();
@@ -376,8 +371,7 @@ public class FilteredNumberAsyncQueryHandler extends AsyncQueryHandler {
                                 NO_TOKEN,
                                 new Listener() {
                                     @Override
-                                    public void onDeleteComplete(int token, Object cookie,
-                                            int result) {
+                                    public void onDeleteComplete(int token, Object cookie, int result) {
                                         if (listener != null) {
                                             listener.onUnblockComplete(result, values);
                                         }

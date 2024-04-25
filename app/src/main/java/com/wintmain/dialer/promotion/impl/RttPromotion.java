@@ -18,7 +18,9 @@ package com.wintmain.dialer.promotion.impl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.annotation.DrawableRes;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProvider;

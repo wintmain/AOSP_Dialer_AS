@@ -18,11 +18,7 @@ package com.wintmain.dialer.phonelookup.cp2;
 
 import android.content.Context;
 import android.database.Cursor;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.protobuf.InvalidProtocolBufferException;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
@@ -32,9 +28,15 @@ import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract.PhoneLookupHistory;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.protobuf.InvalidProtocolBufferException;
+
+import java.util.function.Predicate;
 
 import javax.inject.Inject;
-import java.util.function.Predicate;
 
 /**
  * Shared logic for handling missing permissions in CP2 lookups.
@@ -56,8 +58,7 @@ final class MissingPermissionsOperations {
     }
 
     /**
-     * Returns true if there is any CP2 data for the specified numbers in PhoneLookupHistory,
-     * because
+     * Returns true if there is any CP2 data for the specified numbers in PhoneLookupHistory, because
      * that data needs to be cleared.
      *
      * <p>Note: This might be a little slow for users without contacts permissions, but we don't
@@ -78,8 +79,7 @@ final class MissingPermissionsOperations {
 
                     Selection selection =
                             Selection.builder()
-                                    .and(Selection.column(PhoneLookupHistory.NORMALIZED_NUMBER)
-                                            .in(normalizedNumbers))
+                                    .and(Selection.column(PhoneLookupHistory.NORMALIZED_NUMBER).in(normalizedNumbers))
                                     .build();
 
                     try (Cursor cursor =
@@ -95,21 +95,18 @@ final class MissingPermissionsOperations {
                                                  null)) {
 
                         if (cursor == null) {
-                            LogUtil.w("MissingPermissionsOperations.isDirtyForMissingPermissions",
-                                    "null cursor");
+                            LogUtil.w("MissingPermissionsOperations.isDirtyForMissingPermissions", "null cursor");
                             return false;
                         }
 
                         if (cursor.moveToFirst()) {
                             int phoneLookupInfoColumn =
-                                    cursor.getColumnIndexOrThrow(
-                                            PhoneLookupHistory.PHONE_LOOKUP_INFO);
+                                    cursor.getColumnIndexOrThrow(PhoneLookupHistory.PHONE_LOOKUP_INFO);
                             do {
                                 PhoneLookupInfo phoneLookupInfo;
                                 try {
                                     phoneLookupInfo =
-                                            PhoneLookupInfo.parseFrom(
-                                                    cursor.getBlob(phoneLookupInfoColumn));
+                                            PhoneLookupInfo.parseFrom(cursor.getBlob(phoneLookupInfoColumn));
                                 } catch (InvalidProtocolBufferException e) {
                                     throw new IllegalStateException(e);
                                 }
@@ -130,8 +127,7 @@ final class MissingPermissionsOperations {
             ImmutableMap<DialerPhoneNumber, Cp2Info> existingInfoMap) {
         return lightweightExecutor.submit(
                 () -> {
-                    ImmutableMap.Builder<DialerPhoneNumber, Cp2Info> clearedInfos =
-                            ImmutableMap.builder();
+                    ImmutableMap.Builder<DialerPhoneNumber, Cp2Info> clearedInfos = ImmutableMap.builder();
                     for (DialerPhoneNumber number : existingInfoMap.keySet()) {
                         clearedInfos.put(number, Cp2Info.getDefaultInstance());
                     }

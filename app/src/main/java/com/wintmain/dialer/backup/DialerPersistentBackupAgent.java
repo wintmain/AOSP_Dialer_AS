@@ -19,14 +19,16 @@ import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
 import android.os.ParcelFileDescriptor;
 import android.util.ArrayMap;
+
 import androidx.annotation.NonNull;
-import com.android.libraries.backup.BackupKeyPredicate;
-import com.android.libraries.backup.BackupKeyPredicates;
-import com.android.libraries.backup.PersistentBackupAgentHelper;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
+import com.android.libraries.backup.BackupKeyPredicate;
+import com.android.libraries.backup.BackupKeyPredicates;
+import com.android.libraries.backup.PersistentBackupAgentHelper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -37,8 +39,7 @@ import java.util.Map;
 public class DialerPersistentBackupAgent extends PersistentBackupAgentHelper {
 
     private static final String[] BACKUP_NAMED_SHARED_PREFS = {
-            "com.google.android.dialer_preferences", "com.google.android.dialer",
-            "com.wintmain.dialer"
+            "com.google.android.dialer_preferences", "com.google.android.dialer", "com.wintmain.dialer"
     };
 
     @NonNull
@@ -47,8 +48,7 @@ public class DialerPersistentBackupAgent extends PersistentBackupAgentHelper {
 
     DialerPersistentBackupAgent(@NonNull String[] sharedPrefs) {
         this.sharedPreferencesToBackup = Assert.isNotNull(sharedPrefs);
-        Logger.get(this).logImpression(
-                DialerImpression.Type.BACKUP_KEY_VALUE_BACKUP_AGENT_CONSTRUCTOR);
+        Logger.get(this).logImpression(DialerImpression.Type.BACKUP_KEY_VALUE_BACKUP_AGENT_CONSTRUCTOR);
     }
 
     public DialerPersistentBackupAgent() {
@@ -59,8 +59,7 @@ public class DialerPersistentBackupAgent extends PersistentBackupAgentHelper {
     public void onRestore(BackupDataInput data, int appVersionCode, ParcelFileDescriptor stateFile)
             throws IOException {
         Logger.get(this).logImpression(DialerImpression.Type.BACKUP_KEY_VALUE_ON_RESTORE);
-        LogUtil.i("DialerPersistentBackupAgent.onRestore",
-                "restore from version: " + appVersionCode);
+        LogUtil.i("DialerPersistentBackupAgent.onRestore", "restore from version: " + appVersionCode);
         super.onRestore(data, appVersionCode, stateFile);
     }
 
@@ -75,16 +74,14 @@ public class DialerPersistentBackupAgent extends PersistentBackupAgentHelper {
 
     @Override
     public Map<String, BackupKeyPredicate> getBackupSpecification() {
-        Logger.get(this).logImpression(
-                DialerImpression.Type.BACKUP_KEY_VALUE_GET_BACKUP_SPECIFICATION);
+        Logger.get(this).logImpression(DialerImpression.Type.BACKUP_KEY_VALUE_GET_BACKUP_SPECIFICATION);
         LogUtil.i(
                 "DialerPersistentBackupAgent.getBackupSpecification",
                 "number of files being backed up: " + sharedPreferencesToBackup.length);
 
         Map<String, BackupKeyPredicate> arrayMap = new ArrayMap<>();
         for (String fileName : sharedPreferencesToBackup) {
-            LogUtil.i("DialerPersistentBackupAgent.getBackupSpecification",
-                    "arrayMap.put: " + fileName);
+            LogUtil.i("DialerPersistentBackupAgent.getBackupSpecification", "arrayMap.put: " + fileName);
             arrayMap.put(fileName, BackupKeyPredicates.alwaysTrue());
         }
 

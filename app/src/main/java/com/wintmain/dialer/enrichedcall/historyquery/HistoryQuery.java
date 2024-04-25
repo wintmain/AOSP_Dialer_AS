@@ -16,8 +16,9 @@
 package com.wintmain.dialer.enrichedcall.historyquery;
 
 import androidx.annotation.NonNull;
-import com.google.auto.value.AutoValue;
+
 import com.wintmain.dialer.common.LogUtil;
+import com.google.auto.value.AutoValue;
 
 import java.util.Locale;
 
@@ -29,8 +30,7 @@ import java.util.Locale;
 public abstract class HistoryQuery {
 
     @NonNull
-    public static HistoryQuery create(@NonNull String number, long callStartTime,
-            long callEndTime) {
+    public static HistoryQuery create(@NonNull String number, long callStartTime, long callEndTime) {
         return new AutoValue_HistoryQuery(number, callStartTime, callEndTime);
     }
 
@@ -45,7 +45,6 @@ public abstract class HistoryQuery {
     public String toString() {
         return String.format(Locale.US,
                 "HistoryQuery{number: %s, callStartTimestamp: %d, callEndTimestamp: %d}",
-                LogUtil.sanitizePhoneNumber(getNumber()), getCallStartTimestamp(),
-                getCallEndTimestamp());
+                LogUtil.sanitizePhoneNumber(getNumber()), getCallStartTimestamp(), getCallEndTimestamp());
     }
 }

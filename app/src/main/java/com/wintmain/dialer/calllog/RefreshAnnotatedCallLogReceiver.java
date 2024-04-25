@@ -20,12 +20,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.common.base.Function;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
+
 import com.wintmain.dialer.calllog.RefreshAnnotatedCallLogWorker.RefreshResult;
 import com.wintmain.dialer.calllog.constants.IntentNames;
 import com.wintmain.dialer.common.LogUtil;
@@ -36,6 +34,11 @@ import com.wintmain.dialer.logging.LoggingBindings;
 import com.wintmain.dialer.metrics.FutureTimer;
 import com.wintmain.dialer.metrics.Metrics;
 import com.wintmain.dialer.metrics.MetricsComponent;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 
 /**
  * A {@link BroadcastReceiver} that starts/cancels refreshing the annotated call log when notified.
@@ -44,10 +47,8 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
 
     /**
      * This is a reasonable time that it might take between related call log writes, that also
-     * shouldn't slow down single-writes too much. For example, when populating the database
-     * using the
-     * simulator, using this value results in ~6 refresh cycles (on a release build) to write 120
-     * call
+     * shouldn't slow down single-writes too much. For example, when populating the database using the
+     * simulator, using this value results in ~6 refresh cycles (on a release build) to write 120 call
      * log entries.
      */
     private static final long REFRESH_ANNOTATED_CALL_LOG_WAIT_MILLIS = 100L;
@@ -56,20 +57,9 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
     private final FutureTimer futureTimer;
     private final LoggingBindings logger;
 
-    @Nullable
-    private Runnable refreshAnnotatedCallLogRunnable;
+    @Nullable private Runnable refreshAnnotatedCallLogRunnable;
 
-    public RefreshAnnotatedCallLogReceiver(Context context) {
-        refreshAnnotatedCallLogWorker =
-                CallLogComponent.get(context).getRefreshAnnotatedCallLogWorker();
-        futureTimer = MetricsComponent.get(context).futureTimer();
-        logger = Logger.get(context);
-    }
-
-    /**
-     * Returns an {@link IntentFilter} containing all actions accepted by this broadcast
-     * receiver.
-     */
+    /** Returns an {@link IntentFilter} containing all actions accepted by this broadcast receiver. */
     public static IntentFilter getIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(IntentNames.ACTION_REFRESH_ANNOTATED_CALL_LOG);
@@ -77,22 +67,11 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
         return intentFilter;
     }
 
-    private static DialerImpression.Type getImpressionType(
-            boolean checkDirty, RefreshResult refreshResult) {
-        switch (refreshResult) {
-            case NOT_DIRTY:
-                return DialerImpression.Type.ANNOTATED_CALL_LOG_NOT_DIRTY;
-            case REBUILT_BUT_NO_CHANGES_NEEDED:
-                return checkDirty
-                        ? DialerImpression.Type.ANNOTATED_CALL_LOG_NO_CHANGES_NEEDED
-                        : DialerImpression.Type.ANNOTATED_CALL_LOG_FORCE_REFRESH_NO_CHANGES_NEEDED;
-            case REBUILT_AND_CHANGES_NEEDED:
-                return checkDirty
-                        ? DialerImpression.Type.ANNOTATED_CALL_LOG_CHANGES_NEEDED
-                        : DialerImpression.Type.ANNOTATED_CALL_LOG_FORCE_REFRESH_CHANGES_NEEDED;
-            default:
-                throw new IllegalStateException("Unsupported result: " + refreshResult);
-        }
+    public RefreshAnnotatedCallLogReceiver(Context context) {
+        refreshAnnotatedCallLogWorker =
+                CallLogComponent.get(context).getRefreshAnnotatedCallLogWorker();
+        futureTimer = MetricsComponent.get(context).futureTimer();
+        logger = Logger.get(context);
     }
 
     @Override
@@ -112,8 +91,7 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
     /**
      * Request a refresh of the annotated call log.
      *
-     * <p>Note that the execution will be delayed by
-     * {@link #REFRESH_ANNOTATED_CALL_LOG_WAIT_MILLIS}.
+     * <p>Note that the execution will be delayed by {@link #REFRESH_ANNOTATED_CALL_LOG_WAIT_MILLIS}.
      * Once the work begins, it can't be cancelled.
      *
      * @see #cancelRefreshingAnnotatedCallLog()
@@ -121,18 +99,14 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
     private void refreshAnnotatedCallLog(boolean checkDirty) {
         LogUtil.enterBlock("RefreshAnnotatedCallLogReceiver.refreshAnnotatedCallLog");
 
-        // If we already scheduled a refresh, cancel it and schedule a new one so that repeated
-        // requests
+        // If we already scheduled a refresh, cancel it and schedule a new one so that repeated requests
         // in quick succession don't result in too much work. For example, if we get 10 requests in
-        // 10ms, and a complete refresh takes a constant 200ms, the refresh will take 300ms
-        // (100ms wait
-        // and 1 iteration @200ms) instead of 2 seconds (10 iterations @ 200ms) since the work
-        // requests
+        // 10ms, and a complete refresh takes a constant 200ms, the refresh will take 300ms (100ms wait
+        // and 1 iteration @200ms) instead of 2 seconds (10 iterations @ 200ms) since the work requests
         // are serialized in RefreshAnnotatedCallLogWorker.
         //
         // We might get many requests in quick succession, for example, when the simulator inserts
-        // hundreds of rows into the system call log, or when the data for a new call is
-        // incrementally
+        // hundreds of rows into the system call log, or when the data for a new call is incrementally
         // written to different columns as it becomes available.
         ThreadUtil.getUiThreadHandler().removeCallbacks(refreshAnnotatedCallLogRunnable);
 
@@ -147,8 +121,7 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
                             new FutureCallback<RefreshResult>() {
                                 @Override
                                 public void onSuccess(RefreshResult refreshResult) {
-                                    logger.logImpression(
-                                            getImpressionType(checkDirty, refreshResult));
+                                    logger.logImpression(getImpressionType(checkDirty, refreshResult));
                                 }
 
                                 @Override
@@ -165,14 +138,12 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
                 };
 
         ThreadUtil.getUiThreadHandler()
-                .postDelayed(refreshAnnotatedCallLogRunnable,
-                        REFRESH_ANNOTATED_CALL_LOG_WAIT_MILLIS);
+                .postDelayed(refreshAnnotatedCallLogRunnable, REFRESH_ANNOTATED_CALL_LOG_WAIT_MILLIS);
     }
 
     /**
      * When a refresh is requested, its execution is delayed (see {@link
-     * #refreshAnnotatedCallLog(boolean)}). This method only cancels the refresh if it hasn't
-     * started.
+     * #refreshAnnotatedCallLog(boolean)}). This method only cancels the refresh if it hasn't started.
      */
     private void cancelRefreshingAnnotatedCallLog() {
         LogUtil.enterBlock("RefreshAnnotatedCallLogReceiver.cancelRefreshingAnnotatedCallLog");
@@ -192,8 +163,7 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
         public String apply(RefreshResult refreshResult) {
             switch (refreshResult) {
                 case NOT_DIRTY:
-                    return Metrics.ANNOTATED_CALL_LOG_NOT_DIRTY; // NOT_DIRTY implies
-                // forceRefresh is false
+                    return Metrics.ANNOTATED_CALL_LOG_NOT_DIRTY; // NOT_DIRTY implies forceRefresh is false
                 case REBUILT_BUT_NO_CHANGES_NEEDED:
                     return checkDirty
                             ? Metrics.ANNOTATED_LOG_NO_CHANGES_NEEDED
@@ -205,6 +175,24 @@ public final class RefreshAnnotatedCallLogReceiver extends BroadcastReceiver {
                 default:
                     throw new IllegalStateException("Unsupported result: " + refreshResult);
             }
+        }
+    }
+
+    private static DialerImpression.Type getImpressionType(
+            boolean checkDirty, RefreshResult refreshResult) {
+        switch (refreshResult) {
+            case NOT_DIRTY:
+                return DialerImpression.Type.ANNOTATED_CALL_LOG_NOT_DIRTY;
+            case REBUILT_BUT_NO_CHANGES_NEEDED:
+                return checkDirty
+                        ? DialerImpression.Type.ANNOTATED_CALL_LOG_NO_CHANGES_NEEDED
+                        : DialerImpression.Type.ANNOTATED_CALL_LOG_FORCE_REFRESH_NO_CHANGES_NEEDED;
+            case REBUILT_AND_CHANGES_NEEDED:
+                return checkDirty
+                        ? DialerImpression.Type.ANNOTATED_CALL_LOG_CHANGES_NEEDED
+                        : DialerImpression.Type.ANNOTATED_CALL_LOG_FORCE_REFRESH_CHANGES_NEEDED;
+            default:
+                throw new IllegalStateException("Unsupported result: " + refreshResult);
         }
     }
 }

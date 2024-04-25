@@ -19,7 +19,9 @@ package com.wintmain.dialer.contacts.displaypreference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.UserManager;
+
 import androidx.preference.PreferenceManager;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.inject.ApplicationContext;
 
@@ -39,8 +41,7 @@ public final class ContactDisplayPreferencesImpl implements ContactDisplayPrefer
     @Inject
     ContactDisplayPreferencesImpl(@ApplicationContext Context appContext) {
         this.appContext = appContext;
-        // @Unencrypted preference would be a better choice, but Android Preference only supports
-        // the
+        // @Unencrypted preference would be a better choice, but Android Preference only supports the
         // default file. Stub should be used instead when device is locked.
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         displayOrderKey = appContext.getString(R.string.display_options_view_names_as_key);
@@ -53,14 +54,12 @@ public final class ContactDisplayPreferencesImpl implements ContactDisplayPrefer
         if (!sharedPreferences.contains(displayOrderKey)) {
             return DisplayOrder.PRIMARY;
         }
-        return DisplayOrder.fromValue(appContext,
-                sharedPreferences.getString(displayOrderKey, null));
+        return DisplayOrder.fromValue(appContext, sharedPreferences.getString(displayOrderKey, null));
     }
 
     @Override
     public void setDisplayOrder(DisplayOrder displayOrder) {
-        sharedPreferences.edit().putString(displayOrderKey, displayOrder.getValue(appContext))
-                .apply();
+        sharedPreferences.edit().putString(displayOrderKey, displayOrder.getValue(appContext)).apply();
     }
 
     @Override
@@ -97,8 +96,7 @@ public final class ContactDisplayPreferencesImpl implements ContactDisplayPrefer
                     .putString(
                             displayOrderKey,
                             translateLegacyDisplayOrder(oldPreference.getInt(displayOrderKey, 1)))
-                    .putString(sortOrderKey,
-                            translateLegacySortOrder(oldPreference.getInt(sortOrderKey, 1)))
+                    .putString(sortOrderKey, translateLegacySortOrder(oldPreference.getInt(sortOrderKey, 1)))
                     .apply();
             oldPreference.edit().remove(displayOrderKey).remove(sortOrderKey).apply();
         }

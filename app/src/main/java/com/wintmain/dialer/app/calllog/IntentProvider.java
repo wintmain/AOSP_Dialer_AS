@@ -23,7 +23,9 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telecom.PhoneAccountHandle;
 import android.telephony.TelephonyManager;
+
 import androidx.annotation.Nullable;
+
 import com.android.contacts.common.model.Contact;
 import com.android.contacts.common.model.ContactLoader;
 import com.wintmain.dialer.calldetails.CallDetailsEntries;
@@ -110,8 +112,7 @@ public abstract class IntentProvider {
             @Override
             public void logInteraction(Context context) {
                 Logger.get(context)
-                        .logImpression(
-                                DialerImpression.Type.LIGHTBRINGER_VIDEO_REQUESTED_FROM_CALL_LOG);
+                        .logImpression(DialerImpression.Type.LIGHTBRINGER_VIDEO_REQUESTED_FROM_CALL_LOG);
                 if (isNonContact) {
                     Logger.get(context)
                             .logImpression(
@@ -130,8 +131,7 @@ public abstract class IntentProvider {
 
             @Override
             public void logInteraction(Context context) {
-                Logger.get(context).logImpression(
-                        DialerImpression.Type.DUO_CALL_LOG_SET_UP_INSTALL);
+                Logger.get(context).logImpression(DialerImpression.Type.DUO_CALL_LOG_SET_UP_INSTALL);
             }
         };
     }
@@ -145,8 +145,7 @@ public abstract class IntentProvider {
 
             @Override
             public void logInteraction(Context context) {
-                Logger.get(context).logImpression(
-                        DialerImpression.Type.DUO_CALL_LOG_SET_UP_ACTIVATE);
+                Logger.get(context).logImpression(DialerImpression.Type.DUO_CALL_LOG_SET_UP_ACTIVATE);
             }
         };
     }
@@ -172,8 +171,7 @@ public abstract class IntentProvider {
             public Intent getIntent(Context context) {
                 return PreCall.getIntent(
                         context,
-                        CallIntentBuilder.forVoicemail(phoneAccountHandle,
-                                CallInitiationType.Type.CALL_LOG));
+                        CallIntentBuilder.forVoicemail(phoneAccountHandle, CallInitiationType.Type.CALL_LOG));
             }
         };
     }
@@ -190,8 +188,7 @@ public abstract class IntentProvider {
     /**
      * Retrieves the call details intent provider for an entry in the call log.
      *
-     * @param callDetailsEntries        The call details of the other calls grouped together with
-     *                                  the call.
+     * @param callDetailsEntries        The call details of the other calls grouped together with the call.
      * @param contact                   The contact with which this call details intent pertains to.
      * @param canReportCallerId         Whether reporting a caller ID is supported.
      * @param canSupportAssistedDialing Whether assisted dialing is supported.
@@ -206,8 +203,7 @@ public abstract class IntentProvider {
             @Override
             public Intent getIntent(Context context) {
                 return OldCallDetailsActivity.newInstance(
-                        context, callDetailsEntries, contact, canReportCallerId,
-                        canSupportAssistedDialing);
+                        context, callDetailsEntries, contact, canReportCallerId, canSupportAssistedDialing);
             }
         };
     }
@@ -245,8 +241,7 @@ public abstract class IntentProvider {
                     // or better (e.g. structured name, nickname)
                     if (contactToSave.getDisplayNameSource()
                             >= ContactsContract.DisplayNameSources.NICKNAME) {
-                        intent.putExtra(ContactsContract.Intents.Insert.NAME,
-                                contactToSave.getDisplayName());
+                        intent.putExtra(ContactsContract.Intents.Insert.NAME, contactToSave.getDisplayName());
                     } else if (contactToSave.getDisplayNameSource()
                             == ContactsContract.DisplayNameSources.ORGANIZATION) {
                         // This is probably an organization. Instead of copying the organization

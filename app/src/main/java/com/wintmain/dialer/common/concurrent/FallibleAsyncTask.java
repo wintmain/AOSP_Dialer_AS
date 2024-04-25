@@ -19,17 +19,17 @@ package com.wintmain.dialer.common.concurrent;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.auto.value.AutoValue;
 import com.wintmain.dialer.common.concurrent.FallibleAsyncTask.FallibleTaskResult;
+import com.google.auto.value.AutoValue;
 
 /**
  * A task that runs work in the background, passing Throwables from {@link
  * #doInBackground(Object[])} to {@link #onPostExecute(Object)} through a {@link
  * FallibleTaskResult}.
  *
- * @param <ParamsT>   the type of the parameters sent to the task upon execution
+ * @param <ParamsT> the type of the parameters sent to the task upon execution
  * @param <ProgressT> the type of the progress units published during the background computation
- * @param <ResultT>   the type of the result of the background computation
+ * @param <ResultT> the type of the result of the background computation
  * @deprecated Please use {@link DialerExecutors}.
  */
 @Deprecated
@@ -58,8 +58,7 @@ public abstract class FallibleAsyncTask<ParamsT, ProgressT, ResultT>
     public abstract static class FallibleTaskResult<ResultT> {
 
         /** Creates an instance of FallibleTaskResult for the given throwable. */
-        private static <ResultT> FallibleTaskResult<ResultT> createFailureResult(
-                @NonNull Throwable t) {
+        private static <ResultT> FallibleTaskResult<ResultT> createFailureResult(@NonNull Throwable t) {
             return new AutoValue_FallibleAsyncTask_FallibleTaskResult<>(t, null);
         }
 
@@ -77,8 +76,7 @@ public abstract class FallibleAsyncTask<ParamsT, ProgressT, ResultT>
         public abstract Throwable getThrowable();
 
         /**
-         * Returns the result of {@link #doInBackground(Object[])}, which may be {@code null}, or
-         * {@code
+         * Returns the result of {@link #doInBackground(Object[])}, which may be {@code null}, or {@code
          * null} if the background work threw a Throwable.
          *
          * <p>Use {@link #isFailure()} to determine if a {@code null} return is the result of a
@@ -88,8 +86,7 @@ public abstract class FallibleAsyncTask<ParamsT, ProgressT, ResultT>
         public abstract ResultT getResult();
 
         /**
-         * Returns {@code true} if this object is the result of background work that threw a
-         * Throwable.
+         * Returns {@code true} if this object is the result of background work that threw a Throwable.
          */
         public boolean isFailure() {
             //noinspection ThrowableResultOfMethodCallIgnored

@@ -18,6 +18,7 @@ package com.wintmain.dialer.calllogutils;
 
 import android.content.res.Resources;
 import android.provider.CallLog.Calls;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.duo.Duo;
 

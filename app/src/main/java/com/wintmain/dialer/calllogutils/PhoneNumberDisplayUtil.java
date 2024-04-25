@@ -22,9 +22,10 @@ import android.telephony.PhoneNumberUtils;
 import android.text.BidiFormatter;
 import android.text.TextDirectionHeuristics;
 import android.text.TextUtils;
-import com.google.common.base.Optional;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.phonenumberutil.PhoneNumberHelper;
+import com.google.common.base.Optional;
 
 /**
  * Helper for formatting and managing the display of phone numbers.
@@ -97,7 +98,6 @@ public class PhoneNumberDisplayUtil {
      */
     private static CharSequence getTtsSpannableLtrNumber(CharSequence number) {
         return PhoneNumberUtils.createTtsSpannable(
-                BidiFormatter.getInstance()
-                        .unicodeWrap(number.toString(), TextDirectionHeuristics.LTR));
+                BidiFormatter.getInstance().unicodeWrap(number.toString(), TextDirectionHeuristics.LTR));
     }
 }

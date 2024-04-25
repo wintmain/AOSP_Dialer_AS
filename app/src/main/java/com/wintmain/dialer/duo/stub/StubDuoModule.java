@@ -19,10 +19,11 @@ package com.wintmain.dialer.duo.stub;
 import com.wintmain.dialer.duo.Duo;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-import dagger.Binds;
-import dagger.Module;
 
 import javax.inject.Singleton;
+
+import dagger.Binds;
+import dagger.Module;
 
 @Module
 @InstallIn(variants = DialerVariant.DIALER_TEST)

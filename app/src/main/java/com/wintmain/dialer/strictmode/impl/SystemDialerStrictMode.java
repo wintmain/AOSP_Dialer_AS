@@ -25,13 +25,12 @@ import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
-import com.google.auto.value.AutoValue;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.strictmode.DialerStrictMode;
 import com.wintmain.dialer.strictmode.StrictModeUtils;
-
-import javax.inject.Inject;
+import com.google.auto.value.AutoValue;
 import java.util.Map;
+import javax.inject.Inject;
 
 final class SystemDialerStrictMode implements DialerStrictMode {
     private static final VmPolicy VM_DEATH_PENALTY =
@@ -41,7 +40,23 @@ final class SystemDialerStrictMode implements DialerStrictMode {
             new StrictMode.ThreadPolicy.Builder().penaltyLog().penaltyDeath().build();
 
     @Inject
-    public SystemDialerStrictMode() {
+    public SystemDialerStrictMode() {}
+
+    @MainThread
+    @Override
+    public void onApplicationCreate(Application application) {
+        if (StrictModeUtils.isStrictModeAllowed()) {
+            StrictModeUtils.warmupSharedPrefs(application);
+            setRecommendedMainThreadPolicy(THREAD_DEATH_PENALTY);
+            setRecommendedVMPolicy(VM_DEATH_PENALTY);
+
+            // Because Android resets StrictMode policies after Application.onCreate is done, we set it
+            // again right after.
+            // See cl/105932355 for the discussion.
+            // See a bug for the public bug.
+            Handler handler = new Handler(Looper.myLooper());
+            handler.postAtFrontOfQueue(() -> setRecommendedMainThreadPolicy(THREAD_DEATH_PENALTY));
+        }
     }
 
     /**
@@ -84,29 +99,12 @@ final class SystemDialerStrictMode implements DialerStrictMode {
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
 
-    @MainThread
-    @Override
-    public void onApplicationCreate(Application application) {
-        if (StrictModeUtils.isStrictModeAllowed()) {
-            StrictModeUtils.warmupSharedPrefs(application);
-            setRecommendedMainThreadPolicy(THREAD_DEATH_PENALTY);
-            setRecommendedVMPolicy(VM_DEATH_PENALTY);
-
-            // Because Android resets StrictMode policies after Application.onCreate is done, we
-            // set it
-            // again right after.
-            // See cl/105932355 for the discussion.
-            // See a bug for the public bug.
-            Handler handler = new Handler(Looper.myLooper());
-            handler.postAtFrontOfQueue(() -> setRecommendedMainThreadPolicy(THREAD_DEATH_PENALTY));
-        }
-    }
-
     /** VmPolicy configuration. */
     @AutoValue
     abstract static class StrictModeVmConfig {
-        StrictModeVmConfig() {
-        }
+        /** A map of a class to the maximum number of allowed instances of that class. */
+        @Nullable
+        abstract Map<Class<?>, Integer> maxInstanceLimits();
 
         public static StrictModeVmConfig empty() {
             return builder().build();
@@ -116,19 +114,16 @@ final class SystemDialerStrictMode implements DialerStrictMode {
             return new AutoValue_SystemDialerStrictMode_StrictModeVmConfig.Builder();
         }
 
-        /** A map of a class to the maximum number of allowed instances of that class. */
-        @Nullable
-        abstract Map<Class<?>, Integer> maxInstanceLimits();
-
         /** VmPolicy configuration builder. */
         @AutoValue.Builder
         public abstract static class Builder {
-            Builder() {
-            }
-
             public abstract Builder setMaxInstanceLimits(Map<Class<?>, Integer> limits);
 
             public abstract StrictModeVmConfig build();
+
+            Builder() {}
         }
+
+        StrictModeVmConfig() {}
     }
 }

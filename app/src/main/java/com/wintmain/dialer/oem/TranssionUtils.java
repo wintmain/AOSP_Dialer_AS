@@ -18,10 +18,12 @@ package com.wintmain.dialer.oem;
 
 import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.VisibleForTesting;
-import com.google.common.collect.ImmutableSet;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.compat.telephony.TelephonyManagerCompat;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Utilities for Transsion devices.
@@ -56,8 +58,7 @@ public final class TranssionUtils {
      * Handle a Transsion secret code by passing it to {@link
      * TelephonyManagerCompat#handleSecretCode(Context, String)}.
      *
-     * <p>Before calling this method, we must use {@link #isTranssionSecretCode(String)} to
-     * ensure the
+     * <p>Before calling this method, we must use {@link #isTranssionSecretCode(String)} to ensure the
      * device is a Transsion device and the input is a valid Transsion secret code.
      *
      * <p>An exception will be thrown if either of the conditions above is not met.

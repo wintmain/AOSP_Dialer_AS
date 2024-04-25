@@ -20,6 +20,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.QuickContactBadge;
+
 import com.wintmain.dialer.app.calllog.CallLogAdapter.OnActionModeStateChangedListener;
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
@@ -49,8 +50,7 @@ public class DialerQuickContactBadge extends QuickContactBadge {
         if (extraOnClickListener != null
                 && onActionModeStateChangeListener.isActionModeStateEnabled()) {
             Logger.get(v.getContext())
-                    .logImpression(
-                            DialerImpression.Type.MULTISELECT_SINGLE_PRESS_TAP_VIA_CONTACT_BADGE);
+                    .logImpression(DialerImpression.Type.MULTISELECT_SINGLE_PRESS_TAP_VIA_CONTACT_BADGE);
             extraOnClickListener.onClick(v);
         } else {
             super.onClick(v);

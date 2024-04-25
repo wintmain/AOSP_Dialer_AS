@@ -18,6 +18,7 @@ package com.wintmain.dialer.common.concurrent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.NonUiParallel;
@@ -29,9 +30,14 @@ import com.wintmain.dialer.common.concurrent.DialerExecutor.FailureListener;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.SuccessListener;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
 
-import javax.inject.Inject;
 import java.util.Objects;
-import java.util.concurrent.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 /**
  * The production {@link DialerExecutorFactory}.
@@ -73,8 +79,7 @@ public class DefaultDialerExecutorFactory implements DialerExecutorFactory {
     @NonNull
     public <InputT, OutputT> DialerExecutor.Builder<InputT, OutputT> createNonUiTaskBuilder(
             @NonNull Worker<InputT, OutputT> worker) {
-        return new NonUiTaskBuilder<>(Assert.isNotNull(worker), nonUiSerialExecutor,
-                nonUiThreadPool);
+        return new NonUiTaskBuilder<>(Assert.isNotNull(worker), nonUiSerialExecutor, nonUiThreadPool);
     }
 
     private abstract static class BaseTaskBuilder<InputT, OutputT>
@@ -103,8 +108,7 @@ public class DefaultDialerExecutorFactory implements DialerExecutorFactory {
 
         @NonNull
         @Override
-        public Builder<InputT, OutputT> onSuccess(
-                @NonNull SuccessListener<OutputT> successListener) {
+        public Builder<InputT, OutputT> onSuccess(@NonNull SuccessListener<OutputT> successListener) {
             this.successListener = Assert.isNotNull(successListener);
             return this;
         }
@@ -138,15 +142,14 @@ public class DefaultDialerExecutorFactory implements DialerExecutorFactory {
         @NonNull
         @Override
         public DialerExecutor<InputT> build() {
-            DialerUiTaskFragment<InputT, OutputT> dialerUiTaskFragment =
-                    DialerUiTaskFragment.create(
-                            fragmentManager,
-                            id,
-                            super.worker,
-                            super.successListener,
-                            super.failureListener,
-                            Objects.requireNonNull(serialExecutorService),
-                            Objects.requireNonNull(parallelExecutor));
+            DialerUiTaskFragment<InputT, OutputT> dialerUiTaskFragment = DialerUiTaskFragment.create(
+                    fragmentManager,
+                    id,
+                    super.worker,
+                    super.successListener,
+                    super.failureListener,
+                    Objects.requireNonNull(serialExecutorService),
+                    Objects.requireNonNull(parallelExecutor));
             return new UiDialerExecutor<>(dialerUiTaskFragment);
         }
     }
@@ -241,8 +244,7 @@ public class DefaultDialerExecutorFactory implements DialerExecutorFactory {
                 scheduledFuture.cancel(false /* mayInterrupt */);
             }
             scheduledFuture =
-                    serialExecutorService.schedule(() -> run(input), waitMillis,
-                            TimeUnit.MILLISECONDS);
+                    serialExecutorService.schedule(() -> run(input), waitMillis, TimeUnit.MILLISECONDS);
         }
 
         @Override

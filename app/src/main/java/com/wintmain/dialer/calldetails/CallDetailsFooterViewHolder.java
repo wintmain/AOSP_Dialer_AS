@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.clipboard.ClipboardUtils;
 import com.wintmain.dialer.common.Assert;
@@ -83,8 +85,7 @@ final class CallDetailsFooterViewHolder extends RecyclerView.ViewHolder implemen
             ClipboardUtils.copyText(context, null, number, true);
         } else if (view == edit) {
             PerformanceReport.recordClick(UiAction.Type.EDIT_NUMBER_BEFORE_CALL_IN_CALL_DETAIL);
-            // Dialpad will be filled with this number, but we don't want to record it as user
-            // action
+            // Dialpad will be filled with this number, but we don't want to record it as user action
             PerformanceReport.setIgnoreActionOnce(UiAction.Type.TEXT_CHANGE_WITH_INPUT);
 
             Logger.get(context).logImpression(DialerImpression.Type.CALL_DETAILS_EDIT_BEFORE_CALL);

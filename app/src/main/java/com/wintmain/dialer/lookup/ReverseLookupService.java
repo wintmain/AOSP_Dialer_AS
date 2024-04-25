@@ -5,13 +5,13 @@ package com.wintmain.dialer.lookup;
  * @Author wintmain    <wosintmain@gmail.com>
  * @Date 2023-06-30 0:10:10
  */
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
+
 import com.android.incallui.bindings.PhoneNumberService;
 import com.wintmain.dialer.location.GeoUtil;
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
@@ -19,12 +19,13 @@ import com.wintmain.dialer.phonenumbercache.ContactInfo;
 import java.io.IOException;
 
 public class ReverseLookupService implements PhoneNumberService, Handler.Callback {
-    private static final int MSG_LOOKUP = 1;
-    private static final int MSG_NOTIFY_NUMBER = 2;
     private final Handler backgroundHandler;
     private final Handler handler;
     private final Context context;
     private final TelephonyManager telephonyManager;
+
+    private static final int MSG_LOOKUP = 1;
+    private static final int MSG_NOTIFY_NUMBER = 2;
 
     public ReverseLookupService(Context context) {
         this.context = context;
@@ -40,13 +41,13 @@ public class ReverseLookupService implements PhoneNumberService, Handler.Callbac
 
     @Override
     public void getPhoneNumberInfo(String phoneNumber, NumberLookupListener numberListener) {
-        if (!LookupSettings.isReverseLookupEnabled(context)) {
+        if (!LookupSettings.isReverseLookupEnabled(context)){
             LookupCache.deleteCachedContacts(context);
             return;
         }
         String countryIso = telephonyManager.getSimCountryIso().toUpperCase();
         String normalizeNum = phoneNumber != null ? PhoneNumberUtils.formatNumberToE164(
-                phoneNumber, countryIso) : null;
+                    phoneNumber, countryIso) : null;
         // Without a number, can't do reverse lookup
         if (normalizeNum == null) {
             return;
@@ -71,7 +72,7 @@ public class ReverseLookupService implements PhoneNumberService, Handler.Callbac
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (request.contactInfo != null) {
+                if (request.contactInfo != null){
                     handler.obtainMessage(MSG_NOTIFY_NUMBER, request).sendToTarget();
                 }
                 break;

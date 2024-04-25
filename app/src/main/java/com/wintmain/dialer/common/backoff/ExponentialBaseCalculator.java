@@ -69,15 +69,13 @@ public final class ExponentialBaseCalculator {
     }
 
     /**
-     * T/D = (1 - b^N)/(1 - b) but this cannot be written as a simple equation for b in terms of
-     * T, D
+     * T/D = (1 - b^N)/(1 - b) but this cannot be written as a simple equation for b in terms of T, D
      * and N so instead we use Newtons method to find an approximate value for b.
      *
      * <p>Let f(b) = (1 - b^N)/(1 - b) - T/D then we want to find b* such that f(b*) = 0, or more
      * precisely |f(b*)| < tolerance
      *
-     * <p>Using Newton's method we can interatively find b* as follows: b1 = b0 - f(b0)/f'(b0),
-     * where
+     * <p>Using Newton's method we can interatively find b* as follows: b1 = b0 - f(b0)/f'(b0), where
      * b0 is the current best guess for b* and b1 is the next best guess.
      *
      * <p>f'(b) = (f(b) + T/D - N*b^(N - 1))/(1 - b)

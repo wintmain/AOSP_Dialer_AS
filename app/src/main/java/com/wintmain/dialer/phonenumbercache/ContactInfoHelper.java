@@ -28,8 +28,10 @@ import android.provider.ContactsContract.DisplayNameSources;
 import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
+
 import com.android.contacts.common.ContactsUtils;
 import com.android.contacts.common.ContactsUtils.UserType;
 import com.android.contacts.common.util.Constants;
@@ -43,6 +45,7 @@ import com.wintmain.dialer.phonenumberutil.PhoneNumberHelper;
 import com.wintmain.dialer.telecom.TelecomUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
 import com.wintmain.dialer.util.UriUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,8 +66,7 @@ public class ContactInfoHelper {
     public ContactInfoHelper(Context context, String currentCountryIso) {
         this.context = context;
         this.currentCountryIso = currentCountryIso;
-        cachedNumberLookupService = PhoneNumberCache.get(this.context)
-                .getCachedNumberLookupService();
+        cachedNumberLookupService = PhoneNumberCache.get(this.context).getCachedNumberLookupService();
     }
 
     /**
@@ -80,8 +82,7 @@ public class ContactInfoHelper {
                     new JSONObject()
                             .put(
                                     Phone.CONTENT_ITEM_TYPE,
-                                    new JSONObject().put(Phone.NUMBER, number)
-                                            .put(Phone.TYPE, Phone.TYPE_CUSTOM));
+                                    new JSONObject().put(Phone.NUMBER, number).put(Phone.TYPE, Phone.TYPE_CUSTOM));
 
             final String jsonString =
                     new JSONObject()
@@ -103,8 +104,7 @@ public class ContactInfoHelper {
     }
 
     public static String lookUpDisplayNameAlternative(
-            Context context, String lookupKey, @UserType long userType,
-            @Nullable Long directoryId) {
+            Context context, String lookupKey, @UserType long userType, @Nullable Long directoryId) {
         // Query {@link Contacts#CONTENT_LOOKUP_URI} directly with work lookup key is not allowed.
         if (lookupKey == null || userType == ContactsUtils.USER_TYPE_WORK) {
             return null;
@@ -173,8 +173,7 @@ public class ContactInfoHelper {
         String matchedNumber = c.getString(CallLogQuery.CACHED_MATCHED_NUMBER);
         String postDialDigits = c.getString(CallLogQuery.POST_DIAL_DIGITS);
         info.number =
-                (matchedNumber == null) ? c.getString(CallLogQuery.NUMBER) + postDialDigits
-                        : matchedNumber;
+                (matchedNumber == null) ? c.getString(CallLogQuery.NUMBER) + postDialDigits : matchedNumber;
 
         info.normalizedNumber = c.getString(CallLogQuery.CACHED_NORMALIZED_NUMBER);
         info.photoId = c.getLong(CallLogQuery.CACHED_PHOTO_ID);
@@ -194,8 +193,7 @@ public class ContactInfoHelper {
     /**
      * Returns the contact information for the given number.
      *
-     * <p>If the number does not match any contact, returns a contact info containing only the
-     * number
+     * <p>If the number does not match any contact, returns a contact info containing only the number
      * and the formatted number.
      *
      * <p>If an error occurs during the lookup, it returns null.
@@ -281,8 +279,7 @@ public class ContactInfoHelper {
         List<Long> remoteDirectories = new ArrayList<>();
         Uri uri = Directory.ENTERPRISE_CONTENT_URI;
         Cursor cursor =
-                context.getContentResolver().query(uri, new String[]{Directory._ID}, null, null,
-                        null);
+                context.getContentResolver().query(uri, new String[]{Directory._ID}, null, null, null);
         if (cursor == null) {
             return remoteDirectories;
         }
@@ -306,8 +303,7 @@ public class ContactInfoHelper {
      * <p>It returns null if an error occurs, {@link ContactInfo#EMPTY} if no matching contact is
      * found, or the {@link ContactInfo} for the given contact.
      *
-     * <p>The {@link ContactInfo#formattedNumber} field is always set to {@code null} in the
-     * returned
+     * <p>The {@link ContactInfo#formattedNumber} field is always set to {@code null} in the returned
      * value.
      */
     ContactInfo lookupContactFromUri(Uri uri) {
@@ -316,8 +312,7 @@ public class ContactInfoHelper {
             return null;
         }
         if (!PermissionsUtil.hasContactsReadPermissions(context)) {
-            LogUtil.d("ContactInfoHelper.lookupContactFromUri",
-                    "no contact permission, return empty");
+            LogUtil.d("ContactInfoHelper.lookupContactFromUri", "no contact permission, return empty");
             return ContactInfo.EMPTY;
         }
 
@@ -339,12 +334,9 @@ public class ContactInfoHelper {
                 return ContactInfo.EMPTY;
             }
 
-            // The Contacts provider ignores special characters in phone numbers when searching
-            // for a
-            // contact. For example, number "123" is considered a match with a contact with
-            // number "#123".
-            // We need to check whether the result contains a number that truly matches the query
-            // and move
+            // The Contacts provider ignores special characters in phone numbers when searching for a
+            // contact. For example, number "123" is considered a match with a contact with number "#123".
+            // We need to check whether the result contains a number that truly matches the query and move
             // the cursor to that position before building a ContactInfo.
             boolean hasNumberMatch =
                     PhoneNumberHelper.updateCursorToMatchContactLookupUri(
@@ -374,8 +366,7 @@ public class ContactInfoHelper {
         info.photoUri = UriUtils.parseUriOrNull(phoneLookupCursor.getString(PhoneQuery.PHOTO_URI));
         info.formattedNumber = null;
         info.userType =
-                ContactsUtils.determineUserType(null,
-                        phoneLookupCursor.getLong(PhoneQuery.PERSON_ID));
+                ContactsUtils.determineUserType(null, phoneLookupCursor.getLong(PhoneQuery.PERSON_ID));
         info.contactExists = true;
 
         return info;
@@ -389,8 +380,7 @@ public class ContactInfoHelper {
         try (Cursor cursor =
                      context
                              .getContentResolver()
-                             .query(uri, PhoneQuery.ADDITIONAL_CONTACT_INFO_PROJECTION, null, null,
-                                     null)) {
+                             .query(uri, PhoneQuery.ADDITIONAL_CONTACT_INFO_PROJECTION, null, null, null)) {
             if (cursor == null || !cursor.moveToFirst()) {
                 return;
             }
@@ -438,8 +428,7 @@ public class ContactInfoHelper {
                 if (!cacheInfo.getContactInfo().isBadData) {
                     info = cacheInfo.getContactInfo();
                 } else {
-                    LogUtil.i("ContactInfoHelper.queryContactInfoForPhoneNumber",
-                            "info is bad data");
+                    LogUtil.i("ContactInfoHelper.queryContactInfoForPhoneNumber", "info is bad data");
                 }
             }
         }
@@ -508,8 +497,7 @@ public class ContactInfoHelper {
 
             // Only replace the normalized number if the new updated normalized number isn't empty.
             if (!TextUtils.isEmpty(updatedInfo.normalizedNumber)
-                    && !TextUtils.equals(updatedInfo.normalizedNumber,
-                    callLogInfo.normalizedNumber)) {
+                    && !TextUtils.equals(updatedInfo.normalizedNumber, callLogInfo.normalizedNumber)) {
                 values.put(Calls.CACHED_NORMALIZED_NUMBER, updatedInfo.normalizedNumber);
                 needsUpdate = true;
             }
@@ -524,11 +512,9 @@ public class ContactInfoHelper {
                 needsUpdate = true;
             }
 
-            final Uri updatedPhotoUriContactsOnly = UriUtils.nullForNonContactsUri(
-                    updatedInfo.photoUri);
+            final Uri updatedPhotoUriContactsOnly = UriUtils.nullForNonContactsUri(updatedInfo.photoUri);
             if (!UriUtils.areEqual(updatedPhotoUriContactsOnly, callLogInfo.photoUri)) {
-                values.put(Calls.CACHED_PHOTO_URI,
-                        UriUtils.uriToString(updatedPhotoUriContactsOnly));
+                values.put(Calls.CACHED_PHOTO_URI, UriUtils.uriToString(updatedPhotoUriContactsOnly));
                 needsUpdate = true;
             }
 
@@ -602,8 +588,7 @@ public class ContactInfoHelper {
      *                   #cachedNumberLookupService}.
      */
     public boolean isBusiness(ContactSource.Type sourceType) {
-        return cachedNumberLookupService != null && cachedNumberLookupService.isBusiness(
-                sourceType);
+        return cachedNumberLookupService != null && cachedNumberLookupService.isBusiness(sourceType);
     }
 
     /**
@@ -625,8 +610,7 @@ public class ContactInfoHelper {
      */
     @WorkerThread
     public void updateFromCequintCallerId(
-            @Nullable CequintCallerIdManager cequintCallerIdManager, ContactInfo info,
-            String number) {
+            @Nullable CequintCallerIdManager cequintCallerIdManager, ContactInfo info, String number) {
         Assert.isWorkerThread();
         if (!CequintCallerIdManager.isCequintCallerIdEnabled(context)) {
             return;
@@ -647,8 +631,7 @@ public class ContactInfoHelper {
             info.sourceType = ContactSource.Type.SOURCE_TYPE_CEQUINT_CALLER_ID;
         }
         // Only update photo if local lookup has no result.
-        if (!info.contactExists && info.photoUri == null
-                && cequintCallerIdContact.photoUri() != null) {
+        if (!info.contactExists && info.photoUri == null && cequintCallerIdContact.photoUri() != null) {
             info.photoUri = UriUtils.parseUriOrNull(cequintCallerIdContact.photoUri());
         }
     }

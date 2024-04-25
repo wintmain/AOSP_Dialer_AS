@@ -19,11 +19,7 @@ package com.wintmain.dialer.phonelookup.cequint;
 import android.content.Context;
 import android.telecom.Call;
 import android.text.TextUtils;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
@@ -37,9 +33,15 @@ import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.CequintInfo;
 import com.wintmain.dialer.phonenumberproto.DialerPhoneNumberUtil;
 import com.wintmain.dialer.telecom.TelecomCallUtil;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
-import java.util.Objects;
 
 /**
  * PhoneLookup implementation for Cequint.
@@ -90,11 +92,9 @@ public class CequintPhoneLookup implements PhoneLookup<CequintInfo> {
         ListenableFuture<DialerPhoneNumber> dialerPhoneNumberFuture =
                 backgroundExecutorService.submit(
                         () -> {
-                            DialerPhoneNumberUtil dialerPhoneNumberUtil =
-                                    new DialerPhoneNumberUtil();
+                            DialerPhoneNumberUtil dialerPhoneNumberUtil = new DialerPhoneNumberUtil();
                             return dialerPhoneNumberUtil.parse(
-                                    TelecomCallUtil.getNumber(call),
-                                    GeoUtil.getCurrentCountryIso(appContext));
+                                    TelecomCallUtil.getNumber(call), GeoUtil.getCurrentCountryIso(appContext));
                         });
         String callerDisplayName = call.getDetails().getCallerDisplayName();
         boolean isIncomingCall = (call.getState() == Call.STATE_RINGING);
@@ -105,13 +105,11 @@ public class CequintPhoneLookup implements PhoneLookup<CequintInfo> {
                         backgroundExecutorService.submit(
                                 () ->
                                         buildCequintInfo(
-                                                Objects.requireNonNull(
-                                                        CequintCallerIdManager.getCequintCallerIdContactForCall(
-                                                                appContext,
-                                                                Assert.isNotNull(dialerPhoneNumber)
-                                                                        .getNormalizedNumber(),
-                                                                callerDisplayName,
-                                                                isIncomingCall)))),
+                                                Objects.requireNonNull(CequintCallerIdManager.getCequintCallerIdContactForCall(
+                                                        appContext,
+                                                        Assert.isNotNull(dialerPhoneNumber).getNormalizedNumber(),
+                                                        callerDisplayName,
+                                                        isIncomingCall)))),
                 lightweightExecutorService);
     }
 
@@ -124,10 +122,8 @@ public class CequintPhoneLookup implements PhoneLookup<CequintInfo> {
         return backgroundExecutorService.submit(
                 () ->
                         buildCequintInfo(
-                                Objects.requireNonNull(
-                                        CequintCallerIdManager.getCequintCallerIdContactForNumber(
-                                                appContext,
-                                                dialerPhoneNumber.getNormalizedNumber()))));
+                                Objects.requireNonNull(CequintCallerIdManager.getCequintCallerIdContactForNumber(
+                                        appContext, dialerPhoneNumber.getNormalizedNumber()))));
     }
 
     @Override
@@ -158,8 +154,7 @@ public class CequintPhoneLookup implements PhoneLookup<CequintInfo> {
 
     @Override
     public void registerContentObservers() {
-        // No need to register a content observer as the Cequint content provider doesn't support
-        // batch
+        // No need to register a content observer as the Cequint content provider doesn't support batch
         // queries.
     }
 

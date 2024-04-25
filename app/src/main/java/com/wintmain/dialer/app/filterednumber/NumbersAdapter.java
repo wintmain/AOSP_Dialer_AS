@@ -25,7 +25,9 @@ import android.view.View;
 import android.widget.QuickContactBadge;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
 import androidx.fragment.app.FragmentManager;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager.DefaultImageRequest;
@@ -105,8 +107,7 @@ public class NumbersAdapter extends SimpleCursorAdapter {
                 new DefaultImageRequest(displayName, lookupKey, contactType, true /* isCircular */);
         badge.assignContactUri(info.lookupUri);
         badge.setContentDescription(
-                context.getResources()
-                        .getString(R.string.description_contact_details, displayName));
+                context.getResources().getString(R.string.description_contact_details, displayName));
         contactPhotoManager.loadDirectoryPhoto(
                 badge, info.photoUri, false /* darkTheme */, true /* isCircular */, request);
     }

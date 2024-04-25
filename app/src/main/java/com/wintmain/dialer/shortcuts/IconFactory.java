@@ -25,11 +25,13 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.lettertile.LetterTileDrawable;
@@ -51,10 +53,8 @@ class IconFactory {
     /**
      * Creates an icon for the provided {@link DialerShortcut}.
      *
-     * <p>The icon is a circle which contains a photo of the contact associated with the
-     * shortcut, if
-     * available. If a photo is not available, a circular colored icon with a single letter is
-     * instead
+     * <p>The icon is a circle which contains a photo of the contact associated with the shortcut, if
+     * available. If a photo is not available, a circular colored icon with a single letter is instead
      * created, where the letter is the first letter of the contact's name. If the contact has no
      * name, a default colored "anonymous" avatar is used.
      *
@@ -97,12 +97,10 @@ class IconFactory {
     }
 
     private Icon createAdaptiveIcon(
-            @NonNull String displayName, @NonNull String lookupKey,
-            @Nullable InputStream inputStream) {
+            @NonNull String displayName, @NonNull String lookupKey, @Nullable InputStream inputStream) {
         if (inputStream == null) {
             LetterTileDrawable letterTileDrawable = new LetterTileDrawable(context.getResources());
-            // The adaptive icons clip the drawable to a safe area inside the drawable. Scale the
-            // letter
+            // The adaptive icons clip the drawable to a safe area inside the drawable. Scale the letter
             // so it fits inside the safe area.
             letterTileDrawable.setScale(1f / (1f + AdaptiveIconDrawable.getExtraInsetFraction()));
             letterTileDrawable.setCanonicalDialerLetterTileDetails(
@@ -123,15 +121,13 @@ class IconFactory {
     }
 
     private Icon createFlatIcon(
-            @NonNull String displayName, @NonNull String lookupKey,
-            @Nullable InputStream inputStream) {
+            @NonNull String displayName, @NonNull String lookupKey, @Nullable InputStream inputStream) {
         Drawable drawable;
         if (inputStream == null) {
             // No photo for contact; use a letter tile.
             LetterTileDrawable letterTileDrawable = new LetterTileDrawable(context.getResources());
             letterTileDrawable.setCanonicalDialerLetterTileDetails(
-                    displayName, lookupKey, LetterTileDrawable.SHAPE_CIRCLE,
-                    LetterTileDrawable.TYPE_DEFAULT);
+                    displayName, lookupKey, LetterTileDrawable.SHAPE_CIRCLE, LetterTileDrawable.TYPE_DEFAULT);
             drawable = letterTileDrawable;
         } else {
             // There's a photo, create a circular drawable from it.
@@ -141,8 +137,7 @@ class IconFactory {
         int iconSize =
                 context.getResources().getDimensionPixelSize(R.dimen.launcher_shortcut_icon_size);
         return Icon.createWithBitmap(
-                DrawableConverter.drawableToBitmap(drawable, iconSize /* width */,
-                        iconSize /* height */));
+                DrawableConverter.drawableToBitmap(drawable, iconSize /* width */, iconSize /* height */));
     }
 
     @NonNull

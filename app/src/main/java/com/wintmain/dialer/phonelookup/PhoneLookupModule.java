@@ -16,7 +16,6 @@
 
 package com.wintmain.dialer.phonelookup;
 
-import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.phonelookup.blockednumber.SystemBlockedNumberPhoneLookup;
@@ -26,6 +25,8 @@ import com.wintmain.dialer.phonelookup.cp2.Cp2DefaultDirectoryPhoneLookup;
 import com.wintmain.dialer.phonelookup.cp2.Cp2ExtendedDirectoryPhoneLookup;
 import com.wintmain.dialer.phonelookup.emergency.EmergencyPhoneLookup;
 import com.wintmain.dialer.phonelookup.spam.SpamPhoneLookup;
+import com.google.common.collect.ImmutableList;
+
 import dagger.Module;
 import dagger.Provides;
 

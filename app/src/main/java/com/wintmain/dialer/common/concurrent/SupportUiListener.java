@@ -18,18 +18,20 @@ package com.wintmain.dialer.common.concurrent;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.FailureListener;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.SuccessListener;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 
 /**
@@ -73,8 +75,7 @@ public class SupportUiListener<OutputT> extends Fragment {
         if (uiListener == null) {
             LogUtil.i("SupportUiListener.create", "creating new SupportUiListener for " + taskId);
             uiListener = new SupportUiListener<>();
-            // When launching an activity with the screen off, its onSaveInstanceState() is
-            // called before
+            // When launching an activity with the screen off, its onSaveInstanceState() is called before
             // its fragments are created, which means we can't use commit() and need to use
             // commitAllowingStateLoss(). This is not a problem for SupportUiListener which saves no
             // state.
@@ -86,8 +87,7 @@ public class SupportUiListener<OutputT> extends Fragment {
     /**
      * Adds the specified listeners to the provided future.
      *
-     * <p>The listeners are not called if the UI component this {@link SupportUiListener} is
-     * declared
+     * <p>The listeners are not called if the UI component this {@link SupportUiListener} is declared
      * in is dead.
      */
     @MainThread
@@ -97,8 +97,7 @@ public class SupportUiListener<OutputT> extends Fragment {
             @NonNull SuccessListener<OutputT> successListener,
             @NonNull FailureListener failureListener) {
         callbackWrapper =
-                new CallbackWrapper<>(Assert.isNotNull(successListener),
-                        Assert.isNotNull(failureListener));
+                new CallbackWrapper<>(Assert.isNotNull(successListener), Assert.isNotNull(failureListener));
         Futures.addCallback(
                 Assert.isNotNull(future),
                 callbackWrapper,

@@ -19,11 +19,13 @@ package com.wintmain.dialer.persistentlog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
+
 import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 import androidx.core.os.UserManagerCompat;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.strictmode.StrictModeUtils;
@@ -88,8 +90,7 @@ public final class PersistentLogger {
                                 try {
                                     fileHandler.writeLogs(messages);
                                 } catch (IOException e) {
-                                    LogUtil.e("PersistentLogger.MESSAGE_FLUSH",
-                                            "error writing message", e);
+                                    LogUtil.e("PersistentLogger.MESSAGE_FLUSH", "error writing message", e);
                                 }
                             }
                             return true;
@@ -166,8 +167,7 @@ public final class PersistentLogger {
 
     private static byte[] buildTextLog(String tag, String string) {
         Calendar c = StrictModeUtils.bypass(() -> Calendar.getInstance());
-        return String.format(Locale.US, "%tm-%td %tH:%tM:%tS.%tL - %s - %s", c, c, c, c, c, c, tag,
-                        string)
+        return String.format(Locale.US, "%tm-%td %tH:%tM:%tS.%tL - %s - %s", c, c, c, c, c, c, tag, string)
                 .getBytes(StandardCharsets.UTF_8);
     }
 

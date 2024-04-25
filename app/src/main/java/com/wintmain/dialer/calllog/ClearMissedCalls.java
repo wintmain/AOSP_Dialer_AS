@@ -21,12 +21,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
+
 import androidx.core.os.UserManagerCompat;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.common.concurrent.Annotations.Ui;
@@ -34,9 +31,13 @@ import com.wintmain.dialer.common.database.Selection;
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.notification.missedcalls.MissedCallNotificationCanceller;
 import com.wintmain.dialer.util.PermissionsUtil;
-
-import javax.inject.Inject;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import java.util.Collection;
+import javax.inject.Inject;
 
 /**
  * Clears missed calls. This includes cancelling notifications and updating the "IS_READ" status in
@@ -56,15 +57,6 @@ public final class ClearMissedCalls {
         this.appContext = appContext;
         this.backgroundExecutor = backgroundExecutor;
         this.uiThreadExecutor = uiThreadExecutor;
-    }
-
-    private static String[] toStrings(Collection<Long> longs) {
-        String[] strings = new String[longs.size()];
-        int i = 0;
-        for (long value : longs) {
-            strings[i++] = Long.toString(value);
-        }
-        return strings;
     }
 
     /**
@@ -106,8 +98,7 @@ public final class ClearMissedCalls {
                 uiThreadExecutor.submit(
                         () -> {
                             for (long id : ids) {
-                                Uri callUri = Calls.CONTENT_URI.buildUpon().appendPath(
-                                        Long.toString(id)).build();
+                                Uri callUri = Calls.CONTENT_URI.buildUpon().appendPath(Long.toString(id)).build();
                                 MissedCallNotificationCanceller.cancelSingle(appContext, callUri);
                             }
                             return null;
@@ -153,8 +144,7 @@ public final class ClearMissedCalls {
                                             Selection.column(Calls.IS_READ)
                                                     .is("=", 0)
                                                     .buildUpon()
-                                                    .or(Selection.column(Calls.IS_READ)
-                                                            .is("IS NULL"))
+                                                    .or(Selection.column(Calls.IS_READ).is("IS NULL"))
                                                     .build())
                                     .and(Selection.column(Calls.TYPE).is("=", Calls.MISSED_TYPE));
                     if (!ids.isEmpty()) {
@@ -170,5 +160,14 @@ public final class ClearMissedCalls {
                                     selection.getSelectionArgs());
                     return null;
                 });
+    }
+
+    private static String[] toStrings(Collection<Long> longs) {
+        String[] strings = new String[longs.size()];
+        int i = 0;
+        for (long value : longs) {
+            strings[i++] = Long.toString(value);
+        }
+        return strings;
     }
 }

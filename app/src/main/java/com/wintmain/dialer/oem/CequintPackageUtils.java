@@ -20,7 +20,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.Signature;
+
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.common.LogUtil;
 
 import java.security.MessageDigest;
@@ -268,8 +270,7 @@ final class CequintPackageUtils {
             Signature[] signatures = packageInfo.signatures;
             if (signatures.length > 1) {
                 LogUtil.w(
-                        "CequintPackageUtils.isCallerIdInstalled",
-                        "package has more than one signature.");
+                        "CequintPackageUtils.isCallerIdInstalled", "package has more than one signature.");
                 return false;
             }
             byte[] sha256Bytes = getSHA256(signatures[0].toByteArray());

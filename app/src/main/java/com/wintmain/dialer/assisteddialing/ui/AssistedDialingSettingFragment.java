@@ -23,7 +23,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.telephony.TelephonyManager;
-import com.google.auto.value.AutoValue;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.assisteddialing.AssistedDialingMediator;
 import com.wintmain.dialer.assisteddialing.ConcreteCreator;
@@ -32,7 +32,7 @@ import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
-
+import com.google.auto.value.AutoValue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +42,22 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
 
     private CountryCodeProvider countryCodeProvider;
     private AssistedDialingMediator assistedDialingMediator;
+
+    @AutoValue
+    abstract static class DisplayNameAndCountryCodeTuple {
+
+        static DisplayNameAndCountryCodeTuple create(
+                CharSequence countryDisplayName, CharSequence countryCode) {
+            return new AutoValue_AssistedDialingSettingFragment_DisplayNameAndCountryCodeTuple(
+                    countryDisplayName, countryCode);
+        }
+
+        // The user-readable name of the country.
+        abstract CharSequence countryDisplayname();
+
+        // The ISO 3166-2 country code of the country.
+        abstract CharSequence countryCode();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +75,11 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.assisted_dialing_setting);
         SwitchPreference switchPref =
                 (SwitchPreference)
-                        findPreference(getContext().getString(
-                                R.string.assisted_dialing_setting_toggle_key));
+                        findPreference(getContext().getString(R.string.assisted_dialing_setting_toggle_key));
 
         ListPreference countryChooserPref =
                 (ListPreference)
-                        findPreference(
-                                getContext().getString(R.string.assisted_dialing_setting_cc_key));
+                        findPreference(getContext().getString(R.string.assisted_dialing_setting_cc_key));
 
         updateCountryChoices(countryChooserPref);
         updateCountryChooserSummary(countryChooserPref);
@@ -87,16 +101,13 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
                     countryChooserPref.setSummary(
                             getContext()
                                     .getString(
-                                            R.string.assisted_dialing_setting_cc_default_summary,
-                                            regionalDisplayName));
+                                            R.string.assisted_dialing_setting_cc_default_summary, regionalDisplayName));
                 } catch (ArrayIndexOutOfBoundsException e) {
                     // This might happen if there is a mismatch between the automatically
-                    // detected home country, and the countries currently eligible to select in
-                    // the settings.
+                    // detected home country, and the countries currently eligible to select in the settings.
                     LogUtil.i(
                             "AssistedDialingSettingFragment.onCreate",
-                            "Failed to find human readable mapping for country code, using "
-                                    + "default.");
+                            "Failed to find human readable mapping for country code, using default.");
                 }
             }
         } else {
@@ -105,8 +116,7 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
     }
 
     /**
-     * Filters the default entries in the country chooser by only showing those countries in
-     * which the
+     * Filters the default entries in the country chooser by only showing those countries in which the
      * feature in enabled.
      */
     private void updateCountryChoices(ListPreference countryChooserPref) {
@@ -143,7 +153,7 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
      * change in the available countries provided by a server side flag.
      *
      * @param countryChooserPref The list preference to restore to default when an invalid value is
-     *                           detected.
+     *     detected.
      */
     private void ameliorateInvalidSelectedValue(ListPreference countryChooserPref) {
         // Reset the preference value to the default value.
@@ -159,8 +169,7 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
         CharSequence[] values = countryChooserPref.getEntryValues();
 
         if (keys.length != values.length) {
-            throw new IllegalStateException(
-                    "Unexpected mismatch in country chooser key/value size");
+            throw new IllegalStateException("Unexpected mismatch in country chooser key/value size");
         }
 
         List<DisplayNameAndCountryCodeTuple> displayNamesandCountryCodes = new ArrayList<>();
@@ -168,14 +177,11 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
         // builder.
         ULocale userLocale =
                 new ULocale.Builder()
-                        .setRegion(
-                                getResources().getConfiguration().getLocales().get(0).getCountry())
-                        .setLanguage(
-                                getResources().getConfiguration().getLocales().get(0).getLanguage())
+                        .setRegion(getResources().getConfiguration().getLocales().get(0).getCountry())
+                        .setLanguage(getResources().getConfiguration().getLocales().get(0).getLanguage())
                         .build();
         for (int i = 0; i < keys.length; i++) {
-            ULocale settingRowDisplayCountry = new Builder().setRegion(values[i].toString())
-                    .build();
+            ULocale settingRowDisplayCountry = new Builder().setRegion(values[i].toString()).build();
             String localizedDisplayCountry = settingRowDisplayCountry.getDisplayCountry(userLocale);
             String settingDisplayName = localizedDisplayCountry + " " + keys[i];
             displayNamesandCountryCodes.add(
@@ -199,21 +205,5 @@ public class AssistedDialingSettingFragment extends PreferenceFragment {
         }
 
         return true;
-    }
-
-    @AutoValue
-    abstract static class DisplayNameAndCountryCodeTuple {
-
-        static DisplayNameAndCountryCodeTuple create(
-                CharSequence countryDisplayName, CharSequence countryCode) {
-            return new AutoValue_AssistedDialingSettingFragment_DisplayNameAndCountryCodeTuple(
-                    countryDisplayName, countryCode);
-        }
-
-        // The user-readable name of the country.
-        abstract CharSequence countryDisplayname();
-
-        // The ISO 3166-2 country code of the country.
-        abstract CharSequence countryCode();
     }
 }

@@ -17,11 +17,7 @@
 package com.wintmain.dialer.phonelookup.emergency;
 
 import android.content.Context;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.inject.ApplicationContext;
@@ -29,6 +25,11 @@ import com.wintmain.dialer.phonelookup.PhoneLookup;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.EmergencyInfo;
 import com.wintmain.dialer.phonenumberutil.PhoneNumberHelper;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 
 import javax.inject.Inject;
 
@@ -59,8 +60,7 @@ public class EmergencyPhoneLookup implements PhoneLookup<EmergencyInfo> {
                         EmergencyInfo.newBuilder()
                                 .setIsEmergencyNumber(
                                         PhoneNumberHelper.isLocalEmergencyNumber(
-                                                appContext,
-                                                dialerPhoneNumber.getNormalizedNumber()))
+                                                appContext, dialerPhoneNumber.getNormalizedNumber()))
                                 .build());
     }
 
@@ -72,13 +72,10 @@ public class EmergencyPhoneLookup implements PhoneLookup<EmergencyInfo> {
     @Override
     public ListenableFuture<ImmutableMap<DialerPhoneNumber, EmergencyInfo>> getMostRecentInfo(
             ImmutableMap<DialerPhoneNumber, EmergencyInfo> existingInfoMap) {
-        // We can update EmergencyInfo for all numbers in the provided map, but the negative
-        // impact on
-        // performance is intolerable as checking a single number involves detecting the user's
-        // location
+        // We can update EmergencyInfo for all numbers in the provided map, but the negative impact on
+        // performance is intolerable as checking a single number involves detecting the user's location
         // and obtaining SIM info, which will take more than 100ms (see
-        // android.telephony.PhoneNumberUtils#isLocalEmergencyNumber(Context, int, String) for
-        // details).
+        // android.telephony.PhoneNumberUtils#isLocalEmergencyNumber(Context, int, String) for details).
         //
         // As emergency numbers won't change in a country, the only case we will miss is that
         //   (1) a number is an emergency number in country A but not in country B,

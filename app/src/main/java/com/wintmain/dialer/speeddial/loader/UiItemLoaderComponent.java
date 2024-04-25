@@ -17,7 +17,9 @@
 package com.wintmain.dialer.speeddial.loader;
 
 import android.content.Context;
+
 import com.wintmain.dialer.inject.HasRootComponent;
+
 import dagger.Subcomponent;
 
 /**

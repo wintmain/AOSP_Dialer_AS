@@ -19,9 +19,11 @@ package com.wintmain.dialer.shortcuts;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.AsyncTask;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -51,11 +53,9 @@ final class RefreshShortcutsTask extends AsyncTask<JobParameters, Void, JobParam
         // periodically using the job service.
         //
         // The reason that icons can become is stale is that there is no last updated timestamp for
-        // pictures; there is only a last updated timestamp for the entire contact row, which
-        // changes
+        // pictures; there is only a last updated timestamp for the entire contact row, which changes
         // frequently (for example, when they are called their "times_contacted" is incremented).
-        // Relying on such a spuriously updated timestamp would result in too frequent shortcut
-        // updates,
+        // Relying on such a spuriously updated timestamp would result in too frequent shortcut updates,
         // so instead we just allow the icon to become stale in the case that the contact's photo is
         // updated, and then rely on the job service to periodically force update it.
         new DynamicShortcuts(jobService, new IconFactory(jobService)).updateIcons(); // Blocking

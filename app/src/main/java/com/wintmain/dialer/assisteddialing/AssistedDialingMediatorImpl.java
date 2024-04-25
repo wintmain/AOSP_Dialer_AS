@@ -17,6 +17,7 @@
 package com.wintmain.dialer.assisteddialing;
 
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.common.LogUtil;
 
 import java.util.Optional;
@@ -34,8 +35,7 @@ final class AssistedDialingMediatorImpl implements AssistedDialingMediator {
     private final NumberTransformer numberTransformer;
 
     AssistedDialingMediatorImpl(
-            @NonNull LocationDetector locationDetector,
-            @NonNull NumberTransformer numberTransformer) {
+            @NonNull LocationDetector locationDetector, @NonNull NumberTransformer numberTransformer) {
 
         this.locationDetector = locationDetector;
         this.numberTransformer = numberTransformer;
@@ -67,8 +67,7 @@ final class AssistedDialingMediatorImpl implements AssistedDialingMediator {
         Optional<String> userRoamingCountryCode = locationDetector.getUpperCaseUserRoamingCountry();
 
         if (!userHomeCountryCode.isPresent() || !userRoamingCountryCode.isPresent()) {
-            LogUtil.i("AssistedDialingMediator.attemptAssistedDial",
-                    "Unable to determine country codes");
+            LogUtil.i("AssistedDialingMediator.attemptAssistedDial", "Unable to determine country codes");
             return Optional.empty();
         }
 

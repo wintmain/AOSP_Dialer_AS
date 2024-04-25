@@ -19,10 +19,11 @@ package com.wintmain.dialer.strictmode.impl;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.strictmode.DialerStrictMode;
-import dagger.Binds;
-import dagger.Module;
 
 import javax.inject.Singleton;
+
+import dagger.Binds;
+import dagger.Module;
 
 /**
  * Module which binds {@link SystemDialerStrictMode}.

@@ -18,41 +18,40 @@ package com.wintmain.dialer.about;
 
 import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
-
 import java.util.List;
 
 /** {@link AsyncTaskLoader} to load the list of licenses for the license menu activity. */
 final class LicenseLoader extends AsyncTaskLoader<List<License>> {
 
-    private List<License> licenses;
+  private List<License> licenses;
 
-    LicenseLoader(Context context) {
-        // This must only pass the application context to avoid leaking a pointer to the Activity.
-        super(context.getApplicationContext());
-    }
+  LicenseLoader(Context context) {
+    // This must only pass the application context to avoid leaking a pointer to the Activity.
+    super(context.getApplicationContext());
+  }
 
-    @Override
-    public List<License> loadInBackground() {
-        return Licenses.getLicenses(getContext());
-    }
+  @Override
+  public List<License> loadInBackground() {
+    return Licenses.getLicenses(getContext());
+  }
 
-    @Override
-    public void deliverResult(List<License> licenses) {
-        this.licenses = licenses;
-        super.deliverResult(licenses);
-    }
+  @Override
+  public void deliverResult(List<License> licenses) {
+    this.licenses = licenses;
+    super.deliverResult(licenses);
+  }
 
-    @Override
-    protected void onStartLoading() {
-        if (licenses != null) {
-            deliverResult(licenses);
-        } else {
-            forceLoad();
-        }
+  @Override
+  protected void onStartLoading() {
+    if (licenses != null) {
+      deliverResult(licenses);
+    } else {
+      forceLoad();
     }
+  }
 
-    @Override
-    protected void onStopLoading() {
-        cancelLoad();
-    }
+  @Override
+  protected void onStopLoading() {
+    cancelLoad();
+  }
 }

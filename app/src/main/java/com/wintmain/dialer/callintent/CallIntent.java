@@ -30,96 +30,19 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableMap;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.performancereport.PerformanceReport;
 import com.wintmain.dialer.util.CallUtil;
+import com.google.auto.value.AutoValue;
+import com.google.common.collect.ImmutableMap;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 /** Creates an intent to start a new outgoing call. */
 @AutoValue
 public abstract class CallIntent implements Parcelable {
-    // @TODO(justinmcclain): Investigate deleting the parcelable logic and instead switching
-    // to using an internal proto for serialization.
-    public static final Creator<CallIntent> CREATOR =
-            new Creator<CallIntent>() {
-                @Override
-                public CallIntent createFromParcel(Parcel source) {
-                    CallIntent.Builder callIntentBuilder = builder();
-                    ClassLoader classLoader = CallIntent.class.getClassLoader();
-                    callIntentBuilder.setNumber(source.readParcelable(classLoader));
-                    CallSpecificAppData data;
-                    try {
-                        data = CallSpecificAppData.parseFrom(source.createByteArray());
-                    } catch (InvalidProtocolBufferException e) {
-                        data = CallSpecificAppData.getDefaultInstance();
-                    }
-                    callIntentBuilder
-                            .setCallSpecificAppData(data)
-                            .setPhoneAccountHandle(source.readParcelable(classLoader))
-                            .setIsVideoCall(source.readInt() != 0)
-                            .setCallSubject(source.readString())
-                            .setAllowAssistedDial(source.readInt() != 0);
-                    Bundle stringInCallUiIntentExtrasBundle = source.readBundle(classLoader);
-                    for (String key : stringInCallUiIntentExtrasBundle.keySet()) {
-                        callIntentBuilder.addInCallUiIntentExtra(
-                                key, stringInCallUiIntentExtrasBundle.getString(key));
-                    }
-                    Bundle longInCallUiIntentExtrasBundle = source.readBundle(classLoader);
-                    for (String key : longInCallUiIntentExtrasBundle.keySet()) {
-                        callIntentBuilder.addInCallUiIntentExtra(
-                                key, longInCallUiIntentExtrasBundle.getLong(key));
-                    }
-                    return callIntentBuilder.autoBuild();
-                }
-
-                @Override
-                public CallIntent[] newArray(int size) {
-                    return new CallIntent[0];
-                }
-            };
     private static int lightbringerButtonAppearInExpandedCallLogItemCount = 0;
     private static int lightbringerButtonAppearInCollapsedCallLogItemCount = 0;
     private static int lightbringerButtonAppearInSearchCount = 0;
-
-    public static Builder builder() {
-        return new AutoValue_CallIntent.Builder().setIsVideoCall(false).setAllowAssistedDial(false);
-    }
-
-    public static void increaseLightbringerCallButtonAppearInExpandedCallLogItemCount() {
-        CallIntent.lightbringerButtonAppearInExpandedCallLogItemCount++;
-    }
-
-    public static void increaseLightbringerCallButtonAppearInCollapsedCallLogItemCount() {
-        CallIntent.lightbringerButtonAppearInCollapsedCallLogItemCount++;
-    }
-
-    public static void increaseLightbringerCallButtonAppearInSearchCount() {
-        CallIntent.lightbringerButtonAppearInSearchCount++;
-    }
-
-    @VisibleForTesting
-    public static int getLightbringerButtonAppearInExpandedCallLogItemCount() {
-        return lightbringerButtonAppearInExpandedCallLogItemCount;
-    }
-
-    @VisibleForTesting
-    public static int getLightbringerButtonAppearInCollapsedCallLogItemCount() {
-        return lightbringerButtonAppearInCollapsedCallLogItemCount;
-    }
-
-    @VisibleForTesting
-    public static int getLightbringerButtonAppearInSearchCount() {
-        return lightbringerButtonAppearInSearchCount;
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public static void clearLightbringerCounts() {
-        lightbringerButtonAppearInCollapsedCallLogItemCount = 0;
-        lightbringerButtonAppearInExpandedCallLogItemCount = 0;
-        lightbringerButtonAppearInSearchCount = 0;
-    }
 
     abstract Uri number();
 
@@ -143,71 +66,11 @@ public abstract class CallIntent implements Parcelable {
 
     abstract ImmutableMap<String, Long> longPlaceCallExtras();
 
+    public static Builder builder() {
+        return new AutoValue_CallIntent.Builder().setIsVideoCall(false).setAllowAssistedDial(false);
+    }
+
     public abstract Builder toBuilder();
-
-    // Creates the intent which can start a call
-    private Intent newIntent() {
-        Intent intent = new Intent(Intent.ACTION_CALL, number());
-
-        intent.putExtra(
-                TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE,
-                isVideoCall() ? VideoProfile.STATE_BIDIRECTIONAL : VideoProfile.STATE_AUDIO_ONLY);
-
-        Bundle inCallUiIntentExtras = createInCallUiIntentExtras();
-        inCallUiIntentExtras.putLong(
-                Constants.EXTRA_CALL_CREATED_TIME_MILLIS, SystemClock.elapsedRealtime());
-
-        intent.putExtra(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS, inCallUiIntentExtras);
-
-        if (phoneAccountHandle() != null) {
-            intent.putExtra(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, phoneAccountHandle());
-        }
-
-        if (!TextUtils.isEmpty(callSubject())) {
-            intent.putExtra(TelecomManager.EXTRA_CALL_SUBJECT, callSubject());
-        }
-
-        intent.putExtras(createPlaceCallExtras());
-
-        return intent;
-    }
-
-    private Bundle createInCallUiIntentExtras() {
-        Bundle bundle = new Bundle();
-        stringInCallUiIntentExtras().forEach(bundle::putString);
-        longInCallUiIntentExtras().forEach(bundle::putLong);
-        CallIntentParser.putCallSpecificAppData(bundle, callSpecificAppData());
-        return bundle;
-    }
-
-    private Bundle createPlaceCallExtras() {
-        Bundle bundle = new Bundle();
-        stringPlaceCallExtras().forEach(bundle::putString);
-        longPlaceCallExtras().forEach(bundle::putLong);
-        CallIntentParser.putCallSpecificAppData(bundle, callSpecificAppData());
-        return bundle;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(number(), flags);
-        dest.writeByteArray(callSpecificAppData().toByteArray());
-        dest.writeParcelable(phoneAccountHandle(), flags);
-        dest.writeInt(isVideoCall() ? 1 : 0);
-        dest.writeString(callSubject());
-        dest.writeInt(allowAssistedDial() ? 1 : 0);
-        Bundle stringInCallUiIntentExtrasBundle = new Bundle();
-        stringInCallUiIntentExtras().forEach(stringInCallUiIntentExtrasBundle::putString);
-        dest.writeBundle(stringInCallUiIntentExtrasBundle);
-        Bundle longInCallUiIntentExtrasBundle = new Bundle();
-        longInCallUiIntentExtras().forEach(longInCallUiIntentExtrasBundle::putLong);
-        dest.writeBundle(longInCallUiIntentExtrasBundle);
-    }
 
     /** Builder class for CallIntent info. */
     @AutoValue.Builder
@@ -225,8 +88,7 @@ public abstract class CallIntent implements Parcelable {
 
         public Builder setCallInitiationType(CallInitiationType.Type callInitiationType) {
             return setCallSpecificAppData(
-                    CallSpecificAppData.newBuilder().setCallInitiationType(callInitiationType)
-                            .build());
+                    CallSpecificAppData.newBuilder().setCallInitiationType(callInitiationType).build());
         }
 
         abstract CallSpecificAppData callSpecificAppData();
@@ -279,8 +141,7 @@ public abstract class CallIntent implements Parcelable {
                                     lightbringerButtonAppearInExpandedCallLogItemCount)
                             .setLightbringerButtonAppearInCollapsedCallLogItemCount(
                                     lightbringerButtonAppearInCollapsedCallLogItemCount)
-                            .setLightbringerButtonAppearInSearchCount(
-                                    lightbringerButtonAppearInSearchCount);
+                            .setLightbringerButtonAppearInSearchCount(lightbringerButtonAppearInSearchCount);
             lightbringerButtonAppearInExpandedCallLogItemCount = 0;
             lightbringerButtonAppearInCollapsedCallLogItemCount = 0;
             lightbringerButtonAppearInSearchCount = 0;
@@ -290,8 +151,7 @@ public abstract class CallIntent implements Parcelable {
                         .setTimeSinceAppLaunch(PerformanceReport.getTimeSinceAppLaunch())
                         .setTimeSinceFirstClick(PerformanceReport.getTimeSinceFirstClick())
                         .addAllUiActionsSinceAppLaunch(PerformanceReport.getActions())
-                        .addAllUiActionTimestampsSinceAppLaunch(
-                                PerformanceReport.getActionTimestamps())
+                        .addAllUiActionTimestampsSinceAppLaunch(PerformanceReport.getActionTimestamps())
                         .setStartingTabIndex(PerformanceReport.getStartingTabIndex());
                 PerformanceReport.stopRecording();
             }
@@ -309,4 +169,142 @@ public abstract class CallIntent implements Parcelable {
             return autoBuild().newIntent();
         }
     }
+
+    // Creates the intent which can start a call
+    private Intent newIntent() {
+        Intent intent = new Intent(Intent.ACTION_CALL, number());
+
+        intent.putExtra(
+                TelecomManager.EXTRA_START_CALL_WITH_VIDEO_STATE,
+                isVideoCall() ? VideoProfile.STATE_BIDIRECTIONAL : VideoProfile.STATE_AUDIO_ONLY);
+
+        Bundle inCallUiIntentExtras = createInCallUiIntentExtras();
+        inCallUiIntentExtras.putLong(
+                Constants.EXTRA_CALL_CREATED_TIME_MILLIS, SystemClock.elapsedRealtime());
+
+        intent.putExtra(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS, inCallUiIntentExtras);
+
+        if (phoneAccountHandle() != null) {
+            intent.putExtra(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, phoneAccountHandle());
+        }
+
+        if (!TextUtils.isEmpty(callSubject())) {
+            intent.putExtra(TelecomManager.EXTRA_CALL_SUBJECT, callSubject());
+        }
+
+        intent.putExtras(createPlaceCallExtras());
+
+        return intent;
+    }
+
+    private Bundle createInCallUiIntentExtras() {
+        Bundle bundle = new Bundle();
+        stringInCallUiIntentExtras().forEach(bundle::putString);
+        longInCallUiIntentExtras().forEach(bundle::putLong);
+        CallIntentParser.putCallSpecificAppData(bundle, callSpecificAppData());
+        return bundle;
+    }
+
+    private Bundle createPlaceCallExtras() {
+        Bundle bundle = new Bundle();
+        stringPlaceCallExtras().forEach(bundle::putString);
+        longPlaceCallExtras().forEach(bundle::putLong);
+        CallIntentParser.putCallSpecificAppData(bundle, callSpecificAppData());
+        return bundle;
+    }
+
+    public static void increaseLightbringerCallButtonAppearInExpandedCallLogItemCount() {
+        CallIntent.lightbringerButtonAppearInExpandedCallLogItemCount++;
+    }
+
+    public static void increaseLightbringerCallButtonAppearInCollapsedCallLogItemCount() {
+        CallIntent.lightbringerButtonAppearInCollapsedCallLogItemCount++;
+    }
+
+    public static void increaseLightbringerCallButtonAppearInSearchCount() {
+        CallIntent.lightbringerButtonAppearInSearchCount++;
+    }
+
+    @VisibleForTesting
+    public static int getLightbringerButtonAppearInExpandedCallLogItemCount() {
+        return lightbringerButtonAppearInExpandedCallLogItemCount;
+    }
+
+    @VisibleForTesting
+    public static int getLightbringerButtonAppearInCollapsedCallLogItemCount() {
+        return lightbringerButtonAppearInCollapsedCallLogItemCount;
+    }
+
+    @VisibleForTesting
+    public static int getLightbringerButtonAppearInSearchCount() {
+        return lightbringerButtonAppearInSearchCount;
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public static void clearLightbringerCounts() {
+        lightbringerButtonAppearInCollapsedCallLogItemCount = 0;
+        lightbringerButtonAppearInExpandedCallLogItemCount = 0;
+        lightbringerButtonAppearInSearchCount = 0;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(number(), flags);
+        dest.writeByteArray(callSpecificAppData().toByteArray());
+        dest.writeParcelable(phoneAccountHandle(), flags);
+        dest.writeInt(isVideoCall() ? 1 : 0);
+        dest.writeString(callSubject());
+        dest.writeInt(allowAssistedDial() ? 1 : 0);
+        Bundle stringInCallUiIntentExtrasBundle = new Bundle();
+        stringInCallUiIntentExtras().forEach(stringInCallUiIntentExtrasBundle::putString);
+        dest.writeBundle(stringInCallUiIntentExtrasBundle);
+        Bundle longInCallUiIntentExtrasBundle = new Bundle();
+        longInCallUiIntentExtras().forEach(longInCallUiIntentExtrasBundle::putLong);
+        dest.writeBundle(longInCallUiIntentExtrasBundle);
+    }
+
+    // @TODO(justinmcclain): Investigate deleting the parcelable logic and instead switching
+    // to using an internal proto for serialization.
+    public static final Creator<CallIntent> CREATOR =
+            new Creator<CallIntent>() {
+                @Override
+                public CallIntent createFromParcel(Parcel source) {
+                    CallIntent.Builder callIntentBuilder = builder();
+                    ClassLoader classLoader = CallIntent.class.getClassLoader();
+                    callIntentBuilder.setNumber(source.readParcelable(classLoader));
+                    CallSpecificAppData data;
+                    try {
+                        data = CallSpecificAppData.parseFrom(source.createByteArray());
+                    } catch (InvalidProtocolBufferException e) {
+                        data = CallSpecificAppData.getDefaultInstance();
+                    }
+                    callIntentBuilder
+                            .setCallSpecificAppData(data)
+                            .setPhoneAccountHandle(source.readParcelable(classLoader))
+                            .setIsVideoCall(source.readInt() != 0)
+                            .setCallSubject(source.readString())
+                            .setAllowAssistedDial(source.readInt() != 0);
+                    Bundle stringInCallUiIntentExtrasBundle = source.readBundle(classLoader);
+                    for (String key : stringInCallUiIntentExtrasBundle.keySet()) {
+                        callIntentBuilder.addInCallUiIntentExtra(
+                                key, stringInCallUiIntentExtrasBundle.getString(key));
+                    }
+                    Bundle longInCallUiIntentExtrasBundle = source.readBundle(classLoader);
+                    for (String key : longInCallUiIntentExtrasBundle.keySet()) {
+                        callIntentBuilder.addInCallUiIntentExtra(
+                                key, longInCallUiIntentExtrasBundle.getLong(key));
+                    }
+                    return callIntentBuilder.autoBuild();
+                }
+
+                @Override
+                public CallIntent[] newArray(int size) {
+                    return new CallIntent[0];
+                }
+            };
 }

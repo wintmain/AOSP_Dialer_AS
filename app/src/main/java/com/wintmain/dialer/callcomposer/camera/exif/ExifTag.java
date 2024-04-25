@@ -50,8 +50,7 @@ public class ExifTag {
      */
     static final short TYPE_UNSIGNED_RATIONAL = 5;
     /**
-     * The UNDEFINED type in the EXIF standard. An 8-bit byte that can take any value depending
-     * on the
+     * The UNDEFINED type in the EXIF standard. An 8-bit byte that can take any value depending on the
      * field definition.
      */
     static final short TYPE_UNDEFINED = 7;
@@ -61,8 +60,7 @@ public class ExifTag {
      */
     static final short TYPE_LONG = 9;
     /**
-     * The SRATIONAL type of EXIF standard. It consists of two SLONGs. The first one is the
-     * numerator
+     * The SRATIONAL type of EXIF standard. It consists of two SLONGs. The first one is the numerator
      * and the second one is the denominator.
      */
     static final short TYPE_RATIONAL = 10;
@@ -101,8 +99,7 @@ public class ExifTag {
     private int offset;
 
     // Use builtTag in ExifInterface instead of constructor.
-    ExifTag(short tagId, short type, int componentCount, int ifd,
-            boolean hasDefinedComponentCount) {
+    ExifTag(short tagId, short type, int componentCount, int ifd, boolean hasDefinedComponentCount) {
         this.tagId = tagId;
         dataType = type;
         componentCountActual = componentCount;
@@ -280,7 +277,8 @@ public class ExifTag {
     int[] getValueAsInts() {
         if (value == null) {
             return null;
-        } else if (value instanceof long[] val) {
+        } else if (value instanceof long[]) {
+            long[] val = (long[]) value;
             int[] arr = new int[val.length];
             for (int i = 0; i < val.length; i++) {
                 arr[i] = (int) val[i]; // Truncates
@@ -355,16 +353,14 @@ public class ExifTag {
     /**
      * Sets a string value into this tag. This method should be used for tags of type {@link
      * #TYPE_ASCII}. The string is converted to an ASCII string. Characters that cannot be converted
-     * are replaced with '?'. The length of the string must be equal to either (component count
-     * -1) or
+     * are replaced with '?'. The length of the string must be equal to either (component count -1) or
      * (component count). The final byte will be set to the string null terminator '\0', overwriting
      * the last character in the string if the value.length is equal to the component count. This
      * method will fail if:
      *
      * <ul>
      *   <li>The data type is not {@link #TYPE_ASCII} or {@link #TYPE_UNDEFINED}.
-     *   <li>The length of the string is not equal to (component count -1) or (component count)
-     *   in the
+     *   <li>The length of the string is not equal to (component count -1) or (component count) in the
      *       definition for this tag.
      * </ul>
      */
@@ -493,8 +489,7 @@ public class ExifTag {
     }
 
     /**
-     * Gets the offset of this tag. This is only valid if this data size > 4 and contains an
-     * offset to
+     * Gets the offset of this tag. This is only valid if this data size > 4 and contains an offset to
      * the location of the actual value.
      */
     protected int getOffset() {
@@ -576,7 +571,8 @@ public class ExifTag {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof ExifTag tag) {
+        if (obj instanceof ExifTag) {
+            ExifTag tag = (ExifTag) obj;
             if (tag.tagId != this.tagId
                     || tag.componentCountActual != this.componentCountActual
                     || tag.dataType != this.dataType) {
@@ -613,8 +609,7 @@ public class ExifTag {
     @Override
     public int hashCode() {
         return Objects.hash(
-                tagId, dataType, hasDefinedDefaultComponentCount, componentCountActual, ifd, value,
-                offset);
+                tagId, dataType, hasDefinedDefaultComponentCount, componentCountActual, ifd, value, offset);
     }
 
     @NonNull

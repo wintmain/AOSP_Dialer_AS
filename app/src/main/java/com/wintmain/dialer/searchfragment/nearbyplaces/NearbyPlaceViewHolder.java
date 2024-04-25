@@ -23,7 +23,9 @@ import android.provider.ContactsContract.Contacts;
 import android.view.View;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.contacts.common.util.Constants;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;
@@ -59,8 +61,7 @@ public final class NearbyPlaceViewHolder extends RecyclerView.ViewHolder
     }
 
     private static Uri getContactUri(SearchCursor cursor) {
-        // Since the lookup key for Nearby Places is actually a JSON representation of the
-        // information,
+        // Since the lookup key for Nearby Places is actually a JSON representation of the information,
         // we need to pass it in as an encoded fragment in our contact uri.
         // It includes information like display name, photo uri, phone number, ect.
         String businessInfoJson = cursor.getString(Projections.LOOKUP_KEY);
@@ -68,15 +69,13 @@ public final class NearbyPlaceViewHolder extends RecyclerView.ViewHolder
                 .buildUpon()
                 .appendPath(Constants.LOOKUP_URI_ENCODED)
                 .appendQueryParameter(
-                        ContactsContract.DIRECTORY_PARAM_KEY,
-                        String.valueOf(cursor.getDirectoryId()))
+                        ContactsContract.DIRECTORY_PARAM_KEY, String.valueOf(cursor.getDirectoryId()))
                 .encodedFragment(businessInfoJson)
                 .build();
     }
 
     /**
-     * Binds the ViewHolder with a cursor from {@link NearbyPlacesCursorLoader} with the data
-     * found at
+     * Binds the ViewHolder with a cursor from {@link NearbyPlacesCursorLoader} with the data found at
      * the cursors set position.
      */
     public void bind(SearchCursor cursor, String query) {

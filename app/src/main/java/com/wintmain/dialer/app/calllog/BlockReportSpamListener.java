@@ -18,9 +18,11 @@ package com.wintmain.dialer.app.calllog;
 
 import android.content.Context;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.blocking.FilteredNumberAsyncQueryHandler;
 import com.wintmain.dialer.blockreportspam.BlockReportSpamDialogs;
 import com.wintmain.dialer.blockreportspam.BlockReportSpamDialogs.DialogFragmentForReportingNotSpam;
@@ -90,8 +92,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                             filteredNumberAsyncQueryHandler.blockNumber(
                                     uri -> {
                                         Logger.get(context)
-                                                .logImpression(
-                                                        DialerImpression.Type.USER_ACTION_BLOCKED_NUMBER);
+                                                .logImpression(DialerImpression.Type.USER_ACTION_BLOCKED_NUMBER);
                                         adapter.notifyDataSetChanged();
                                     },
                                     number,
@@ -132,8 +133,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                             filteredNumberAsyncQueryHandler.blockNumber(
                                     uri -> {
                                         Logger.get(context)
-                                                .logImpression(
-                                                        DialerImpression.Type.USER_ACTION_BLOCKED_NUMBER);
+                                                .logImpression(DialerImpression.Type.USER_ACTION_BLOCKED_NUMBER);
                                         adapter.notifyDataSetChanged();
                                     },
                                     number,
@@ -160,8 +160,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                             LogUtil.i("BlockReportSpamListener.onUnblock", "onClick");
                             if (isSpam && spamSettings.isSpamEnabled()) {
                                 Logger.get(context)
-                                        .logImpression(
-                                                DialerImpression.Type.REPORT_AS_NOT_SPAM_VIA_UNBLOCK_NUMBER);
+                                        .logImpression(DialerImpression.Type.REPORT_AS_NOT_SPAM_VIA_UNBLOCK_NUMBER);
                                 spam.reportNotSpamFromCallHistory(
                                         number,
                                         countryIso,
@@ -172,8 +171,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                             filteredNumberAsyncQueryHandler.unblock(
                                     (rows, values) -> {
                                         Logger.get(context)
-                                                .logImpression(
-                                                        DialerImpression.Type.USER_ACTION_UNBLOCKED_NUMBER);
+                                                .logImpression(DialerImpression.Type.USER_ACTION_UNBLOCKED_NUMBER);
                                         adapter.notifyDataSetChanged();
                                     },
                                     blockId);
@@ -195,8 +193,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                             LogUtil.i("BlockReportSpamListener.onReportNotSpam", "onClick");
                             if (spamSettings.isSpamEnabled()) {
                                 Logger.get(context)
-                                        .logImpression(
-                                                DialerImpression.Type.DIALOG_ACTION_CONFIRM_NUMBER_NOT_SPAM);
+                                        .logImpression(DialerImpression.Type.DIALOG_ACTION_CONFIRM_NUMBER_NOT_SPAM);
                                 spam.reportNotSpamFromCallHistory(
                                         number,
                                         countryIso,
@@ -220,8 +217,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                 fragmentManager,
                 () -> {
                     Logger.get(context)
-                            .logImpression(
-                                    DialerImpression.Type.SPAM_BLOCKING_ENABLED_THROUGH_CALL_LOG_PROMO);
+                            .logImpression(DialerImpression.Type.SPAM_BLOCKING_ENABLED_THROUGH_CALL_LOG_PROMO);
                     spamSettings.modifySpamBlockingSetting(
                             true,
                             success -> {
@@ -231,8 +227,7 @@ public class BlockReportSpamListener implements CallLogListItemViewHolder.OnClic
                                                     DialerImpression.Type
                                                             .SPAM_BLOCKING_MODIFY_FAILURE_THROUGH_CALL_LOG_PROMO);
                                 }
-                                spamBlockingPromoHelper.showModifySettingOnCompleteSnackbar(
-                                        rootView, success);
+                                spamBlockingPromoHelper.showModifySettingOnCompleteSnackbar(rootView, success);
                             });
                 },
                 null /* onDismissListener */);

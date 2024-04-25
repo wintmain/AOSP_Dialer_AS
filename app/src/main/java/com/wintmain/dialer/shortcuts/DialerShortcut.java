@@ -38,45 +38,6 @@ abstract class DialerShortcut {
     /** Marker value indicates that shortcut has no setRank. Used by pinned shortcuts. */
     static final int NO_RANK = -1;
 
-    /** The display name for the provided shortcut. */
-    static String getDisplayNameFromShortcutInfo(ShortcutInfo shortcutInfo) {
-        return shortcutInfo.getShortLabel().toString();
-    }
-
-    /**
-     * Returns the contact lookup key from the provided {@link ShortcutInfo}.
-     *
-     * <p>Lookup keys are used for shortcut IDs. See {@link #getLookupKey()}.
-     */
-    @NonNull
-    static String getLookupKeyFromShortcutInfo(@NonNull ShortcutInfo shortcutInfo) {
-        return shortcutInfo.getId(); // Lookup keys are used for shortcut IDs.
-    }
-
-    /**
-     * Returns the lookup URI from the provided {@link ShortcutInfo}.
-     *
-     * <p>Lookup URIs are constructed from lookup key and contact ID. Here is an example lookup URI
-     * where lookup key is "0r8-47392D" and contact ID is 8:
-     *
-     * <p>"content://com.android.contacts/contacts/lookup/0r8-47392D/8"
-     */
-    @NonNull
-    static Uri getLookupUriFromShortcutInfo(@NonNull ShortcutInfo shortcutInfo) {
-        long contactId =
-                shortcutInfo.getIntent().getLongExtra(ShortcutInfoFactory.EXTRA_CONTACT_ID, -1);
-        if (contactId == -1) {
-            throw new IllegalStateException(
-                    "No contact ID found for shortcut: " + shortcutInfo.getId());
-        }
-        String lookupKey = getLookupKeyFromShortcutInfo(shortcutInfo);
-        return Contacts.getLookupUri(contactId, lookupKey);
-    }
-
-    static Builder builder() {
-        return new AutoValue_DialerShortcut.Builder().setRank(NO_RANK);
-    }
-
     /**
      * Contact ID from contacts provider. Note that this a numeric row ID from the
      * ContactsContract.Contacts._ID column.
@@ -110,8 +71,7 @@ abstract class DialerShortcut {
     }
 
     /**
-     * The long label for the shortcut. Used for shortcuts displayed when pressing and holding
-     * the app
+     * The long label for the shortcut. Used for shortcuts displayed when pressing and holding the app
      * launcher icon, for example.
      */
     @NonNull
@@ -119,17 +79,50 @@ abstract class DialerShortcut {
         return getDisplayName();
     }
 
+    /** The display name for the provided shortcut. */
+    static String getDisplayNameFromShortcutInfo(ShortcutInfo shortcutInfo) {
+        return shortcutInfo.getShortLabel().toString();
+    }
+
     /**
      * The id used to identify launcher shortcuts. Used for updating/deleting shortcuts.
      *
      * <p>Lookup keys are used for shortcut IDs. See {@link #getLookupKey()}.
      *
-     * <p>If you change this, you probably also need to change
-     * {@link #getLookupKeyFromShortcutInfo}.
+     * <p>If you change this, you probably also need to change {@link #getLookupKeyFromShortcutInfo}.
      */
     @NonNull
     String getShortcutId() {
         return getLookupKey();
+    }
+
+    /**
+     * Returns the contact lookup key from the provided {@link ShortcutInfo}.
+     *
+     * <p>Lookup keys are used for shortcut IDs. See {@link #getLookupKey()}.
+     */
+    @NonNull
+    static String getLookupKeyFromShortcutInfo(@NonNull ShortcutInfo shortcutInfo) {
+        return shortcutInfo.getId(); // Lookup keys are used for shortcut IDs.
+    }
+
+    /**
+     * Returns the lookup URI from the provided {@link ShortcutInfo}.
+     *
+     * <p>Lookup URIs are constructed from lookup key and contact ID. Here is an example lookup URI
+     * where lookup key is "0r8-47392D" and contact ID is 8:
+     *
+     * <p>"content://com.android.contacts/contacts/lookup/0r8-47392D/8"
+     */
+    @NonNull
+    static Uri getLookupUriFromShortcutInfo(@NonNull ShortcutInfo shortcutInfo) {
+        long contactId =
+                shortcutInfo.getIntent().getLongExtra(ShortcutInfoFactory.EXTRA_CONTACT_ID, -1);
+        if (contactId == -1) {
+            throw new IllegalStateException("No contact ID found for shortcut: " + shortcutInfo.getId());
+        }
+        String lookupKey = getLookupKeyFromShortcutInfo(shortcutInfo);
+        return Contacts.getLookupUri(contactId, lookupKey);
     }
 
     /**
@@ -158,21 +151,26 @@ abstract class DialerShortcut {
         if (!oldInfo.getShortLabel().equals(this.getShortLabel())) {
             return true;
         }
-        return !oldInfo.getLongLabel().equals(this.getLongLabel());
+        if (!oldInfo.getLongLabel().equals(this.getLongLabel())) {
+            return true;
+        }
+        return false;
+    }
+
+    static Builder builder() {
+        return new AutoValue_DialerShortcut.Builder().setRank(NO_RANK);
     }
 
     @AutoValue.Builder
     abstract static class Builder {
 
         /**
-         * Sets the contact ID. This should be a value from the contact provider's Contact._ID
-         * column.
+         * Sets the contact ID. This should be a value from the contact provider's Contact._ID column.
          */
         abstract Builder setContactId(long value);
 
         /**
-         * Sets the lookup key. This should be a contact lookup key as provided by the contact
-         * provider.
+         * Sets the lookup key. This should be a contact lookup key as provided by the contact provider.
          */
         abstract Builder setLookupKey(@NonNull String value);
 
@@ -181,8 +179,7 @@ abstract class DialerShortcut {
 
         /**
          * Sets the rank for the shortcut, used for ordering dynamic shortcuts. This is required for
-         * dynamic shortcuts but unused for floating shortcuts because rank has no meaning for
-         * floating
+         * dynamic shortcuts but unused for floating shortcuts because rank has no meaning for floating
          * shortcuts. (Floating shortcuts are shortcuts which are pinned but have no corresponding
          * dynamic shortcut.)
          */

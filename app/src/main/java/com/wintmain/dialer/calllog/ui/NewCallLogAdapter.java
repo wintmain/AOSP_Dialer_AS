@@ -17,12 +17,14 @@ package com.wintmain.dialer.calllog.ui;
 
 import android.app.Activity;
 import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.common.collect.ImmutableList;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllog.model.CoalescedRow;
 import com.wintmain.dialer.calllogutils.CallLogDates;
@@ -30,32 +32,59 @@ import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.logging.Logger;
 import com.wintmain.dialer.promotion.Promotion;
 import com.wintmain.dialer.time.Clock;
-
+import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /** {@link RecyclerView.Adapter} for the new call log fragment. */
 final class NewCallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    /** IntDef for the different types of rows that can be shown in the call log. */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({
+            RowType.PROMOTION_CARD,
+            RowType.HEADER_TODAY,
+            RowType.HEADER_YESTERDAY,
+            RowType.HEADER_OLDER,
+            RowType.CALL_LOG_ENTRY
+    })
+    @interface RowType {
+        /** The promotion card. */
+        int PROMOTION_CARD = 1;
+
+        /** Header that displays "Today". */
+        int HEADER_TODAY = 2;
+
+        /** Header that displays "Yesterday". */
+        int HEADER_YESTERDAY = 3;
+
+        /** Header that displays "Older". */
+        int HEADER_OLDER = 4;
+
+        /** A row representing a call log entry (which could represent one or more calls). */
+        int CALL_LOG_ENTRY = 5;
+    }
+
     private final Clock clock;
     private final Activity activity;
     private final RealtimeRowProcessor realtimeRowProcessor;
     private final PopCounts popCounts = new PopCounts();
-    @Nullable
-    private final Promotion promotion;
+    @Nullable private final Promotion promotion;
+
     private ImmutableList<CoalescedRow> coalescedRows;
+
     /** Position of the promotion card. Null when it should not be displayed. */
     @Nullable
     private Integer promotionCardPosition;
+
     /** Position of the "Today" header. Null when it should not be displayed. */
-    @Nullable
-    private Integer todayHeaderPosition;
+    @Nullable private Integer todayHeaderPosition;
+
     /** Position of the "Yesterday" header. Null when it should not be displayed. */
-    @Nullable
-    private Integer yesterdayHeaderPosition;
+    @Nullable private Integer yesterdayHeaderPosition;
+
     /** Position of the "Older" header. Null when it should not be displayed. */
-    @Nullable
-    private Integer olderHeaderPosition;
+    @Nullable private Integer olderHeaderPosition;
 
     NewCallLogAdapter(
             Activity activity,
@@ -160,28 +189,24 @@ final class NewCallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 return new PromotionCardViewHolder(
                         LayoutInflater.from(activity)
                                 .inflate(
-                                        R.layout.new_call_log_promotion_card,
-                                        viewGroup, /* attachToRoot = */ false),
+                                        R.layout.new_call_log_promotion_card, viewGroup, /* attachToRoot = */ false),
                         promotion);
             case RowType.HEADER_TODAY:
             case RowType.HEADER_YESTERDAY:
             case RowType.HEADER_OLDER:
                 return new HeaderViewHolder(
                         LayoutInflater.from(activity)
-                                .inflate(R.layout.new_call_log_header,
-                                        viewGroup, /* attachToRoot = */ false));
+                                .inflate(R.layout.new_call_log_header, viewGroup, /* attachToRoot = */ false));
             case RowType.CALL_LOG_ENTRY:
                 return new NewCallLogViewHolder(
                         activity,
                         LayoutInflater.from(activity)
-                                .inflate(R.layout.new_call_log_entry,
-                                        viewGroup, /* attachToRoot = */ false),
+                                .inflate(R.layout.new_call_log_entry, viewGroup, /* attachToRoot = */ false),
                         clock,
                         realtimeRowProcessor,
                         popCounts);
             default:
-                throw Assert.createUnsupportedOperationFailException(
-                        "Unsupported view type: " + viewType);
+                throw Assert.createUnsupportedOperationFailException("Unsupported view type: " + viewType);
         }
     }
 
@@ -267,35 +292,8 @@ final class NewCallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return coalescedRows.size() + numberOfHeaders + numberOfCards;
     }
 
-    /** IntDef for the different types of rows that can be shown in the call log. */
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-            RowType.PROMOTION_CARD,
-            RowType.HEADER_TODAY,
-            RowType.HEADER_YESTERDAY,
-            RowType.HEADER_OLDER,
-            RowType.CALL_LOG_ENTRY
-    })
-    @interface RowType {
-        /** The promotion card. */
-        int PROMOTION_CARD = 1;
-
-        /** Header that displays "Today". */
-        int HEADER_TODAY = 2;
-
-        /** Header that displays "Yesterday". */
-        int HEADER_YESTERDAY = 3;
-
-        /** Header that displays "Older". */
-        int HEADER_OLDER = 4;
-
-        /** A row representing a call log entry (which could represent one or more calls). */
-        int CALL_LOG_ENTRY = 5;
-    }
-
     /**
-     * A {@link RecyclerView.OnScrollListener} that records the timestamp at which the promotion
-     * card
+     * A {@link RecyclerView.OnScrollListener} that records the timestamp at which the promotion card
      * is first viewed.
      *
      * <p>We consider the card as viewed if the user scrolls the containing RecyclerView since such

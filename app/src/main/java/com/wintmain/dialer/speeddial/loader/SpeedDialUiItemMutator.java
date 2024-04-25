@@ -29,15 +29,10 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.util.ArrayMap;
 import android.util.ArraySet;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.WorkerThread;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
@@ -56,10 +51,22 @@ import com.wintmain.dialer.speeddial.database.SpeedDialEntry.Channel;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntryDao;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntryDatabaseHelper;
 import com.wintmain.dialer.util.CallUtil;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.*;
 
 /**
  * Loads a list of {@link SpeedDialUiItem SpeedDialUiItems}.
@@ -122,13 +129,11 @@ public final class SpeedDialUiItemMutator {
     }
 
     /**
-     * Returns a {@link ListenableFuture} for a list of {@link SpeedDialUiItem SpeedDialUiItems}.
-     * This
+     * Returns a {@link ListenableFuture} for a list of {@link SpeedDialUiItem SpeedDialUiItems}. This
      * list is composed of starred contacts from {@link SpeedDialEntryDatabaseHelper}.
      */
     public ListenableFuture<ImmutableList<SpeedDialUiItem>> loadSpeedDialUiItems() {
-        return dialerFutureSerializer.submit(this::loadSpeedDialUiItemsInternal,
-                backgroundExecutor);
+        return dialerFutureSerializer.submit(this::loadSpeedDialUiItemsInternal, backgroundExecutor);
     }
 
     /**
@@ -179,8 +184,7 @@ public final class SpeedDialUiItemMutator {
                 entryToDelete = entry;
             }
         }
-        db.delete(ImmutableList.of(
-                Objects.requireNonNull(Objects.requireNonNull(entryToDelete).id())));
+        db.delete(ImmutableList.of(Objects.requireNonNull(Objects.requireNonNull(entryToDelete).id())));
         if (entriesForTheSameContact == 1) {
             unstarContact(speedDialUiItem);
         }
@@ -202,8 +206,7 @@ public final class SpeedDialUiItemMutator {
 
     /**
      * Takes a contact uri from {@link Phone#CONTENT_URI} and updates {@link Phone#STARRED} to be
-     * true, if it isn't already or Inserts the contact into the
-     * {@link SpeedDialEntryDatabaseHelper}
+     * true, if it isn't already or Inserts the contact into the {@link SpeedDialEntryDatabaseHelper}
      */
     public ListenableFuture<ImmutableList<SpeedDialUiItem>> starContact(Uri contactUri) {
         return dialerFutureSerializer.submit(
@@ -218,8 +221,7 @@ public final class SpeedDialUiItemMutator {
                              .getContentResolver()
                              .query(
                                      contactUri,
-                                     SpeedDialUiItem.getPhoneProjection(
-                                             isPrimaryDisplayNameOrder()),
+                                     SpeedDialUiItem.getPhoneProjection(isPrimaryDisplayNameOrder()),
                                      null,
                                      null,
                                      null)) {
@@ -272,12 +274,10 @@ public final class SpeedDialUiItemMutator {
         entries = updateContactIdsAndLookupKeys(entries);
 
         // Build SpeedDialUiItems from our updated entries.
-        Map<SpeedDialEntry, SpeedDialUiItem> entriesToUiItems = getSpeedDialUiItemsFromEntries(
-                entries);
+        Map<SpeedDialEntry, SpeedDialUiItem> entriesToUiItems = getSpeedDialUiItemsFromEntries(entries);
         Assert.checkArgument(
                 entries.size() == entriesToUiItems.size(),
-                "Updated entries are incomplete: " + entries.size() + " != "
-                        + entriesToUiItems.size());
+                "Updated entries are incomplete: " + entries.size() + " != " + entriesToUiItems.size());
 
         // Mark the SpeedDialEntries to be updated or deleted
         Trace.beginSection("updateOrDeleteEntries");
@@ -305,8 +305,7 @@ public final class SpeedDialUiItemMutator {
 
         // Get all starred contacts
         List<SpeedDialUiItem> starredContacts = getStarredContacts();
-        // If it is starred and not already accounted for above, then insert into the
-        // SpeedDialEntry DB.
+        // If it is starred and not already accounted for above, then insert into the SpeedDialEntry DB.
         Trace.beginSection("addStarredContact");
         for (SpeedDialUiItem contact : starredContacts) {
             if (speedDialUiItems.stream().noneMatch(c -> c.contactId() == contact.contactId())) {
@@ -362,8 +361,7 @@ public final class SpeedDialUiItemMutator {
         for (SpeedDialUiItem speedDialUiItem : speedDialUiItems) {
             SpeedDialEntry entry = speedDialUiItem.buildSpeedDialEntry();
             if (insertedEntriesToIdsMap.containsKey(entry)) {
-                // Get the id for newly inserted entry, update our SpeedDialUiItem and add it to
-                // our list
+                // Get the id for newly inserted entry, update our SpeedDialUiItem and add it to our list
                 Long id = Assert.isNotNull(insertedEntriesToIdsMap.get(entry));
                 updatedItems.add(speedDialUiItem.toBuilder().setSpeedDialEntryId(id).build());
                 continue;
@@ -398,25 +396,21 @@ public final class SpeedDialUiItemMutator {
                          appContext
                                  .getContentResolver()
                                  .query(
-                                         Contacts.getLookupUri(entry.contactId(),
-                                                 entry.lookupKey()),
+                                         Contacts.getLookupUri(entry.contactId(), entry.lookupKey()),
                                          new String[]{Contacts._ID, Contacts.LOOKUP_KEY},
                                          null,
                                          null,
                                          null)) {
                 if (cursor == null) {
-                    LogUtil.e("SpeedDialUiItemMutator.updateContactIdsAndLookupKeys",
-                            "null cursor");
+                    LogUtil.e("SpeedDialUiItemMutator.updateContactIdsAndLookupKeys", "null cursor");
                     return new ArrayList<>();
                 }
                 if (cursor.getCount() == 0) {
-                    // No need to update this entry, the contact was deleted. We'll clear it up
-                    // later.
+                    // No need to update this entry, the contact was deleted. We'll clear it up later.
                     updatedEntries.add(entry);
                     continue;
                 }
-                // Since all cursor rows will be have the same contact id and lookup key, just
-                // grab the
+                // Since all cursor rows will be have the same contact id and lookup key, just grab the
                 // first one.
                 cursor.moveToFirst();
                 updatedEntries.add(
@@ -455,8 +449,7 @@ public final class SpeedDialUiItemMutator {
                              .getContentResolver()
                              .query(
                                      Phone.CONTENT_URI,
-                                     SpeedDialUiItem.getPhoneProjection(
-                                             isPrimaryDisplayNameOrder()),
+                                     SpeedDialUiItem.getPhoneProjection(isPrimaryDisplayNameOrder()),
                                      selection.getSelection(),
                                      selection.getSelectionArgs(),
                                      null)) {
@@ -464,12 +457,10 @@ public final class SpeedDialUiItemMutator {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); /* Iterate in the loop */) {
                 SpeedDialUiItem item =
                         SpeedDialUiItem.fromCursor(
-                                appContext.getResources(), cursor,
-                                CallUtil.isVideoEnabled(appContext));
+                                appContext.getResources(), cursor, CallUtil.isVideoEnabled(appContext));
                 for (SpeedDialEntry entry : entries) {
                     if (entry.contactId() == item.contactId()) {
-                        // Update the id and pinned position to match it's corresponding
-                        // SpeedDialEntry.
+                        // Update the id and pinned position to match it's corresponding SpeedDialEntry.
                         SpeedDialUiItem.Builder entrySpeedDialItem =
                                 item.toBuilder()
                                         .setSpeedDialEntryId(entry.id())
@@ -484,10 +475,8 @@ public final class SpeedDialUiItemMutator {
                             }
                         }
 
-                        // It's impossible for two contacts to exist with the same contact id, so
-                        // if this entry
-                        // was previously matched to a SpeedDialUiItem and is being matched
-                        // again, something
+                        // It's impossible for two contacts to exist with the same contact id, so if this entry
+                        // was previously matched to a SpeedDialUiItem and is being matched again, something
                         // went horribly wrong.
                         Assert.checkArgument(
                                 map.put(entry, entrySpeedDialItem.build()) == null,
@@ -542,15 +531,13 @@ public final class SpeedDialUiItemMutator {
         }
 
         // Build SpeedDialUiItems from those contact ids
-        selection = Selection.builder().and(Selection.column(Phone.CONTACT_ID).in(contactIds))
-                .build();
+        selection = Selection.builder().and(Selection.column(Phone.CONTACT_ID).in(contactIds)).build();
         try (Cursor cursor =
                      appContext
                              .getContentResolver()
                              .query(
                                      Phone.CONTENT_URI,
-                                     SpeedDialUiItem.getPhoneProjection(
-                                             isPrimaryDisplayNameOrder()),
+                                     SpeedDialUiItem.getPhoneProjection(isPrimaryDisplayNameOrder()),
                                      selection.getSelection(),
                                      selection.getSelectionArgs(),
                                      null)) {
@@ -567,8 +554,7 @@ public final class SpeedDialUiItemMutator {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); /* Iterate in the loop */) {
                 contacts.add(
                         SpeedDialUiItem.fromCursor(
-                                appContext.getResources(), cursor,
-                                CallUtil.isVideoEnabled(appContext)));
+                                appContext.getResources(), cursor, CallUtil.isVideoEnabled(appContext)));
             }
             Trace.endSection();
             return contacts;
@@ -576,8 +562,7 @@ public final class SpeedDialUiItemMutator {
     }
 
     /**
-     * Persists the position of the {@link SpeedDialUiItem items} as the pinned position
-     * according to
+     * Persists the position of the {@link SpeedDialUiItem items} as the pinned position according to
      * the order they were passed in.
      */
     @WorkerThread
@@ -593,21 +578,18 @@ public final class SpeedDialUiItemMutator {
             SpeedDialUiItem item = speedDialUiItems.get(i);
             if (item.isStarred()) {
                 entriesToUpdate.add(
-                        item.buildSpeedDialEntry().toBuilder().setPinnedPosition(Optional.of(i))
-                                .build());
+                        item.buildSpeedDialEntry().toBuilder().setPinnedPosition(Optional.of(i)).build());
             }
         }
         getSpeedDialEntryDao().update(entriesToUpdate.build());
 
         // Update the positions in CP2
-        // Build a list of SpeedDialUiItems where each contact is only represented once but the
-        // order
+        // Build a list of SpeedDialUiItems where each contact is only represented once but the order
         // is maintained. For example, assume you have a list of contacts with contact ids:
         //   > { 1, 1, 2, 1, 2, 3 }
         // This list will be reduced to:
         //   > { 1, 2, 3 }
-        // and their positions in the resulting list will be written to the CP2 Contacts.PINNED
-        // column.
+        // and their positions in the resulting list will be written to the CP2 Contacts.PINNED column.
         List<SpeedDialUiItem> cp2SpeedDialUiItems = new ArrayList<>();
         Set<Long> contactIds = new ArraySet<>();
         for (SpeedDialUiItem item : speedDialUiItems) {
@@ -664,8 +646,7 @@ public final class SpeedDialUiItemMutator {
                 // If the contact is starred and doesn't have a default channel, insert duo channels
                 newSpeedDialItemList.add(insertDuoChannelsToStarredContact(context, item));
             } else {
-                // if starred and has a default channel, leave it as is, the user knows what they
-                // want.
+                // if starred and has a default channel, leave it as is, the user knows what they want.
                 newSpeedDialItemList.add(item);
             }
         }
@@ -673,8 +654,7 @@ public final class SpeedDialUiItemMutator {
     }
 
     @MainThread
-    private SpeedDialUiItem insertDuoChannelsToStarredContact(Context context,
-            SpeedDialUiItem item) {
+    private SpeedDialUiItem insertDuoChannelsToStarredContact(Context context, SpeedDialUiItem item) {
         Assert.isMainThread();
         Assert.checkArgument(item.isStarred());
 
@@ -685,14 +665,12 @@ public final class SpeedDialUiItemMutator {
 
         for (int i = 1; i < item.channels().size(); i++) {
             Channel currentChannel = item.channels().get(i);
-            // If the previous and current channel are voice channels, that means the previous
-            // number
+            // If the previous and current channel are voice channels, that means the previous number
             // didn't have a video channel.
             // If the previous number is duo reachable, insert a duo channel.
             if (!previousChannel.isVideoTechnology()
                     && !currentChannel.isVideoTechnology()
-                    && DuoComponent.get(context).getDuo().isReachable(context,
-                    previousChannel.number())) {
+                    && DuoComponent.get(context).getDuo().isReachable(context, previousChannel.number())) {
                 newChannelsList.add(previousChannel.toBuilder().setTechnology(Channel.DUO).build());
             }
             newChannelsList.add(currentChannel);
@@ -701,8 +679,7 @@ public final class SpeedDialUiItemMutator {
 
         // Check the last channel
         if (!previousChannel.isVideoTechnology()
-                && DuoComponent.get(context).getDuo().isReachable(context,
-                previousChannel.number())) {
+                && DuoComponent.get(context).getDuo().isReachable(context, previousChannel.number())) {
             newChannelsList.add(previousChannel.toBuilder().setTechnology(Channel.DUO).build());
         }
         return item.toBuilder().setChannels(newChannelsList.build()).build();

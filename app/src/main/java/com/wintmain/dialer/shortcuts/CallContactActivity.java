@@ -20,9 +20,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callintent.CallInitiationType;
 import com.wintmain.dialer.callintent.CallSpecificAppData;
@@ -65,8 +67,7 @@ public class CallContactActivity extends AppCompatActivity
     }
 
     /**
-     * Attempt to make a call, finishing the activity if the required permissions are already
-     * granted.
+     * Attempt to make a call, finishing the activity if the required permissions are already granted.
      * If the required permissions are not already granted, the activity is not finished so that the
      * user can choose to grant or deny them.
      */
@@ -91,8 +92,7 @@ public class CallContactActivity extends AppCompatActivity
         // distinguish the case of the contact missing from the case of the a contact not having a
         // number. For example, if a contact's phone number is deleted, subsequent lookups based on
         // lookup key will actually return no results because the phone number was part of the
-        // lookup key. In this case, it would be inaccurate to say the contact can't be found
-        // though, so
+        // lookup key. In this case, it would be inaccurate to say the contact can't be found though, so
         // in all cases we just say the contact can't be found or the contact doesn't have a number.
         switch (interactionErrorCode) {
             case InteractionErrorCode.CONTACT_NOT_FOUND:
@@ -106,8 +106,7 @@ public class CallContactActivity extends AppCompatActivity
             case InteractionErrorCode.USER_LEAVING_ACTIVITY:
             case InteractionErrorCode.OTHER_ERROR:
             default:
-                // If the user is leaving the activity or the error code was "other" there's no
-                // useful
+                // If the user is leaving the activity or the error code was "other" there's no useful
                 // information to display but we still need to finish this invisible activity.
                 break;
         }
@@ -137,12 +136,10 @@ public class CallContactActivity extends AppCompatActivity
             case PhoneNumberInteraction.REQUEST_READ_CONTACTS:
             case PhoneNumberInteraction.REQUEST_CALL_PHONE: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     makeCall();
                 } else {
-                    Toast.makeText(this, R.string.dialer_shortcut_no_permissions,
-                                    Toast.LENGTH_SHORT)
+                    Toast.makeText(this, R.string.dialer_shortcut_no_permissions, Toast.LENGTH_SHORT)
                             .show();
                     finish();
                 }

@@ -18,18 +18,20 @@ package com.wintmain.dialer.phonenumberproto;
 
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
+
+import com.wintmain.dialer.DialerPhoneNumber;
+import com.wintmain.dialer.common.Assert;
+import com.wintmain.dialer.common.LogUtil;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.MatchType;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import com.google.i18n.phonenumbers.ShortNumberInfo;
-import com.wintmain.dialer.DialerPhoneNumber;
-import com.wintmain.dialer.common.Assert;
-import com.wintmain.dialer.common.LogUtil;
 
 /**
  * Wrapper for selected methods in {@link PhoneNumberUtil} which uses the {@link DialerPhoneNumber}
@@ -68,12 +70,9 @@ public class DialerPhoneNumberUtil {
             return dialerPhoneNumber.build();
         }
 
-        // If the number is a service number, just store the raw number and don't bother trying
-        // to parse
-        // it. PhoneNumberUtil#parse ignores these characters which can lead to confusing
-        // behavior, such
-        // as the numbers "#123" and "123" being considered the same. The "#" can appear in the
-        // middle
+        // If the number is a service number, just store the raw number and don't bother trying to parse
+        // it. PhoneNumberUtil#parse ignores these characters which can lead to confusing behavior, such
+        // as the numbers "#123" and "123" being considered the same. The "#" can appear in the middle
         // of a service number and the "*" can appear at the beginning (see a bug).
         if (isServiceNumber(numberToParse)) {
             return dialerPhoneNumber.setNormalizedNumber(numberToParse).build();
@@ -92,11 +91,9 @@ public class DialerPhoneNumberUtil {
                 String validNumber = phoneNumberUtil.format(phoneNumber, PhoneNumberFormat.E164);
                 if (TextUtils.isEmpty(validNumber)) {
                     throw new IllegalStateException(
-                            "e164 number should not be empty: " + LogUtil.sanitizePii(
-                                    numberToParse));
+                            "e164 number should not be empty: " + LogUtil.sanitizePii(numberToParse));
                 }
-                // The E164 representation doesn't contain post-dial digits, but we need to
-                // preserve them.
+                // The E164 representation doesn't contain post-dial digits, but we need to preserve them.
                 if (!postDialPortion.isEmpty()) {
                     validNumber += postDialPortion;
                 }
@@ -144,8 +141,7 @@ public class DialerPhoneNumberUtil {
         PhoneNumber phoneNumber1 = null;
         try {
             phoneNumber1 =
-                    phoneNumberUtil.parse(firstNumberIn.getNormalizedNumber(),
-                            firstNumberIn.getCountryIso());
+                    phoneNumberUtil.parse(firstNumberIn.getNormalizedNumber(), firstNumberIn.getCountryIso());
         } catch (NumberParseException e) {
             // fall through
         }
@@ -159,8 +155,7 @@ public class DialerPhoneNumberUtil {
             // fall through
         }
 
-        // If either number is a service number or either number can't be parsed by
-        // libphonenumber, just
+        // If either number is a service number or either number can't be parsed by libphonenumber, just
         // fallback to basic textual matching.
         if (isServiceNumber(firstNumberIn.getNormalizedNumber())
                 || isServiceNumber(secondNumberIn.getNormalizedNumber())

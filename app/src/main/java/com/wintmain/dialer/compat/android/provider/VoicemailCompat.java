@@ -40,8 +40,7 @@ public class VoicemailCompat {
     public static final int TRANSCRIPTION_NOT_STARTED = 0;
 
     /**
-     * Value of {@link #TRANSCRIPTION_STATE} when the voicemail transcription has begun but is
-     * not yet
+     * Value of {@link #TRANSCRIPTION_STATE} when the voicemail transcription has begun but is not yet
      * complete.
      */
     public static final int TRANSCRIPTION_IN_PROGRESS = 1;
@@ -82,14 +81,12 @@ public class VoicemailCompat {
     public static final int TRANSCRIPTION_AVAILABLE_AND_RATED = -3;
 
     /**
-     * Voicemail transcription quality rating value sent to the server indicating a good
-     * transcription
+     * Voicemail transcription quality rating value sent to the server indicating a good transcription
      */
     public static final int TRANSCRIPTION_QUALITY_RATING_GOOD = 1;
 
     /**
-     * Voicemail transcription quality rating value sent to the server indicating a bad
-     * transcription
+     * Voicemail transcription quality rating value sent to the server indicating a bad transcription
      */
     public static final int TRANSCRIPTION_QUALITY_RATING_BAD = 2;
 }

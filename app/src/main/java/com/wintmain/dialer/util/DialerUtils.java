@@ -29,6 +29,7 @@ import android.text.TextDirectionHeuristics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.telecom.TelecomUtil;
@@ -67,8 +68,7 @@ public class DialerUtils {
      *
      * @param context to start the activity with.
      * @param intent  to start the activity with.
-     * @param msgId   Resource ID of the string to display in an error message if the activity is
-     *                not
+     * @param msgId   Resource ID of the string to display in an error message if the activity is not
      *                found.
      */
     public static void startActivityWithErrorToast(
@@ -81,8 +81,7 @@ public class DialerUtils {
                     Bundle extras;
                     // Make sure to not accidentally clobber any existing extras
                     if (intent.hasExtra(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS)) {
-                        extras = intent.getParcelableExtra(
-                                TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS);
+                        extras = intent.getParcelableExtra(TelecomManager.EXTRA_OUTGOING_CALL_EXTRAS);
                     } else {
                         extras = new Bundle();
                     }
@@ -117,15 +116,13 @@ public class DialerUtils {
         if (!hasCallPermission) {
             // TODO: Make calling activity show request permission dialog and handle
             // callback results appropriately.
-            Toast.makeText(context, "Cannot place call without Phone permission",
-                            Toast.LENGTH_SHORT)
+            Toast.makeText(context, "Cannot place call without Phone permission", Toast.LENGTH_SHORT)
                     .show();
         }
     }
 
     /**
-     * Returns whether the user should be warned about an outgoing WPS call. This checks if there
-     * is a
+     * Returns whether the user should be warned about an outgoing WPS call. This checks if there is a
      * currently active call over LTE. Regardless of the country or carrier, the radio will drop an
      * active LTE call if a WPS number is dialed, so this warning is necessary.
      */
@@ -180,8 +177,7 @@ public class DialerUtils {
             }
             // Unicode wrap the elements of the list to respect RTL for individual strings.
             sb.append(
-                    formatter.unicodeWrap(itr.next().toString(),
-                            TextDirectionHeuristics.FIRSTSTRONG_LTR));
+                    formatter.unicodeWrap(itr.next().toString(), TextDirectionHeuristics.FIRSTSTRONG_LTR));
         }
 
         // Unicode wrap the joined value, to respect locale's RTL ordering for the whole list.
@@ -190,8 +186,7 @@ public class DialerUtils {
 
     public static void showInputMethod(View view) {
         final InputMethodManager imm =
-                (InputMethodManager) view.getContext().getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.showSoftInput(view, 0);
         }
@@ -199,8 +194,7 @@ public class DialerUtils {
 
     public static void hideInputMethod(View view) {
         final InputMethodManager imm =
-                (InputMethodManager) view.getContext().getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

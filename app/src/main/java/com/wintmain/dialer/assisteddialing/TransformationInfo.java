@@ -26,8 +26,7 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class TransformationInfo {
-    @NonNull
-    private static final String ORIGINAL_NUBMER_KEY = "TRANSFORMATION_INFO_ORIGINAL_NUMBER";
+    @NonNull private static final String ORIGINAL_NUBMER_KEY = "TRANSFORMATION_INFO_ORIGINAL_NUMBER";
 
     @NonNull
     private static final String TRANSFORMED_NUMBER_KEY = "TRANSFORMATION_INFO_TRANSFORMED_NUMBER";
@@ -44,26 +43,6 @@ public abstract class TransformationInfo {
     private static final String TRANSFORMED_NUMBER_COUNTRY_CALLING_CODE_KEY =
             "TRANSFORMED_NUMBER_COUNTRY_CALLING_CODE";
 
-    public static Builder builder() {
-        return new AutoValue_TransformationInfo.Builder();
-    }
-
-    public static TransformationInfo newInstanceFromBundle(
-            @NonNull Bundle transformationInfoBundle) {
-
-        return TransformationInfo.builder()
-                .setOriginalNumber(transformationInfoBundle.getString(ORIGINAL_NUBMER_KEY))
-                .setTransformedNumber(transformationInfoBundle.getString(TRANSFORMED_NUMBER_KEY))
-                .setUserHomeCountryCode(
-                        transformationInfoBundle.getString(USER_HOME_COUNTRY_CODE_KEY))
-                .setUserRoamingCountryCode(
-                        transformationInfoBundle.getString(USER_ROAMING_COUNTRY_CODE_KEY))
-                .setTransformedNumberCountryCallingCode(
-                        transformationInfoBundle.getInt(
-                                TRANSFORMED_NUMBER_COUNTRY_CALLING_CODE_KEY))
-                .build();
-    }
-
     public abstract String originalNumber();
 
     public abstract String transformedNumber();
@@ -74,21 +53,8 @@ public abstract class TransformationInfo {
 
     public abstract int transformedNumberCountryCallingCode();
 
-    /**
-     * Callers are not expected to directly use this bundle. The bundle is provided for IPC
-     * purposes.
-     * Callers wishing to use the data should call newInstanceFromBundle with the bundle to get a
-     * usable POJO.
-     */
-    public Bundle toBundle() {
-        Bundle assistedDialingExtras = new Bundle();
-        assistedDialingExtras.putString(ORIGINAL_NUBMER_KEY, originalNumber());
-        assistedDialingExtras.putString(TRANSFORMED_NUMBER_KEY, transformedNumber());
-        assistedDialingExtras.putString(USER_HOME_COUNTRY_CODE_KEY, userHomeCountryCode());
-        assistedDialingExtras.putString(USER_ROAMING_COUNTRY_CODE_KEY, userRoamingCountryCode());
-        assistedDialingExtras.putInt(
-                TRANSFORMED_NUMBER_COUNTRY_CALLING_CODE_KEY, transformedNumberCountryCallingCode());
-        return assistedDialingExtras;
+    public static Builder builder() {
+        return new AutoValue_TransformationInfo.Builder();
     }
 
     /** A builder for TransformationInfo. */
@@ -105,5 +71,34 @@ public abstract class TransformationInfo {
         public abstract Builder setTransformedNumberCountryCallingCode(int value);
 
         public abstract TransformationInfo build();
+    }
+
+    public static TransformationInfo newInstanceFromBundle(@NonNull Bundle transformationInfoBundle) {
+
+        return TransformationInfo.builder()
+                .setOriginalNumber(transformationInfoBundle.getString(ORIGINAL_NUBMER_KEY))
+                .setTransformedNumber(transformationInfoBundle.getString(TRANSFORMED_NUMBER_KEY))
+                .setUserHomeCountryCode(transformationInfoBundle.getString(USER_HOME_COUNTRY_CODE_KEY))
+                .setUserRoamingCountryCode(
+                        transformationInfoBundle.getString(USER_ROAMING_COUNTRY_CODE_KEY))
+                .setTransformedNumberCountryCallingCode(
+                        transformationInfoBundle.getInt(TRANSFORMED_NUMBER_COUNTRY_CALLING_CODE_KEY))
+                .build();
+    }
+
+    /**
+     * Callers are not expected to directly use this bundle. The bundle is provided for IPC purposes.
+     * Callers wishing to use the data should call newInstanceFromBundle with the bundle to get a
+     * usable POJO.
+     */
+    public Bundle toBundle() {
+        Bundle assistedDialingExtras = new Bundle();
+        assistedDialingExtras.putString(ORIGINAL_NUBMER_KEY, originalNumber());
+        assistedDialingExtras.putString(TRANSFORMED_NUMBER_KEY, transformedNumber());
+        assistedDialingExtras.putString(USER_HOME_COUNTRY_CODE_KEY, userHomeCountryCode());
+        assistedDialingExtras.putString(USER_ROAMING_COUNTRY_CODE_KEY, userRoamingCountryCode());
+        assistedDialingExtras.putInt(
+                TRANSFORMED_NUMBER_COUNTRY_CALLING_CODE_KEY, transformedNumberCountryCallingCode());
+        return assistedDialingExtras;
     }
 }

@@ -16,6 +16,10 @@
 
 package com.wintmain.dialer.common.concurrent;
 
+import static com.google.common.util.concurrent.Futures.immediateCancelledFuture;
+import static com.google.common.util.concurrent.Futures.immediateFuture;
+import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
+
 import com.google.common.util.concurrent.AsyncCallable;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -25,10 +29,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static com.google.common.util.concurrent.Futures.immediateCancelledFuture;
-import static com.google.common.util.concurrent.Futures.immediateFuture;
-import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 
 /**
  * Serializes execution of a set of operations. This class guarantees that a submitted callable will
@@ -70,8 +70,7 @@ public final class DialerFutureSerializer {
          * newFuture is the future we use to track the serialization of our task.
          * oldFuture is the previous task's newFuture.
          *
-         * newFuture is guaranteed to only complete once all tasks previously submitted to this
-         * instance
+         * newFuture is guaranteed to only complete once all tasks previously submitted to this instance
          * once the futures returned from those submissions have completed.
          */
         final SettableFuture<Object> newFuture = SettableFuture.create();
@@ -81,19 +80,15 @@ public final class DialerFutureSerializer {
         // Invoke our task once the previous future completes.
         final ListenableFuture<T> taskFuture =
                 Futures.nonCancellationPropagating(
-                        Futures.submitAsync(task,
-                                runnable -> oldFuture.addListener(runnable, executor)));
-        // newFuture's lifetime is determined by taskFuture, unless taskFuture is cancelled, in
-        // which
+                        Futures.submitAsync(task, runnable -> oldFuture.addListener(runnable, executor)));
+        // newFuture's lifetime is determined by taskFuture, unless taskFuture is cancelled, in which
         // case it falls back to oldFuture's. This is to ensure that if the future we return is
         // cancelled, we don't begin execution of the next task until after oldFuture completes.
         taskFuture.addListener(
                 () -> {
                     if (taskFuture.isCancelled()) {
-                        // Since the value of oldFuture can only ever be immediateFuture(null) or
-                        // setFuture of a
-                        // future that eventually came from immediateFuture(null), this doesn't
-                        // leak throwables
+                        // Since the value of oldFuture can only ever be immediateFuture(null) or setFuture of a
+                        // future that eventually came from immediateFuture(null), this doesn't leak throwables
                         // or completion values.
                         wasCancelled.set(true);
                         newFuture.setFuture(oldFuture);

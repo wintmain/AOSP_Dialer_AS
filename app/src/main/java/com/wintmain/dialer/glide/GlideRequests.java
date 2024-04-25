@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
@@ -26,15 +28,14 @@ import java.net.URL;
 @SuppressWarnings("deprecation")
 public class GlideRequests extends RequestManager {
     public GlideRequests(@NonNull Glide glide, @NonNull Lifecycle lifecycle,
-            @NonNull RequestManagerTreeNode treeNode, @NonNull Context context) {
+                         @NonNull RequestManagerTreeNode treeNode, @NonNull Context context) {
         super(glide, lifecycle, treeNode, context);
     }
 
     @Override
     @CheckResult
     @NonNull
-    public <ResourceType> GlideRequest<ResourceType> as(
-            @NonNull Class<ResourceType> resourceClass) {
+    public <ResourceType> GlideRequest<ResourceType> as(@NonNull Class<ResourceType> resourceClass) {
         return new GlideRequest<>(glide, this, resourceClass, context);
     }
 

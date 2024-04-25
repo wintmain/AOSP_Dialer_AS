@@ -16,6 +16,17 @@
 
 package com.wintmain.dialer.util;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.MODIFY_PHONE_STATE;
+import static android.Manifest.permission.READ_CALL_LOG;
+import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.SEND_SMS;
+import static android.Manifest.permission.WRITE_CALL_LOG;
+import static android.Manifest.permission.WRITE_CONTACTS;
+
 import android.Manifest.permission;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,10 +34,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.storage.StorageComponent;
@@ -35,8 +48,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static android.Manifest.permission.*;
 
 /**
  * Utility class to help with runtime permissions.
@@ -62,8 +73,7 @@ public class PermissionsUtil {
     public static final List<String> allContactsGroupPermissionsUsedInDialer =
             Collections.unmodifiableList(Arrays.asList(READ_CONTACTS, WRITE_CONTACTS));
     public static final List<String> allLocationGroupPermissionsUsedInDialer =
-            Collections.unmodifiableList(
-                    Arrays.asList(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION));
+            Collections.unmodifiableList(Arrays.asList(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION));
     private static final String PERMISSION_PREFERENCE = "dialer_permissions";
     private static final String CEQUINT_PERMISSION = "com.cequint.ecid.CALLER_ID_LOOKUP";
 
@@ -145,8 +155,7 @@ public class PermissionsUtil {
      * Records in {@link android.content.SharedPreferences} that the specified permission has been
      * requested at least once.
      *
-     * <p>This method should be called in
-     * {@link android.app.Activity#onRequestPermissionsResult(int,
+     * <p>This method should be called in {@link android.app.Activity#onRequestPermissionsResult(int,
      * String[], int[])}.
      */
     public static void permissionRequested(Context context, String permission) {
@@ -197,8 +206,7 @@ public class PermissionsUtil {
     }
 
     /**
-     * Returns a list of permissions currently not granted to the application from the supplied
-     * list.
+     * Returns a list of permissions currently not granted to the application from the supplied list.
      *
      * @param context         - The Application context.
      * @param permissionsList - A list of permissions to check if the current application has been
@@ -219,8 +227,7 @@ public class PermissionsUtil {
     }
 
     /**
-     * Since we are granted the camera permission automatically as a first-party app, we need to
-     * show
+     * Since we are granted the camera permission automatically as a first-party app, we need to show
      * a toast to let users know the permission was granted for privacy reasons.
      *
      * @return true if we've already shown the camera privacy toast.

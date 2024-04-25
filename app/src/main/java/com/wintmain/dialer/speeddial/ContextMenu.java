@@ -21,10 +21,12 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntry.Channel;
@@ -64,9 +66,9 @@ public class ContextMenu extends PopupMenu implements OnMenuItemClickListener {
                     TextUtils.isEmpty(voiceChannel.label())
                             ? voiceChannel.number()
                             : context.getString(
-                                    R.string.call_subject_type_and_number,
-                                    voiceChannel.label(),
-                                    voiceChannel.number());
+                            R.string.call_subject_type_and_number,
+                            voiceChannel.label(),
+                            voiceChannel.number());
             getMenu().findItem(R.id.starred_contact_context_menu_title).setTitle(secondaryInfo);
             getMenu().findItem(R.id.starred_contact_context_menu_title).setVisible(true);
         } else {

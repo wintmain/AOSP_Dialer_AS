@@ -21,7 +21,9 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.provider.ContactsContract.Directory;
+
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.searchfragment.common.SearchCursor;
 

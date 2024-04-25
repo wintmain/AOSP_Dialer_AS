@@ -25,14 +25,13 @@ import android.provider.ContactsContract.Data;
 import android.text.TextUtils;
 import android.util.ArraySet;
 import androidx.annotation.Nullable;
-import com.google.auto.value.AutoValue;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.glidephotomanager.PhotoInfo;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntry;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntry.Channel;
-
+import com.google.auto.value.AutoValue;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -101,12 +100,10 @@ public abstract class SpeedDialUiItem {
      * SpeedDialUiItem}.
      *
      * <p>This cursor is structured such that contacts are grouped by contact id and lookup key and
-     * each row that shares the same contact id and lookup key represents a phone number that
-     * belongs
+     * each row that shares the same contact id and lookup key represents a phone number that belongs
      * to a single contact.
      *
-     * <p>If the cursor started at row X, this method will advance to row Y s.t. rows X, X + 1, .
-     * .. Y
+     * <p>If the cursor started at row X, this method will advance to row Y s.t. rows X, X + 1, ... Y
      * - 1 all belong to the same contact (that is, share the same contact id and lookup key).
      */
     public static SpeedDialUiItem fromCursor(
@@ -124,8 +121,7 @@ public abstract class SpeedDialUiItem {
                         .setIsStarred(cursor.getInt(STARRED) == 1)
                         .setPhotoId(cursor.getLong(PHOTO_ID))
                         .setPhotoUri(
-                                TextUtils.isEmpty(cursor.getString(PHOTO_URI)) ? ""
-                                        : cursor.getString(PHOTO_URI));
+                                TextUtils.isEmpty(cursor.getString(PHOTO_URI)) ? "" : cursor.getString(PHOTO_URI));
 
         // While there are more rows and the lookup keys are the same, add a channel for each of the
         // contact's phone numbers.
@@ -199,8 +195,7 @@ public abstract class SpeedDialUiItem {
      *   <li>The default channel if it's a video channel.
      *   <li>A video channel if it has the same attributes as the default channel, OR
      *   <li>null. (This is a deliberate product decision, even if there is only a single video
-     *       reachable channel, we should still return null if it has different attributes from
-     *       those
+     *       reachable channel, we should still return null if it has different attributes from those
      *       in the default channel).
      * </ul>
      */
@@ -235,20 +230,17 @@ public abstract class SpeedDialUiItem {
         for (int i = 0; i < channels().size() - 1; i++) {
             // Find the default channel
             if (Objects.equals(defaultChannel(), channels().get(i))) {
-                // Our defined assumptions about the list of channels is that if a video channel
-                // follows a
+                // Our defined assumptions about the list of channels is that if a video channel follows a
                 // voice channel, it has the same attributes as that voice channel.
                 Channel channel = channels().get(i + 1);
                 if (channel.isVideoTechnology()) {
                     return channel;
                 }
-                // Since the default voice channel isn't video reachable, we can't video call
-                // this number
+                // Since the default voice channel isn't video reachable, we can't video call this number
                 return null;
             }
         }
-        throw Assert.createIllegalStateFailException(
-                "channels() doesn't contain defaultChannel().");
+        throw Assert.createIllegalStateFailException("channels() doesn't contain defaultChannel().");
     }
 
     /**
@@ -271,8 +263,7 @@ public abstract class SpeedDialUiItem {
             return defaultChannel();
         }
 
-        // Default channel is a video channel, so find it's corresponding voice channel by number
-        // since
+        // Default channel is a video channel, so find it's corresponding voice channel by number since
         // unreachable channels may not be in the list
         for (Channel currentChannel : channels()) {
             if (currentChannel.number().equals(defaultChannel().number())
@@ -319,8 +310,7 @@ public abstract class SpeedDialUiItem {
      * enumerate each one here so that the user can choose the correct one. Each channel here
      * represents a row in the {@link com.android.dialer.speeddial.DisambigDialog}.
      *
-     * <p>These channels have a few very strictly enforced assumption that are used heavily
-     * throughout
+     * <p>These channels have a few very strictly enforced assumption that are used heavily throughout
      * the codebase. Those assumption are that:
      *
      * <ol>
@@ -340,11 +330,9 @@ public abstract class SpeedDialUiItem {
     public abstract ImmutableList<Channel> channels();
 
     /**
-     * Will be null when the user hasn't chosen a default yet. Note that a default channel may
-     * not be
+     * Will be null when the user hasn't chosen a default yet. Note that a default channel may not be
      * in the list returned by {@link #channels()}. This is because that list does not contain an
-     * unreachable Duo channel. When the default channel is a Duo channel and it becomes
-     * unreachable,
+     * unreachable Duo channel. When the default channel is a Duo channel and it becomes unreachable,
      * it will remain as the default channel but disappear in the list returned by {@link
      * #channels()}.
      *

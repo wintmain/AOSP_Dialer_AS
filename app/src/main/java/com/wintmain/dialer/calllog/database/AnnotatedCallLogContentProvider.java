@@ -16,13 +16,21 @@
 
 package com.wintmain.dialer.calllog.database;
 
-import android.content.*;
+import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.OperationApplicationException;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.calllog.database.AnnotatedCallLogConstraints.Operation;
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract;
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
@@ -46,8 +54,7 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
 
     static {
         uriMatcher.addURI(
-                AnnotatedCallLogContract.AUTHORITY, AnnotatedCallLog.TABLE,
-                ANNOTATED_CALL_LOG_TABLE_CODE);
+                AnnotatedCallLogContract.AUTHORITY, AnnotatedCallLog.TABLE, ANNOTATED_CALL_LOG_TABLE_CODE);
         uriMatcher.addURI(
                 AnnotatedCallLogContract.AUTHORITY,
                 AnnotatedCallLog.TABLE + "/#",
@@ -70,14 +77,11 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        databaseHelper = CallLogDatabaseComponent.get(getContext())
-                .annotatedCallLogDatabaseHelper();
+        databaseHelper = CallLogDatabaseComponent.get(getContext()).annotatedCallLogDatabaseHelper();
 
-        // Note: As this method is called before Application#onCreate, we must *not* initialize
-        // objects
+        // Note: As this method is called before Application#onCreate, we must *not* initialize objects
         // that require preparation work done in Application#onCreate.
-        // One example is to avoid obtaining an instance that depends on Google's proprietary
-        // config,
+        // One example is to avoid obtaining an instance that depends on Google's proprietary config,
         // which is initialized in Application#onCreate.
 
         return true;
@@ -99,8 +103,7 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
             case ANNOTATED_CALL_LOG_TABLE_ID_CODE:
                 queryBuilder.appendWhere(AnnotatedCallLog._ID + "=" + ContentUris.parseId(uri));
                 Cursor cursor =
-                        queryBuilder.query(db, projection, selection, selectionArgs, null, null,
-                                sortOrder);
+                        queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
                 if (cursor != null) {
                     cursor.setNotificationUri(
                             getContext().getContentResolver(), AnnotatedCallLog.CONTENT_URI);
@@ -110,8 +113,7 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
                 return cursor;
             case ANNOTATED_CALL_LOG_TABLE_CODE:
                 cursor =
-                        queryBuilder.query(db, projection, selection, selectionArgs, null, null,
-                                sortOrder);
+                        queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
                 if (cursor != null) {
                     cursor.setNotificationUri(
                             getContext().getContentResolver(), AnnotatedCallLog.CONTENT_URI);
@@ -122,13 +124,11 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
             case ANNOTATED_CALL_LOG_TABLE_DISTINCT_NUMBER_CODE:
                 Assert.checkArgument(
                         Arrays.equals(projection, new String[]{AnnotatedCallLog.NUMBER}),
-                        "only NUMBER supported for projection for distinct phone number query, "
-                                + "got: %s",
+                        "only NUMBER supported for projection for distinct phone number query, got: %s",
                         Arrays.toString(projection));
                 queryBuilder.setDistinct(true);
                 cursor =
-                        queryBuilder.query(db, projection, selection, selectionArgs, null, null,
-                                sortOrder);
+                        queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
                 if (cursor != null) {
                     cursor.setNotificationUri(
                             getContext().getContentResolver(), AnnotatedCallLog.CONTENT_URI);
@@ -160,8 +160,7 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
         switch (match) {
             case ANNOTATED_CALL_LOG_TABLE_CODE:
                 Assert.checkArgument(
-                        Objects.requireNonNull(values).get(AnnotatedCallLog._ID) != null,
-                        "You must specify an _ID when inserting");
+                        Objects.requireNonNull(values).get(AnnotatedCallLog._ID) != null, "You must specify an _ID when inserting");
                 break;
             case ANNOTATED_CALL_LOG_TABLE_ID_CODE:
                 Long idFromUri = ContentUris.parseId(uri);
@@ -204,8 +203,7 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
             case ANNOTATED_CALL_LOG_TABLE_CODE:
                 break;
             case ANNOTATED_CALL_LOG_TABLE_ID_CODE:
-                Assert.checkArgument(selection == null,
-                        "Do not specify selection when deleting by ID");
+                Assert.checkArgument(selection == null, "Do not specify selection when deleting by ID");
                 Assert.checkArgument(
                         selectionArgs == null, "Do not specify selection args when deleting by ID");
                 long id = ContentUris.parseId(uri);
@@ -243,8 +241,7 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
         int match = uriMatcher.match(uri);
         switch (match) {
             case ANNOTATED_CALL_LOG_TABLE_CODE:
-                int rows = database.update(AnnotatedCallLog.TABLE, values, selection,
-                        selectionArgs);
+                int rows = database.update(AnnotatedCallLog.TABLE, values, selection, selectionArgs);
                 if (rows == 0) {
                     LogUtil.w("AnnotatedCallLogContentProvider.update", "no rows updated");
                     return rows;
@@ -255,10 +252,8 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
                 return rows;
             case ANNOTATED_CALL_LOG_TABLE_ID_CODE:
                 Assert.checkArgument(
-                        !Objects.requireNonNull(values).containsKey(AnnotatedCallLog._ID),
-                        "Do not specify _ID when updating by ID");
-                Assert.checkArgument(selection == null,
-                        "Do not specify selection when updating by ID");
+                        !Objects.requireNonNull(values).containsKey(AnnotatedCallLog._ID), "Do not specify _ID when updating by ID");
+                Assert.checkArgument(selection == null, "Do not specify selection when updating by ID");
                 Assert.checkArgument(
                         selectionArgs == null, "Do not specify selection args when updating by ID");
                 selection = getSelectionWithId(ContentUris.parseId(uri));
@@ -281,14 +276,12 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
     /**
      * {@inheritDoc}
      *
-     * <p>Note: When applyBatch is used with the AnnotatedCallLog, only a single notification for
-     * the
+     * <p>Note: When applyBatch is used with the AnnotatedCallLog, only a single notification for the
      * content URI is generated, not individual notifications for each affected URI.
      */
     @NonNull
     @Override
-    public ContentProviderResult[] applyBatch(
-            @NonNull ArrayList<ContentProviderOperation> operations)
+    public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
             throws OperationApplicationException {
         ContentProviderResult[] results = new ContentProviderResult[operations.size()];
         if (operations.isEmpty()) {
@@ -319,19 +312,15 @@ public class AnnotatedCallLogContentProvider extends ContentProvider {
                     }
                 } else if (result.count == 0) {
                     /*
-                     * The batches built by MutationApplier happen to contain operations in order
-                     *  of:
+                     * The batches built by MutationApplier happen to contain operations in order of:
                      *
                      * 1. Inserts
                      * 2. Updates
                      * 3. Deletes
                      *
-                     * Let's say the last row in the table is row Z, and MutationApplier wishes
-                     * to update it,
-                     * as well as insert row A. When row A gets inserted, row Z will be deleted
-                     * via the
-                     * trigger if the table is full. Then later, when we try to process the
-                     * update for row Z,
+                     * Let's say the last row in the table is row Z, and MutationApplier wishes to update it,
+                     * as well as insert row A. When row A gets inserted, row Z will be deleted via the
+                     * trigger if the table is full. Then later, when we try to process the update for row Z,
                      * it won't exist.
                      */
                     LogUtil.w(

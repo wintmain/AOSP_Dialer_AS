@@ -19,10 +19,11 @@ package com.wintmain.dialer.glidephotomanager;
 import com.wintmain.dialer.glidephotomanager.impl.GlidePhotoManagerImpl;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-import dagger.Binds;
-import dagger.Module;
 
 import javax.inject.Singleton;
+
+import dagger.Binds;
+import dagger.Module;
 
 /**
  * Module for {@link GlidePhotoManagerComponent}
@@ -32,6 +33,5 @@ import javax.inject.Singleton;
 public abstract class GlidePhotoManagerModule {
     @Binds
     @Singleton
-    public abstract GlidePhotoManager bindGlidePhotoManager(
-            GlidePhotoManagerImpl glidePhotoManager);
+    public abstract GlidePhotoManager bindGlidePhotoManager(GlidePhotoManagerImpl glidePhotoManager);
 }

@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.android.contacts.common.MoreContactUtils;
 import com.android.contacts.common.list.ContactEntry;
 import com.android.contacts.common.list.ContactTileView;
@@ -87,8 +88,7 @@ public abstract class PhoneFavoriteTileView extends ContactTileView {
                     final PhoneFavoriteTileView view = (PhoneFavoriteTileView) v;
                     // NOTE The drag shadow is handled in the ListView.
                     view.startDragAndDrop(
-                            EMPTY_CLIP_DATA, new EmptyDragShadowBuilder(), DRAG_PHONE_FAVORITE_TILE,
-                            0);
+                            EMPTY_CLIP_DATA, new EmptyDragShadowBuilder(), DRAG_PHONE_FAVORITE_TILE, 0);
                     return true;
                 });
     }
@@ -133,25 +133,20 @@ public abstract class PhoneFavoriteTileView extends ContactTileView {
                             .setCallInitiationType(CallInitiationType.Type.SPEED_DIAL)
                             .setSpeedDialContactPosition(position);
             if (isStarred) {
-                callSpecificAppData.addSpeedDialContactType(
-                        SpeedDialContactType.Type.STARRED_CONTACT);
+                callSpecificAppData.addSpeedDialContactType(SpeedDialContactType.Type.STARRED_CONTACT);
             } else {
-                callSpecificAppData.addSpeedDialContactType(
-                        SpeedDialContactType.Type.FREQUENT_CONTACT);
+                callSpecificAppData.addSpeedDialContactType(SpeedDialContactType.Type.FREQUENT_CONTACT);
             }
             if (isPinned) {
-                callSpecificAppData.addSpeedDialContactType(
-                        SpeedDialContactType.Type.PINNED_CONTACT);
+                callSpecificAppData.addSpeedDialContactType(SpeedDialContactType.Type.PINNED_CONTACT);
             }
 
             if (TextUtils.isEmpty(phoneNumberString)) {
-                // Don't set performance report now, since user may spend some time on picking a
-                // number
+                // Don't set performance report now, since user may spend some time on picking a number
 
                 // Copy "superclass" implementation
                 Logger.get(getContext())
-                        .logInteraction(
-                                InteractionEvent.Type.SPEED_DIAL_CLICK_CONTACT_WITH_AMBIGUOUS_NUMBER);
+                        .logInteraction(InteractionEvent.Type.SPEED_DIAL_CLICK_CONTACT_WITH_AMBIGUOUS_NUMBER);
                 mListener.onContactSelected(
                         getLookupUri(),
                         MoreContactUtils.getTargetRectFromView(PhoneFavoriteTileView.this),
@@ -211,8 +206,7 @@ public abstract class PhoneFavoriteTileView extends ContactTileView {
     }
 
     /**
-     * A {@link View.DragShadowBuilder} that doesn't draw anything. An object of this class
-     * should be
+     * A {@link View.DragShadowBuilder} that doesn't draw anything. An object of this class should be
      * passed to {@link View#startDragAndDrop} to prevent the framework from drawing a drag shadow.
      */
     public static class EmptyDragShadowBuilder extends View.DragShadowBuilder {

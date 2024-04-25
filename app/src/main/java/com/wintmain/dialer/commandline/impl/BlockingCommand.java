@@ -17,12 +17,9 @@
 package com.wintmain.dialer.commandline.impl;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
-import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
+
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.blocking.Blocking;
 import com.wintmain.dialer.commandline.Arguments;
@@ -33,6 +30,11 @@ import com.wintmain.dialer.phonelookup.PhoneLookupComponent;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.consolidator.PhoneLookupInfoConsolidator;
 import com.wintmain.dialer.phonenumberproto.DialerPhoneNumberUtil;
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 import javax.inject.Inject;
 

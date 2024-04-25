@@ -26,12 +26,12 @@ import com.google.common.base.Optional;
 @SuppressWarnings("Guava")
 public abstract class ActiveCallInfo {
 
+    /** The {@link PhoneAccountHandle} the call is made with */
+    public abstract Optional<PhoneAccountHandle> phoneAccountHandle();
+
     public static Builder builder() {
         return new AutoValue_ActiveCallInfo.Builder();
     }
-
-    /** The {@link PhoneAccountHandle} the call is made with */
-    public abstract Optional<PhoneAccountHandle> phoneAccountHandle();
 
     /** Builder for {@link ActiveCallInfo}. Only In Call UI should create ActiveCallInfo */
     @AutoValue.Builder
@@ -41,8 +41,7 @@ public abstract class ActiveCallInfo {
             return setPhoneAccountHandle(Optional.fromNullable(phoneAccountHandle));
         }
 
-        public abstract Builder setPhoneAccountHandle(
-                Optional<PhoneAccountHandle> phoneAccountHandle);
+        public abstract Builder setPhoneAccountHandle(Optional<PhoneAccountHandle> phoneAccountHandle);
 
         public abstract ActiveCallInfo build();
     }

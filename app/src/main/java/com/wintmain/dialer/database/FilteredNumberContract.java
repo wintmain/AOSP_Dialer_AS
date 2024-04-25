@@ -18,6 +18,7 @@ package com.wintmain.dialer.database;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import com.wintmain.dialer.constants.Constants;
 
 /**
@@ -65,8 +66,7 @@ public final class FilteredNumberContract {
          */
         String NORMALIZED_NUMBER = "normalized_number";
         /**
-         * Represents the number to be filtered, for formatting and used with country iso for
-         * contact
+         * Represents the number to be filtered, for formatting and used with country iso for contact
          * lookups.
          *
          * <p>TYPE: TEXT
@@ -82,8 +82,7 @@ public final class FilteredNumberContract {
          */
         String COUNTRY_ISO = "country_iso";
         /**
-         * The number of times the number has been filtered by Dialer. When this number is
-         * incremented,
+         * The number of times the number has been filtered by Dialer. When this number is incremented,
          * LAST_TIME_FILTERED should also be updated to the current time.
          *
          * <p>TYPE: INTEGER
@@ -119,8 +118,7 @@ public final class FilteredNumberContract {
      *
      * <dl>
      * <dt><b>Insert</b>
-     * <dd>Required fields: NUMBER, NORMALIZED_NUMBER, TYPE, SOURCE. A default value will be used
-     * for
+     * <dd>Required fields: NUMBER, NORMALIZED_NUMBER, TYPE, SOURCE. A default value will be used for
      *     the other fields if left null.
      * <dt><b>Update</b>
      * <dt><b>Delete</b>
@@ -137,8 +135,7 @@ public final class FilteredNumberContract {
          * The MIME type of a {@link android.content.ContentProvider#getType(Uri)} single filtered
          * number.
          */
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/filtered_numbers_table";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/filtered_numbers_table";
 
         public static final Uri CONTENT_URI =
                 Uri.withAppendedPath(AUTHORITY_URI, FILTERED_NUMBERS_TABLE);

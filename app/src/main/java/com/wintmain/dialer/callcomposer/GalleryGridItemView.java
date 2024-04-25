@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -75,8 +76,7 @@ public class GalleryGridItemView extends FrameLayout {
     public void setSelected(boolean selected) {
         if (selected) {
             checkbox.setVisibility(VISIBLE);
-            int paddingPx = getResources().getDimensionPixelSize(
-                    R.dimen.gallery_item_selected_padding);
+            int paddingPx = getResources().getDimensionPixelSize(R.dimen.gallery_item_selected_padding);
             setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
         } else {
             checkbox.setVisibility(GONE);
@@ -107,15 +107,12 @@ public class GalleryGridItemView extends FrameLayout {
             currentFilePath = data.getFilePath();
 
             // Downloads/loads an image from the given URI so that the image's largest dimension is
-            // between 1/2 the given dimensions and the given dimensions, with no restrictions on
-            // the
-            // image's smallest dimension. We skip the memory cache, but glide still applies it's
-            // disk
+            // between 1/2 the given dimensions and the given dimensions, with no restrictions on the
+            // image's smallest dimension. We skip the memory cache, but glide still applies it's disk
             // cache to optimize loads.
             Glide.with(getContext())
                     .load(data.getFileUri())
-                    .apply(RequestOptions.downsampleOf(DownsampleStrategy.AT_MOST)
-                            .skipMemoryCache(true))
+                    .apply(RequestOptions.downsampleOf(DownsampleStrategy.AT_MOST).skipMemoryCache(true))
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(image);
         }

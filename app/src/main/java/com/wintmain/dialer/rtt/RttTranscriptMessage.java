@@ -84,8 +84,7 @@ public final class RttTranscriptMessage extends
                 DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public static com.wintmain.dialer.rtt.RttTranscriptMessage parseDelimitedFrom(
-            java.io.InputStream input)
+    public static com.wintmain.dialer.rtt.RttTranscriptMessage parseDelimitedFrom(java.io.InputStream input)
             throws java.io.IOException {
         return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
@@ -311,9 +310,7 @@ public final class RttTranscriptMessage extends
 
     public int getSerializedSize() {
         int size = memoizedSerializedSize;
-        if (size != -1) {
-            return size;
-        }
+        if (size != -1) return size;
 
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -355,8 +352,7 @@ public final class RttTranscriptMessage extends
             }
             case VISIT: {
                 Visitor visitor = (Visitor) arg0;
-                com.wintmain.dialer.rtt.RttTranscriptMessage other =
-                        (com.wintmain.dialer.rtt.RttTranscriptMessage) arg1;
+                com.wintmain.dialer.rtt.RttTranscriptMessage other = (com.wintmain.dialer.rtt.RttTranscriptMessage) arg1;
                 content_ = visitor.visitString(
                         hasContent(), content_,
                         other.hasContent(), other.content_);
@@ -452,8 +448,7 @@ public final class RttTranscriptMessage extends
     public static final class Builder extends
             com.google.protobuf.GeneratedMessageLite.Builder<
                     com.wintmain.dialer.rtt.RttTranscriptMessage, Builder> implements
-            // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.rtt
-            // .RttTranscriptMessage)
+            // @@protoc_insertion_point(builder_implements:com.wintmain.dialer.rtt.RttTranscriptMessage)
             com.wintmain.dialer.rtt.RttTranscriptMessageOrBuilder {
         // Construct using com.wintmain.dialer.rtt.RttTranscriptMessage.newBuilder()
         private Builder() {

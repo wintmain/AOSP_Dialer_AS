@@ -24,6 +24,7 @@ import android.hardware.Camera.Parameters;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -200,8 +201,7 @@ public class FocusOverlayManager {
 
         // Convert the coordinates to driver format.
         calculateTapArea(
-                focusWidth, focusHeight, 1f, x, y, previewWidth, previewHeight,
-                focusArea.get(0).rect);
+                focusWidth, focusHeight, 1f, x, y, previewWidth, previewHeight, focusArea.get(0).rect);
     }
 
     private void initializeMeteringAreas(
@@ -215,8 +215,7 @@ public class FocusOverlayManager {
         // AE area is bigger because exposure is sensitive and
         // easy to over- or underexposure if area is too small.
         calculateTapArea(
-                focusWidth, focusHeight, 1.5f, x, y, previewWidth, previewHeight,
-                meteringArea.get(0).rect);
+                focusWidth, focusHeight, 1.5f, x, y, previewWidth, previewHeight, meteringArea.get(0).rect);
     }
 
     public void onSingleTapUp(int x, int y) {

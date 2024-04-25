@@ -21,9 +21,9 @@ import android.content.Intent;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
+
 import androidx.annotation.NonNull;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.buildtype.BuildType;
 import com.wintmain.dialer.buildtype.BuildType.Type;
 import com.wintmain.dialer.callintent.CallInitiationType;
@@ -32,6 +32,8 @@ import com.wintmain.dialer.commandline.Arguments;
 import com.wintmain.dialer.commandline.Command;
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.precall.PreCall;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.inject.Inject;
 
@@ -75,8 +77,7 @@ public class CallCommand implements Command {
         CallIntentBuilder callIntentBuilder;
         if ("voicemail".equals(number)) {
             callIntentBuilder =
-                    CallIntentBuilder.forVoicemail(phoneAccountHandle,
-                            CallInitiationType.Type.DIALPAD);
+                    CallIntentBuilder.forVoicemail(phoneAccountHandle, CallInitiationType.Type.DIALPAD);
         } else {
             callIntentBuilder = new CallIntentBuilder(number, CallInitiationType.Type.DIALPAD);
         }

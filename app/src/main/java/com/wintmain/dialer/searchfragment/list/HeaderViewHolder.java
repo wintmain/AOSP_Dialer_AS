@@ -18,7 +18,9 @@ package com.wintmain.dialer.searchfragment.list;
 
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.R;
 
 /**

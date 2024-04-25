@@ -23,8 +23,9 @@ import android.os.Bundle;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telecom.VideoProfile;
+
 import androidx.annotation.Nullable;
-import com.google.common.collect.ImmutableList;
+
 import com.wintmain.dialer.callintent.CallInitiationType.Type;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.common.LogUtil;
@@ -33,6 +34,7 @@ import com.wintmain.dialer.configprovider.ConfigProviderComponent;
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
 import com.wintmain.dialer.precall.PreCall;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Activity that forwards to {@link PreCall#start(Context, CallIntentBuilder)} so the pre-call flow
@@ -70,14 +72,11 @@ public class LaunchPreCallActivity extends Activity {
         ConfigProvider configProvider =
                 ConfigProviderComponent.get(getApplicationContext()).getConfigProvider();
         Intent intent = getIntent();
-        CallIntentBuilder builder = new CallIntentBuilder(intent.getData(),
-                Type.EXTERNAL_INITIATION);
+        CallIntentBuilder builder = new CallIntentBuilder(intent.getData(), Type.EXTERNAL_INITIATION);
 
-        PhoneAccountHandle phoneAccountHandle = intent.getParcelableExtra(
-                EXTRA_PHONE_ACCOUNT_HANDLE);
+        PhoneAccountHandle phoneAccountHandle = intent.getParcelableExtra(EXTRA_PHONE_ACCOUNT_HANDLE);
         if (phoneAccountHandle == null) {
-            phoneAccountHandle = intent.getParcelableExtra(
-                    TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE);
+            phoneAccountHandle = intent.getParcelableExtra(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE);
         }
 
         builder
@@ -87,8 +86,7 @@ public class LaunchPreCallActivity extends Activity {
                 .setAllowAssistedDial(
                         intent.getBooleanExtra(
                                 EXTRA_ALLOW_ASSISTED_DIAL,
-                                configProvider.getBoolean("assisted_dialing_default_precall_state",
-                                        false)));
+                                configProvider.getBoolean("assisted_dialing_default_precall_state", false)));
         filterExtras(intent.getExtras(), builder);
         PreCall.start(this, builder);
         finish();
@@ -118,13 +116,11 @@ public class LaunchPreCallActivity extends Activity {
                 case VideoProfile.STATE_TX_ENABLED:
                     LogUtil.w(
                             "LaunchPreCallActivity.filterExtras",
-                            "unsupported video state " + videoState
-                                    + ", overriding to STATE_BIDIRECTIONAL");
+                            "unsupported video state " + videoState + ", overriding to STATE_BIDIRECTIONAL");
                     builder.setIsVideoCall(true);
                     break;
                 default:
-                    LogUtil.w("LaunchPreCallActivity.filterExtras",
-                            "unknown video state " + videoState);
+                    LogUtil.w("LaunchPreCallActivity.filterExtras", "unknown video state " + videoState);
                     builder.setIsVideoCall(false);
             }
         }

@@ -17,6 +17,7 @@
 package com.wintmain.dialer.buildtype;
 
 import androidx.annotation.IntDef;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -37,8 +38,7 @@ public class BuildType {
             didInitializeBuildType = true;
             try {
                 Class<?> clazz = Class.forName(BuildTypeAccessor.class.getName() + "Impl");
-                BuildTypeAccessor accessorImpl =
-                        (BuildTypeAccessor) clazz.getConstructor().newInstance();
+                BuildTypeAccessor accessorImpl = (BuildTypeAccessor) clazz.getConstructor().newInstance();
                 cachedBuildType = accessorImpl.getBuildType();
             } catch (ReflectiveOperationException e) {
                 LogUtil.e("BuildType.get", "error creating BuildTypeAccessorImpl", e);

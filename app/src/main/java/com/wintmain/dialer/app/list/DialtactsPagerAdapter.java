@@ -17,12 +17,14 @@
 package com.wintmain.dialer.app.list;
 
 import android.view.ViewGroup;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
+
 import com.wintmain.dialer.app.calllog.CallLogFragment;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -111,10 +113,8 @@ public class DialtactsPagerAdapter extends FragmentPagerAdapter {
     /**
      * When {@link PagerAdapter#notifyDataSetChanged} is called, this method
      * is called on all pages to determine whether they need to be recreated. When the voicemail tab
-     * is removed, the view needs to be recreated by returning POSITION_NONE. If
-     * notifyDataSetChanged
-     * is called for some other reason, the voicemail tab is recreated only if it is active. All
-     * other
+     * is removed, the view needs to be recreated by returning POSITION_NONE. If notifyDataSetChanged
+     * is called for some other reason, the voicemail tab is recreated only if it is active. All other
      * tabs do not need to be recreated and POSITION_UNCHANGED is returned.
      */
     @Override

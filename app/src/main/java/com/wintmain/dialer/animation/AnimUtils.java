@@ -42,8 +42,7 @@ public class AnimUtils {
         fadeOut(fadeOut, duration, null);
     }
 
-    public static void fadeOut(final View fadeOut, int durationMs,
-            final AnimationCallback callback) {
+    public static void fadeOut(final View fadeOut, int durationMs, final AnimationCallback callback) {
         fadeOut.setAlpha(1);
         final ViewPropertyAnimator animator = fadeOut.animate();
         animator.cancel();
@@ -120,8 +119,8 @@ public class AnimUtils {
     /**
      * Scales in the view from scale of 0 to actual dimensions.
      *
-     * @param view         The view to scale.
-     * @param durationMs   The duration of the scaling in milliseconds.
+     * @param view The view to scale.
+     * @param durationMs The duration of the scaling in milliseconds.
      * @param startDelayMs The delay to applying the scaling in milliseconds.
      */
     public static void scaleIn(final View view, int durationMs, int startDelayMs) {
@@ -151,7 +150,7 @@ public class AnimUtils {
     /**
      * Scales out the view from actual dimensions to 0.
      *
-     * @param view       The view to scale.
+     * @param view The view to scale.
      * @param durationMs The duration of the scaling in milliseconds.
      */
     public static void scaleOut(final View view, int durationMs) {
@@ -212,8 +211,8 @@ public class AnimUtils {
     /**
      * Animates a view to the new specified dimensions.
      *
-     * @param view      The view to change the dimensions of.
-     * @param newWidth  The new width of the view.
+     * @param view The view to change the dimensions of.
+     * @param newWidth The new width of the view.
      * @param newHeight The new height of the view.
      */
     public static void changeDimensions(final View view, final int newWidth, final int newHeight) {
@@ -240,10 +239,8 @@ public class AnimUtils {
 
     public static class AnimationCallback {
 
-        public void onAnimationEnd() {
-        }
+        public void onAnimationEnd() {}
 
-        public void onAnimationCancel() {
-        }
+        public void onAnimationCancel() {}
     }
 }

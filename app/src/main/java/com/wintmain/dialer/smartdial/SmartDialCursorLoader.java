@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.database.Database;
 import com.wintmain.dialer.database.DialerDatabaseHelper;

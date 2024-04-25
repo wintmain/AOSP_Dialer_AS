@@ -18,6 +18,7 @@ package com.wintmain.dialer.lookup;
 
 
 import android.text.Html;
+
 import com.android.incallui.bindings.PhoneNumberService;
 import com.wintmain.dialer.logging.ContactLookupResult;
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
@@ -137,7 +138,6 @@ public class LookupUtils {
 
     static class LookupNumberInfo implements PhoneNumberService.PhoneNumberInfo {
         private final ContactInfo info;
-
         private LookupNumberInfo(ContactInfo info) {
             this.info = info;
         }
@@ -146,43 +146,35 @@ public class LookupUtils {
         public String getDisplayName() {
             return info.name;
         }
-
         @Override
         public String getNumber() {
             return info.number;
         }
-
         @Override
         public int getPhoneType() {
             return info.type;
         }
-
         @Override
         public String getPhoneLabel() {
             return info.label;
         }
-
         @Override
         public String getNormalizedNumber() {
             return info.normalizedNumber;
         }
-
         @Override
         public String getImageUrl() {
             return info.photoUri != null ? info.photoUri.toString() : null;
         }
-
         @Override
         public boolean isBusiness() {
             // FIXME
             return false;
         }
-
         @Override
         public String getLookupKey() {
             return info.lookupKey;
         }
-
         @Override
         public ContactLookupResult.Type getLookupSource() {
             return ContactLookupResult.Type.REMOTE;

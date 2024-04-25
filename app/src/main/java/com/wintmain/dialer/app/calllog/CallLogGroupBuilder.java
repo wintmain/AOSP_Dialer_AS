@@ -21,8 +21,10 @@ import android.database.Cursor;
 import android.provider.CallLog.Calls;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+
 import com.android.contacts.common.util.DateUtils;
 import com.wintmain.dialer.calllogutils.CallbackActionHelper;
 import com.wintmain.dialer.calllogutils.CallbackActionHelper.CallbackAction;
@@ -46,8 +48,7 @@ public class CallLogGroupBuilder {
 
     /**
      * Day grouping for call log entries used to represent no associated day group. Used primarily
-     * when retrieving the previous day group, but there is no previous day group (i.e. we are at
-     * the
+     * when retrieving the previous day group, but there is no previous day group (i.e. we are at the
      * start of the list).
      */
     public static final int DAY_GROUP_NONE = -1;
@@ -80,12 +81,10 @@ public class CallLogGroupBuilder {
     }
 
     /**
-     * Finds all groups of adjacent entries in the call log which should be grouped together and
-     * calls
+     * Finds all groups of adjacent entries in the call log which should be grouped together and calls
      * {@link GroupCreator#addGroup(int, int)} on {@link #groupCreator} for each of them.
      *
-     * <p>For entries that are not grouped with others, we do not need to create a group of size
-     * one.
+     * <p>For entries that are not grouped with others, we do not need to create a group of size one.
      *
      * <p>It assumes that the cursor will not change during its execution.
      *
@@ -152,25 +151,21 @@ public class CallLogGroupBuilder {
             final boolean isSamePostDialDigits = groupPostDialDigits.equals(numberPostDialDigits);
             final boolean isSameViaNumbers = groupViaNumbers.equals(numberViaNumbers);
             final boolean isSameAccount =
-                    isSameAccount(groupAccountComponentName, accountComponentName, groupAccountId,
-                            accountId);
+                    isSameAccount(groupAccountComponentName, accountComponentName, groupAccountId, accountId);
             final boolean isSameCallbackAction = (groupCallbackAction == callbackAction);
 
             // Group calls with the following criteria:
-            // (1) Calls with the same number, account, and callback action should be in the same
-            // group;
+            // (1) Calls with the same number, account, and callback action should be in the same group;
             // (2) Never group voice mails; and
             // (3) Only group blocked calls with other blocked calls.
-            // (4) Only group calls that were assisted dialed with other calls that were assisted
-            // dialed.
+            // (4) Only group calls that were assisted dialed with other calls that were assisted dialed.
             if (isSameNumber
                     && isSameAccount
                     && isSamePostDialDigits
                     && isSameViaNumbers
                     && isSameCallbackAction
                     && areBothNotVoicemail(callType, groupCallType)
-                    && (areBothNotBlocked(callType, groupCallType) || areBothBlocked(callType,
-                    groupCallType))
+                    && (areBothNotBlocked(callType, groupCallType) || areBothBlocked(callType, groupCallType))
                     && meetsAssistedDialingGroupingCriteria(groupFeatures, callFeatures)) {
                 // Increment the size of the group to include the current call, but do not create
                 // the group until finding a call that does not match.
@@ -218,11 +213,9 @@ public class CallLogGroupBuilder {
             return compareSipAddresses(number1, number2);
         }
 
-        // PhoneNumberUtils.compare(String, String) ignores special characters such as '#'. For
-        // example,
+        // PhoneNumberUtils.compare(String, String) ignores special characters such as '#'. For example,
         // it thinks "123" and "#123" are identical enough for caller ID purposes.
-        // When either input number contains special characters, we put the two in the same group
-        // iff
+        // When either input number contains special characters, we put the two in the same group iff
         // their raw numbers are exactly the same.
         if (PhoneNumberHelper.numberHasSpecialChars(number1)
                 || PhoneNumberHelper.numberHasSpecialChars(number2)) {
@@ -308,8 +301,7 @@ public class CallLogGroupBuilder {
     public interface GroupCreator {
 
         /**
-         * Defines the interface for adding a group to the call log. The primary group for a call
-         * log
+         * Defines the interface for adding a group to the call log. The primary group for a call log
          * groups the calls together based on the number which was dialed.
          *
          * @param cursorPosition The starting position of the group in the cursor.
@@ -328,10 +320,8 @@ public class CallLogGroupBuilder {
         void setCallbackAction(long rowId, @CallbackAction int callbackAction);
 
         /**
-         * Defines the interface for tracking the day group each call belongs to. Calls in a call
-         * group
-         * are assigned the same day group as the first call in the group. The day group assigns
-         * calls
+         * Defines the interface for tracking the day group each call belongs to. Calls in a call group
+         * are assigned the same day group as the first call in the group. The day group assigns calls
          * to the buckets: Today, Yesterday, Last week, and Other
          *
          * @param rowId    The row ID of the current call.

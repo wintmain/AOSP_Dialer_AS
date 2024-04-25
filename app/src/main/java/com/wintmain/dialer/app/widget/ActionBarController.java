@@ -17,6 +17,7 @@ package com.wintmain.dialer.app.widget;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+
 import com.wintmain.dialer.animation.AnimUtils.AnimationCallback;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -65,8 +66,7 @@ public class ActionBarController {
      * Called when the user has tapped on the collapsed search box, to start a new search query.
      */
     public void onSearchBoxTapped() {
-        LogUtil.d("ActionBarController.onSearchBoxTapped",
-                "isInSearchUi " + activityUi.isInSearchUi());
+        LogUtil.d("ActionBarController.onSearchBoxTapped", "isInSearchUi " + activityUi.isInSearchUi());
         if (!activityUi.isInSearchUi()) {
             searchBox.expand(true /* animate */, true /* requestFocus */);
         }

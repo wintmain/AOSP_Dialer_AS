@@ -16,6 +16,8 @@
 
 package com.wintmain.dialer.calldetails;
 
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
+
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,16 +27,17 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
 import android.view.View;
-import androidx.annotation.*;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.settings.DialerSettingsActivityCompt;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
@@ -63,14 +66,17 @@ import com.wintmain.dialer.postcall.PostCall;
 import com.wintmain.dialer.precall.PreCall;
 import com.wintmain.dialer.rtt.RttTranscriptActivity;
 import com.wintmain.dialer.rtt.RttTranscriptUtil;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.getThemeButtonBehavior;
 
 /**
  * Contains common logic shared between {@link OldCallDetailsActivity} and {@link
@@ -101,8 +107,7 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
     private CallRecordingDataStore callRecordingDataStore;
 
     /**
-     * Handles the intent that launches {@link OldCallDetailsActivity} or
-     * {@link CallDetailsActivity},
+     * Handles the intent that launches {@link OldCallDetailsActivity} or {@link CallDetailsActivity},
      * e.g., extract data from intent extras, start loading data, etc.
      */
     protected abstract void handleIntent(Intent intent);
@@ -127,15 +132,12 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Boolean conf = MainActivity.getBoolConfigUsingLatestAbout();
         if (!conf) {
-            DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior mThemeBehavior =
-                    getThemeButtonBehavior(MainActivityPeer.themeprefs);
+            DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior mThemeBehavior = getThemeButtonBehavior(MainActivityPeer.themeprefs);
 
-            if (mThemeBehavior
-                    == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK) {
+            if (mThemeBehavior == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK) {
                 getTheme().applyStyle(R.style.DialerDark, true);
             }
-            if (mThemeBehavior
-                    == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT) {
+            if (mThemeBehavior == DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT) {
                 getTheme().applyStyle(R.style.DialerLight, true);
             }
         }
@@ -145,14 +147,12 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
         toolbar.setTitle(R.string.call_details);
         toolbar.setNavigationOnClickListener(
                 v -> {
-                    PerformanceReport.recordClick(
-                            UiAction.Type.CLOSE_CALL_DETAIL_WITH_CANCEL_BUTTON);
+                    PerformanceReport.recordClick(UiAction.Type.CLOSE_CALL_DETAIL_WITH_CANCEL_BUTTON);
                     finish();
                 });
         checkRttTranscriptAvailabilityListener =
                 DialerExecutorComponent.get(this)
-                        .createUiListener(getSupportFragmentManager(),
-                                "Query RTT transcript availability");
+                        .createUiListener(getSupportFragmentManager(), "Query RTT transcript availability");
         callRecordingDataStore = new CallRecordingDataStore();
         handleIntent(getIntent());
         setupRecyclerViewForEntries();
@@ -303,14 +303,12 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
 
             Selection selection =
                     Selection.builder()
-                            .and(Selection.column(CallLog.Calls._ID)
-                                    .in(getCallLogIdList(callDetailsEntries)))
+                            .and(Selection.column(CallLog.Calls._ID).in(getCallLogIdList(callDetailsEntries)))
                             .build();
 
             context
                     .getContentResolver()
-                    .delete(Calls.CONTENT_URI, selection.getSelection(),
-                            selection.getSelectionArgs());
+                    .delete(Calls.CONTENT_URI, selection.getSelection(), selection.getSelectionArgs());
             return null;
         }
     }
@@ -324,12 +322,10 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
         }
 
         @Override
-        public void showRttTranscript(String transcriptId, String primaryText,
-                PhotoInfo photoInfo) {
+        public void showRttTranscript(String transcriptId, String primaryText, PhotoInfo photoInfo) {
             getActivity()
                     .startActivity(
-                            RttTranscriptActivity.getIntent(getActivity(), transcriptId,
-                                    primaryText, photoInfo));
+                            RttTranscriptActivity.getIntent(getActivity(), transcriptId, primaryText, photoInfo));
         }
 
         private CallDetailsActivityCommon getActivity() {
@@ -368,8 +364,7 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
 
         @Override
         public void placeVoiceCall(String phoneNumber, String postDialDigits) {
-            Logger.get(getActivity()).logImpression(
-                    DialerImpression.Type.CALL_DETAILS_VOICE_CALL_BACK);
+            Logger.get(getActivity()).logImpression(DialerImpression.Type.CALL_DETAILS_VOICE_CALL_BACK);
 
             boolean canSupportedAssistedDialing =
                     getActivity()
@@ -377,8 +372,7 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
                             .getExtras()
                             .getBoolean(EXTRA_CAN_SUPPORT_ASSISTED_DIALING, false);
             CallIntentBuilder callIntentBuilder =
-                    new CallIntentBuilder(phoneNumber + postDialDigits,
-                            CallInitiationType.Type.CALL_DETAILS);
+                    new CallIntentBuilder(phoneNumber + postDialDigits, CallInitiationType.Type.CALL_DETAILS);
             if (canSupportedAssistedDialing) {
                 callIntentBuilder.setAllowAssistedDial(true);
             }
@@ -450,8 +444,7 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
                             unused -> {
                                 Intent data = new Intent();
                                 data.putExtra(EXTRA_PHONE_NUMBER, activity.getNumber());
-                                for (CallDetailsEntry entry : activity.getCallDetailsEntries()
-                                        .getEntriesList()) {
+                                for (CallDetailsEntry entry : activity.getCallDetailsEntries().getEntriesList()) {
                                     if (entry.getHistoryResultsCount() > 0) {
                                         data.putExtra(EXTRA_HAS_ENRICHED_CALL_DATA, true);
                                         break;
@@ -492,8 +485,7 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
                 if (results != null) {
                     newEntry.addAllHistoryResults(mappedResults.get(entry));
                     LogUtil.v(
-                            "CallDetailsActivityCommon"
-                                    + ".generateAndMapNewCallDetailsEntriesHistoryResults",
+                            "CallDetailsActivityCommon.generateAndMapNewCallDetailsEntriesHistoryResults",
                             "mapped %d results",
                             newEntry.getHistoryResultsList().size());
                 }
@@ -551,8 +543,7 @@ abstract class CallDetailsActivityCommon extends AppCompatActivity {
 
         @Override
         public boolean canReportCallerId(String number) {
-            return getActivity().getIntent().getExtras().getBoolean(EXTRA_CAN_REPORT_CALLER_ID,
-                    false);
+            return getActivity().getIntent().getExtras().getBoolean(EXTRA_CAN_REPORT_CALLER_ID, false);
         }
 
         private Activity getActivity() {

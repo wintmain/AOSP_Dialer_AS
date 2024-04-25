@@ -21,10 +21,12 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.exifinterface.media.ExifInterface;
+
 import com.wintmain.dialer.callcomposer.util.BitmapResizer;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
@@ -69,14 +71,12 @@ class CopyAndResizeImageWorker implements Worker<Uri, Pair<File, String>> {
     @Nullable
     @Override
     public Pair<File, String> doInBackground(@Nullable Uri input) throws Throwable {
-        // BitmapFactory.decodeStream strips exif data, so we need to save it here and apply it
-        // later.
+        // BitmapFactory.decodeStream strips exif data, so we need to save it here and apply it later.
         int rotation = 0;
         try {
             rotation =
                     new ExifInterface(Objects.requireNonNull(input).getPath())
-                            .getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                                    ExifInterface.ORIENTATION_NORMAL);
+                            .getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
         } catch (Exception ignored) {
             // Couldn't get exif tags, not the end of the world
         }
@@ -87,8 +87,7 @@ class CopyAndResizeImageWorker implements Worker<Uri, Pair<File, String>> {
 
             File outputFile = DialerUtils.createShareableFile(context);
             try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-                // Encode images to jpeg as it is better for camera pictures which we expect to
-                // be sending
+                // Encode images to jpeg as it is better for camera pictures which we expect to be sending
                 bitmap.compress(CompressFormat.JPEG, 80, outputStream);
                 return new Pair<>(outputFile, MIME_TYPE);
             }

@@ -21,17 +21,12 @@ import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /** POJO representation of database rows returned by {@link SpeedDialEntryDao}. */
 @AutoValue
 public abstract class SpeedDialEntry {
-
-    public static Builder builder() {
-        return new AutoValue_SpeedDialEntry.Builder().setPinnedPosition(Optional.absent());
-    }
 
     /**
      * Unique ID
@@ -53,14 +48,17 @@ public abstract class SpeedDialEntry {
     /**
      * {@link Channel} that is associated with this entry.
      *
-     * <p>Contacts with multiple channels do not have a default until specified by the user. Once
-     * the
+     * <p>Contacts with multiple channels do not have a default until specified by the user. Once the
      * default channel is determined, all calls should be placed to this channel.
      */
     @Nullable
     public abstract Channel defaultChannel();
 
     public abstract Builder toBuilder();
+
+    public static Builder builder() {
+        return new AutoValue_SpeedDialEntry.Builder().setPinnedPosition(Optional.absent());
+    }
 
     /** Builder class for speed dial entry. */
     @AutoValue.Builder
@@ -88,9 +86,10 @@ public abstract class SpeedDialEntry {
         public static final int IMS_VIDEO = 2;
         public static final int DUO = 3;
 
-        public static Builder builder() {
-            return new AutoValue_SpeedDialEntry_Channel.Builder();
-        }
+        /** Whether the Channel is for an audio or video call. */
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef({UNKNOWN, VOICE, IMS_VIDEO, DUO})
+        public @interface Technology {}
 
         public boolean isVideoTechnology() {
             return technology() == IMS_VIDEO || technology() == DUO;
@@ -113,10 +112,8 @@ public abstract class SpeedDialEntry {
 
         public abstract Builder toBuilder();
 
-        /** Whether the Channel is for an audio or video call. */
-        @Retention(RetentionPolicy.SOURCE)
-        @IntDef({UNKNOWN, VOICE, IMS_VIDEO, DUO})
-        public @interface Technology {
+        public static Builder builder() {
+            return new AutoValue_SpeedDialEntry_Channel.Builder();
         }
 
         /** Builder class for {@link Channel}. */

@@ -16,6 +16,10 @@
  */
 package com.wintmain.dialer.app.settings;
 
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.DARK;
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.LIGHT;
+import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.SYSTEM;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -31,6 +35,7 @@ import android.telecom.TelecomManager;
 import android.telephony.CarrierConfigManager;
 import android.telephony.TelephonyManager;
 import android.view.MenuItem;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -40,8 +45,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.preference.*;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blocking.FilteredNumberCompat;
 import com.wintmain.dialer.callrecord.impl.CallRecorderService;
@@ -50,10 +59,9 @@ import com.wintmain.dialer.compat.telephony.TelephonyManagerCompat;
 import com.wintmain.dialer.lookup.LookupSettings;
 import com.wintmain.dialer.main.impl.MainActivity;
 import com.wintmain.dialer.main.impl.MainActivityPeer;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.Objects;
-
-import static com.wintmain.dialer.app.settings.DialerSettingsActivityCompt.PrefsFragment.ThemeButtonBehavior.*;
 
 /*
  * 旧的的Settings布局
@@ -64,8 +72,7 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtil.enterBlock("DialerSettingsActivity.onCreate");
-        PrefsFragment.ThemeButtonBehavior mThemeBehavior = PrefsFragment.getThemeButtonBehavior(
-                MainActivityPeer.themeprefs);
+        PrefsFragment.ThemeButtonBehavior mThemeBehavior = PrefsFragment.getThemeButtonBehavior(MainActivityPeer.themeprefs);
 
         if (mThemeBehavior == PrefsFragment.ThemeButtonBehavior.DARK) {
             getTheme().applyStyle(R.style.DialerDark, true);
@@ -137,14 +144,12 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
         CheckBoxPreference mVibrateWhenRinging;
         SwitchPreferenceCompat Lookup;
         private String existingValue;
-        final ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
+        final ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
-                            Uri ringtone = Objects.requireNonNull(result.getData())
-                                    .getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                            Uri ringtone = Objects.requireNonNull(result.getData()).getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                             if (ringtone != null) {
                                 existingValue = ringtone.toString();
                             } else {
@@ -181,32 +186,26 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
                         mPlayDtmfTone.isChecked() ? PLAY_DTMF_TONE : NO_DTMF_TONE);
             }
             if (preference.getKey().equals(KEY_QUICK_RESPONSE)) {
-                Intent quickResponseSettingsIntent = new Intent(
-                        TelecomManager.ACTION_SHOW_RESPOND_VIA_SMS_SETTINGS);
+                Intent quickResponseSettingsIntent = new Intent(TelecomManager.ACTION_SHOW_RESPOND_VIA_SMS_SETTINGS);
                 startActivity(quickResponseSettingsIntent);
             }
             if (preference.getKey().equals(KEY_CALL_SETTINGS)) {
-                Intent phoneAccountSettingsIntent = new Intent(
-                        TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
+                Intent phoneAccountSettingsIntent = new Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
                 phoneAccountSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(phoneAccountSettingsIntent);
             }
             if (preference.getKey().equals(KEY_CALL_BLOCKING)) {
                 if (FilteredNumberCompat.canCurrentUserOpenBlockSettings(getContext())) {
-                    Intent blockingSettingsIntent =
-                            FilteredNumberCompat.createManageBlockedNumbersIntent(getContext());
+                    Intent blockingSettingsIntent = FilteredNumberCompat.createManageBlockedNumbersIntent(getContext());
                     startActivity(blockingSettingsIntent);
                 }
             }
             if (preference.getKey().equals(KEY_ACCESSIBILITY)) {
                 TelephonyManager telephonyManager =
-                        (TelephonyManager) requireActivity().getSystemService(
-                                Context.TELEPHONY_SERVICE);
+                        (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
                 if ((TelephonyManagerCompat.isTtyModeSupported(telephonyManager)
-                        || TelephonyManagerCompat.isHearingAidCompatibilitySupported(
-                        telephonyManager))) {
-                    Intent accessSettingsIntent = new Intent(
-                            TelecomManager.ACTION_SHOW_CALL_ACCESSIBILITY_SETTINGS);
+                        || TelephonyManagerCompat.isHearingAidCompatibilitySupported(telephonyManager))) {
+                    Intent accessSettingsIntent = new Intent(TelecomManager.ACTION_SHOW_CALL_ACCESSIBILITY_SETTINGS);
                     startActivity(accessSettingsIntent);
                 }
             }
@@ -221,8 +220,7 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
             Objects.requireNonNull(Theme).setSummary(Theme.getEntry());
             Theme.setOnPreferenceChangeListener(this);
             Lookup = findPreference(KEY_ENABLE_FORWARD_LOOKUP);
-            Objects.requireNonNull(Lookup).setChecked(
-                    LookupSettings.isForwardLookupEnabled(context));
+            Objects.requireNonNull(Lookup).setChecked(LookupSettings.isForwardLookupEnabled(context));
             Lookup.setOnPreferenceChangeListener(this);
             Preference Ringtone = findPreference(KEY_RINGTONE);
 
@@ -231,21 +229,18 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
-                        Settings.System.DEFAULT_RINGTONE_URI);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_RINGTONE_URI);
 
                 if (existingValue != null) {
                     if (existingValue.length() == 0) {
                         // Select "Silent"
                         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
                     } else {
-                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
-                                Uri.parse(existingValue));
+                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
                     }
                 } else {
                     // No ringtone has been selected, set to the default
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
-                            Settings.System.DEFAULT_RINGTONE_URI);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_RINGTONE_URI);
                 }
                 mStartForResult.launch(intent);
                 return true;
@@ -269,16 +264,14 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
             if (hasVibrator()) {
                 Objects.requireNonNull(mVibrateWhenRinging).setOnPreferenceChangeListener(this);
             } else {
-                getPreferenceScreen().removePreferenceRecursively(
-                        context.getString(R.string.vibrate_on_preference_key));
+                getPreferenceScreen().removePreferenceRecursively(context.getString(R.string.vibrate_on_preference_key));
             }
 
             Objects.requireNonNull(mPlayDtmfTone).setOnPreferenceChangeListener(this);
             mPlayDtmfTone.setChecked(shouldPlayDtmfTone());
 
             TelephonyManager telephonyManager =
-                    (TelephonyManager) requireActivity().getSystemService(
-                            Context.TELEPHONY_SERVICE);
+                    (TelephonyManager) requireActivity().getSystemService(Context.TELEPHONY_SERVICE);
             if (telephonyManager.canChangeDtmfToneLength()
                     && (telephonyManager.isWorldPhone() || !shouldHideCarrierSettings())) {
                 Objects.requireNonNull(mDtmfToneLength).setOnPreferenceChangeListener(this);
@@ -287,12 +280,10 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
                                 Settings.System.DTMF_TONE_TYPE_WHEN_DIALING,
                                 DTMF_TONE_TYPE_NORMAL));
             } else {
-                getPreferenceScreen().removePreferenceRecursively(
-                        context.getString(R.string.dtmf_tone_length_preference_key));
+                getPreferenceScreen().removePreferenceRecursively(context.getString(R.string.dtmf_tone_length_preference_key));
             }
             if (!CallRecorderService.isEnabled(requireActivity())) {
-                getPreferenceScreen().removePreferenceRecursively(
-                        context.getString(R.string.call_recording_category_key));
+                getPreferenceScreen().removePreferenceRecursively(context.getString(R.string.call_recording_category_key));
             }
 
         }
@@ -340,14 +331,12 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
         }
 
         private boolean hasVibrator() {
-            Vibrator vibrator = (Vibrator) requireActivity().getSystemService(
-                    Context.VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
             return vibrator != null && vibrator.hasVibrator();
         }
 
         private boolean shouldVibrateWhenRinging() {
-            int vibrateWhenRingingSetting = Settings.System.getInt(
-                    requireActivity().getContentResolver(),
+            int vibrateWhenRingingSetting = Settings.System.getInt(requireActivity().getContentResolver(),
                     Settings.System.VIBRATE_WHEN_RINGING,
                     NO_VIBRATION_FOR_CALLS);
             return hasVibrator() && (vibrateWhenRingingSetting == DO_VIBRATION_FOR_CALLS);
@@ -361,11 +350,9 @@ public class DialerSettingsActivityCompt extends AppCompatActivity {
         }
 
         private boolean shouldHideCarrierSettings() {
-            CarrierConfigManager configManager =
-                    (CarrierConfigManager) requireActivity().getSystemService(
-                            Context.CARRIER_CONFIG_SERVICE);
-            if (ActivityCompat.checkSelfPermission(requireContext(),
-                    Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            CarrierConfigManager configManager = (CarrierConfigManager) requireActivity().getSystemService(
+                    Context.CARRIER_CONFIG_SERVICE);
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
             return configManager.getConfig().getBoolean(

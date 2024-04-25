@@ -24,9 +24,10 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.core.os.UserManagerCompat;
-import com.google.common.util.concurrent.*;
+
 import com.wintmain.dialer.calllog.CallLogFramework;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -36,9 +37,15 @@ import com.wintmain.dialer.configprovider.ConfigProvider;
 import com.wintmain.dialer.constants.ScheduledJobIds;
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.storage.Unencrypted;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Determines if new call log components are enabled.
@@ -52,8 +59,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class CallLogConfigImpl implements CallLogConfig {
 
-    private static final String NEW_CALL_LOG_FRAGMENT_ENABLED_PREF_KEY =
-            "newCallLogFragmentEnabled";
+    private static final String NEW_CALL_LOG_FRAGMENT_ENABLED_PREF_KEY = "newCallLogFragmentEnabled";
     private static final String NEW_VOICEMAIL_FRAGMENT_ENABLED_PREF_KEY =
             "newVoicemailFragmentEnabled";
     private static final String NEW_PEER_ENABLED_PREF_KEY = "newPeerEnabled";
@@ -86,8 +92,7 @@ public final class CallLogConfigImpl implements CallLogConfig {
                 configProvider.getBoolean("new_call_log_fragment_enabled", false);
         boolean newVoicemailFragmentEnabledInConfigProvider =
                 configProvider.getBoolean("new_voicemail_fragment_enabled", false);
-        boolean newPeerEnabledInConfigProvider = configProvider.getBoolean("nui_peer_enabled",
-                false);
+        boolean newPeerEnabledInConfigProvider = configProvider.getBoolean("nui_peer_enabled", false);
 
         boolean isCallLogFrameworkEnabled = isCallLogFrameworkEnabled();
         boolean callLogFrameworkShouldBeEnabled =
@@ -108,8 +113,7 @@ public final class CallLogConfigImpl implements CallLogConfig {
                                 .putBoolean(
                                         NEW_VOICEMAIL_FRAGMENT_ENABLED_PREF_KEY,
                                         newVoicemailFragmentEnabledInConfigProvider)
-                                .putBoolean(NEW_PEER_ENABLED_PREF_KEY,
-                                        newPeerEnabledInConfigProvider)
+                                .putBoolean(NEW_PEER_ENABLED_PREF_KEY, newPeerEnabledInConfigProvider)
                                 .putBoolean(NEW_CALL_LOG_FRAMEWORK_ENABLED_PREF_KEY, true)
                                 .apply();
                         return null;
@@ -146,8 +150,7 @@ public final class CallLogConfigImpl implements CallLogConfig {
                                 .putBoolean(
                                         NEW_VOICEMAIL_FRAGMENT_ENABLED_PREF_KEY,
                                         newVoicemailFragmentEnabledInConfigProvider)
-                                .putBoolean(NEW_PEER_ENABLED_PREF_KEY,
-                                        newPeerEnabledInConfigProvider)
+                                .putBoolean(NEW_PEER_ENABLED_PREF_KEY, newPeerEnabledInConfigProvider)
                                 .apply();
                         return null;
                     });
@@ -181,8 +184,7 @@ public final class CallLogConfigImpl implements CallLogConfig {
     @Override
     public void schedulePollingJob() {
         if (UserManagerCompat.isUserUnlocked(appContext)) {
-            JobScheduler jobScheduler = Assert.isNotNull(
-                    appContext.getSystemService(JobScheduler.class));
+            JobScheduler jobScheduler = Assert.isNotNull(appContext.getSystemService(JobScheduler.class));
             @SuppressLint("MissingPermission") // Dialer has RECEIVE_BOOT permission
             JobInfo jobInfo =
                     new JobInfo.Builder(

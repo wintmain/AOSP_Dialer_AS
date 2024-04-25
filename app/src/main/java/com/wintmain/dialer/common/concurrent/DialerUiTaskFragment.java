@@ -17,19 +17,25 @@
 package com.wintmain.dialer.common.concurrent;
 
 import android.os.Bundle;
+
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.FailureListener;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.SuccessListener;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Do not use this class directly. Instead use {@link DialerExecutors}.
@@ -53,27 +59,18 @@ public final class DialerUiTaskFragment<InputT, OutputT> extends Fragment {
      * called from onCreate of your activity or fragment.
      *
      * @param taskId          used for the headless fragment ID and task ID
-     * @param worker          a function executed on a worker thread which accepts an
-     *                        {@link InputT} and
-     *                        returns an {@link OutputT}. It should ideally not be an inner class
-     *                        of your
-     *                        activity/fragment (meaning it should not be a lambda, anonymous, or
-     *                        non-static) but it can
-     *                        be a static nested class. The static nested class should not
-     *                        contain any reference to UI,
-     *                        including any activity or fragment or activity context, though it
-     *                        may reference some
+     * @param worker          a function executed on a worker thread which accepts an {@link InputT} and
+     *                        returns an {@link OutputT}. It should ideally not be an inner class of your
+     *                        activity/fragment (meaning it should not be a lambda, anonymous, or non-static) but it can
+     *                        be a static nested class. The static nested class should not contain any reference to UI,
+     *                        including any activity or fragment or activity context, though it may reference some
      *                        threadsafe system objects such as the application context.
      * @param successListener a function executed on the main thread upon task success. There are no
-     *                        restraints on this as it is executed on the main thread, so
-     *                        lambdas, anonymous, or inner
+     *                        restraints on this as it is executed on the main thread, so lambdas, anonymous, or inner
      *                        classes of your activity or fragment are all fine.
-     * @param failureListener a function executed on the main thread upon task failure. The
-     *                        exception
-     *                        is already logged so this can often be a no-op. There are no
-     *                        restraints on this as it is
-     *                        executed on the main thread, so lambdas, anonymous, or inner
-     *                        classes of your activity or
+     * @param failureListener a function executed on the main thread upon task failure. The exception
+     *                        is already logged so this can often be a no-op. There are no restraints on this as it is
+     *                        executed on the main thread, so lambdas, anonymous, or inner classes of your activity or
      *                        fragment are all fine.
      * @param <InputT>        the type of the object sent to the task upon execution
      * @param <OutputT>       the type of the result of the background computation
@@ -94,8 +91,7 @@ public final class DialerUiTaskFragment<InputT, OutputT> extends Fragment {
                 (DialerUiTaskFragment<InputT, OutputT>) fragmentManager.findFragmentByTag(taskId);
 
         if (fragment == null) {
-            LogUtil.i("DialerUiTaskFragment.create",
-                    "creating new DialerUiTaskFragment for " + taskId);
+            LogUtil.i("DialerUiTaskFragment.create", "creating new DialerUiTaskFragment for " + taskId);
             fragment = new DialerUiTaskFragment<>();
             fragmentManager.beginTransaction().add(fragment, taskId).commit();
         }
@@ -155,10 +151,8 @@ public final class DialerUiTaskFragment<InputT, OutputT> extends Fragment {
             } else {
                 ThreadUtil.postOnUiThread(
                         () -> {
-                            // Even though there is a null check above, it is possible for the
-                            // activity/fragment
-                            // to be finished between the time the runnable is posted and the
-                            // time it executes. Do
+                            // Even though there is a null check above, it is possible for the activity/fragment
+                            // to be finished between the time the runnable is posted and the time it executes. Do
                             // an additional check here.
                             if (successListener == null) {
                                 LogUtil.i(
@@ -176,10 +170,8 @@ public final class DialerUiTaskFragment<InputT, OutputT> extends Fragment {
             } else {
                 ThreadUtil.postOnUiThread(
                         () -> {
-                            // Even though there is a null check above, it is possible for the
-                            // activity/fragment
-                            // to be finished between the time the runnable is posted and the
-                            // time it executes. Do
+                            // Even though there is a null check above, it is possible for the activity/fragment
+                            // to be finished between the time the runnable is posted and the time it executes. Do
                             // an additional check here.
                             if (failureListener == null) {
                                 LogUtil.i(

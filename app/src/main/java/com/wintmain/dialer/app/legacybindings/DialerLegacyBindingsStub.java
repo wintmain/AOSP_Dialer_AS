@@ -18,7 +18,9 @@ package com.wintmain.dialer.app.legacybindings;
 
 import android.app.Activity;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
+
 import com.wintmain.dialer.app.calllog.CallLogAdapter;
 import com.wintmain.dialer.app.calllog.calllogcache.CallLogCache;
 import com.wintmain.dialer.app.contactinfo.ContactInfoCache;

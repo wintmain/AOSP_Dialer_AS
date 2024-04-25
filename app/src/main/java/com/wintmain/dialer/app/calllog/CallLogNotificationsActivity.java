@@ -18,7 +18,9 @@ package com.wintmain.dialer.app.calllog;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
 

@@ -18,6 +18,7 @@ package com.wintmain.dialer.glidephotomanager;
 
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
+
 import androidx.annotation.MainThread;
 
 /**
@@ -26,11 +27,9 @@ import androidx.annotation.MainThread;
 public interface GlidePhotoManager {
 
     /**
-     * Load {@code photoInfo} into the {@code badge}. The loading is performed in the background
-     * and a
+     * Load {@code photoInfo} into the {@code badge}. The loading is performed in the background and a
      * placeholder will be used appropriately. {@code badge} must be already attached to an
-     * activity/fragment, and the load will be automatically canceled if the lifecycle of the
-     * activity
+     * activity/fragment, and the load will be automatically canceled if the lifecycle of the activity
      * ends.
      */
     @MainThread
@@ -38,10 +37,8 @@ public interface GlidePhotoManager {
 
     /**
      * Load {@code photoInfo} into the {@code imageView}. The loading is performed in the background
-     * and a placeholder will be used appropriately. {@code imageView} must be already attached
-     * to an
-     * activity/fragment, and the load will be automatically canceled if the lifecycle of the
-     * activity
+     * and a placeholder will be used appropriately. {@code imageView} must be already attached to an
+     * activity/fragment, and the load will be automatically canceled if the lifecycle of the activity
      * ends.
      */
     @MainThread

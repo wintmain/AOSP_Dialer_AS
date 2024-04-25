@@ -16,9 +16,9 @@
 
 package com.wintmain.dialer.commandline;
 
+import com.wintmain.dialer.function.Supplier;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableMap;
-import com.wintmain.dialer.function.Supplier;
 
 /** Supplies commands */
 @AutoValue

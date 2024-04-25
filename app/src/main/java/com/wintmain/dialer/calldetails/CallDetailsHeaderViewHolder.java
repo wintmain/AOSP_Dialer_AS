@@ -26,8 +26,10 @@ import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calldetails.CallDetailsActivityCommon.AssistedDialingNumberParseWorker;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
@@ -96,8 +98,7 @@ public class CallDetailsHeaderViewHolder extends RecyclerView.ViewHolder
 
         Logger.get(context)
                 .logQuickContactOnTouch(
-                        contactPhoto, InteractionEvent.Type.OPEN_QUICK_CONTACT_FROM_CALL_DETAILS,
-                        true);
+                        contactPhoto, InteractionEvent.Type.OPEN_QUICK_CONTACT_FROM_CALL_DETAILS, true);
     }
 
     private boolean hasAssistedDialingFeature(Integer features) {
@@ -139,8 +140,7 @@ public class CallDetailsHeaderViewHolder extends RecyclerView.ViewHolder
         }
 
         LogUtil.i(
-                "CallDetailsHeaderViewHolder.updateAssistedDialingText",
-                "Updating Assisted Dialing Text");
+                "CallDetailsHeaderViewHolder.updateAssistedDialingText", "Updating Assisted Dialing Text");
         assistedDialingInternationalDirectDialCodeAndCountryCodeText.setText(
                 context.getString(
                         R.string.assisted_dialing_country_code_entry, String.valueOf(countryCode)));
@@ -159,8 +159,7 @@ public class CallDetailsHeaderViewHolder extends RecyclerView.ViewHolder
         ContactPhotoManager.getInstance(context)
                 .loadDialerThumbnailOrPhoto(
                         contactPhoto,
-                        contact.getContactUri().isEmpty() ? null
-                                : Uri.parse(contact.getContactUri()),
+                        contact.getContactUri().isEmpty() ? null : Uri.parse(contact.getContactUri()),
                         contact.getPhotoId(),
                         contact.getPhotoUri().isEmpty() ? null : Uri.parse(contact.getPhotoUri()),
                         contact.getNameOrNumber(),
@@ -181,9 +180,9 @@ public class CallDetailsHeaderViewHolder extends RecyclerView.ViewHolder
                         TextUtils.isEmpty(contact.getNumberLabel())
                                 ? contact.getDisplayNumber()
                                 : context.getString(
-                                        R.string.call_subject_type_and_number,
-                                        contact.getNumberLabel(),
-                                        contact.getDisplayNumber());
+                                R.string.call_subject_type_and_number,
+                                contact.getNumberLabel(),
+                                contact.getDisplayNumber());
                 numberView.setText(secondaryInfo);
             }
         }
@@ -251,12 +250,10 @@ public class CallDetailsHeaderViewHolder extends RecyclerView.ViewHolder
                     break;
                 case CallbackAction.NONE:
                 default:
-                    throw Assert.createIllegalStateFailException(
-                            "Invalid action: " + callbackAction);
+                    throw Assert.createIllegalStateFailException("Invalid action: " + callbackAction);
             }
         } else {
-            throw Assert.createIllegalStateFailException(
-                    "View OnClickListener not implemented: " + view);
+            throw Assert.createIllegalStateFailException("View OnClickListener not implemented: " + view);
         }
     }
 

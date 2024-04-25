@@ -20,9 +20,10 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.function.Consumer;
+import com.google.common.util.concurrent.ListenableFuture;
 
 /**
  * Runs {@link PreCallAction} one by one to prepare a {@link
@@ -52,8 +53,7 @@ public interface PreCallCoordinator {
      * Called by the current running {@link PreCallAction} to release the main thread and resume
      * pre-call later.
      *
-     * @return a {@link PendingAction} which {@link PendingAction#finish()} should be called to
-     * resume
+     * @return a {@link PendingAction} which {@link PendingAction#finish()} should be called to resume
      * pre-call. For example the action shows a dialog to the user, startPendingAction() should be
      * called as the action will not be finished immediately. When the dialog is completed, {@code
      * finish()} is then called to continue the next step.

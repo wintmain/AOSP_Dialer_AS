@@ -27,8 +27,7 @@ public final class RttTranscriptContract {
     static final class RttTranscriptColumn {
 
         /**
-         * Unique key that should match {@link android.provider.CallLog.Calls#DATE} of the data
-         * row it
+         * Unique key that should match {@link android.provider.CallLog.Calls#DATE} of the data row it
          * is associated with.
          *
          * <p>TYPE: TEXT

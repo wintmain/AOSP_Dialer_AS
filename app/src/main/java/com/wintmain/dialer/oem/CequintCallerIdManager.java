@@ -21,13 +21,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
-import androidx.annotation.*;
-import com.google.auto.value.AutoValue;
+import androidx.annotation.AnyThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
-
+import com.google.auto.value.AutoValue;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -48,12 +51,62 @@ public class CequintCallerIdManager {
     private static final int CALLER_ID_LOOKUP_SYSTEM_PROVIDED_CID = 0x0002;
     private static final int CALLER_ID_LOOKUP_INCOMING_CALL = 0x0020;
 
-    private static final String[] EMPTY_PROJECTION = new String[]{};
+    private static final String[] EMPTY_PROJECTION = new String[] {};
+
+    /** Column names in Cequint content provider. */
+    @VisibleForTesting
+    public static final class CequintColumnNames {
+        public static final String CITY_NAME = "cid_pCityName";
+        public static final String STATE_NAME = "cid_pStateName";
+        public static final String STATE_ABBR = "cid_pStateAbbr";
+        public static final String COUNTRY_NAME = "cid_pCountryName";
+        public static final String COMPANY = "cid_pCompany";
+        public static final String NAME = "cid_pName";
+        public static final String FIRST_NAME = "cid_pFirstName";
+        public static final String LAST_NAME = "cid_pLastName";
+        public static final String PHOTO_URI = "cid_pLogo";
+        public static final String DISPLAY_NAME = "cid_pDisplayName";
+    }
+
     private static boolean hasAlreadyCheckedCequintCallerIdPackage;
     private static String cequintProviderAuthority;
+
     // TODO(a bug): Revisit it and maybe remove it if it's not necessary.
     private final ConcurrentHashMap<String, CequintCallerIdContact> callLogCache =
             new ConcurrentHashMap<>();
+
+    /** Cequint caller ID contact information. */
+    @AutoValue
+    public abstract static class CequintCallerIdContact {
+
+        @Nullable
+        public abstract String name();
+
+        /**
+         * Description of the geolocation (e.g., "Mountain View, CA"), which is for display purpose
+         * only.
+         */
+        @Nullable
+        public abstract String geolocation();
+
+        @Nullable
+        public abstract String photoUri();
+
+        static Builder builder() {
+            return new AutoValue_CequintCallerIdManager_CequintCallerIdContact.Builder();
+        }
+
+        @AutoValue.Builder
+        abstract static class Builder {
+            abstract Builder setName(@Nullable String name);
+
+            abstract Builder setGeolocation(@Nullable String geolocation);
+
+            abstract Builder setPhotoUri(@Nullable String photoUri);
+
+            abstract CequintCallerIdContact build();
+        }
+    }
 
     /** Check whether Cequint Caller ID provider package is available and enabled. */
     @AnyThread
@@ -66,15 +119,13 @@ public class CequintCallerIdManager {
         if (!hasAlreadyCheckedCequintCallerIdPackage) {
             hasAlreadyCheckedCequintCallerIdPackage = true;
 
-            String[] providerNames = context.getResources().getStringArray(
-                    R.array.cequint_providers);
+            String[] providerNames = context.getResources().getStringArray(R.array.cequint_providers);
             PackageManager packageManager = context.getPackageManager();
             for (String provider : providerNames) {
                 if (CequintPackageUtils.isCallerIdInstalled(packageManager, provider)) {
                     cequintProviderAuthority = provider;
                     LogUtil.i(
-                            "CequintCallerIdManager.isCequintCallerIdEnabled", "found provider: %s",
-                            provider);
+                            "CequintCallerIdManager.isCequintCallerIdEnabled", "found provider: %s", provider);
                     return true;
                 }
             }
@@ -107,6 +158,33 @@ public class CequintCallerIdManager {
     }
 
     /**
+     * Returns a cached {@link CequintCallerIdContact} associated with the provided number. If no
+     * contact can be found in the cache, look up the number using the Cequint content provider.
+     *
+     * @deprecated This method is for the old call log only. New code should use {@link
+     *     #getCequintCallerIdContactForNumber(Context, String)}.
+     */
+    @Deprecated
+    @WorkerThread
+    @Nullable
+    public CequintCallerIdContact getCachedCequintCallerIdContact(Context context, String number) {
+        Assert.isWorkerThread();
+        LogUtil.d(
+                "CequintCallerIdManager.getCachedCequintCallerIdContact",
+                "number: %s",
+                LogUtil.sanitizePhoneNumber(number));
+        if (callLogCache.containsKey(number)) {
+            return callLogCache.get(number);
+        }
+        CequintCallerIdContact cequintCallerIdContact =
+                getCequintCallerIdContactForNumber(context, number);
+        if (cequintCallerIdContact != null) {
+            callLogCache.put(number, cequintCallerIdContact);
+        }
+        return cequintCallerIdContact;
+    }
+
+    /**
      * Returns a {@link CequintCallerIdContact} associated with the provided number by looking it up
      * using the Cequint content provider.
      */
@@ -121,8 +199,7 @@ public class CequintCallerIdManager {
                 LogUtil.sanitizePhoneNumber(number));
 
         return lookup(
-                context, getLookupUri(), PhoneNumberUtils.stripSeparators(number),
-                new String[]{"system"});
+                context, getLookupUri(), PhoneNumberUtils.stripSeparators(number), new String[] {"system"});
     }
 
     @WorkerThread
@@ -134,26 +211,17 @@ public class CequintCallerIdManager {
 
         // Cequint is using custom arguments for content provider. See more details in a bug.
         try (Cursor cursor =
-                     context.getContentResolver().query(uri, EMPTY_PROJECTION, number, flags,
-                             null)) {
+                     context.getContentResolver().query(uri, EMPTY_PROJECTION, number, flags, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                String city = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.CITY_NAME));
-                String state = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.STATE_NAME));
-                String stateAbbr = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.STATE_ABBR));
-                String country = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.COUNTRY_NAME));
-                String company = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.COMPANY));
+                String city = getString(cursor, cursor.getColumnIndex(CequintColumnNames.CITY_NAME));
+                String state = getString(cursor, cursor.getColumnIndex(CequintColumnNames.STATE_NAME));
+                String stateAbbr = getString(cursor, cursor.getColumnIndex(CequintColumnNames.STATE_ABBR));
+                String country = getString(cursor, cursor.getColumnIndex(CequintColumnNames.COUNTRY_NAME));
+                String company = getString(cursor, cursor.getColumnIndex(CequintColumnNames.COMPANY));
                 String name = getString(cursor, cursor.getColumnIndex(CequintColumnNames.NAME));
-                String firstName = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.FIRST_NAME));
-                String lastName = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.LAST_NAME));
-                String photoUri = getString(cursor,
-                        cursor.getColumnIndex(CequintColumnNames.PHOTO_URI));
+                String firstName = getString(cursor, cursor.getColumnIndex(CequintColumnNames.FIRST_NAME));
+                String lastName = getString(cursor, cursor.getColumnIndex(CequintColumnNames.LAST_NAME));
+                String photoUri = getString(cursor, cursor.getColumnIndex(CequintColumnNames.PHOTO_URI));
                 String displayName =
                         getString(cursor, cursor.getColumnIndex(CequintColumnNames.DISPLAY_NAME));
 
@@ -195,8 +263,7 @@ public class CequintCallerIdManager {
     }
 
     /**
-     * Returns generated name from other names, e.g. first name, last name etc. Returns null if
-     * there
+     * Returns generated name from other names, e.g. first name, last name etc. Returns null if there
      * is no other names.
      */
     @Nullable
@@ -254,80 +321,5 @@ public class CequintCallerIdManager {
 
     private static Uri getIncallLookupUri() {
         return Uri.parse("content://" + cequintProviderAuthority + "/incalllookup");
-    }
-
-    /**
-     * Returns a cached {@link CequintCallerIdContact} associated with the provided number. If no
-     * contact can be found in the cache, look up the number using the Cequint content provider.
-     *
-     * @deprecated This method is for the old call log only. New code should use {@link
-     * #getCequintCallerIdContactForNumber(Context, String)}.
-     */
-    @Deprecated
-    @WorkerThread
-    @Nullable
-    public CequintCallerIdContact getCachedCequintCallerIdContact(Context context, String number) {
-        Assert.isWorkerThread();
-        LogUtil.d(
-                "CequintCallerIdManager.getCachedCequintCallerIdContact",
-                "number: %s",
-                LogUtil.sanitizePhoneNumber(number));
-        if (callLogCache.containsKey(number)) {
-            return callLogCache.get(number);
-        }
-        CequintCallerIdContact cequintCallerIdContact =
-                getCequintCallerIdContactForNumber(context, number);
-        if (cequintCallerIdContact != null) {
-            callLogCache.put(number, cequintCallerIdContact);
-        }
-        return cequintCallerIdContact;
-    }
-
-    /** Column names in Cequint content provider. */
-    @VisibleForTesting
-    public static final class CequintColumnNames {
-        public static final String CITY_NAME = "cid_pCityName";
-        public static final String STATE_NAME = "cid_pStateName";
-        public static final String STATE_ABBR = "cid_pStateAbbr";
-        public static final String COUNTRY_NAME = "cid_pCountryName";
-        public static final String COMPANY = "cid_pCompany";
-        public static final String NAME = "cid_pName";
-        public static final String FIRST_NAME = "cid_pFirstName";
-        public static final String LAST_NAME = "cid_pLastName";
-        public static final String PHOTO_URI = "cid_pLogo";
-        public static final String DISPLAY_NAME = "cid_pDisplayName";
-    }
-
-    /** Cequint caller ID contact information. */
-    @AutoValue
-    public abstract static class CequintCallerIdContact {
-
-        static Builder builder() {
-            return new AutoValue_CequintCallerIdManager_CequintCallerIdContact.Builder();
-        }
-
-        @Nullable
-        public abstract String name();
-
-        /**
-         * Description of the geolocation (e.g., "Mountain View, CA"), which is for display purpose
-         * only.
-         */
-        @Nullable
-        public abstract String geolocation();
-
-        @Nullable
-        public abstract String photoUri();
-
-        @AutoValue.Builder
-        abstract static class Builder {
-            abstract Builder setName(@Nullable String name);
-
-            abstract Builder setGeolocation(@Nullable String geolocation);
-
-            abstract Builder setPhotoUri(@Nullable String photoUri);
-
-            abstract CequintCallerIdContact build();
-        }
     }
 }

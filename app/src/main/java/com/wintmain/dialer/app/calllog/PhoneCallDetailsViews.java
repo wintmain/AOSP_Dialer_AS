@@ -19,6 +19,7 @@ package com.wintmain.dialer.app.calllog;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllogutils.CallTypeIconsView;
 import com.wintmain.dialer.widget.BidiTextView;

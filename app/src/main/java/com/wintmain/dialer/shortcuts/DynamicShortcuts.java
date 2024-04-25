@@ -22,9 +22,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.util.ArrayMap;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
+
 import com.android.contacts.common.list.ContactEntry;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -83,8 +85,7 @@ final class DynamicShortcuts {
      * <p>If the delta is non-empty, it is applied by making appropriate calls to the {@link
      * ShortcutManager} system service.
      *
-     * <p>This is a slow blocking call which performs file I/O and should not be performed on the
-     * main
+     * <p>This is a slow blocking call which performs file I/O and should not be performed on the main
      * thread.
      */
     @WorkerThread
@@ -101,8 +102,7 @@ final class DynamicShortcuts {
             return;
         }
 
-        // Fill the available shortcuts with dynamic shortcuts up to a maximum of 3 dynamic
-        // shortcuts.
+        // Fill the available shortcuts with dynamic shortcuts up to a maximum of 3 dynamic shortcuts.
         int numDynamicShortcutsToCreate =
                 Math.min(
                         MAX_DYNAMIC_SHORTCUTS,
@@ -127,15 +127,13 @@ final class DynamicShortcuts {
             newDynamicShortcutsById.put(shortcut.getShortcutId(), shortcut);
         }
 
-        List<ShortcutInfo> oldDynamicShortcuts = new ArrayList<>(
-                shortcutManager.getDynamicShortcuts());
+        List<ShortcutInfo> oldDynamicShortcuts = new ArrayList<>(shortcutManager.getDynamicShortcuts());
         Delta delta = computeDelta(oldDynamicShortcuts, newDynamicShortcutsById);
         applyDelta(delta);
     }
 
     /**
-     * Forces an update of all dynamic shortcut icons. This should only be done from job
-     * scheduler as
+     * Forces an update of all dynamic shortcut icons. This should only be done from job scheduler as
      * updating icons requires storage I/O.
      */
     @WorkerThread
@@ -163,8 +161,7 @@ final class DynamicShortcuts {
                 break;
             }
         }
-        LogUtil.i("DynamicShortcuts.updateIcons", "updating %d shortcut icons",
-                newShortcuts.size());
+        LogUtil.i("DynamicShortcuts.updateIcons", "updating %d shortcut icons", newShortcuts.size());
         shortcutManager.setDynamicShortcuts(newShortcuts);
     }
 
@@ -213,11 +210,9 @@ final class DynamicShortcuts {
             shortcutManager.removeDynamicShortcuts(delta.shortcutIdsToRemove);
         }
         if (!delta.shortcutsToUpdateById.isEmpty()) {
-            // Note: This may update pinned shortcuts as well. Pinned shortcuts which are also
-            // dynamic
+            // Note: This may update pinned shortcuts as well. Pinned shortcuts which are also dynamic
             // are not updated by the pinned shortcut logic. The reason that they are updated here
-            // instead of in the pinned shortcut logic is because setRank is required and only
-            // available
+            // instead of in the pinned shortcut logic is because setRank is required and only available
             // here.
             shortcutManager.updateShortcuts(
                     shortcutInfoFactory.buildShortcutInfos(delta.shortcutsToUpdateById));

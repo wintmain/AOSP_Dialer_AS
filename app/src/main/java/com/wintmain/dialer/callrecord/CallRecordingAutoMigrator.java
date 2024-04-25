@@ -24,12 +24,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.SparseArray;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
 import com.wintmain.dialer.common.concurrent.DialerExecutorFactory;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -66,8 +69,7 @@ public class CallRecordingAutoMigrator {
             return;
         }
 
-        final com.wintmain.dialer.callrecord.CallRecordingDataStore store =
-                new com.wintmain.dialer.callrecord.CallRecordingDataStore();
+        final com.wintmain.dialer.callrecord.CallRecordingDataStore store = new com.wintmain.dialer.callrecord.CallRecordingDataStore();
         store.open(appContext);
 
         final ContentResolver cr = appContext.getContentResolver();
@@ -80,8 +82,7 @@ public class CallRecordingAutoMigrator {
                 int id = -1;
                 long creationTime = System.currentTimeMillis();
                 for (int i = 0; i < oldRecordingData.size(); i++) {
-                    if (TextUtils.equals(recording.getName(),
-                            oldRecordingData.valueAt(i).fileName)) {
+                    if (TextUtils.equals(recording.getName(), oldRecordingData.valueAt(i).fileName)) {
                         creationTime = oldRecordingData.valueAt(i).creationTime;
                         id = oldRecordingData.keyAt(i);
                         break;

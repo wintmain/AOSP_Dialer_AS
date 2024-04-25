@@ -17,15 +17,18 @@ package com.wintmain.dialer.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-import dagger.Module;
-import dagger.Provides;
 
 import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * Module for the storage component.
@@ -38,16 +41,12 @@ public class StorageModule {
     @Singleton
     @Unencrypted
     static SharedPreferences provideUnencryptedSharedPrefs(@ApplicationContext Context appContext) {
-        // #createDeviceProtectedStorageContext returns a new context each time, so we cache the
-        // shared
+        // #createDeviceProtectedStorageContext returns a new context each time, so we cache the shared
         // preferences object in order to avoid accessing disk for every operation.
-        Context deviceProtectedContext = ContextCompat.createDeviceProtectedStorageContext(
-                appContext);
+        Context deviceProtectedContext = ContextCompat.createDeviceProtectedStorageContext(appContext);
 
-        // ContextCompat.createDeviceProtectedStorageContext(context) returns null on pre-N, thus
-        // fall
-        // back to regular default shared preference for pre-N devices since devices protected
-        // context
+        // ContextCompat.createDeviceProtectedStorageContext(context) returns null on pre-N, thus fall
+        // back to regular default shared preference for pre-N devices since devices protected context
         // is not available.
         return PreferenceManager.getDefaultSharedPreferences(
                 deviceProtectedContext != null ? deviceProtectedContext : appContext);

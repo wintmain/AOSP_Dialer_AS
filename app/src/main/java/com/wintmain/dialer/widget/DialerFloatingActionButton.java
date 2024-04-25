@@ -18,9 +18,11 @@ package com.wintmain.dialer.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.wintmain.dialer.common.Assert;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Since {@link FloatingActionButton} is possibly the worst widget supported by the framework, we

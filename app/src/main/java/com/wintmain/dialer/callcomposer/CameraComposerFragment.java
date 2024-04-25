@@ -31,9 +31,15 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callcomposer.camera.CameraManager;
 import com.wintmain.dialer.callcomposer.camera.CameraManager.CameraManagerListener;
@@ -107,8 +113,7 @@ public class CameraComposerFragment extends CallComposerFragment
 
         if (!PermissionsUtil.hasCameraPermissions(getContext())) {
             LogUtil.i("CameraComposerFragment.onCreateView", "Permission view shown.");
-            Logger.get(getContext()).logImpression(
-                    DialerImpression.Type.CAMERA_PERMISSION_DISPLAYED);
+            Logger.get(getContext()).logImpression(DialerImpression.Type.CAMERA_PERMISSION_DISPLAYED);
             ImageView permissionImage = permissionView.findViewById(R.id.permission_icon);
             TextView permissionText = permissionView.findViewById(R.id.permission_text);
             allowPermission = permissionView.findViewById(R.id.allow);
@@ -164,10 +169,8 @@ public class CameraComposerFragment extends CallComposerFragment
     public void onClick(View view) {
         if (view == capture) {
             float heightPercent = 1;
-            if (!Objects.requireNonNull(getListener()).isFullscreen()
-                    && !getListener().isLandscapeLayout()) {
-                heightPercent = Math.min(
-                        (float) cameraView.getHeight() / preview.getView().getHeight(), 1);
+            if (!Objects.requireNonNull(getListener()).isFullscreen() && !getListener().isLandscapeLayout()) {
+                heightPercent = Math.min((float) cameraView.getHeight() / preview.getView().getHeight(), 1);
             }
 
             showShutterEffect(shutter);
@@ -190,23 +193,18 @@ public class CameraComposerFragment extends CallComposerFragment
             fullscreen.setVisibility(View.GONE);
             exitFullscreen.setVisibility(View.VISIBLE);
         } else if (view == allowPermission) {
-            // Checks to see if the user has permanently denied this permission. If this is the
-            // first
+            // Checks to see if the user has permanently denied this permission. If this is the first
             // time seeing this permission or they only pressed deny previously, they will see the
-            // permission request. If they permanently denied the permission, they will be sent
-            // to Dialer
+            // permission request. If they permanently denied the permission, they will be sent to Dialer
             // settings in order enable the permission.
             if (PermissionsUtil.isFirstRequest(Objects.requireNonNull(getContext()), permissions[0])
                     || shouldShowRequestPermissionRationale(permissions[0])) {
-                Logger.get(getContext()).logImpression(
-                        DialerImpression.Type.CAMERA_PERMISSION_REQUESTED);
+                Logger.get(getContext()).logImpression(DialerImpression.Type.CAMERA_PERMISSION_REQUESTED);
                 LogUtil.i("CameraComposerFragment.onClick", "Camera permission requested.");
                 requestPermissions(permissions, CAMERA_PERMISSION);
             } else {
-                Logger.get(getContext()).logImpression(
-                        DialerImpression.Type.CAMERA_PERMISSION_SETTINGS);
-                LogUtil.i("CameraComposerFragment.onClick",
-                        "Settings opened to enable permission.");
+                Logger.get(getContext()).logImpression(DialerImpression.Type.CAMERA_PERMISSION_SETTINGS);
+                LogUtil.i("CameraComposerFragment.onClick", "Settings opened to enable permission.");
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -311,10 +309,8 @@ public class CameraComposerFragment extends CallComposerFragment
 
     private void setCameraUri(Uri uri) {
         cameraUri = uri;
-        // It's possible that if the user takes a picture and press back very quickly, the
-        // activity will
-        // no longer be alive and when the image cropping process completes, so we need to check
-        // that
+        // It's possible that if the user takes a picture and press back very quickly, the activity will
+        // no longer be alive and when the image cropping process completes, so we need to check that
         // activity is still alive before trying to invoke it.
         if (getListener() != null) {
             updateViewState();
@@ -338,8 +334,7 @@ public class CameraComposerFragment extends CallComposerFragment
         Assert.isNotNull(cameraView);
         if (isDetached() || getContext() == null) {
             LogUtil.i(
-                    "CameraComposerFragment.updateViewState",
-                    "Fragment detached, cannot update view state");
+                    "CameraComposerFragment.updateViewState", "Fragment detached, cannot update view state");
             return;
         }
 
@@ -355,11 +350,9 @@ public class CameraComposerFragment extends CallComposerFragment
         }
 
         if (cameraDirection == CameraInfo.CAMERA_FACING_FRONT) {
-            swapCamera.setContentDescription(
-                    getString(R.string.description_camera_switch_camera_rear));
+            swapCamera.setContentDescription(getString(R.string.description_camera_switch_camera_rear));
         } else {
-            swapCamera.setContentDescription(
-                    getString(R.string.description_camera_switch_camera_facing));
+            swapCamera.setContentDescription(getString(R.string.description_camera_switch_camera_facing));
         }
 
         if (cameraUri == null && isCameraAvailable) {
@@ -402,8 +395,7 @@ public class CameraComposerFragment extends CallComposerFragment
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (permissions.length > 0 && permissions[0].equals(this.permissions[0])) {
-            PermissionsUtil.permissionRequested(Objects.requireNonNull(getContext()),
-                    permissions[0]);
+            PermissionsUtil.permissionRequested(Objects.requireNonNull(getContext()), permissions[0]);
         }
         if (requestCode == CAMERA_PERMISSION
                 && grantResults.length > 0

@@ -18,9 +18,10 @@ package com.wintmain.dialer.util;
 
 import android.util.LruCache;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An LRU cache in which all items can be marked as expired at a given time and it is possible to
@@ -156,11 +157,9 @@ public class ExpirableCache<K, V> {
     /**
      * Returns the value for the given key, or null if no value exists.
      *
-     * <p>When using this method, it is not possible to determine whether the value is expired or
-     * not.
+     * <p>When using this method, it is not possible to determine whether the value is expired or not.
      * Use {@link #getCachedValue(Object)} to achieve that instead. However, if using {@link
-     * #getCachedValue(Object)} to determine if an item is expired, one should use the item
-     * within the
+     * #getCachedValue(Object)} to determine if an item is expired, one should use the item within the
      * {@link CachedValue} and not call {@link #getPossiblyExpired(Object)} to get the value
      * afterwards, since that is not guaranteed to return the same value or that the newly returned
      * value is in the same state.
@@ -173,12 +172,10 @@ public class ExpirableCache<K, V> {
     }
 
     /**
-     * Returns the value for the given key only if it is not expired, or null if no value exists
-     * or is
+     * Returns the value for the given key only if it is not expired, or null if no value exists or is
      * expired.
      *
-     * <p>This method will return null if either there is no value associated with this key or if
-     * the
+     * <p>This method will return null if either there is no value associated with this key or if the
      * associated value is expired.
      *
      * @param key the key to look up
@@ -261,8 +258,7 @@ public class ExpirableCache<K, V> {
         private final AtomicInteger cacheGeneration;
 
         /**
-         * @param cacheGeneration the atomic integer storing the generation of the cache in which
-         *                        this
+         * @param cacheGeneration the atomic integer storing the generation of the cache in which this
          *                        value will be stored
          */
         public GenerationalCachedValue(V value, AtomicInteger cacheGeneration) {

@@ -25,8 +25,10 @@ import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.glidephotomanager.GlidePhotoManagerComponent;
@@ -53,8 +55,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder
 
     private SpeedDialUiItem speedDialUiItem;
 
-    public FavoritesViewHolder(View view, ItemTouchHelper helper,
-            FavoriteContactsListener listener) {
+    public FavoritesViewHolder(View view, ItemTouchHelper helper, FavoriteContactsListener listener) {
         super(view);
         photoView = view.findViewById(R.id.avatar);
         nameView = view.findViewById(R.id.name);
@@ -98,8 +99,7 @@ public class FavoritesViewHolder extends RecyclerView.ViewHolder
                                 .setPhotoUri(speedDialUiItem.photoUri())
                                 .setName(speedDialUiItem.name())
                                 .setLookupUri(
-                                        Contacts.getLookupUri(speedDialUiItem.contactId(),
-                                                        speedDialUiItem.lookupKey())
+                                        Contacts.getLookupUri(speedDialUiItem.contactId(), speedDialUiItem.lookupKey())
                                                 .toString())
                                 .build());
     }

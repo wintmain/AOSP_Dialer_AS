@@ -20,7 +20,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.fragment.app.DialogFragment;
+
 import com.wintmain.dialer.R;
 
 import java.util.Objects;
@@ -37,11 +39,9 @@ public class MigrateBlockedNumbersDialogFragment extends DialogFragment {
     /**
      * Creates a new MigrateBlockedNumbersDialogFragment.
      *
-     * @param blockedNumbersMigrator The {@link BlockedNumbersMigrator} which will be used to
-     *                               migrate
+     * @param blockedNumbersMigrator The {@link BlockedNumbersMigrator} which will be used to migrate
      *                               the numbers.
-     * @param migrationListener      The {@link BlockedNumbersMigrator.Listener} to call when the
-     *                               migration
+     * @param migrationListener      The {@link BlockedNumbersMigrator.Listener} to call when the migration
      *                               is complete.
      * @return The new MigrateBlockedNumbersDialogFragment.
      * @throws NullPointerException if blockedNumbersMigrator or migrationListener are {@code null}.
@@ -62,10 +62,8 @@ public class MigrateBlockedNumbersDialogFragment extends DialogFragment {
                 new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.migrate_blocked_numbers_dialog_title)
                         .setMessage(R.string.migrate_blocked_numbers_dialog_message)
-                        .setPositiveButton(R.string.migrate_blocked_numbers_dialog_allow_button,
-                                null)
-                        .setNegativeButton(R.string.migrate_blocked_numbers_dialog_cancel_button,
-                                null)
+                        .setPositiveButton(R.string.migrate_blocked_numbers_dialog_allow_button, null)
+                        .setNegativeButton(R.string.migrate_blocked_numbers_dialog_cancel_button, null)
                         .create();
         // The Dialog's buttons aren't available until show is called, so an OnShowListener
         // is used to set the positive button callback.

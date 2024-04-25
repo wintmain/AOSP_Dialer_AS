@@ -18,10 +18,12 @@ package com.wintmain.dialer.preferredsim.suggestion.stub;
 
 import android.content.Context;
 import android.telecom.PhoneAccountHandle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
-import com.google.common.base.Optional;
+
 import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider;
+import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
@@ -51,7 +53,6 @@ public class StubSuggestionProvider implements SuggestionProvider {
 
     @Override
     public void reportIncorrectSuggestion(
-            @NonNull Context context, @NonNull String number,
-            @NonNull PhoneAccountHandle newAccount) {
+            @NonNull Context context, @NonNull String number, @NonNull PhoneAccountHandle newAccount) {
     }
 }

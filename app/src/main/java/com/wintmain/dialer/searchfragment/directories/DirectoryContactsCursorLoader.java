@@ -22,9 +22,11 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.loader.content.CursorLoader;
+
 import com.wintmain.dialer.common.cp2.DirectoryUtils;
 import com.wintmain.dialer.searchfragment.common.Projections;
 import com.wintmain.dialer.searchfragment.directories.DirectoriesCursorLoader.Directory;
@@ -44,8 +46,7 @@ public final class DirectoryContactsCursorLoader extends CursorLoader {
     private static final Uri ENTERPRISE_CONTENT_FILTER_URI =
             Uri.withAppendedPath(Phone.CONTENT_URI, "filter_enterprise");
 
-    private static final String IGNORE_NUMBER_TOO_LONG_CLAUSE =
-            "length(" + Phone.NUMBER + ") < 1000";
+    private static final String IGNORE_NUMBER_TOO_LONG_CLAUSE = "length(" + Phone.NUMBER + ") < 1000";
     private static final String PHONE_NUMBER_NOT_NULL = Phone.NUMBER + " IS NOT NULL";
     private static final String MAX_RESULTS = "10";
 
@@ -53,8 +54,7 @@ public final class DirectoryContactsCursorLoader extends CursorLoader {
     private final List<Directory> directories;
     private final Cursor[] cursors;
 
-    public DirectoryContactsCursorLoader(Context context, String query,
-            List<Directory> directories) {
+    public DirectoryContactsCursorLoader(Context context, String query, List<Directory> directories) {
         super(
                 context,
                 null,
@@ -83,8 +83,7 @@ public final class DirectoryContactsCursorLoader extends CursorLoader {
             } else if (fieldType == Cursor.FIELD_TYPE_NULL) {
                 values[i] = null;
             } else {
-                throw new IllegalStateException(
-                        "Unknown fieldType (" + fieldType + ") for column: " + i);
+                throw new IllegalStateException("Unknown fieldType (" + fieldType + ") for column: " + i);
             }
         }
         return values;
@@ -95,8 +94,7 @@ public final class DirectoryContactsCursorLoader extends CursorLoader {
         return ENTERPRISE_CONTENT_FILTER_URI
                 .buildUpon()
                 .appendPath(query)
-                .appendQueryParameter(ContactsContract.DIRECTORY_PARAM_KEY,
-                        String.valueOf(directoryId))
+                .appendQueryParameter(ContactsContract.DIRECTORY_PARAM_KEY, String.valueOf(directoryId))
                 .appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true")
                 .appendQueryParameter(ContactsContract.LIMIT_PARAM_KEY, MAX_RESULTS)
                 .build();
@@ -128,8 +126,7 @@ public final class DirectoryContactsCursorLoader extends CursorLoader {
                                     getSelection(),
                                     getSelectionArgs(),
                                     getSortOrder());
-            // Even though the cursor specifies "WHERE PHONE_NUMBER IS NOT NULL" the Blackberry
-            // Hub app's
+            // Even though the cursor specifies "WHERE PHONE_NUMBER IS NOT NULL" the Blackberry Hub app's
             // directory extension doesn't appear to respect it, and sometimes returns a null phone
             // number. In this case just hide the row entirely. See a bug.
             cursors[i] = createMatrixCursorFilteringNullNumbers(cursor);

@@ -20,7 +20,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
+
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.R;
 
 /**
@@ -47,8 +49,7 @@ public class MaxHeightScrollView extends ScrollView {
         }
 
         TypedArray array =
-                context.getTheme().obtainStyledAttributes(attrs, R.styleable.MaxHeightScrollView, 0,
-                        0);
+                context.getTheme().obtainStyledAttributes(attrs, R.styleable.MaxHeightScrollView, 0, 0);
         try {
             maxHeight = array.getDimensionPixelSize(R.styleable.MaxHeightScrollView_maxHeight, -1);
         } finally {

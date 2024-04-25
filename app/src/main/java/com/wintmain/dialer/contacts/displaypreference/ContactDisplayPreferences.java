@@ -18,8 +18,10 @@ package com.wintmain.dialer.contacts.displaypreference;
 
 import android.content.Context;
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+
 import com.wintmain.dialer.R;
 
 import java.util.Arrays;
@@ -82,8 +84,7 @@ public interface ContactDisplayPreferences {
          */
         PRIMARY(R.string.display_options_view_given_name_first_value),
         /**
-         * The alternative display order of a name. For western names it will be "Family, Given".
-         * For
+         * The alternative display order of a name. For western names it will be "Family, Given". For
          * unstructured names like east asian this order will be ignored and treated as primary.
          *
          * @see android.provider.ContactsContract.Contacts#DISPLAY_NAME_ALTERNATIVE
@@ -109,14 +110,12 @@ public interface ContactDisplayPreferences {
     }
 
     /**
-     * Order when sorting the name. In some conventions, names are displayed as given name first,
-     * but
+     * Order when sorting the name. In some conventions, names are displayed as given name first, but
      * sorted by family name.
      */
     enum SortOrder implements StringResEnum {
         /**
-         * Sort by the default display order of a name. For western names it will be "Given
-         * Family". For
+         * Sort by the default display order of a name. For western names it will be "Given Family". For
          * unstructured names like east asian this will be the only order.
          *
          * @see android.provider.ContactsContract.Contacts#DISPLAY_NAME_PRIMARY
@@ -150,8 +149,7 @@ public interface ContactDisplayPreferences {
     }
 
     /**
-     * A enum whose value is a String from a Android string resource which can only be resolved
-     * at run
+     * A enum whose value is a String from a Android string resource which can only be resolved at run
      * time.
      */
     interface StringResEnum {

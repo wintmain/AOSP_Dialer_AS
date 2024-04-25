@@ -24,11 +24,12 @@ import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import com.google.android.material.snackbar.Snackbar;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.DialerExecutor;
@@ -37,6 +38,7 @@ import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
 import com.wintmain.dialer.enrichedcall.EnrichedCallComponent;
 import com.wintmain.dialer.phonenumbercache.CachedNumberLookupService;
 import com.wintmain.dialer.phonenumbercache.PhoneNumberCache;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
@@ -66,8 +68,7 @@ public class ClearCallLogDialog extends DialogFragment {
                         .createUiTaskBuilder(
                                 Objects.requireNonNull(getFragmentManager()),
                                 "clearCallLogTask",
-                                new ClearCallLogWorker(Objects.requireNonNull(getActivity())
-                                        .getApplicationContext()))
+                                new ClearCallLogWorker(Objects.requireNonNull(getActivity()).getApplicationContext()))
                         .onSuccess(this::onSuccess)
                         .build();
     }
@@ -79,8 +80,7 @@ public class ClearCallLogDialog extends DialogFragment {
                 (dialog, which) -> {
                     progressDialog =
                             ProgressDialog.show(
-                                    getActivity(), getString(R.string.clearCallLogProgress_title),
-                                    "", true, false);
+                                    getActivity(), getString(R.string.clearCallLogProgress_title), "", true, false);
                     progressDialog.setOwnerActivity(getActivity());
                     CallLogNotificationsService.cancelAllMissedCalls(getContext());
 

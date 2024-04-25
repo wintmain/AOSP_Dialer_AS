@@ -16,16 +16,17 @@
 
 package com.wintmain.dialer.precall.impl;
 
-import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.precall.PreCall;
 import com.wintmain.dialer.precall.PreCallAction;
+import com.google.common.collect.ImmutableList;
+
+import javax.inject.Singleton;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
-
-import javax.inject.Singleton;
 
 /**
  * Dagger module for {@link PreCall}.

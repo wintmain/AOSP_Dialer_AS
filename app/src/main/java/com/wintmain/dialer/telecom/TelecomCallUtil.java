@@ -21,12 +21,14 @@ import android.net.Uri;
 import android.telecom.Call;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-import com.google.common.base.Optional;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.location.GeoUtil;
+import com.google.common.base.Optional;
 
 /**
  * Class to provide a standard interface for obtaining information from the underlying
@@ -42,13 +44,11 @@ public class TelecomCallUtil {
     public static boolean isEmergencyCall(@NonNull Call call) {
         Assert.isNotNull(call);
         Uri handle = call.getDetails().getHandle();
-        return PhoneNumberUtils.isEmergencyNumber(
-                handle == null ? "" : handle.getSchemeSpecificPart());
+        return PhoneNumberUtils.isEmergencyNumber(handle == null ? "" : handle.getSchemeSpecificPart());
     }
 
     /**
-     * Returns The phone number which the {@code Call} is currently connected, or {@code null} if
-     * the
+     * Returns The phone number which the {@code Call} is currently connected, or {@code null} if the
      * number is not available.
      */
     @Nullable
@@ -73,8 +73,7 @@ public class TelecomCallUtil {
     }
 
     /**
-     * Normalizes the number of the {@code call} to E.164. If the number for the call does not
-     * contain
+     * Normalizes the number of the {@code call} to E.164. If the number for the call does not contain
      * a country code, then the current location as defined by {@link
      * GeoUtil#getCurrentCountryIso(Context)} is used.
      *
@@ -97,8 +96,7 @@ public class TelecomCallUtil {
     }
 
     /**
-     * Formats the number of the {@code call} to E.164 if it is valid. If the number for the call
-     * does
+     * Formats the number of the {@code call} to E.164 if it is valid. If the number for the call does
      * not contain a country code, then the current location as defined by {@link
      * GeoUtil#getCurrentCountryIso(Context)} is used.
      *
@@ -113,7 +111,6 @@ public class TelecomCallUtil {
             return Optional.absent();
         }
         return Optional.fromNullable(
-                PhoneNumberUtils.formatNumberToE164(rawNumber,
-                        GeoUtil.getCurrentCountryIso(appContext)));
+                PhoneNumberUtils.formatNumberToE164(rawNumber, GeoUtil.getCurrentCountryIso(appContext)));
     }
 }

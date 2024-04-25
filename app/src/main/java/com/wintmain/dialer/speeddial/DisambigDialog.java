@@ -28,15 +28,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callintent.CallInitiationType;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
@@ -51,6 +50,9 @@ import com.wintmain.dialer.speeddial.database.SpeedDialEntry;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntry.Channel;
 import com.wintmain.dialer.speeddial.database.SpeedDialEntryDatabaseHelper;
 import com.wintmain.dialer.speeddial.loader.SpeedDialUiItem;
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
 import java.util.Objects;
@@ -83,8 +85,7 @@ public class DisambigDialog extends DialogFragment {
         return dialog;
     }
 
-    private static void setDefaultChannel(Context appContext, SpeedDialUiItem item,
-            Channel channel) {
+    private static void setDefaultChannel(Context appContext, SpeedDialUiItem item, Channel channel) {
         LogUtil.enterBlock("DisambigDialog.setDefaultChannel");
         ListenableFuture<Void> future =
                 DialerExecutorComponent.get(appContext)
@@ -132,8 +133,7 @@ public class DisambigDialog extends DialogFragment {
         Objects.requireNonNull(getDialog())
                 .getWindow()
                 .setLayout(
-                        Objects.requireNonNull(getContext()).getResources()
-                                .getDimensionPixelSize(R.dimen.disambig_dialog_width),
+                        Objects.requireNonNull(getContext()).getResources().getDimensionPixelSize(R.dimen.disambig_dialog_width),
                         LayoutParams.WRAP_CONTENT);
     }
 
@@ -183,8 +183,7 @@ public class DisambigDialog extends DialogFragment {
         String secondaryInfo =
                 TextUtils.isEmpty(label)
                         ? number
-                        : Objects.requireNonNull(getContext()).getString(
-                                R.string.call_subject_type_and_number, label, number);
+                        : Objects.requireNonNull(getContext()).getString(R.string.call_subject_type_and_number, label, number);
         ((TextView) view.findViewById(R.id.disambig_header_phone_label)).setText(secondaryInfo);
         container.addView(view);
     }
@@ -221,10 +220,8 @@ public class DisambigDialog extends DialogFragment {
 
     private void onVideoOptionClicked(Channel channel) {
         if (rememberThisChoice.isChecked()) {
-            Logger.get(getContext()).logImpression(
-                    DialerImpression.Type.FAVORITE_SET_VIDEO_DEFAULT);
-            setDefaultChannel(Objects.requireNonNull(getContext()).getApplicationContext(),
-                    speedDialUiItem, channel);
+            Logger.get(getContext()).logImpression(DialerImpression.Type.FAVORITE_SET_VIDEO_DEFAULT);
+            setDefaultChannel(Objects.requireNonNull(getContext()).getApplicationContext(), speedDialUiItem, channel);
         }
 
         if (channel.technology() == Channel.DUO) {
@@ -235,8 +232,7 @@ public class DisambigDialog extends DialogFragment {
 
         PreCall.start(
                 getContext(),
-                new CallIntentBuilder(channel.number(),
-                        CallInitiationType.Type.SPEED_DIAL_DISAMBIG_DIALOG)
+                new CallIntentBuilder(channel.number(), CallInitiationType.Type.SPEED_DIAL_DISAMBIG_DIALOG)
                         .setAllowAssistedDial(true)
                         .setIsVideoCall(true)
                         .setIsDuoCall(channel.technology() == Channel.DUO));
@@ -245,16 +241,13 @@ public class DisambigDialog extends DialogFragment {
 
     private void onVoiceOptionClicked(Channel channel) {
         if (rememberThisChoice.isChecked()) {
-            Logger.get(getContext()).logImpression(
-                    DialerImpression.Type.FAVORITE_SET_VOICE_DEFAULT);
-            setDefaultChannel(Objects.requireNonNull(getContext()).getApplicationContext(),
-                    speedDialUiItem, channel);
+            Logger.get(getContext()).logImpression(DialerImpression.Type.FAVORITE_SET_VOICE_DEFAULT);
+            setDefaultChannel(Objects.requireNonNull(getContext()).getApplicationContext(), speedDialUiItem, channel);
         }
 
         PreCall.start(
                 getContext(),
-                new CallIntentBuilder(channel.number(),
-                        CallInitiationType.Type.SPEED_DIAL_DISAMBIG_DIALOG)
+                new CallIntentBuilder(channel.number(), CallInitiationType.Type.SPEED_DIAL_DISAMBIG_DIALOG)
                         .setAllowAssistedDial(true));
         dismiss();
     }

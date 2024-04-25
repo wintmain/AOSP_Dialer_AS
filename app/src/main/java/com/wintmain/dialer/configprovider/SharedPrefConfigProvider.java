@@ -20,7 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
 import androidx.annotation.Nullable;
+
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.storage.StorageComponent;
@@ -81,24 +83,20 @@ public class SharedPrefConfigProvider implements ConfigProvider {
 
     @Override
     public String getString(String key, String defaultValue) {
-        // Reading shared prefs on the main thread is generally safe since a single instance is
-        // cached.
+        // Reading shared prefs on the main thread is generally safe since a single instance is cached.
         return StrictModeUtils.bypass(
                 () -> sharedPreferences.getString(PREF_PREFIX + key, defaultValue));
     }
 
     @Override
     public long getLong(String key, long defaultValue) {
-        // Reading shared prefs on the main thread is generally safe since a single instance is
-        // cached.
-        return StrictModeUtils.bypass(
-                () -> sharedPreferences.getLong(PREF_PREFIX + key, defaultValue));
+        // Reading shared prefs on the main thread is generally safe since a single instance is cached.
+        return StrictModeUtils.bypass(() -> sharedPreferences.getLong(PREF_PREFIX + key, defaultValue));
     }
 
     @Override
     public boolean getBoolean(String key, boolean defaultValue) {
-        // Reading shared prefs on the main thread is generally safe since a single instance is
-        // cached.
+        // Reading shared prefs on the main thread is generally safe since a single instance is cached.
         return StrictModeUtils.bypass(
                 () -> sharedPreferences.getBoolean(PREF_PREFIX + key, defaultValue));
     }
@@ -115,8 +113,7 @@ public class SharedPrefConfigProvider implements ConfigProvider {
         @Override
         protected void onHandleIntent(@Nullable Intent intent) {
             if (intent == null || intent.getExtras() == null || intent.getExtras().size() != 1) {
-                LogUtil.w("SharedPrefConfigProvider.Service.onHandleIntent",
-                        "must set exactly one extra");
+                LogUtil.w("SharedPrefConfigProvider.Service.onHandleIntent", "must set exactly one extra");
                 return;
             }
             String key = intent.getExtras().keySet().iterator().next();
@@ -134,8 +131,7 @@ public class SharedPrefConfigProvider implements ConfigProvider {
             } else if (value instanceof String) {
                 editor.putString(prefixedKey, (String) value);
             } else {
-                throw Assert.createAssertionFailException(
-                        "unsupported extra type: " + value.getClass());
+                throw Assert.createAssertionFailException("unsupported extra type: " + value.getClass());
             }
             editor.apply();
         }

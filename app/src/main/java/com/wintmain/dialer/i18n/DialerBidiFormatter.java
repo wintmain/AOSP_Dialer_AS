@@ -21,6 +21,7 @@ import android.text.SpannableStringBuilder;
 import android.text.SpannedString;
 import android.text.TextUtils;
 import android.util.Patterns;
+
 import androidx.annotation.Nullable;
 
 import java.util.Objects;
@@ -45,24 +46,19 @@ public final class DialerBidiFormatter {
     }
 
     /**
-     * Divides the given text into segments, applies LTR formatting and adds TTS span to segments
-     * that
+     * Divides the given text into segments, applies LTR formatting and adds TTS span to segments that
      * are phone numbers, then reassembles the text.
      *
      * <p>Formatted phone numbers usually contain one or more whitespaces (e.g., "+1 650-253-0000",
-     * "(650) 253-0000", etc). The system mistakes such a number for tokens separated by
-     * whitespaces.
+     * "(650) 253-0000", etc). The system mistakes such a number for tokens separated by whitespaces.
      * Therefore, these numbers can't be correctly shown in a RTL context (e.g., "+1 650-253-0000"
      * would be shown as "650-253-0000 1+".)
      *
-     * <p>This method wraps phone numbers with Unicode formatting characters LRE & PDF to ensure
-     * phone
+     * <p>This method wraps phone numbers with Unicode formatting characters LRE & PDF to ensure phone
      * numbers are always shown as LTR strings.
      *
-     * <p>Note that the regex used to find phone numbers ({@link Patterns#PHONE}) will also match
-     * any
-     * number. As this method also adds TTS span to segments that match {@link Patterns#PHONE},
-     * extra
+     * <p>Note that the regex used to find phone numbers ({@link Patterns#PHONE}) will also match any
+     * number. As this method also adds TTS span to segments that match {@link Patterns#PHONE}, extra
      * actions need to be taken if you don't want a number to be read as a phone number by TalkBack.
      */
     public static CharSequence format(@Nullable CharSequence text) {
@@ -85,14 +81,12 @@ public final class DialerBidiFormatter {
                 spannableStringBuilder.append(text.subSequence(currIndex, start));
             }
 
-            // For a phone number, wrap it with Unicode characters LRE & PDF so that it will
-            // always be
+            // For a phone number, wrap it with Unicode characters LRE & PDF so that it will always be
             // shown as a LTR string.
             spannableStringBuilder.append(
                     PhoneNumberUtils.createTtsSpannable(
                             TextUtils.concat(
-                                    String.valueOf(LRE), text.subSequence(start, end),
-                                    String.valueOf(PDF))));
+                                    String.valueOf(LRE), text.subSequence(start, end), String.valueOf(PDF))));
 
             currIndex = end;
         }

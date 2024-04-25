@@ -21,11 +21,13 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.provider.CallLog.Calls;
+
 import androidx.annotation.RequiresPermission;
-import com.google.common.util.concurrent.ListenableFuture;
+
 import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
 import com.wintmain.dialer.common.concurrent.UiListener;
 import com.wintmain.dialer.main.impl.bottomnav.BottomNavBar.TabIndex;
+import com.google.common.util.concurrent.ListenableFuture;
 
 /**
  * Observes the call log and updates the badge count to show the number of unread missed calls.
@@ -58,7 +60,7 @@ public final class MissedCallCountObserver extends ContentObserver {
                                                          .getContentResolver()
                                                          .query(
                                                                  Calls.CONTENT_URI,
-                                                                 new String[]{Calls._ID},
+                                                                 new String[] {Calls._ID},
                                                                  "("
                                                                          + Calls.IS_READ
                                                                          + " = ? OR "
@@ -66,8 +68,7 @@ public final class MissedCallCountObserver extends ContentObserver {
                                                                          + " IS NULL) AND "
                                                                          + Calls.TYPE
                                                                          + " = ?",
-                                                                 new String[]{"0", Integer.toString(
-                                                                         Calls.MISSED_TYPE)},
+                                                                 new String[] {"0", Integer.toString(Calls.MISSED_TYPE)},
                                                                  /* sortOrder= */ null)) {
                                         return cursor == null ? 0 : cursor.getCount();
                                     }
@@ -75,8 +76,7 @@ public final class MissedCallCountObserver extends ContentObserver {
         uiListener.listen(
                 appContext,
                 countFuture,
-                count -> bottomNavBar.setNotificationCount(TabIndex.CALL_LOG,
-                        count == null ? 0 : count),
+                count -> bottomNavBar.setNotificationCount(TabIndex.CALL_LOG, count == null ? 0 : count),
                 throwable -> {
                     throw new RuntimeException(throwable);
                 });

@@ -27,11 +27,13 @@ import android.provider.CallLog.Calls;
 import android.provider.VoicemailContract.Voicemails;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 import androidx.core.os.UserManagerCompat;
+
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllogutils.PhoneNumberDisplayUtil;
 import com.wintmain.dialer.common.LogUtil;
@@ -113,8 +115,7 @@ public class CallLogNotificationsQueryHelper {
         }
         if (!PermissionsUtil.hasPhonePermissions(context)) {
             LogUtil.e(
-                    "CallLogNotificationsQueryHelper.markMissedCallsInCallLogAsRead",
-                    "no phone permission");
+                    "CallLogNotificationsQueryHelper.markMissedCallsInCallLogAsRead", "no phone permission");
             return;
         }
         if (!PermissionsUtil.hasCallLogWritePermissions(context)) {
@@ -174,8 +175,7 @@ public class CallLogNotificationsQueryHelper {
                         - ConfigProviderComponent.get(context)
                         .getConfigProvider()
                         .getLong(
-                                CONFIG_NEW_VOICEMAIL_NOTIFICATION_THRESHOLD_OFFSET,
-                                TimeUnit.DAYS.toMillis(7)));
+                                CONFIG_NEW_VOICEMAIL_NOTIFICATION_THRESHOLD_OFFSET, TimeUnit.DAYS.toMillis(7)));
     }
 
     /**
@@ -191,8 +191,7 @@ public class CallLogNotificationsQueryHelper {
     /**
      * Given a number and number information (presentation and country ISO), get the best name for
      * display. If the name is empty but we have a special presentation, display that. Otherwise
-     * attempt to look it up in the database or the cache. If that fails, fall back to displaying
-     * the
+     * attempt to look it up in the database or the cache. If that fails, fall back to displaying the
      * number.
      */
     public String getName(
@@ -201,8 +200,7 @@ public class CallLogNotificationsQueryHelper {
     }
 
     /**
-     * Given a number and number information (presentation and country ISO), get
-     * {@link ContactInfo}.
+     * Given a number and number information (presentation and country ISO), get {@link ContactInfo}.
      * If the name is empty but we have a special presentation, display that. Otherwise attempt to
      * look it up in the cache. If that fails, fall back to displaying the number.
      */
