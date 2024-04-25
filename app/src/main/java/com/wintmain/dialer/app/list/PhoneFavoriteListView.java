@@ -20,13 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.DragEvent;
@@ -35,7 +29,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.GridView;
 import android.widget.ImageView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.list.DragDropController.DragItemContainer;
 import com.wintmain.dialer.common.LogUtil;
@@ -115,7 +108,8 @@ public class PhoneFavoriteListView extends GridView
     }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int roundPixelSize) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+                Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());

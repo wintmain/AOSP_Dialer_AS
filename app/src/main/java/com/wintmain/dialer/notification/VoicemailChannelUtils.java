@@ -30,17 +30,16 @@ import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.ArraySet;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.os.BuildCompat;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +49,11 @@ import java.util.Set;
 /* package */ final class VoicemailChannelUtils {
     @VisibleForTesting
     static final String GLOBAL_VOICEMAIL_CHANNEL_ID = "phone_voicemail";
-    private static final String PER_ACCOUNT_VOICEMAIL_CHANNEL_ID_PREFIX = "phone_voicemail_account_";
+    private static final String PER_ACCOUNT_VOICEMAIL_CHANNEL_ID_PREFIX =
+            "phone_voicemail_account_";
+
+    private VoicemailChannelUtils() {
+    }
 
     @SuppressWarnings("MissingPermission") // isSingleSimDevice() returns true if no permission
     static Set<String> getAllChannelIds(@NonNull Context context) {
@@ -93,7 +96,8 @@ import java.util.Set;
             return GLOBAL_VOICEMAIL_CHANNEL_ID;
         }
 
-        // We can get a null phone account at random points (modem reboot, etc...). Gracefully degrade
+        // We can get a null phone account at random points (modem reboot, etc...). Gracefully
+        // degrade
         // by using the default channel.
         if (handle == null) {
             LogUtil.i(
@@ -115,7 +119,8 @@ import java.util.Set;
         if (!doesChannelExist(context, channelId)) {
             LogUtil.i(
                     "VoicemailChannelUtils.getChannelId",
-                    "voicemail channel not found for phone account (possible SIM swap?), creating a new one");
+                    "voicemail channel not found for phone account (possible SIM swap?), creating"
+                            + " a new one");
             createVoicemailChannelForAccount(context, handle);
         }
         return channelId;
@@ -132,7 +137,8 @@ import java.util.Set;
     }
 
     /**
-     * Creates a voicemail channel but doesn't associate it with a SIM. For devices with only one SIM
+     * Creates a voicemail channel but doesn't associate it with a SIM. For devices with only one
+     * SIM
      * slot this is ideal because there won't be duplication in the settings UI.
      */
     private static void createGlobalVoicemailChannel(@NonNull Context context) {
@@ -211,14 +217,12 @@ import java.util.Set;
         if (phoneAccount == null) {
             return false;
         }
-        if (!phoneAccount.hasCapabilities(PhoneAccount.CAPABILITY_SIM_SUBSCRIPTION)) {
-            return false;
-        }
-        return true;
+        return phoneAccount.hasCapabilities(PhoneAccount.CAPABILITY_SIM_SUBSCRIPTION);
     }
 
     private static NotificationChannel newChannel(
-            @NonNull Context context, @NonNull String channelId, @Nullable CharSequence nameSuffix) {
+            @NonNull Context context, @NonNull String channelId,
+            @Nullable CharSequence nameSuffix) {
         CharSequence name = context.getText(R.string.notification_channel_voicemail);
         // TODO(sail): Use a string resource template after v10.
         if (!TextUtils.isEmpty(nameSuffix)) {
@@ -242,6 +246,4 @@ import java.util.Set;
         }
         return context.getSystemService(TelephonyManager.class).getPhoneCount() <= 1;
     }
-
-    private VoicemailChannelUtils() {}
 }

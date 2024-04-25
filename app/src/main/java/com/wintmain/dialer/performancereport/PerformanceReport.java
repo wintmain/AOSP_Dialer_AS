@@ -18,11 +18,9 @@ package com.wintmain.dialer.performancereport;
 
 import android.os.SystemClock;
 import android.widget.AbsListView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.logging.UiAction;
 

@@ -16,12 +16,11 @@
 
 package com.wintmain.dialer.promotion;
 
-import com.wintmain.dialer.promotion.Promotion.PromotionType;
 import com.google.common.collect.ImmutableList;
-
-import java.util.Optional;
+import com.wintmain.dialer.promotion.Promotion.PromotionType;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 /**
  * A class to manage all promotion cards/bottom sheet.
@@ -59,7 +58,8 @@ public final class PromotionManager {
                 if (promotion.getType() == type) {
                     return Optional.of(promotion);
                 } else {
-                    // Returns empty promotion since it's not the type looking for and only one promotion
+                    // Returns empty promotion since it's not the type looking for and only one
+                    // promotion
                     // should be shown at a time.
                     return Optional.empty();
                 }

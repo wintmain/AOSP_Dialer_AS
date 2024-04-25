@@ -17,9 +17,8 @@
 package com.wintmain.dialer.smartdial.map;
 
 import androidx.collection.SimpleArrayMap;
-
-import com.wintmain.dialer.dialpadview.DialpadCharMappings;
 import com.google.common.base.Optional;
+import com.wintmain.dialer.dialpadview.DialpadCharMappings;
 
 /**
  * A {@link SmartDialMap} for the Ukrainian alphabet.

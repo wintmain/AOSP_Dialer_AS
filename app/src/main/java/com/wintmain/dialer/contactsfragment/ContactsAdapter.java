@@ -23,12 +23,10 @@ import android.provider.ContactsContract.Contacts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -61,7 +59,8 @@ final class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Cursor cursor;
 
     ContactsAdapter(
-            Context context, @Header int header, OnContactSelectedListener onContactSelectedListener) {
+            Context context, @Header int header,
+            OnContactSelectedListener onContactSelectedListener) {
         this.context = context;
         this.header = header;
         this.onContactSelectedListener = Assert.isNotNull(onContactSelectedListener);
@@ -102,7 +101,8 @@ final class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             if (sum != cursor.getCount()) {
                 LogUtil.e(
-                        "ContactsAdapter", "Count sum (%d) != cursor count (%d).", sum, cursor.getCount());
+                        "ContactsAdapter", "Count sum (%d) != cursor count (%d).", sum,
+                        cursor.getCount());
             }
         }
         notifyDataSetChanged();
@@ -115,7 +115,8 @@ final class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (viewType) {
             case ADD_CONTACT_VIEW_TYPE:
                 return new AddContactViewHolder(
-                        LayoutInflater.from(context).inflate(R.layout.add_contact_row, parent, false));
+                        LayoutInflater.from(context)
+                                .inflate(R.layout.add_contact_row, parent, false));
             case CONTACT_VIEW_TYPE:
                 return new ContactViewHolder(
                         LayoutInflater.from(context).inflate(R.layout.contact_row, parent, false),
@@ -157,8 +158,10 @@ final class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         R.string.description_quick_contact_for, name);
         contactViewHolder.getPhoto().setContentDescription(photoDescription);
 
-        // Always show the view holder's header if it's the first item in the list. Otherwise, compare
-        // it to the previous element and only show the anchored header if the row elements fall into
+        // Always show the view holder's header if it's the first item in the list. Otherwise,
+        // compare
+        // it to the previous element and only show the anchored header if the row elements fall
+        // into
         // the same sublists.
         boolean showHeader = position == 0 || !header.equals(getHeaderString(position - 1));
         contactViewHolder.bind(header, name, contactUri, getContactId(cursor), showHeader);
@@ -189,7 +192,8 @@ final class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         for (ContactViewHolder holder : holderMap.keySet()) {
             int position = holderMap.get(holder);
             boolean showHeader =
-                    position == 0 || !getHeaderString(position).equals(getHeaderString(position - 1));
+                    position == 0 || !getHeaderString(position).equals(
+                            getHeaderString(position - 1));
             int visibility = showHeader ? View.VISIBLE : View.INVISIBLE;
             holder.getHeaderView().setVisibility(visibility);
         }

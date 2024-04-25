@@ -56,7 +56,8 @@ public class ExifInterface {
     static final int TAG_STRIP_BYTE_COUNTS = defineTag(IfdId.TYPE_IFD_0, (short) 0x0117);
     // IFD 1
     static final int TAG_JPEG_INTERCHANGE_FORMAT = defineTag(IfdId.TYPE_IFD_1, (short) 0x0201);
-    static final int TAG_JPEG_INTERCHANGE_FORMAT_LENGTH = defineTag(IfdId.TYPE_IFD_1, (short) 0x0202);
+    static final int TAG_JPEG_INTERCHANGE_FORMAT_LENGTH = defineTag(IfdId.TYPE_IFD_1,
+            (short) 0x0202);
     // IFD Exif Tags
     static final int TAG_INTEROPERABILITY_IFD = defineTag(IfdId.TYPE_IFD_EXIF, (short) 0xA005);
     private static final int IFD_NULL = -1;
@@ -188,7 +189,8 @@ public class ExifInterface {
     }
 
     /**
-     * Reads the exif tags from a byte array, clearing this ExifInterface object's existing exif tags.
+     * Reads the exif tags from a byte array, clearing this ExifInterface object's existing exif
+     * tags.
      *
      * @param jpeg a byte array containing a jpeg compressed image.
      */
@@ -230,8 +232,10 @@ public class ExifInterface {
         tagInfo.put(ExifInterface.TAG_STRIP_OFFSETS, ifdFlags | ExifTag.TYPE_UNSIGNED_LONG << 16);
         tagInfo.put(ExifInterface.TAG_EXIF_IFD, ifdFlags | ExifTag.TYPE_UNSIGNED_LONG << 16 | 1);
         tagInfo.put(ExifInterface.TAG_GPS_IFD, ifdFlags | ExifTag.TYPE_UNSIGNED_LONG << 16 | 1);
-        tagInfo.put(ExifInterface.TAG_ORIENTATION, ifdFlags | ExifTag.TYPE_UNSIGNED_SHORT << 16 | 1);
-        tagInfo.put(ExifInterface.TAG_STRIP_BYTE_COUNTS, ifdFlags | ExifTag.TYPE_UNSIGNED_LONG << 16);
+        tagInfo.put(ExifInterface.TAG_ORIENTATION,
+                ifdFlags | ExifTag.TYPE_UNSIGNED_SHORT << 16 | 1);
+        tagInfo.put(ExifInterface.TAG_STRIP_BYTE_COUNTS,
+                ifdFlags | ExifTag.TYPE_UNSIGNED_LONG << 16);
         // IFD1 tags
         int[] ifd1AllowedIfds = {IfdId.TYPE_IFD_1};
         int ifdFlags1 = getFlagsFromAllowedIfds(ifd1AllowedIfds) << 24;
@@ -245,7 +249,8 @@ public class ExifInterface {
         int[] exifAllowedIfds = {IfdId.TYPE_IFD_EXIF};
         int exifFlags = getFlagsFromAllowedIfds(exifAllowedIfds) << 24;
         tagInfo.put(
-                ExifInterface.TAG_INTEROPERABILITY_IFD, exifFlags | ExifTag.TYPE_UNSIGNED_LONG << 16 | 1);
+                ExifInterface.TAG_INTEROPERABILITY_IFD,
+                exifFlags | ExifTag.TYPE_UNSIGNED_LONG << 16 | 1);
     }
 
     private Integer getTagIntValue(int tagId, int ifdId) {

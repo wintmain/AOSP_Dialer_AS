@@ -26,9 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.provider.CallLog.Calls;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.R;
 
 import java.util.ArrayList;
@@ -63,7 +61,8 @@ public class CallTypeIconsView extends View {
     public CallTypeIconsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray =
-                context.getTheme().obtainStyledAttributes(attrs, R.styleable.CallTypeIconsView, 0, 0);
+                context.getTheme().obtainStyledAttributes(attrs, R.styleable.CallTypeIconsView, 0,
+                        0);
         useLargeIcons = typedArray.getBoolean(R.styleable.CallTypeIconsView_useLargeIcons, false);
         typedArray.recycle();
         if (resources == null) {
@@ -276,10 +275,12 @@ public class CallTypeIconsView extends View {
         final int iconMargin;
 
         /**
-         * Configures the call icon drawables. A single white call arrow which points down and left is
+         * Configures the call icon drawables. A single white call arrow which points down and
+         * left is
          * used as a basis for all of the call arrow icons, applying rotation and colors as needed.
          *
-         * <p>For each drawable we call mutate so that a new instance of the drawable is created. This
+         * <p>For each drawable we call mutate so that a new instance of the drawable is created.
+         * This
          * is done so that when we apply a color filter to the drawables, they are recolored across
          * dialer.
          *
@@ -289,15 +290,18 @@ public class CallTypeIconsView extends View {
             final android.content.res.Resources r = context.getResources();
 
             int iconId = R.drawable.quantum_ic_call_received_white_24;
-            Drawable drawable = largeIcons ? r.getDrawable(iconId) : getScaledBitmap(context, iconId);
+            Drawable drawable = largeIcons ? r.getDrawable(iconId) : getScaledBitmap(context,
+                    iconId);
             incoming = drawable.mutate();
-            incoming.setColorFilter(r.getColor(R.color.dialer_call_green), PorterDuff.Mode.MULTIPLY);
+            incoming.setColorFilter(r.getColor(R.color.dialer_call_green),
+                    PorterDuff.Mode.MULTIPLY);
 
             // Create a rotated instance of the call arrow for outgoing calls.
             iconId = R.drawable.quantum_ic_call_made_white_24;
             drawable = largeIcons ? r.getDrawable(iconId) : getScaledBitmap(context, iconId);
             outgoing = drawable.mutate();
-            outgoing.setColorFilter(r.getColor(R.color.dialer_call_green), PorterDuff.Mode.MULTIPLY);
+            outgoing.setColorFilter(r.getColor(R.color.dialer_call_green),
+                    PorterDuff.Mode.MULTIPLY);
 
             // Need to make a copy of the arrow drawable, otherwise the same instance colored
             // above will be recolored here.
@@ -337,7 +341,8 @@ public class CallTypeIconsView extends View {
             assistedDialedCall.setColorFilter(r.getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
 
             iconId = R.drawable.quantum_ic_rtt_vd_theme_24;
-            drawable = largeIcons ? r.getDrawable(iconId, context.getTheme()) : getScaledBitmap(context, iconId);
+            drawable = largeIcons ? r.getDrawable(iconId, context.getTheme()) : getScaledBitmap(
+                    context, iconId);
             rttCall = drawable.mutate();
             rttCall.setColorFilter(r.getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
 
@@ -349,11 +354,13 @@ public class CallTypeIconsView extends View {
         private Drawable getScaledBitmap(Context context, int resourceId) {
             Drawable drawable = context.getDrawable(resourceId);
 
-            int scaledHeight = context.getResources().getDimensionPixelSize(R.dimen.call_type_icon_size);
+            int scaledHeight = context.getResources().getDimensionPixelSize(
+                    R.dimen.call_type_icon_size);
             int scaledWidth =
                     (int)
                             ((float) drawable.getIntrinsicWidth()
-                                    * ((float) scaledHeight / (float) drawable.getIntrinsicHeight()));
+                                    * ((float) scaledHeight
+                                    / (float) drawable.getIntrinsicHeight()));
 
             Bitmap icon = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(icon);

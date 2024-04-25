@@ -20,15 +20,14 @@ import android.content.Context;
 import android.telecom.PhoneAccountHandle;
 import android.text.TextUtils;
 import android.util.ArrayMap;
-
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.app.calllog.CallLogAdapter;
 import com.wintmain.dialer.calllogutils.PhoneAccountUtils;
 import com.wintmain.dialer.telecom.TelecomUtil;
 import com.wintmain.dialer.util.CallUtil;
-import java.util.Map;
+
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.Map;
 
 /**
  * This is the base class for the CallLogCaches.
@@ -45,12 +44,11 @@ public class CallLogCache {
     // this writing, that was a much larger undertaking than creating this cache.
 
     protected final Context context;
-
-    private boolean hasCheckedForVideoAvailability;
-    private int videoAvailability;
     private final Map<PhoneAccountHandle, String> phoneAccountLabelCache = new ArrayMap<>();
     private final Map<PhoneAccountHandle, Integer> phoneAccountColorCache = new ArrayMap<>();
     private final Map<PhoneAccountHandle, Boolean> phoneAccountCallWithNoteCache = new ArrayMap<>();
+    private boolean hasCheckedForVideoAvailability;
+    private int videoAvailability;
 
     public CallLogCache(Context context) {
         this.context = context;
@@ -77,7 +75,8 @@ public class CallLogCache {
     }
 
     /**
-     * Returns {@code true} when the current sim supports checking video calling capabilities via the
+     * Returns {@code true} when the current sim supports checking video calling capabilities via
+     * the
      * {@link android.provider.ContactsContract.CommonDataKinds.Phone#CARRIER_PRESENCE} column.
      */
     public boolean canRelyOnVideoPresence() {

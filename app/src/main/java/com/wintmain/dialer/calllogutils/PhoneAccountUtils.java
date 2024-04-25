@@ -19,9 +19,7 @@ package com.wintmain.dialer.calllogutils;
 import android.content.Context;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
-
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.telecom.TelecomUtil;
 
 /**

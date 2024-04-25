@@ -31,14 +31,12 @@ import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.core.os.BuildCompat;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
 import com.wintmain.dialer.calllogutils.CallLogDates;
@@ -97,7 +95,8 @@ public class CallDetailsEntryViewHolder extends ViewHolder {
         postCallNote = (TextView) container.findViewById(R.id.post_call_note);
         multimediaImage = (ImageView) container.findViewById(R.id.multimedia_image);
         // TODO(maxwelb): Display this when location is stored - a bug
-        TextView multimediaAttachmentsNumber = (TextView) container.findViewById(R.id.multimedia_attachments_number);
+        TextView multimediaAttachmentsNumber = (TextView) container.findViewById(
+                R.id.multimedia_attachments_number);
         rttTranscript = container.findViewById(R.id.rtt_transcript);
         this.callDetailsEntryListener = callDetailsEntryListener;
     }
@@ -154,7 +153,8 @@ public class CallDetailsEntryViewHolder extends ViewHolder {
         callTypeIcon.setShowWifi(
                 MotorolaUtils.shouldShowWifiIconInCallLog(context, entry.getFeatures()));
         if (BuildCompat.isAtLeastP()) {
-            callTypeIcon.setShowRtt((entry.getFeatures() & Calls.FEATURES_RTT) == Calls.FEATURES_RTT);
+            callTypeIcon.setShowRtt(
+                    (entry.getFeatures() & Calls.FEATURES_RTT) == Calls.FEATURES_RTT);
         }
 
         callTypeText.setText(
@@ -173,7 +173,8 @@ public class CallDetailsEntryViewHolder extends ViewHolder {
                             context, entry.getDuration(), entry.getDataUsage()));
         }
 
-        // do this synchronously to prevent recordings from "popping in" after detail item is displayed
+        // do this synchronously to prevent recordings from "popping in" after detail item is
+        // displayed
         final List<CallRecording> recordings;
         if (CallRecorderService.isEnabled(context)) {
             callRecordingDataStore.open(context); // opens unless already open
@@ -183,7 +184,8 @@ public class CallDetailsEntryViewHolder extends ViewHolder {
         }
 
         int count = recordings != null ? recordings.size() : 0;
-        playbackButton.setOnClickListener(v -> handleRecordingClick(v, Objects.requireNonNull(recordings)));
+        playbackButton.setOnClickListener(
+                v -> handleRecordingClick(v, Objects.requireNonNull(recordings)));
         playbackButton.setText(
                 context.getResources().getQuantityString(R.plurals.play_recordings, count, count));
         playbackButton.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
@@ -226,7 +228,8 @@ public class CallDetailsEntryViewHolder extends ViewHolder {
                 multimediaImageContainer.setVisibility(View.VISIBLE);
                 multimediaImage.setImageURI(Uri.parse(historyResult.getImageUri()));
                 multimediaDetails.setText(
-                        isIncoming(historyResult) ? R.string.received_a_photo : R.string.sent_a_photo);
+                        isIncoming(historyResult) ? R.string.received_a_photo
+                                : R.string.sent_a_photo);
             } else {
                 LogUtil.i("CallDetailsEntryViewHolder.setMultimediaDetails", "no image");
             }
@@ -242,10 +245,12 @@ public class CallDetailsEntryViewHolder extends ViewHolder {
 
             if (entry.getHistoryResultsList().size() > 1
                     && !TextUtils.isEmpty(entry.getHistoryResults(1).getText())) {
-                LogUtil.i("CallDetailsEntryViewHolder.setMultimediaDetails", "showing post call note");
+                LogUtil.i("CallDetailsEntryViewHolder.setMultimediaDetails",
+                        "showing post call note");
                 postCallNote.setVisibility(View.VISIBLE);
                 postCallNote.setText(
-                        context.getString(R.string.message_in_quotes, entry.getHistoryResults(1).getText()));
+                        context.getString(R.string.message_in_quotes,
+                                entry.getHistoryResults(1).getText()));
                 postCallNote.setOnClickListener((v) -> startSmsIntent(context, number));
             } else {
                 LogUtil.i("CallDetailsEntryViewHolder.setMultimediaDetails", "no post call note");

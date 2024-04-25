@@ -17,10 +17,8 @@
 package com.wintmain.dialer.dialpadview;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.i18n.LocaleUtils;
 
@@ -48,7 +46,8 @@ public class DialpadCharMappings {
     }
 
     /**
-     * Returns the character-key map of the ISO 639-2 language code of the 1st language preference or
+     * Returns the character-key map of the ISO 639-2 language code of the 1st language
+     * preference or
      * null if no character-key map for the language code is defined.
      */
     public static SimpleArrayMap<Character, Character> getCharToKeyMap(@NonNull Context context) {
@@ -67,7 +66,8 @@ public class DialpadCharMappings {
         SimpleArrayMap<Character, Character> charToKeyMap = CHAR_TO_KEY_MAPS.get(languageCode);
 
         return Assert.isNotNull(
-                charToKeyMap, "No character mappings can be found for language code '%s'", languageCode);
+                charToKeyMap, "No character mappings can be found for language code '%s'",
+                languageCode);
     }
 
     /**

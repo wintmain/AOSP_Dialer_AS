@@ -28,9 +28,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.cp2.DirectoryUtils;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;
@@ -84,7 +82,8 @@ public final class DirectoryContactViewHolder extends RecyclerView.ViewHolder
         return Uri.withAppendedPath(Contacts.CONTENT_LOOKUP_URI, lookupKey)
                 .buildUpon()
                 .appendQueryParameter(
-                        ContactsContract.DIRECTORY_PARAM_KEY, String.valueOf(cursor.getDirectoryId()))
+                        ContactsContract.DIRECTORY_PARAM_KEY,
+                        String.valueOf(cursor.getDirectoryId()))
                 .build();
     }
 

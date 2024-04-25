@@ -20,9 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
-
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.searchfragment.common.SearchCursor;
 
@@ -42,7 +40,8 @@ final class NearbyPlacesCursor extends MergeCursor implements SearchCursor {
 
     /**
      * @param directoryId unique directory id that doesn't collide with other remote/local
-     *                    directories. directoryIds are needed to load the correct quick contact card.
+     *                    directories. directoryIds are needed to load the correct quick contact
+     *                    card.
      */
     static NearbyPlacesCursor newInstance(
             Context context, Cursor nearbyPlacesCursor, long directoryId) {
@@ -58,7 +57,8 @@ final class NearbyPlacesCursor extends MergeCursor implements SearchCursor {
 
     @Override
     public boolean updateQuery(@NonNull String query) {
-        // When the query changes, a new network request is made for nearby places. Meaning this cursor
+        // When the query changes, a new network request is made for nearby places. Meaning this
+        // cursor
         // will be closed and another created, so return false.
         return false;
     }

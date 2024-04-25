@@ -19,11 +19,9 @@ package com.wintmain.dialer.assisteddialing;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
-
 import androidx.annotation.NonNull;
 import androidx.core.os.UserManagerCompat;
 import androidx.preference.PreferenceManager;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProvider;
@@ -46,7 +44,8 @@ public final class ConcreteCreator {
      * Creates a new AssistedDialingMediator
      *
      * @param telephonyManager The telephony manager used to determine user location.
-     * @param context          The context used to determine whether or not a provided number is an emergency
+     * @param context          The context used to determine whether or not a provided number is
+     *                         an emergency
      *                         number.
      * @return An AssistedDialingMediator
      */
@@ -68,8 +67,10 @@ public final class ConcreteCreator {
         }
 
         if (!PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(context.getString(R.string.assisted_dialing_setting_toggle_key), true)) {
-            LogUtil.i("ConcreteCreator.createNewAssistedDialingMediator", "disabled by local setting");
+                .getBoolean(context.getString(R.string.assisted_dialing_setting_toggle_key),
+                        true)) {
+            LogUtil.i("ConcreteCreator.createNewAssistedDialingMediator",
+                    "disabled by local setting");
 
             return new AssistedDialingMediatorStub();
         }
@@ -82,7 +83,9 @@ public final class ConcreteCreator {
                                 () ->
                                         PreferenceManager.getDefaultSharedPreferences(context)
                                                 .getString(
-                                                        context.getString(R.string.assisted_dialing_setting_cc_key), null))),
+                                                        context.getString(
+                                                                R.string.assisted_dialing_setting_cc_key),
+                                                        null))),
                 new NumberTransformer(constraints));
     }
 
@@ -96,7 +99,8 @@ public final class ConcreteCreator {
     }
 
     /**
-     * Returns a CountryCodeProvider responsible for providing countries eligible for assisted Dialing
+     * Returns a CountryCodeProvider responsible for providing countries eligible for assisted
+     * Dialing
      */
     public static CountryCodeProvider getCountryCodeProvider(ConfigProvider configProvider) {
         if (configProvider == null) {

@@ -19,9 +19,7 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TypefaceSpan;
-
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 
@@ -62,15 +60,19 @@ public final class ContentWithLearnMoreSpanner {
      * {@code learnMoreUrl}, then styling the "Learn more" text with common Dialer learn more
      * styling. The "Learn more" text uses a non-breaking-space character to ensure it says on a
      * single line.
-     * @throws java.util.IllegalFormatException if {@code contentFormatString} has an improper format
-     * @throws IllegalArgumentException         if it wasn't possible to add "Learn more" to the given
+     * @throws java.util.IllegalFormatException if {@code contentFormatString} has an improper
+     *                                          format
+     * @throws IllegalArgumentException         if it wasn't possible to add "Learn more" to the
+     *                                          given
      *                                          contentFormatString
      */
     @NonNull
-    public SpannableString create(@NonNull String contentFormatString, @NonNull String learnMoreUrl) {
+    public SpannableString create(@NonNull String contentFormatString,
+            @NonNull String learnMoreUrl) {
         String learnMore = context.getString(R.string.general_learn_more);
 
-        SpannableString contents = new SpannableString(String.format(contentFormatString, learnMore));
+        SpannableString contents = new SpannableString(
+                String.format(contentFormatString, learnMore));
 
         Assert.checkArgument(
                 contents.toString().contains(learnMore),

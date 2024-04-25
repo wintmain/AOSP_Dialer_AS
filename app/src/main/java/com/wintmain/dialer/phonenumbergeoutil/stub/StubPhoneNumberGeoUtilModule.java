@@ -17,11 +17,10 @@
 package com.wintmain.dialer.phonenumbergeoutil.stub;
 
 import com.wintmain.dialer.phonenumbergeoutil.PhoneNumberGeoUtil;
-
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
+
+import javax.inject.Singleton;
 
 /**
  * Module which binds {@link PhoneNumberGeoUtilStub}.

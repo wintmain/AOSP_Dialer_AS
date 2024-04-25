@@ -30,7 +30,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.CallLog.Calls;
-
 import com.android.contacts.common.database.NoNullCursorAsyncQueryHandler;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.phonenumbercache.CallLogQuery;
@@ -71,7 +70,8 @@ public class CallLogQueryHandler extends NoNullCursorAsyncQueryHandler {
 
     private final Context context;
 
-    public CallLogQueryHandler(Context context, ContentResolver contentResolver, Listener listener) {
+    public CallLogQueryHandler(Context context, ContentResolver contentResolver,
+            Listener listener) {
         this(context, contentResolver, listener, -1);
     }
 
@@ -90,7 +90,8 @@ public class CallLogQueryHandler extends NoNullCursorAsyncQueryHandler {
     }
 
     /**
-     * Fetches the list of calls from the call log for a given type. This call ignores the new or old
+     * Fetches the list of calls from the call log for a given type. This call ignores the new or
+     * old
      * state.
      *
      * <p>It will asynchronously update the content of the list view when the fetch completes.
@@ -206,7 +207,8 @@ public class CallLogQueryHandler extends NoNullCursorAsyncQueryHandler {
     }
 
     @Override
-    protected synchronized void onNotNullableQueryComplete(int token, Object cookie, Cursor cursor) {
+    protected synchronized void onNotNullableQueryComplete(int token, Object cookie,
+            Cursor cursor) {
         if (cursor == null) {
             return;
         }
@@ -270,7 +272,8 @@ public class CallLogQueryHandler extends NoNullCursorAsyncQueryHandler {
         void onMissedCallsUnreadCountFetched(Cursor cursor);
 
         /**
-         * Called when {@link CallLogQueryHandler#fetchCalls(int, long)} complete. Returns true if takes
+         * Called when {@link CallLogQueryHandler#fetchCalls(int, long)} complete. Returns true
+         * if takes
          * ownership of cursor.
          */
         boolean onCallsFetched(Cursor combinedCursor);
@@ -291,15 +294,19 @@ public class CallLogQueryHandler extends NoNullCursorAsyncQueryHandler {
             try {
                 // Perform same query while catching any exceptions
                 super.handleMessage(msg);
-            } catch (SQLiteDiskIOException | SQLiteFullException | SQLiteDatabaseCorruptException e) {
-                LogUtil.e("CallLogQueryHandler.handleMessage", "exception on background worker thread", e);
+            } catch (SQLiteDiskIOException | SQLiteFullException |
+                     SQLiteDatabaseCorruptException e) {
+                LogUtil.e("CallLogQueryHandler.handleMessage",
+                        "exception on background worker thread", e);
             } catch (IllegalArgumentException e) {
-                LogUtil.e("CallLogQueryHandler.handleMessage", "contactsProvider not present on device", e);
+                LogUtil.e("CallLogQueryHandler.handleMessage",
+                        "contactsProvider not present on device", e);
             } catch (SecurityException e) {
                 // Shouldn't happen if we are protecting the entry points correctly,
                 // but just in case.
                 LogUtil.e(
-                        "CallLogQueryHandler.handleMessage", "no permission to access ContactsProvider.", e);
+                        "CallLogQueryHandler.handleMessage",
+                        "no permission to access ContactsProvider.", e);
             }
         }
     }

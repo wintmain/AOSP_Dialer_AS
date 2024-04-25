@@ -25,11 +25,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.util.ArrayMap;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -54,7 +52,8 @@ final class PinnedShortcuts {
 
     private static final String[] PROJECTION =
             new String[]{
-                    Contacts._ID, Contacts.DISPLAY_NAME_PRIMARY, Contacts.CONTACT_LAST_UPDATED_TIMESTAMP,
+                    Contacts._ID, Contacts.DISPLAY_NAME_PRIMARY,
+                    Contacts.CONTACT_LAST_UPDATED_TIMESTAMP,
             };
     private final Context context;
     private final ShortcutInfoFactory shortcutInfoFactory;
@@ -65,7 +64,8 @@ final class PinnedShortcuts {
     }
 
     /**
-     * Performs a "complete refresh" of pinned shortcuts. This is done by (synchronously) querying for
+     * Performs a "complete refresh" of pinned shortcuts. This is done by (synchronously)
+     * querying for
      * all contacts which currently have pinned shortcuts. The query results are used to compute a
      * delta which contains a list of shortcuts which need to be updated (e.g. because of name/photo
      * changes) or disabled (if contacts were deleted). Note that pinned shortcuts cannot be deleted
@@ -74,7 +74,8 @@ final class PinnedShortcuts {
      * <p>If the delta is non-empty, it is applied by making appropriate calls to the {@link
      * ShortcutManager} system service.
      *
-     * <p>This is a slow blocking call which performs file I/O and should not be performed on the main
+     * <p>This is a slow blocking call which performs file I/O and should not be performed on the
+     * main
      * thread.
      */
     @WorkerThread
@@ -92,13 +93,17 @@ final class PinnedShortcuts {
         ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
         for (ShortcutInfo shortcutInfo : shortcutManager.getPinnedShortcuts()) {
             if (shortcutInfo.isDeclaredInManifest()) {
-                // We never update/disable the manifest shortcut (the "create new contact" shortcut).
+                // We never update/disable the manifest shortcut (the "create new contact"
+                // shortcut).
                 continue;
             }
             if (shortcutInfo.isDynamic()) {
-                // If the shortcut is both pinned and dynamic, let the logic which updates dynamic shortcuts
-                // handle the update. It would be problematic to try and apply the update here, because the
-                // setRank is nonsensical for pinned shortcuts and therefore could not be calculated.
+                // If the shortcut is both pinned and dynamic, let the logic which updates
+                // dynamic shortcuts
+                // handle the update. It would be problematic to try and apply the update here,
+                // because the
+                // setRank is nonsensical for pinned shortcuts and therefore could not be
+                // calculated.
                 continue;
             }
             // Exclude shortcuts not for contacts.
@@ -114,7 +119,8 @@ final class PinnedShortcuts {
             Uri lookupUri = DialerShortcut.getLookupUriFromShortcutInfo(shortcutInfo);
 
             try (Cursor cursor =
-                         context.getContentResolver().query(lookupUri, PROJECTION, null, null, null)) {
+                         context.getContentResolver().query(lookupUri, PROJECTION, null, null,
+                                 null)) {
 
                 if (cursor == null || !cursor.moveToNext()) {
                     LogUtil.i("PinnedShortcuts.refresh", "contact disabled");
@@ -122,15 +128,19 @@ final class PinnedShortcuts {
                     continue;
                 }
 
-                // Note: The lookup key may have changed but we cannot refresh it because that would require
-                // changing the shortcut ID, which can only be accomplished with a remove and add; but
+                // Note: The lookup key may have changed but we cannot refresh it because that
+                // would require
+                // changing the shortcut ID, which can only be accomplished with a remove and
+                // add; but
                 // pinned shortcuts cannot be added or removed.
                 DialerShortcut shortcut =
                         DialerShortcut.builder()
-                                .setContactId(cursor.getLong(cursor.getColumnIndexOrThrow(Contacts._ID)))
+                                .setContactId(
+                                        cursor.getLong(cursor.getColumnIndexOrThrow(Contacts._ID)))
                                 .setLookupKey(lookupKey)
                                 .setDisplayName(
-                                        cursor.getString(cursor.getColumnIndexOrThrow(Contacts.DISPLAY_NAME_PRIMARY)))
+                                        cursor.getString(cursor.getColumnIndexOrThrow(
+                                                Contacts.DISPLAY_NAME_PRIMARY)))
                                 .build();
 
                 if (shortcut.needsUpdate(shortcutInfo)) {
@@ -150,7 +160,8 @@ final class PinnedShortcuts {
             shortcutManager.disableShortcuts(delta.shortcutIdsToDisable, shortcutDisabledMessage);
         }
         if (!delta.shortcutsToUpdateById.isEmpty()) {
-            // Note: This call updates both pinned and dynamic shortcuts, but the delta should contain
+            // Note: This call updates both pinned and dynamic shortcuts, but the delta should
+            // contain
             // no dynamic shortcuts.
             if (!shortcutManager.updateShortcuts(
                     shortcutInfoFactory.buildShortcutInfos(delta.shortcutsToUpdateById))) {

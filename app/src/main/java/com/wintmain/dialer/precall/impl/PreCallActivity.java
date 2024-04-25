@@ -19,7 +19,6 @@ package com.wintmain.dialer.precall.impl;
 import android.app.KeyguardManager;
 import android.os.Bundle;
 import android.view.WindowManager.LayoutParams;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,30 +37,38 @@ public class PreCallActivity extends AppCompatActivity {
         if (getSystemService(KeyguardManager.class).isKeyguardLocked()) {
             // Note:
             //
-            // Flag LayoutParams.FLAG_TURN_SCREEN_ON was deprecated in O_MR1, but calling the new API
+            // Flag LayoutParams.FLAG_TURN_SCREEN_ON was deprecated in O_MR1, but calling the new
+            // API
             // setTurnScreenOn(true) doesn't give us the expected behavior.
             //
-            // Calling setTurnScreenOn(true) alone doesn't turn on the screen when the device is locked.
-            // We must also call KeyguardManager#requestDismissKeyguard, which will bring up the lock
+            // Calling setTurnScreenOn(true) alone doesn't turn on the screen when the device is
+            // locked.
+            // We must also call KeyguardManager#requestDismissKeyguard, which will bring up the
+            // lock
             // screen for the user to enter their credentials.
             //
             // If the Keyguard is not secure or the device is currently in a trusted state, calling
-            // requestDismissKeyguard will immediately dismiss the Keyguard without any user interaction.
+            // requestDismissKeyguard will immediately dismiss the Keyguard without any user
+            // interaction.
             // However, the lock screen will still pop up before it quickly disappears.
             //
-            // If the Keyguard is secure and the device is not in a trusted state, the device will show
+            // If the Keyguard is secure and the device is not in a trusted state, the device
+            // will show
             // the lock screen and wait for the user's credentials.
             //
-            // Therefore, to avoid showing the lock screen, we will continue using the deprecated flag in
+            // Therefore, to avoid showing the lock screen, we will continue using the deprecated
+            // flag in
             // O_MR1 and later Android versions.
             //
             // Flag LayoutParams.FLAG_SHOW_WHEN_LOCKED was also deprecated in O_MR1, and the new API
-            // setShowWhenLocked(boolean) works. However, as the purpose of the two new APIs is to prevent
+            // setShowWhenLocked(boolean) works. However, as the purpose of the two new APIs is
+            // to prevent
             // an unintentional double life-cycle event, only using one is ineffective.
             //
             // Therefore, to simplify code and make testing easier, we will also keep using
             // LayoutParams.FLAG_SHOW_WHEN_LOCKED.
-            getWindow().addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_TURN_SCREEN_ON);
+            getWindow().addFlags(
+                    LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_TURN_SCREEN_ON);
         }
     }
 

@@ -24,13 +24,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import com.google.common.collect.ImmutableMap;
 import com.wintmain.dialer.preferredsim.PreferredSimFallbackContract;
 import com.wintmain.dialer.preferredsim.PreferredSimFallbackContract.PreferredSim;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Content provider for preferred SIM columns that is only available in ContactsProvider after P.
@@ -100,7 +98,8 @@ public class PreferredSimFallbackProvider extends ContentProvider {
      * {@link android.provider.ContactsContract.Data#_ID} is AUTOINCREMENT and could not be reused,
      * rows in this database will simply be orphaned and not cleaned up. To unset preference, update
      * {@link PreferredSim#PREFERRED_PHONE_ACCOUNT_COMPONENT_NAME} and {@link
-     * PreferredSim#PREFERRED_PHONE_ACCOUNT_ID} to {@code null}. Delete is only allowed from dialer so
+     * PreferredSim#PREFERRED_PHONE_ACCOUNT_ID} to {@code null}. Delete is only allowed from
+     * dialer so
      * simulator can wipe all preference.
      */
     @Override
@@ -152,11 +151,13 @@ public class PreferredSimFallbackProvider extends ContentProvider {
             throw new IllegalArgumentException("Unsupported operation");
         }
         values.put(PreferredSim.DATA_ID, selectionArgs[0]);
-        if (databaseHelper.getWritableDatabase().replace(PreferredSimDatabaseHelper.TABLE, null, values)
+        if (databaseHelper.getWritableDatabase().replace(PreferredSimDatabaseHelper.TABLE, null,
+                values)
                 == -1) {
             throw new IllegalStateException("update failed");
         }
-        getContext().getContentResolver().notifyChange(PreferredSimFallbackContract.CONTENT_URI, null);
+        getContext().getContentResolver().notifyChange(PreferredSimFallbackContract.CONTENT_URI,
+                null);
         return 1;
     }
 

@@ -23,9 +23,7 @@ import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.provider.BlockedNumberContract;
 import android.provider.BlockedNumberContract.BlockedNumbers;
-
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.common.Assert;
 
 import java.util.ArrayList;
@@ -39,7 +37,8 @@ public class BlockedBumberPopulator {
 
     private static final List<ContentValues> values =
             Arrays.asList(
-                    createContentValuesWithNumber("123456789"), createContentValuesWithNumber("987654321"));
+                    createContentValuesWithNumber("123456789"),
+                    createContentValuesWithNumber("987654321"));
 
     public static void populateBlockedNumber(@NonNull Context context) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();

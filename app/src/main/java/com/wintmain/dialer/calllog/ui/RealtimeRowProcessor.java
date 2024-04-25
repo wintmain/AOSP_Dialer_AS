@@ -20,11 +20,13 @@ import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.ArrayMap;
-
 import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.calllog.model.CoalescedRow;
 import com.wintmain.dialer.calllogutils.NumberAttributesBuilder;
@@ -38,17 +40,13 @@ import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.composite.CompositePhoneLookup;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract.PhoneLookupHistory;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import javax.inject.Inject;
 
 /**
  * Does work necessary to update a {@link CoalescedRow} when it is requested to be displayed.
@@ -68,7 +66,8 @@ public final class RealtimeRowProcessor {
     /*
      * The time to wait between writing batches of records to PhoneLookupHistory.
      */
-    @VisibleForTesting static final long BATCH_WAIT_MILLIS = TimeUnit.SECONDS.toMillis(3);
+    @VisibleForTesting
+    static final long BATCH_WAIT_MILLIS = TimeUnit.SECONDS.toMillis(3);
 
     private final Context appContext;
     private final CompositePhoneLookup compositePhoneLookup;
@@ -134,7 +133,8 @@ public final class RealtimeRowProcessor {
         Assert.isMainThread();
         queuedPhoneLookupHistoryWrites.put(dialerPhoneNumber, phoneLookupInfo);
         ThreadUtil.getUiThreadHandler().removeCallbacks(writePhoneLookupHistoryRunnable);
-        ThreadUtil.getUiThreadHandler().postDelayed(writePhoneLookupHistoryRunnable, BATCH_WAIT_MILLIS);
+        ThreadUtil.getUiThreadHandler().postDelayed(writePhoneLookupHistoryRunnable,
+                BATCH_WAIT_MILLIS);
     }
 
     @MainThread
@@ -154,29 +154,36 @@ public final class RealtimeRowProcessor {
                         () -> {
                             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
                             long currentTimestamp = System.currentTimeMillis();
-                            for (Entry<DialerPhoneNumber, PhoneLookupInfo> entry : currentBatch.entrySet()) {
+                            for (Entry<DialerPhoneNumber, PhoneLookupInfo> entry :
+                                    currentBatch.entrySet()) {
                                 DialerPhoneNumber dialerPhoneNumber = entry.getKey();
                                 PhoneLookupInfo phoneLookupInfo = entry.getValue();
 
-                                // Note: Multiple DialerPhoneNumbers can map to the same normalized number but we
-                                // just write them all and the value for the last one will arbitrarily win.
+                                // Note: Multiple DialerPhoneNumbers can map to the same
+                                // normalized number but we
+                                // just write them all and the value for the last one will
+                                // arbitrarily win.
                                 // Note: This loses country info when number is not valid.
                                 String normalizedNumber = dialerPhoneNumber.getNormalizedNumber();
 
                                 ContentValues contentValues = new ContentValues();
                                 contentValues.put(
-                                        PhoneLookupHistory.PHONE_LOOKUP_INFO, phoneLookupInfo.toByteArray());
-                                contentValues.put(PhoneLookupHistory.LAST_MODIFIED, currentTimestamp);
+                                        PhoneLookupHistory.PHONE_LOOKUP_INFO,
+                                        phoneLookupInfo.toByteArray());
+                                contentValues.put(PhoneLookupHistory.LAST_MODIFIED,
+                                        currentTimestamp);
                                 operations.add(
                                         ContentProviderOperation.newUpdate(
-                                                        PhoneLookupHistory.contentUriForNumber(normalizedNumber))
+                                                        PhoneLookupHistory.contentUriForNumber(
+                                                                normalizedNumber))
                                                 .withValues(contentValues)
                                                 .build());
                             }
                             return Assert.isNotNull(
                                     appContext
                                             .getContentResolver()
-                                            .applyBatch(PhoneLookupHistoryContract.AUTHORITY, operations))
+                                            .applyBatch(PhoneLookupHistoryContract.AUTHORITY,
+                                                    operations))
                                     .length;
                         });
 
@@ -207,7 +214,8 @@ public final class RealtimeRowProcessor {
         return row.toBuilder()
                 .setNumberAttributes(
                         NumberAttributesBuilder.fromPhoneLookupInfo(phoneLookupInfo)
-                                .setIsCp2InfoIncomplete(row.getNumberAttributes().getIsCp2InfoIncomplete())
+                                .setIsCp2InfoIncomplete(
+                                        row.getNumberAttributes().getIsCp2InfoIncomplete())
                                 .build())
                 .build();
     }

@@ -16,6 +16,7 @@
 
 package com.wintmain.dialer.calllog;
 
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.calllog.database.CallLogDatabaseModule;
 import com.wintmain.dialer.calllog.datasources.CallLogDataSource;
 import com.wintmain.dialer.calllog.datasources.DataSources;
@@ -23,7 +24,6 @@ import com.wintmain.dialer.calllog.datasources.phonelookup.PhoneLookupDataSource
 import com.wintmain.dialer.calllog.datasources.systemcalllog.SystemCallLogDataSource;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-import com.google.common.collect.ImmutableList;
 import dagger.Module;
 import dagger.Provides;
 

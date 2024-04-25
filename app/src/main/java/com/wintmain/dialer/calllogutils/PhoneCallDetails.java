@@ -23,9 +23,7 @@ import android.provider.CallLog.Calls;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
-
 import com.android.contacts.common.ContactsUtils.UserType;
 import com.android.contacts.common.util.ContactDisplayUtils;
 import com.wintmain.dialer.R;
@@ -79,7 +77,8 @@ public class PhoneCallDetails {
     public Uri contactUri;
 
     /**
-     * The photo URI of the picture of the contact that is associated with this phone call or null if
+     * The photo URI of the picture of the contact that is associated with this phone call or
+     * null if
      * there is none.
      *
      * <p>This is meant to store the high-res photo only.
@@ -120,7 +119,8 @@ public class PhoneCallDetails {
     long contactUserType;
 
     /**
-     * If this is a voicemail, whether the message is read. For other types of calls, this defaults to
+     * If this is a voicemail, whether the message is read. For other types of calls, this
+     * defaults to
      * {@code true}.
      */
     public boolean isRead = true;
@@ -202,7 +202,9 @@ public class PhoneCallDetails {
             Context context, CharSequence formattedNumber, boolean isVoicemail) {
         displayNumber =
                 PhoneNumberDisplayUtil.getDisplayNumber(
-                                context, number, numberPresentation, formattedNumber, postDialDigits, isVoicemail)
+                                context, number, numberPresentation, formattedNumber,
+                                postDialDigits,
+                                isVoicemail)
                         .toString();
     }
 

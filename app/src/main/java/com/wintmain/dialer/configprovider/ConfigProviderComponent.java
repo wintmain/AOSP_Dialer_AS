@@ -17,12 +17,9 @@
 package com.wintmain.dialer.configprovider;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-
 import dagger.Subcomponent;
 
 /**

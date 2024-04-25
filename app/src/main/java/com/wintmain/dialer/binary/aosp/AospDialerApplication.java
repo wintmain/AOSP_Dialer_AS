@@ -20,7 +20,6 @@ import android.content.Context;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.android.contacts.common.extensions.PhoneDirectoryExtender;
 import com.android.contacts.common.extensions.PhoneDirectoryExtenderFactory;
 import com.android.incallui.bindings.InCallUiBindings;
@@ -47,13 +46,15 @@ public class AospDialerApplication extends DialerApplication implements
         PhoneNumberCacheBindingsFactory, PhoneDirectoryExtenderFactory, InCallUiBindingsFactory {
 
     // 这里implements实现的几个类在AOSP示例中没有，但在repo里还是有源码的。
+
     /**
      * Returns a new instance of the root component for the AOSP Dialer.
      */
     @Override
     @NonNull
     protected Object buildRootComponent() {
-        return DaggerAospDialerRootComponent.builder().contextModule(new ContextModule(this)).build();
+        return DaggerAospDialerRootComponent.builder().contextModule(new ContextModule(this))
+                .build();
     }
     /*
     @Override // com.android.binary.common.DialerApplication
@@ -84,7 +85,7 @@ public class AospDialerApplication extends DialerApplication implements
 
     @Override
     public InCallUiBindings newInCallUiBindings() {
-        return new InCallUiBindingsStub(){
+        return new InCallUiBindingsStub() {
             @NonNull
             @Override
             public PhoneNumberService newPhoneNumberService(Context context) {

@@ -83,4 +83,5 @@ public interface BaseDialerRootComponent
         SpeakEasyComponent.HasComponent,
         StorageComponent.HasComponent,
         StrictModeComponent.HasComponent,
-        VoicemailComponent.HasComponent {}
+        VoicemailComponent.HasComponent {
+}

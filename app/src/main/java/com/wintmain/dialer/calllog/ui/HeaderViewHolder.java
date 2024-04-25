@@ -17,16 +17,14 @@ package com.wintmain.dialer.calllog.ui;
 
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 
 /** ViewHolder for {@link NewCallLogAdapter} to display "Today" or "Older" divider row. */
 final class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView headerTextView;
+    private final TextView headerTextView;
 
     HeaderViewHolder(View view) {
         super(view);

@@ -17,41 +17,40 @@
 package com.wintmain.dialer.lookup.zabasearch;
 
 import android.content.Context;
-
-import com.wintmain.dialer.phonenumbercache.ContactInfo;
 import com.wintmain.dialer.lookup.ContactBuilder;
 import com.wintmain.dialer.lookup.ReverseLookup;
+import com.wintmain.dialer.phonenumbercache.ContactInfo;
 
 import java.io.IOException;
 
 public class ZabaSearchReverseLookup extends ReverseLookup {
-  private static final String TAG = ZabaSearchReverseLookup.class.getSimpleName();
+    private static final String TAG = ZabaSearchReverseLookup.class.getSimpleName();
 
-  public ZabaSearchReverseLookup(Context context) {
-  }
-
-  /**
-   * Perform phone number lookup.
-   *
-   * @param context The application context
-   * @param normalizedNumber The normalized phone number
-   * @param formattedNumber The formatted phone number
-   * @return The phone number info object
-   */
-  @Override
-  public ContactInfo lookupNumber(Context context,
-      String normalizedNumber, String formattedNumber) throws IOException {
-    ZabaSearchApi zsa = new ZabaSearchApi(normalizedNumber);
-    ZabaSearchApi.ContactInfo info = zsa.getContactInfo();
-    if (info.name == null) {
-        return null;
+    public ZabaSearchReverseLookup(Context context) {
     }
 
-    return ContactBuilder.forReverseLookup(normalizedNumber, formattedNumber)
-        .setName(ContactBuilder.Name.createDisplayName(info.name))
-        .addPhoneNumber(ContactBuilder.PhoneNumber.createMainNumber(info.formattedNumber))
-        .addWebsite(ContactBuilder.WebsiteUrl.createProfile(info.website))
-        .addAddress(ContactBuilder.Address.createFormattedHome(info.address))
-        .build();
-  }
+    /**
+     * Perform phone number lookup.
+     *
+     * @param context          The application context
+     * @param normalizedNumber The normalized phone number
+     * @param formattedNumber  The formatted phone number
+     * @return The phone number info object
+     */
+    @Override
+    public ContactInfo lookupNumber(Context context,
+            String normalizedNumber, String formattedNumber) throws IOException {
+        ZabaSearchApi zsa = new ZabaSearchApi(normalizedNumber);
+        ZabaSearchApi.ContactInfo info = zsa.getContactInfo();
+        if (info.name == null) {
+            return null;
+        }
+
+        return ContactBuilder.forReverseLookup(normalizedNumber, formattedNumber)
+                .setName(ContactBuilder.Name.createDisplayName(info.name))
+                .addPhoneNumber(ContactBuilder.PhoneNumber.createMainNumber(info.formattedNumber))
+                .addWebsite(ContactBuilder.WebsiteUrl.createProfile(info.website))
+                .addAddress(ContactBuilder.Address.createFormattedHome(info.address))
+                .build();
+    }
 }

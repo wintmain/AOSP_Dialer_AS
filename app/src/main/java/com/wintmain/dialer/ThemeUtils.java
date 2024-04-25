@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 

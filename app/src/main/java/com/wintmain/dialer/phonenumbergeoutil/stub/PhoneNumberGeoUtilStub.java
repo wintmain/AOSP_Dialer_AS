@@ -17,7 +17,6 @@
 package com.wintmain.dialer.phonenumbergeoutil.stub;
 
 import android.content.Context;
-
 import com.wintmain.dialer.phonenumbergeoutil.PhoneNumberGeoUtil;
 
 import javax.inject.Inject;

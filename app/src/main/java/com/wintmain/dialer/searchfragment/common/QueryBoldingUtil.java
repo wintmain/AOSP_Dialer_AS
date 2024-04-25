@@ -22,10 +22,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.common.LogUtil;
 
 import java.util.Objects;
@@ -68,7 +66,8 @@ public class QueryBoldingUtil {
         }
 
         if (!QueryFilteringUtil.nameMatchesT9Query(query, name, context)) {
-            Pattern pattern = Pattern.compile("(^|\\s)" + Pattern.quote(Objects.requireNonNull(query).toLowerCase()));
+            Pattern pattern = Pattern.compile(
+                    "(^|\\s)" + Pattern.quote(Objects.requireNonNull(query).toLowerCase()));
             Matcher matcher = pattern.matcher(name.toLowerCase());
             if (matcher.find()) {
                 // query matches the start of a name (i.e. "jo" -> "Jessica [Jo]nes")
@@ -85,7 +84,8 @@ public class QueryBoldingUtil {
             int numBolded = Objects.requireNonNull(query).length();
 
             // Bold an extra character for each non-letter
-            for (int i = indexOfT9Match; i <= indexOfT9Match + numBolded && i < name.length(); i++) {
+            for (int i = indexOfT9Match; i <= indexOfT9Match + numBolded && i < name.length();
+                    i++) {
                 if (!Character.isLetter(name.charAt(i))) {
                     numBolded++;
                 }
@@ -133,11 +133,13 @@ public class QueryBoldingUtil {
      */
     public static CharSequence getNumberWithQueryBolded(
             @Nullable String query, @NonNull String number) {
-        if (TextUtils.isEmpty(query) || !QueryFilteringUtil.numberMatchesNumberQuery(query, number)) {
+        if (TextUtils.isEmpty(query) || !QueryFilteringUtil.numberMatchesNumberQuery(query,
+                number)) {
             return number;
         }
 
-        int index = QueryFilteringUtil.indexOfQueryNonDigitsIgnored(Objects.requireNonNull(query), number);
+        int index = QueryFilteringUtil.indexOfQueryNonDigitsIgnored(Objects.requireNonNull(query),
+                number);
         int boldedCharacters = query.length();
 
         for (char c : query.toCharArray()) {
@@ -167,7 +169,8 @@ public class QueryBoldingUtil {
         }
         SpannableString span = new SpannableString(s);
         span.setSpan(
-                new StyleSpan(Typeface.BOLD), index, index + numBolded, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                new StyleSpan(Typeface.BOLD), index, index + numBolded,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return span;
     }
 }

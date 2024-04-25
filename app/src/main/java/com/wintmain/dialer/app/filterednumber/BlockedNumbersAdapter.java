@@ -18,9 +18,7 @@ package com.wintmain.dialer.app.filterednumber;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
-
 import androidx.fragment.app.FragmentManager;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blocking.BlockNumberDialogFragment;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;
@@ -78,7 +76,8 @@ public class BlockedNumbersAdapter extends NumbersAdapter {
                             @Override
                             public void onUnfilterNumberSuccess() {
                                 Logger.get(context)
-                                        .logInteraction(InteractionEvent.Type.UNBLOCK_NUMBER_MANAGEMENT_SCREEN);
+                                        .logInteraction(
+                                                InteractionEvent.Type.UNBLOCK_NUMBER_MANAGEMENT_SCREEN);
                             }
 
                             @Override

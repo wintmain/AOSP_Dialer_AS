@@ -17,10 +17,8 @@
 package com.wintmain.dialer.spam;
 
 import android.content.Context;
-
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-
 import dagger.Subcomponent;
 
 /**

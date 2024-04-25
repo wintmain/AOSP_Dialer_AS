@@ -40,11 +40,11 @@ public final class NumberWithCountryIso {
         if (o == null) {
             return false;
         }
-        if (!(o instanceof NumberWithCountryIso)) {
+        if (!(o instanceof NumberWithCountryIso other)) {
             return false;
         }
-        NumberWithCountryIso other = (NumberWithCountryIso) o;
-        return TextUtils.equals(number, other.number) && TextUtils.equals(countryIso, other.countryIso);
+        return TextUtils.equals(number, other.number) && TextUtils.equals(countryIso,
+                other.countryIso);
     }
 
     @Override

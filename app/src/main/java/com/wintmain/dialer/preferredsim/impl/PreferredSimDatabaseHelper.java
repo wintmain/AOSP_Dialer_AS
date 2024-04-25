@@ -19,7 +19,6 @@ package com.wintmain.dialer.preferredsim.impl;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.preferredsim.PreferredSimFallbackContract.PreferredSim;
 

@@ -21,10 +21,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.logging.ContactSource;
 import com.wintmain.dialer.phonenumbercache.CachedNumberLookupService;
 import com.wintmain.dialer.phonenumbercache.ContactInfo;

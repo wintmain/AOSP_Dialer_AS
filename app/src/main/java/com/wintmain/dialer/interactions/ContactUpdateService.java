@@ -19,7 +19,6 @@ package com.wintmain.dialer.interactions;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-
 import com.android.contacts.common.database.ContactUpdateUtils;
 
 /**

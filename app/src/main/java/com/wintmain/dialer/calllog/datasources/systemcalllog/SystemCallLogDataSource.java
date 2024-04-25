@@ -28,11 +28,14 @@ import android.provider.VoicemailContract.Voicemails;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.util.ArraySet;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
+import com.google.common.collect.Iterables;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.calllog.database.AnnotatedCallLogDatabaseHelper;
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
@@ -47,19 +50,13 @@ import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.phonenumberproto.DialerPhoneNumberUtil;
 import com.wintmain.dialer.storage.Unencrypted;
 import com.wintmain.dialer.util.PermissionsUtil;
-import com.google.common.collect.Iterables;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Responsible for defining the rows in the annotated call log and maintaining the columns in it
@@ -179,7 +176,8 @@ public class SystemCallLogDataSource implements CallLogDataSource {
             Context appContext, Set<Long> matchingIds) {
         ArraySet<Long> ids = new ArraySet<>();
 
-        // Batch the select statements into chunks of 999, the maximum size for SQLite selection args.
+        // Batch the select statements into chunks of 999, the maximum size for SQLite selection
+        // args.
         Iterable<List<Long>> batches = Iterables.partition(matchingIds, 999);
         for (List<Long> idsInBatch : batches) {
             String[] questionMarks = new String[idsInBatch.size()];
@@ -223,27 +221,34 @@ public class SystemCallLogDataSource implements CallLogDataSource {
         LogUtil.enterBlock("SystemCallLogDataSource.registerContentObservers");
 
         if (!PermissionsUtil.hasCallLogReadPermissions(appContext)) {
-            LogUtil.i("SystemCallLogDataSource.registerContentObservers", "no call log permissions");
+            LogUtil.i("SystemCallLogDataSource.registerContentObservers",
+                    "no call log permissions");
             return;
         }
 
         // The system call log has a last updated timestamp, but deletes are physical (the "deleted"
-        // column is unused). This means that we can't detect deletes without scanning the entire table,
-        // which would be too slow. So, we just rely on content observers to trigger rebuilds when any
+        // column is unused). This means that we can't detect deletes without scanning the entire
+        // table,
+        // which would be too slow. So, we just rely on content observers to trigger rebuilds
+        // when any
         // change is made to the system call log.
         appContext
                 .getContentResolver()
-                .registerContentObserver(CallLog.Calls.CONTENT_URI_WITH_VOICEMAIL, true, markDirtyObserver);
+                .registerContentObserver(CallLog.Calls.CONTENT_URI_WITH_VOICEMAIL, true,
+                        markDirtyObserver);
         isCallLogContentObserverRegistered = true;
 
         if (!PermissionsUtil.hasAddVoicemailPermissions(appContext)) {
-            LogUtil.i("SystemCallLogDataSource.registerContentObservers", "no add voicemail permissions");
+            LogUtil.i("SystemCallLogDataSource.registerContentObservers",
+                    "no add voicemail permissions");
             return;
         }
-        // TODO(uabdullah): Need to somehow register observers if user enables permission after launch?
+        // TODO(uabdullah): Need to somehow register observers if user enables permission after
+        //  launch?
         appContext
                 .getContentResolver()
-                .registerContentObserver(VoicemailContract.Status.CONTENT_URI, true, markDirtyObserver);
+                .registerContentObserver(VoicemailContract.Status.CONTENT_URI, true,
+                        markDirtyObserver);
     }
 
     @Override
@@ -301,8 +306,10 @@ public class SystemCallLogDataSource implements CallLogDataSource {
 
         /*
          * The system call log has a last updated timestamp, but deletes are physical (the "deleted"
-         * column is unused). This means that we can't detect deletes without scanning the entire table,
-         * which would be too slow. So, we just rely on content observers to trigger rebuilds when any
+         * column is unused). This means that we can't detect deletes without scanning the entire
+         *  table,
+         * which would be too slow. So, we just rely on content observers to trigger rebuilds
+         * when any
          * change is made to the system call log.
          *
          * Just return false unless the table has never been written to.
@@ -350,7 +357,8 @@ public class SystemCallLogDataSource implements CallLogDataSource {
 
     private void handleInsertsAndUpdates(
             Context appContext, CallLogMutations mutations, Set<Long> existingAnnotatedCallLogIds) {
-        long previousTimestampProcessed = sharedPreferences.getLong(PREF_LAST_TIMESTAMP_PROCESSED, 0L);
+        long previousTimestampProcessed = sharedPreferences.getLong(PREF_LAST_TIMESTAMP_PROCESSED,
+                0L);
 
         DialerPhoneNumberUtil dialerPhoneNumberUtil = new DialerPhoneNumberUtil();
 
@@ -361,7 +369,8 @@ public class SystemCallLogDataSource implements CallLogDataSource {
                              .query(
                                      Calls.CONTENT_URI_WITH_VOICEMAIL,
                                      getProjection(),
-                                     Calls.LAST_MODIFIED + " > ? AND " + Voicemails.DELETED + " = 0",
+                                     Calls.LAST_MODIFIED + " > ? AND " + Voicemails.DELETED
+                                             + " = 0",
                                      new String[]{String.valueOf(previousTimestampProcessed)},
                                      Calls.LAST_MODIFIED + " DESC LIMIT 1000")) {
 
@@ -371,7 +380,8 @@ public class SystemCallLogDataSource implements CallLogDataSource {
             }
 
             if (!cursor.moveToFirst()) {
-                LogUtil.i("SystemCallLogDataSource.handleInsertsAndUpdates", "no entries to insert/update");
+                LogUtil.i("SystemCallLogDataSource.handleInsertsAndUpdates",
+                        "no entries to insert/update");
                 return;
             }
 
@@ -400,7 +410,8 @@ public class SystemCallLogDataSource implements CallLogDataSource {
             int featuresColumn = cursor.getColumnIndexOrThrow(Calls.FEATURES);
             int postDialDigitsColumn = cursor.getColumnIndexOrThrow(Calls.POST_DIAL_DIGITS);
 
-            // The cursor orders by LAST_MODIFIED DESC, so the first result is the most recent timestamp
+            // The cursor orders by LAST_MODIFIED DESC, so the first result is the most recent
+            // timestamp
             // processed.
             lastTimestampProcessed = cursor.getLong(lastModifiedColumn);
             do {
@@ -415,7 +426,8 @@ public class SystemCallLogDataSource implements CallLogDataSource {
                 int presentation;
                 if (cursor.isNull(presentationColumn)
                         || (presentation = cursor.getInt(presentationColumn)) == 0) {
-                    // CallLog.Calls#NUMBER_PRESENTATION lists the allowed values, which are non-null and
+                    // CallLog.Calls#NUMBER_PRESENTATION lists the allowed values, which are
+                    // non-null and
                     // non-zero.
                     throw new IllegalStateException("presentation is missing");
                 }
@@ -455,14 +467,16 @@ public class SystemCallLogDataSource implements CallLogDataSource {
                     contentValues.put(AnnotatedCallLog.FORMATTED_NUMBER, formattedNumber);
                 } else {
                     contentValues.put(
-                            AnnotatedCallLog.NUMBER, DialerPhoneNumber.getDefaultInstance().toByteArray());
+                            AnnotatedCallLog.NUMBER,
+                            DialerPhoneNumber.getDefaultInstance().toByteArray());
                 }
                 contentValues.put(AnnotatedCallLog.NUMBER_PRESENTATION, presentation);
                 contentValues.put(AnnotatedCallLog.CALL_TYPE, type);
                 contentValues.put(AnnotatedCallLog.IS_READ, isRead);
                 contentValues.put(AnnotatedCallLog.NEW, isNew);
                 contentValues.put(AnnotatedCallLog.GEOCODED_LOCATION, geocodedLocation);
-                contentValues.put(AnnotatedCallLog.PHONE_ACCOUNT_COMPONENT_NAME, phoneAccountComponentName);
+                contentValues.put(AnnotatedCallLog.PHONE_ACCOUNT_COMPONENT_NAME,
+                        phoneAccountComponentName);
                 contentValues.put(AnnotatedCallLog.PHONE_ACCOUNT_ID, phoneAccountId);
                 contentValues.put(AnnotatedCallLog.FEATURES, features);
                 contentValues.put(AnnotatedCallLog.DURATION, duration);

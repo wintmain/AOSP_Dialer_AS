@@ -21,11 +21,10 @@ import com.wintmain.dialer.enrichedcall.EnrichedCallManager;
 import com.wintmain.dialer.enrichedcall.RcsVideoShareFactory;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
 
 /**
  * Module which binds {@link EnrichedCallManagerStub}.

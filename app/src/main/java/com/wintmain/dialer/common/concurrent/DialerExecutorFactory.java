@@ -18,7 +18,6 @@ package com.wintmain.dialer.common.concurrent;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
 
 /**
@@ -36,10 +35,14 @@ public interface DialerExecutorFactory {
      *
      * @param taskId used for the headless fragment ID and task ID
      * @param worker a function executed on a worker thread which accepts an {@link InputT} and
-     *               returns an {@link OutputT}. It should ideally not be an inner class of your (meaning it
-     *               should not be a lambda, anonymous, or non-static) but it can be a static nested class. The
-     *               static nested class should not contain any reference to UI, including any activity or
-     *               fragment or activity context, though it may reference some threadsafe system objects such
+     *               returns an {@link OutputT}. It should ideally not be an inner class of your
+     *               (meaning it
+     *               should not be a lambda, anonymous, or non-static) but it can be a static
+     *               nested class. The
+     *               static nested class should not contain any reference to UI, including any
+     *               activity or
+     *               fragment or activity context, though it may reference some threadsafe system
+     *               objects such
      *               as the application context.
      */
     @NonNull
@@ -52,10 +55,14 @@ public interface DialerExecutorFactory {
      * Create a task from a non-UI context.
      *
      * @param worker a function executed on a worker thread which accepts an {@link InputT} and
-     *               returns an {@link OutputT}. It should ideally not be an inner class of your (meaning it
-     *               should not be a lambda, anonymous, or non-static) but it can be a static nested class. The
-     *               static nested class should not contain any reference to UI, including any activity or
-     *               fragment or activity context, though it may reference some threadsafe system objects such
+     *               returns an {@link OutputT}. It should ideally not be an inner class of your
+     *               (meaning it
+     *               should not be a lambda, anonymous, or non-static) but it can be a static
+     *               nested class. The
+     *               static nested class should not contain any reference to UI, including any
+     *               activity or
+     *               fragment or activity context, though it may reference some threadsafe system
+     *               objects such
      *               as the application context.
      */
     @NonNull

@@ -17,7 +17,7 @@ package com.wintmain.dialer.phonelookup.consolidator;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.logging.ContactSource;
 import com.wintmain.dialer.phonelookup.PhoneLookup;
@@ -26,7 +26,6 @@ import com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.Cp2Info.Cp2ContactInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.PeopleApiInfo.InfoType;
-import com.google.common.collect.ImmutableList;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -51,8 +50,10 @@ public final class PhoneLookupInfoConsolidator {
      * source CP2_DEFAULT_DIRECTORY can't provide the name, source CP2_EXTENDED_DIRECTORY will be
      * consulted.
      *
-     * <p>The reason for defining a name source is to avoid mixing info from different sub-messages in
-     * PhoneLookupInfo proto when we are supposed to stick with only one sub-message. For example, if
+     * <p>The reason for defining a name source is to avoid mixing info from different
+     * sub-messages in
+     * PhoneLookupInfo proto when we are supposed to stick with only one sub-message. For
+     * example, if
      * a PhoneLookupInfo proto has both default_cp2_info and extended_cp2_info but only
      * extended_cp2_info has a photo URI, PhoneLookupInfoConsolidator should provide an empty photo
      * URI as CP2_DEFAULT_DIRECTORY has higher priority and we should not use extended_cp2_info's
@@ -100,7 +101,8 @@ public final class PhoneLookupInfoConsolidator {
                 return ContactSource.Type.SOURCE_TYPE_CNAP;
             case NameSource.PHONE_NUMBER_CACHE:
                 ContactSource.Type sourceType =
-                        ContactSource.Type.forNumber(phoneLookupInfo.getMigratedInfo().getSourceType());
+                        ContactSource.Type.forNumber(
+                                phoneLookupInfo.getMigratedInfo().getSourceType());
                 if (sourceType == null) {
                     sourceType = ContactSource.Type.UNKNOWN_SOURCE_TYPE;
                 }
@@ -127,7 +129,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns the name associated with that number.
      *
      * <p>Examples of this are a local contact's name or a business name received from caller ID.
@@ -158,10 +161,12 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns the photo thumbnail URI associated with that number.
      *
-     * <p>If no photo thumbnail URI can be obtained from the {@link PhoneLookupInfo}, an empty string
+     * <p>If no photo thumbnail URI can be obtained from the {@link PhoneLookupInfo}, an empty
+     * string
      * will be returned.
      */
     public String getPhotoThumbnailUri() {
@@ -184,7 +189,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns the photo URI associated with that number.
      *
      * <p>If no photo URI can be obtained from the {@link PhoneLookupInfo}, an empty string will be
@@ -211,7 +217,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns the photo ID associated with that number, or 0 if there is none.
      */
     public long getPhotoId() {
@@ -233,8 +240,10 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
-     * returns the lookup URI associated with that number, or an empty string if no lookup URI can be
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
+     * returns the lookup URI associated with that number, or an empty string if no lookup URI
+     * can be
      * obtained.
      */
     public String getLookupUri() {
@@ -257,8 +266,10 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
-     * returns a localized string representing the number type such as "Home" or "Mobile", or a custom
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
+     * returns a localized string representing the number type such as "Home" or "Mobile", or a
+     * custom
      * value set by the user.
      *
      * <p>If no label can be obtained from the {@link PhoneLookupInfo}, an empty string will be
@@ -284,10 +295,12 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns the number's geolocation (which is for display purpose only).
      *
-     * <p>If no geolocation can be obtained from the {@link PhoneLookupInfo}, an empty string will be
+     * <p>If no geolocation can be obtained from the {@link PhoneLookupInfo}, an empty string
+     * will be
      * returned.
      */
     public String getGeolocation() {
@@ -308,7 +321,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns whether the number belongs to a business place.
      */
     public boolean isBusiness() {
@@ -330,11 +344,13 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns whether the number is blocked.
      */
     public boolean isBlocked() {
-        // If system blocking reported blocked state it always takes priority over the dialer blocking.
+        // If system blocking reported blocked state it always takes priority over the dialer
+        // blocking.
         // It will be absent if dialer blocking should be used.
         if (phoneLookupInfo.getSystemBlockedNumberInfo().hasBlockedState()) {
             return phoneLookupInfo
@@ -346,7 +362,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns whether the number is spam.
      */
     public boolean isSpam() {
@@ -362,7 +379,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns whether the number is an emergency number (e.g., 911 in the U.S.).
      */
     public boolean isEmergencyNumber() {
@@ -370,10 +388,12 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns whether the number can be reported as invalid.
      *
-     * <p>As we currently report invalid numbers via the People API, only numbers from the People API
+     * <p>As we currently report invalid numbers via the People API, only numbers from the People
+     * API
      * can be reported as invalid.
      */
     public boolean canReportAsInvalidNumber() {
@@ -396,7 +416,8 @@ public final class PhoneLookupInfoConsolidator {
     }
 
     /**
-     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This method
+     * The {@link PhoneLookupInfo} passed to the constructor is associated with a number. This
+     * method
      * returns whether the number can be reached via carrier video calls.
      */
     public boolean canSupportCarrierVideoCall() {
@@ -419,7 +440,8 @@ public final class PhoneLookupInfoConsolidator {
     /**
      * Arbitrarily select the first CP2 contact in the default directory. In the future, it may make
      * sense to display contact information from all contacts with the same number (for example show
-     * the name as "Mom, Dad" or show a synthesized photo containing photos of both "Mom" and "Dad").
+     * the name as "Mom, Dad" or show a synthesized photo containing photos of both "Mom" and
+     * "Dad").
      */
     @Nullable
     private Cp2ContactInfo getFirstContactInDefaultDirectory() {
@@ -431,7 +453,8 @@ public final class PhoneLookupInfoConsolidator {
     /**
      * Arbitrarily select the first CP2 contact in extended directories. In the future, it may make
      * sense to display contact information from all contacts with the same number (for example show
-     * the name as "Mom, Dad" or show a synthesized photo containing photos of both "Mom" and "Dad").
+     * the name as "Mom, Dad" or show a synthesized photo containing photos of both "Mom" and
+     * "Dad").
      */
     @Nullable
     private Cp2ContactInfo getFirstContactInExtendedDirectories() {
@@ -448,12 +471,14 @@ public final class PhoneLookupInfoConsolidator {
         for (int nameSource : NAME_SOURCES_IN_PRIORITY_ORDER) {
             switch (nameSource) {
                 case NameSource.CP2_DEFAULT_DIRECTORY:
-                    if (firstDefaultCp2Contact != null && !firstDefaultCp2Contact.getName().isEmpty()) {
+                    if (firstDefaultCp2Contact != null && !firstDefaultCp2Contact.getName()
+                            .isEmpty()) {
                         return NameSource.CP2_DEFAULT_DIRECTORY;
                     }
                     break;
                 case NameSource.CP2_EXTENDED_DIRECTORY:
-                    if (firstExtendedCp2Contact != null && !firstExtendedCp2Contact.getName().isEmpty()) {
+                    if (firstExtendedCp2Contact != null && !firstExtendedCp2Contact.getName()
+                            .isEmpty()) {
                         return NameSource.CP2_EXTENDED_DIRECTORY;
                     }
                     break;

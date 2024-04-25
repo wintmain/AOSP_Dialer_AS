@@ -23,9 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.contactsfragment.ContactsFragment.OnContactSelectedListener;
@@ -67,7 +65,8 @@ final class ContactViewHolder extends RecyclerView.ViewHolder implements OnClick
      * @param showHeader  if header view should be shown {@code True}, {@code False} otherwise.
      */
     public void bind(
-            String headerText, String displayName, Uri contactUri, long contactId, boolean showHeader) {
+            String headerText, String displayName, Uri contactUri, long contactId,
+            boolean showHeader) {
         Assert.checkArgument(!TextUtils.isEmpty(displayName));
         this.contactUri = contactUri;
         this.contactId = contactId;
@@ -79,7 +78,9 @@ final class ContactViewHolder extends RecyclerView.ViewHolder implements OnClick
 
         Logger.get(context)
                 .logQuickContactOnTouch(
-                        photo, InteractionEvent.Type.OPEN_QUICK_CONTACT_FROM_CONTACTS_FRAGMENT_BADGE, true);
+                        photo,
+                        InteractionEvent.Type.OPEN_QUICK_CONTACT_FROM_CONTACTS_FRAGMENT_BADGE,
+                        true);
     }
 
     public QuickContactBadge getPhoto() {

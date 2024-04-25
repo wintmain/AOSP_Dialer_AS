@@ -29,13 +29,11 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.os.UserManagerCompat;
 import androidx.preference.PreferenceManager;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
@@ -98,7 +96,8 @@ public class CountryDetector {
         this.appContext = appContext;
         this.geocoder = geocoder;
 
-        // If the device does not implement Geocoder there is no point trying to get location updates
+        // If the device does not implement Geocoder there is no point trying to get location
+        // updates
         // because we cannot retrieve the country based on the location anyway.
         if (Geocoder.isPresent()) {
             registerForLocationUpdates(appContext, locationManager);
@@ -106,7 +105,8 @@ public class CountryDetector {
     }
 
     @SuppressWarnings("missingPermission")
-    private static void registerForLocationUpdates(Context context, LocationManager locationManager) {
+    private static void registerForLocationUpdates(Context context,
+            LocationManager locationManager) {
         if (hasLocationPermissions(context)) {
             LogUtil.w(
                     "CountryDetector.registerForLocationUpdates",
@@ -163,22 +163,26 @@ public class CountryDetector {
 
                             PreferenceManager.getDefaultSharedPreferences(appContext)
                                     .edit()
-                                    .putLong(CountryDetector.KEY_PREFERENCE_TIME_UPDATED, System.currentTimeMillis())
-                                    .putString(CountryDetector.KEY_PREFERENCE_CURRENT_COUNTRY, country)
+                                    .putLong(CountryDetector.KEY_PREFERENCE_TIME_UPDATED,
+                                            System.currentTimeMillis())
+                                    .putString(CountryDetector.KEY_PREFERENCE_CURRENT_COUNTRY,
+                                            country)
                                     .apply();
                         })
                 .onFailure(
                         throwable ->
                                 LogUtil.w(
                                         "CountryDetector.processLocationUpdate",
-                                        "exception occurred when getting geocoded country from location",
+                                        "exception occurred when getting geocoded country from "
+                                                + "location",
                                         throwable))
                 .build()
                 .executeParallel(location);
     }
 
     private static boolean hasLocationPermissions(Context context) {
-        return context.checkSelfPermission(permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        return context.checkSelfPermission(permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED;
     }
 
     public String getCurrentCountryIso() {
@@ -264,7 +268,8 @@ public class CountryDetector {
             final Location location =
                     (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
 
-            // TODO: rething how we access the gecoder here, right now we have to set the static instance
+            // TODO: rething how we access the gecoder here, right now we have to set the static
+            //  instance
             // of CountryDetector to make this work for tests which is weird
             // (see CountryDetectorTest.locationChangedBroadcast_GeocodesLocation)
             processLocationUpdate(context, CountryDetector.getInstance(context).geocoder, location);

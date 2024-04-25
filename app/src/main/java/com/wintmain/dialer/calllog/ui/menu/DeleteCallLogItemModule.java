@@ -20,10 +20,8 @@ import android.Manifest.permission;
 import android.content.Context;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
-
 import com.wintmain.dialer.CoalescedIds;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
@@ -86,6 +84,18 @@ final class DeleteCallLogItemModule implements HistoryItemActionModule {
             contextWeakReference = new WeakReference<>(context);
         }
 
+        private static List<String> getCallLogIdsAsStrings(CoalescedIds coalescedIds) {
+            Assert.checkArgument(coalescedIds.getCoalescedIdCount() > 0);
+
+            List<String> idStrings = new ArrayList<>(coalescedIds.getCoalescedIdCount());
+
+            for (long callLogId : coalescedIds.getCoalescedIdList()) {
+                idStrings.add(String.valueOf(callLogId));
+            }
+
+            return idStrings;
+        }
+
         @Nullable
         @Override
         @RequiresPermission(value = permission.WRITE_CALL_LOG)
@@ -98,12 +108,14 @@ final class DeleteCallLogItemModule implements HistoryItemActionModule {
 
             Selection selection =
                     Selection.builder()
-                            .and(Selection.column(CallLog.Calls._ID).in(getCallLogIdsAsStrings(coalescedIds)))
+                            .and(Selection.column(CallLog.Calls._ID)
+                                    .in(getCallLogIdsAsStrings(coalescedIds)))
                             .build();
             int numRowsDeleted =
                     context
                             .getContentResolver()
-                            .delete(Calls.CONTENT_URI, selection.getSelection(), selection.getSelectionArgs());
+                            .delete(Calls.CONTENT_URI, selection.getSelection(),
+                                    selection.getSelectionArgs());
 
             if (numRowsDeleted != coalescedIds.getCoalescedIdCount()) {
                 LogUtil.e(
@@ -114,18 +126,6 @@ final class DeleteCallLogItemModule implements HistoryItemActionModule {
             }
 
             return null;
-        }
-
-        private static List<String> getCallLogIdsAsStrings(CoalescedIds coalescedIds) {
-            Assert.checkArgument(coalescedIds.getCoalescedIdCount() > 0);
-
-            List<String> idStrings = new ArrayList<>(coalescedIds.getCoalescedIdCount());
-
-            for (long callLogId : coalescedIds.getCoalescedIdList()) {
-                idStrings.add(String.valueOf(callLogId));
-            }
-
-            return idStrings;
         }
     }
 }

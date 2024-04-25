@@ -30,7 +30,6 @@ import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callrecord.CallRecording;
 import com.wintmain.dialer.callrecord.ICallRecorderService;
@@ -43,7 +42,8 @@ import java.util.Locale;
 public class CallRecorderService extends Service {
     private static final String TAG = "CallRecorderService";
     private static final boolean DBG = false;
-    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyMMdd_HHmmssSSS", Locale.US);
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyMMdd_HHmmssSSS",
+            Locale.US);
     private MediaRecorder mMediaRecorder = null;
     private CallRecording mCurrentRecording = null;
     private final ICallRecorderService.Stub mBinder = new ICallRecorderService.Stub() {
@@ -53,7 +53,8 @@ public class CallRecorderService extends Service {
         }
 
         @Override
-        public boolean startRecording(String phoneNumber, long creationTime) throws RemoteException {
+        public boolean startRecording(String phoneNumber, long creationTime)
+                throws RemoteException {
             return startRecordingInternal(phoneNumber, creationTime);
         }
 
@@ -74,7 +75,9 @@ public class CallRecorderService extends Service {
 
     @Override
     public void onCreate() {
-        if (DBG) Log.d(TAG, "Creating CallRecorderService");
+        if (DBG) {
+            Log.d(TAG, "Creating CallRecorderService");
+        }
     }
 
     @Override
@@ -118,13 +121,17 @@ public class CallRecorderService extends Service {
             return false;
         }
 
-        if (DBG) Log.d(TAG, "Starting recording");
+        if (DBG) {
+            Log.d(TAG, "Starting recording");
+        }
 
         mMediaRecorder = new MediaRecorder();
         try {
             int audioSource = getAudioSource();
             int formatChoice = getAudioFormatChoice();
-            if (DBG) Log.d(TAG, "Creating media recorder with audio source " + audioSource);
+            if (DBG) {
+                Log.d(TAG, "Creating media recorder with audio source " + audioSource);
+            }
             mMediaRecorder.setAudioSource(audioSource);
             mMediaRecorder.setOutputFormat(formatChoice == 0
                     ? MediaRecorder.OutputFormat.AMR_WB : MediaRecorder.OutputFormat.MPEG_4);
@@ -177,7 +184,9 @@ public class CallRecorderService extends Service {
 
     private synchronized CallRecording stopRecordingInternal() {
         CallRecording recording = mCurrentRecording;
-        if (DBG) Log.d(TAG, "Stopping current recording");
+        if (DBG) {
+            Log.d(TAG, "Stopping current recording");
+        }
         if (mMediaRecorder != null) {
             try {
                 mMediaRecorder.stop();
@@ -200,7 +209,9 @@ public class CallRecorderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (DBG) Log.d(TAG, "Destroying CallRecorderService");
+        if (DBG) {
+            Log.d(TAG, "Destroying CallRecorderService");
+        }
     }
 
     private String generateFilename(String number) {

@@ -19,9 +19,7 @@ package com.wintmain.dialer.calldetails;
 
 import android.content.Context;
 import android.view.View;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.calldetails.CallDetailsEntryViewHolder.CallDetailsEntryListener;
 import com.wintmain.dialer.calldetails.CallDetailsFooterViewHolder.DeleteCallDetailsListener;
 import com.wintmain.dialer.calldetails.CallDetailsHeaderViewHolder.CallDetailsHeaderListener;
@@ -67,7 +65,8 @@ final class OldCallDetailsAdapter extends CallDetailsAdapterCommon {
     protected CallDetailsHeaderViewHolder createCallDetailsHeaderViewHolder(
             View container, CallDetailsHeaderListener callDetailsHeaderListener) {
         return new CallDetailsHeaderViewHolder(
-                container, contact.getNumber(), contact.getPostDialDigits(), callDetailsHeaderListener);
+                container, contact.getNumber(), contact.getPostDialDigits(),
+                callDetailsHeaderListener);
     }
 
     @Override

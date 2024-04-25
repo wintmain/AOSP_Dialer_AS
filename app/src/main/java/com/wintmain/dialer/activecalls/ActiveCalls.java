@@ -17,7 +17,6 @@
 package com.wintmain.dialer.activecalls;
 
 import androidx.annotation.MainThread;
-
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -26,7 +25,8 @@ import com.google.common.collect.ImmutableList;
 public interface ActiveCalls {
 
     /**
-     * Return a list of current active calls. Any call that is not disconnected is regarded as active.
+     * Return a list of current active calls. Any call that is not disconnected is regarded as
+     * active.
      * Ordering of elements are not guaranteed.
      */
     ImmutableList<ActiveCallInfo> getActiveCalls();

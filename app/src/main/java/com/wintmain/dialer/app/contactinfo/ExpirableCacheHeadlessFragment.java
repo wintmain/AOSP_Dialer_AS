@@ -17,11 +17,9 @@
 package com.wintmain.dialer.app.contactinfo;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
 import com.wintmain.dialer.util.ExpirableCache;
 
@@ -44,9 +42,11 @@ public class ExpirableCacheHeadlessFragment extends Fragment {
                 (ExpirableCacheHeadlessFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG);
         if (fragment == null) {
             fragment = new ExpirableCacheHeadlessFragment();
-            // Allowing state loss since in rare cases this is called after activity's state is saved and
+            // Allowing state loss since in rare cases this is called after activity's state is
+            // saved and
             // it's fine if the cache is lost.
-            fragmentManager.beginTransaction().add(fragment, FRAGMENT_TAG).commitNowAllowingStateLoss();
+            fragmentManager.beginTransaction().add(fragment, FRAGMENT_TAG)
+                    .commitNowAllowingStateLoss();
         }
         return fragment;
     }

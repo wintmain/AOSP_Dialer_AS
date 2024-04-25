@@ -17,12 +17,9 @@
 package com.wintmain.dialer.feedback;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.android.incallui.call.CallList;
 import com.wintmain.dialer.inject.HasRootComponent;
-
 import dagger.Subcomponent;
 
 /**

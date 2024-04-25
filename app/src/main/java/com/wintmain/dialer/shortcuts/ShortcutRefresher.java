@@ -17,10 +17,8 @@
 package com.wintmain.dialer.shortcuts;
 
 import android.content.Context;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-
 import com.android.contacts.common.list.ContactEntry;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -61,7 +59,8 @@ public final class ShortcutRefresher {
             ContactEntry entry = new ContactEntry();
             entry.id = item.contactId();
             entry.lookupKey = item.lookupKey();
-            // SpeedDialUiItem name's are already configured for alternative display orders, so we don't
+            // SpeedDialUiItem name's are already configured for alternative display orders, so
+            // we don't
             // need to account for them in these entries.
             entry.namePrimary = item.name();
             contactEntries.add(entry);
@@ -80,9 +79,12 @@ public final class ShortcutRefresher {
         public Void doInBackground(List<ContactEntry> contacts) {
             LogUtil.enterBlock("ShortcutRefresher.Task.doInBackground");
 
-            // Only dynamic shortcuts are maintained from UI components. Pinned shortcuts are maintained
-            // by the job scheduler. This is because a pinned contact may not necessarily still be in the
-            // favorites tiles, so refreshing it would require an additional database query. We don't want
+            // Only dynamic shortcuts are maintained from UI components. Pinned shortcuts are
+            // maintained
+            // by the job scheduler. This is because a pinned contact may not necessarily still
+            // be in the
+            // favorites tiles, so refreshing it would require an additional database query. We
+            // don't want
             // to incur the cost of that extra database query every time the favorites tiles change.
             new DynamicShortcuts(context, new IconFactory(context)).refresh(contacts); // Blocking
 

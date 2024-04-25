@@ -17,9 +17,7 @@ package com.wintmain.dialer.app.filterednumber;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.logging.Logger;
 import com.wintmain.dialer.logging.ScreenEvent;
@@ -51,27 +49,31 @@ public class BlockedNumbersSettingsActivity extends AppCompatActivity {
     public void showManagementUi() {
         BlockedNumbersFragment fragment =
                 (BlockedNumbersFragment)
-                        getSupportFragmentManager().findFragmentByTag(TAG_BLOCKED_MANAGEMENT_FRAGMENT);
+                        getSupportFragmentManager().findFragmentByTag(
+                                TAG_BLOCKED_MANAGEMENT_FRAGMENT);
         if (fragment == null) {
             fragment = new BlockedNumbersFragment();
         }
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.blocked_numbers_activity_container, fragment, TAG_BLOCKED_MANAGEMENT_FRAGMENT)
+                .replace(R.id.blocked_numbers_activity_container, fragment,
+                        TAG_BLOCKED_MANAGEMENT_FRAGMENT)
                 .commit();
 
         Logger.get(this).logScreenView(ScreenEvent.Type.BLOCKED_NUMBER_MANAGEMENT, this);
     }
 
     /**
-     * Shows fragment with UI to preview the numbers of contacts currently marked as send-to-voicemail
+     * Shows fragment with UI to preview the numbers of contacts currently marked as
+     * send-to-voicemail
      * in Contacts. These numbers can be imported into Dialer's blocked number list.
      */
     public void showNumbersToImportPreviewUi() {
         ViewNumbersToImportFragment fragment =
                 (ViewNumbersToImportFragment)
-                        getSupportFragmentManager().findFragmentByTag(TAG_VIEW_NUMBERS_TO_IMPORT_FRAGMENT);
+                        getSupportFragmentManager().findFragmentByTag(
+                                TAG_VIEW_NUMBERS_TO_IMPORT_FRAGMENT);
         if (fragment == null) {
             fragment = new ViewNumbersToImportFragment();
         }
@@ -79,7 +81,8 @@ public class BlockedNumbersSettingsActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(
-                        R.id.blocked_numbers_activity_container, fragment, TAG_VIEW_NUMBERS_TO_IMPORT_FRAGMENT)
+                        R.id.blocked_numbers_activity_container, fragment,
+                        TAG_VIEW_NUMBERS_TO_IMPORT_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }

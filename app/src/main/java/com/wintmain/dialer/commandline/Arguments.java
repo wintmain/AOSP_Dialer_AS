@@ -17,14 +17,9 @@
 package com.wintmain.dialer.commandline;
 
 import androidx.annotation.Nullable;
-
-import com.wintmain.dialer.commandline.Command.IllegalCommandLineArgumentException;
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.PeekingIterator;
-import com.google.common.collect.UnmodifiableIterator;
+import com.google.common.collect.*;
+import com.wintmain.dialer.commandline.Command.IllegalCommandLineArgumentException;
 
 import java.util.Objects;
 
@@ -118,7 +113,8 @@ public abstract class Arguments {
     public abstract ImmutableList<String> getPositionals();
 
     /**
-     * Return the positional at {@code position}. Throw {@link IllegalCommandLineArgumentException} if
+     * Return the positional at {@code position}. Throw
+     * {@link IllegalCommandLineArgumentException} if
      * it is absent and reports to the user {@code name} is expected.
      */
     public String expectPositional(int position, String name)

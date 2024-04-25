@@ -19,7 +19,6 @@ package com.wintmain.dialer.app.widget;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.util.OrientationUtil;
 import com.wintmain.dialer.widget.EmptyContentView;
@@ -36,7 +35,8 @@ public class DialpadSearchEmptyContentView extends EmptyContentView {
     @Override
     protected void inflateLayout() {
         int orientation =
-                OrientationUtil.isLandscape(getContext()) ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL;
+                OrientationUtil.isLandscape(getContext()) ? LinearLayout.HORIZONTAL
+                        : LinearLayout.VERTICAL;
 
         setOrientation(orientation);
 

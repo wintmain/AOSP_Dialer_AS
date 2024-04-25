@@ -16,11 +16,10 @@
 
 package com.wintmain.dialer.promotion.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.promotion.Promotion;
-import com.google.common.collect.ImmutableList;
-
 import dagger.Module;
 import dagger.Provides;
 

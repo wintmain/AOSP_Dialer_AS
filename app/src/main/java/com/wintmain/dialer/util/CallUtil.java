@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
-
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.phonenumberutil.PhoneNumberHelper;
 
@@ -77,7 +76,8 @@ public class CallUtil {
         if (!PermissionsUtil.hasPermission(context, android.Manifest.permission.READ_PHONE_STATE)) {
             return VIDEO_CALLING_DISABLED;
         }
-        TelecomManager telecommMgr = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        TelecomManager telecommMgr = (TelecomManager) context.getSystemService(
+                Context.TELECOM_SERVICE);
         if (telecommMgr == null) {
             return VIDEO_CALLING_DISABLED;
         }
@@ -88,7 +88,8 @@ public class CallUtil {
             if (account != null) {
                 if (account.hasCapabilities(PhoneAccount.CAPABILITY_VIDEO_CALLING)) {
                     int videoCapabilities = VIDEO_CALLING_ENABLED;
-                    if (account.hasCapabilities(PhoneAccount.CAPABILITY_VIDEO_CALLING_RELIES_ON_PRESENCE)) {
+                    if (account.hasCapabilities(
+                            PhoneAccount.CAPABILITY_VIDEO_CALLING_RELIES_ON_PRESENCE)) {
                         videoCapabilities |= VIDEO_CALLING_PRESENCE;
                     }
                     return videoCapabilities;
@@ -106,7 +107,8 @@ public class CallUtil {
      * false} otherwise.
      */
     public static boolean isVideoEnabled(Context context) {
-        boolean isVideoEnabled = (getVideoCallingAvailability(context) & VIDEO_CALLING_ENABLED) != 0;
+        boolean isVideoEnabled = (getVideoCallingAvailability(context) & VIDEO_CALLING_ENABLED)
+                != 0;
 
         // Log everytime the video enabled state changes.
         if (!hasInitializedIsVideoEnabledState) {
@@ -130,7 +132,8 @@ public class CallUtil {
      * specified.
      *
      * @param context The context.
-     * @return {@code true} if one of the call capable phone accounts supports calling with a subject
+     * @return {@code true} if one of the call capable phone accounts supports calling with a
+     * subject
      * specified, {@code false} otherwise.
      */
     @SuppressLint("MissingPermission")
@@ -138,7 +141,8 @@ public class CallUtil {
         if (!PermissionsUtil.hasPermission(context, android.Manifest.permission.READ_PHONE_STATE)) {
             return false;
         }
-        TelecomManager telecommMgr = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        TelecomManager telecommMgr = (TelecomManager) context.getSystemService(
+                Context.TELECOM_SERVICE);
         if (telecommMgr == null) {
             return false;
         }

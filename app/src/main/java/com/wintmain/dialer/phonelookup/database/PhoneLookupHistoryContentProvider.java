@@ -16,22 +16,15 @@
 
 package com.wintmain.dialer.phonelookup.database;
 
-import android.content.ContentProvider;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
-import android.content.ContentValues;
-import android.content.OperationApplicationException;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract;
@@ -96,11 +89,13 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
                         PhoneLookupHistory.NORMALIZED_NUMBER
                                 + "="
                                 + DatabaseUtils.sqlEscapeString(
-                                Uri.decode(uri.getQueryParameter(PhoneLookupHistory.NUMBER_QUERY_PARAM))));
+                                Uri.decode(uri.getQueryParameter(
+                                        PhoneLookupHistory.NUMBER_QUERY_PARAM))));
                 // fall through
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_CODE:
                 Cursor cursor =
-                        queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+                        queryBuilder.query(db, projection, selection, selectionArgs, null, null,
+                                sortOrder);
                 if (cursor == null) {
                     LogUtil.w("PhoneLookupHistoryContentProvider.query", "cursor was null");
                     return null;
@@ -130,18 +125,21 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
         switch (uriType) {
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_CODE:
                 Assert.checkArgument(
-                        Objects.requireNonNull(values).getAsString(PhoneLookupHistory.NORMALIZED_NUMBER) != null,
+                        Objects.requireNonNull(values)
+                                .getAsString(PhoneLookupHistory.NORMALIZED_NUMBER) != null,
                         "You must specify a normalized number when inserting");
                 break;
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_ID_CODE:
                 String normalizedNumberFromUri =
                         Uri.decode(uri.getQueryParameter(PhoneLookupHistory.NUMBER_QUERY_PARAM));
                 String normalizedNumberFromValues =
-                        Objects.requireNonNull(values).getAsString(PhoneLookupHistory.NORMALIZED_NUMBER);
+                        Objects.requireNonNull(values).getAsString(
+                                PhoneLookupHistory.NORMALIZED_NUMBER);
                 Assert.checkArgument(
                         normalizedNumberFromValues == null
                                 || normalizedNumberFromValues.equals(normalizedNumberFromUri),
-                        "NORMALIZED_NUMBER from values %s does not match normalized number from URI: %s",
+                        "NORMALIZED_NUMBER from values %s does not match normalized number from "
+                                + "URI: %s",
                         LogUtil.sanitizePhoneNumber(normalizedNumberFromValues),
                         LogUtil.sanitizePhoneNumber(normalizedNumberFromUri));
                 if (normalizedNumberFromValues == null) {
@@ -157,7 +155,8 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
             LogUtil.w(
                     "PhoneLookupHistoryContentProvider.insert",
                     "error inserting row with number: %s",
-                    LogUtil.sanitizePhoneNumber(values.getAsString(PhoneLookupHistory.NORMALIZED_NUMBER)));
+                    LogUtil.sanitizePhoneNumber(
+                            values.getAsString(PhoneLookupHistory.NORMALIZED_NUMBER)));
             return null;
         }
         Uri insertedUri =
@@ -178,12 +177,16 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_CODE:
                 break;
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_ID_CODE:
-                Assert.checkArgument(selection == null, "Do not specify selection when deleting by number");
+                Assert.checkArgument(selection == null,
+                        "Do not specify selection when deleting by number");
                 Assert.checkArgument(
-                        selectionArgs == null, "Do not specify selection args when deleting by number");
-                String number = Uri.decode(uri.getQueryParameter(PhoneLookupHistory.NUMBER_QUERY_PARAM));
+                        selectionArgs == null,
+                        "Do not specify selection args when deleting by number");
+                String number = Uri.decode(
+                        uri.getQueryParameter(PhoneLookupHistory.NUMBER_QUERY_PARAM));
                 Assert.checkArgument(
-                        number != null, "error parsing number from uri: %s", LogUtil.sanitizePii(uri));
+                        number != null, "error parsing number from uri: %s",
+                        LogUtil.sanitizePii(uri));
                 selection = PhoneLookupHistory.NORMALIZED_NUMBER + "= ?";
                 selectionArgs = new String[]{number};
                 break;
@@ -223,7 +226,8 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
         @UriType int uriType = uriType(uri);
         switch (uriType) {
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_CODE:
-                int rows = database.update(PhoneLookupHistory.TABLE, values, selection, selectionArgs);
+                int rows = database.update(PhoneLookupHistory.TABLE, values, selection,
+                        selectionArgs);
                 if (rows == 0) {
                     LogUtil.w("PhoneLookupHistoryContentProvider.update", "no rows updated");
                     return rows;
@@ -234,9 +238,11 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
                 return rows;
             case UriType.PHONE_LOOKUP_HISTORY_TABLE_ID_CODE:
                 Assert.checkArgument(
-                        !Objects.requireNonNull(values).containsKey(PhoneLookupHistory.NORMALIZED_NUMBER),
+                        !Objects.requireNonNull(values)
+                                .containsKey(PhoneLookupHistory.NORMALIZED_NUMBER),
                         "Do not specify number in values when updating by number");
-                Assert.checkArgument(selection == null, "Do not specify selection when updating by ID");
+                Assert.checkArgument(selection == null,
+                        "Do not specify selection when updating by ID");
                 Assert.checkArgument(
                         selectionArgs == null, "Do not specify selection args when updating by ID");
 
@@ -262,7 +268,8 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
      */
     @NonNull
     @Override
-    public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
+    public ContentProviderResult[] applyBatch(
+            @NonNull ArrayList<ContentProviderOperation> operations)
             throws OperationApplicationException {
         ContentProviderResult[] results = new ContentProviderResult[operations.size()];
         if (operations.isEmpty()) {
@@ -318,12 +325,14 @@ public class PhoneLookupHistoryContentProvider extends ContentProvider {
     }
 
     /**
-     * Can't use {@link UriMatcher} because it doesn't support empty values, and numbers can be empty.
+     * Can't use {@link UriMatcher} because it doesn't support empty values, and numbers can be
+     * empty.
      */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({UriType.PHONE_LOOKUP_HISTORY_TABLE_CODE, UriType.PHONE_LOOKUP_HISTORY_TABLE_ID_CODE})
     private @interface UriType {
-        // For operations against: content://com.wintmain.dialer.phonelookuphistory/PhoneLookupHistory
+        // For operations against: content://com.wintmain.dialer
+        // .phonelookuphistory/PhoneLookupHistory
         int PHONE_LOOKUP_HISTORY_TABLE_CODE = 1;
         // For operations against:
         // content://com.wintmain.dialer.phonelookuphistory/PhoneLookupHistory?number=123

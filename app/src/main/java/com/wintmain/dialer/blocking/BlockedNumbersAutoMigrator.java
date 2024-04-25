@@ -18,12 +18,10 @@ package com.wintmain.dialer.blocking;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.os.UserManagerCompat;
 import androidx.preference.PreferenceManager;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
@@ -50,7 +48,8 @@ public class BlockedNumbersAutoMigrator {
      * Constructs the BlockedNumbersAutoMigrator with the given {@link
      * FilteredNumberAsyncQueryHandler}.
      *
-     * @param queryHandler The FilteredNumberAsyncQueryHandler used to determine if there are blocked
+     * @param queryHandler The FilteredNumberAsyncQueryHandler used to determine if there are
+     *                     blocked
      *                     numbers.
      * @throws NullPointerException if sharedPreferences or queryHandler are null.
      */
@@ -73,7 +72,8 @@ public class BlockedNumbersAutoMigrator {
 
     /**
      * Attempts to perform the auto-migration. Auto-migration will only be attempted once and can be
-     * performed only when the user has no blocked numbers. As a result of this method, the user will
+     * performed only when the user has no blocked numbers. As a result of this method, the user
+     * will
      * be migrated to the framework blocking solution if blocked numbers don't exist.
      */
     private void autoMigrate(boolean shouldAttemptAutoMigrate) {
@@ -85,7 +85,8 @@ public class BlockedNumbersAutoMigrator {
         queryHandler.hasBlockedNumbers(
                 hasBlockedNumbers -> {
                     if (hasBlockedNumbers) {
-                        LogUtil.i("BlockedNumbersAutoMigrator", "not auto-migrating: blocked numbers exist.");
+                        LogUtil.i("BlockedNumbersAutoMigrator",
+                                "not auto-migrating: blocked numbers exist.");
                         return;
                     }
                     LogUtil.i("BlockedNumbersAutoMigrator", "auto-migrating: no blocked numbers.");
@@ -104,7 +105,8 @@ public class BlockedNumbersAutoMigrator {
         @Override
         public Boolean doInBackground(@Nullable Void input) {
             if (!UserManagerCompat.isUserUnlocked(appContext)) {
-                LogUtil.i("BlockedNumbersAutoMigrator", "not attempting auto-migrate: device is locked");
+                LogUtil.i("BlockedNumbersAutoMigrator",
+                        "not attempting auto-migrate: device is locked");
                 return false;
             }
             SharedPreferences sharedPreferences =
@@ -112,28 +114,34 @@ public class BlockedNumbersAutoMigrator {
 
             if (sharedPreferences.contains(HAS_CHECKED_AUTO_MIGRATE_KEY)) {
                 LogUtil.v(
-                        "BlockedNumbersAutoMigrator", "not attempting auto-migrate: already checked once.");
+                        "BlockedNumbersAutoMigrator",
+                        "not attempting auto-migrate: already checked once.");
                 return false;
             }
 
             if (!FilteredNumberCompat.canAttemptBlockOperations(appContext)) {
-                // This may be the case where the user is on the lock screen, so we shouldn't record that
+                // This may be the case where the user is on the lock screen, so we shouldn't
+                // record that
                 // the migration status was checked.
                 LogUtil.i(
-                        "BlockedNumbersAutoMigrator", "not attempting auto-migrate: current user can't block");
+                        "BlockedNumbersAutoMigrator",
+                        "not attempting auto-migrate: current user can't block");
                 return false;
             }
             LogUtil.i(
-                    "BlockedNumbersAutoMigrator", "updating state as already checked for auto-migrate.");
+                    "BlockedNumbersAutoMigrator",
+                    "updating state as already checked for auto-migrate.");
             sharedPreferences.edit().putBoolean(HAS_CHECKED_AUTO_MIGRATE_KEY, true).apply();
 
             if (!FilteredNumberCompat.canUseNewFiltering()) {
-                LogUtil.i("BlockedNumbersAutoMigrator", "not attempting auto-migrate: not available.");
+                LogUtil.i("BlockedNumbersAutoMigrator",
+                        "not attempting auto-migrate: not available.");
                 return false;
             }
 
             if (FilteredNumberCompat.hasMigratedToNewBlocking(appContext)) {
-                LogUtil.i("BlockedNumbersAutoMigrator", "not attempting auto-migrate: already migrated.");
+                LogUtil.i("BlockedNumbersAutoMigrator",
+                        "not attempting auto-migrate: already migrated.");
                 return false;
             }
             return true;

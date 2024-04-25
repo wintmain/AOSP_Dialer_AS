@@ -38,13 +38,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import com.google.android.material.textview.MaterialTextView;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.i18n.LocaleUtils;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -115,7 +114,8 @@ public class DialpadView extends LinearLayout {
         translateDistance =
                 getResources().getDimensionPixelSize(R.dimen.dialpad_key_button_translate_y);
         isRtl =
-                TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL;
+                TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
+                        == View.LAYOUT_DIRECTION_RTL;
 
         primaryLettersMapping = DialpadCharMappings.getDefaultKeyToCharsMap();
         secondaryLettersMapping = DialpadCharMappings.getKeyToCharsMap(context);
@@ -133,11 +133,13 @@ public class DialpadView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        // The orientation obtained at this point should be used as the only truth for DialpadView as we
+        // The orientation obtained at this point should be used as the only truth for
+        // DialpadView as we
         // observed inconsistency between configurations obtained here and in
         // OnPreDrawListenerForKeyLayoutAdjust under rare circumstances.
         isLandscapeMode =
-                (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+                (getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_LANDSCAPE);
 
         setupKeypad();
         digits = (EditText) findViewById(R.id.digits);
@@ -207,7 +209,8 @@ public class DialpadView extends LinearLayout {
             dialpadKey.setContentDescription(numberContentDescription);
             dialpadKey.setBackground(rippleBackground);
 
-            TextView primaryLettersView = (TextView) dialpadKey.findViewById(R.id.dialpad_key_letters);
+            TextView primaryLettersView = (TextView) dialpadKey.findViewById(
+                    R.id.dialpad_key_letters);
             TextView secondaryLettersView =
                     (TextView) dialpadKey.findViewById(R.id.dialpad_key_secondary_letters);
             if (primaryLettersView != null) {
@@ -224,10 +227,12 @@ public class DialpadView extends LinearLayout {
                     TypedArray a =
                             getContext()
                                     .getTheme()
-                                    .obtainStyledAttributes(attributeSet, R.styleable.Dialpad, 0, 0);
+                                    .obtainStyledAttributes(attributeSet, R.styleable.Dialpad, 0,
+                                            0);
                     int textSize =
                             a.getDimensionPixelSize(
-                                    R.styleable.Dialpad_dialpad_key_letters_size_for_dual_alphabets, 0);
+                                    R.styleable.Dialpad_dialpad_key_letters_size_for_dual_alphabets,
+                                    0);
                     a.recycle();
                     primaryLettersView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                     secondaryLettersView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
@@ -236,10 +241,12 @@ public class DialpadView extends LinearLayout {
         }
 
         final DialpadKeyButton one = (DialpadKeyButton) findViewById(R.id.one);
-        one.setLongHoverContentDescription(resources.getText(R.string.description_voicemail_button));
+        one.setLongHoverContentDescription(
+                resources.getText(R.string.description_voicemail_button));
 
         final DialpadKeyButton zero = (DialpadKeyButton) findViewById(R.id.zero);
-        zero.setLongHoverContentDescription(resources.getText(R.string.description_image_button_plus));
+        zero.setLongHoverContentDescription(
+                resources.getText(R.string.description_image_button_plus));
     }
 
     private NumberFormat getNumberFormat() {
@@ -481,16 +488,19 @@ public class DialpadView extends LinearLayout {
     }
 
     /**
-     * An {@link OnPreDrawListener} that adjusts the height/width of each key layout so that they can
+     * An {@link OnPreDrawListener} that adjusts the height/width of each key layout so that they
+     * can
      * be properly aligned.
      *
      * <p>When the device is in portrait mode, the layout height for key "1" can be different from
      * those of other <b>digit</b> keys due to the voicemail icon. Adjustments are needed to ensure
-     * the layouts for all <b>digit</b> keys are of the same height. Key "*" and key "#" are excluded
+     * the layouts for all <b>digit</b> keys are of the same height. Key "*" and key "#" are
+     * excluded
      * because their styles are different from other keys'.
      *
      * <p>When the device is in landscape mode, keys can have different layout widths due to the
-     * icon/characters associated with them. Adjustments are needed to ensure the layouts for all keys
+     * icon/characters associated with them. Adjustments are needed to ensure the layouts for all
+     * keys
      * are of the same width.
      *
      * <p>Note that adjustments can only be made after the layouts are measured, which is why the
@@ -500,37 +510,48 @@ public class DialpadView extends LinearLayout {
     private class OnPreDrawListenerForKeyLayoutAdjust implements OnPreDrawListener {
 
         /**
-         * This method is invoked when the view tree is about to be drawn. At this point, all views in
+         * This method is invoked when the view tree is about to be drawn. At this point, all
+         * views in
          * the tree have been measured and given a frame.
          *
          * <p>If the keys have been adjusted, we instruct the current drawing pass to proceed by
          * returning true. Otherwise, adjustments will be made and the current drawing pass will be
          * cancelled by returning false.
          *
-         * <p>It is imperative to schedule another layout pass of the view tree after adjustments are
-         * made so that {@link #onPreDraw()} can be invoked again to check the layouts and proceed with
+         * <p>It is imperative to schedule another layout pass of the view tree after adjustments
+         * are
+         * made so that {@link #onPreDraw()} can be invoked again to check the layouts and
+         * proceed with
          * the drawing pass.
          */
         @Override
         public boolean onPreDraw() {
             if (!shouldAdjustKeySizes()) {
                 // Return true to proceed with the current drawing pass.
-                // Note that we must NOT remove this listener here. The fact that we don't need to adjust
-                // keys at the moment doesn't mean they won't need adjustments in the future. For example,
-                // when DialpadFragment is hidden, all keys are of the same size (0) and nothing needs to be
-                // done. Removing the listener will cost us the ability to adjust them when they reappear.
-                // It is only safe to remove the listener after adjusting keys for the first time. See the
+                // Note that we must NOT remove this listener here. The fact that we don't need
+                // to adjust
+                // keys at the moment doesn't mean they won't need adjustments in the future. For
+                // example,
+                // when DialpadFragment is hidden, all keys are of the same size (0) and nothing
+                // needs to be
+                // done. Removing the listener will cost us the ability to adjust them when they
+                // reappear.
+                // It is only safe to remove the listener after adjusting keys for the first time
+                // . See the
                 // comment below for more details.
                 return true;
             }
 
             adjustKeySizes();
 
-            // After all keys are adjusted for the first time, no more adjustments will be needed during
+            // After all keys are adjusted for the first time, no more adjustments will be needed
+            // during
             // the rest of DialpadView's lifecycle. It is therefore safe to remove this listener.
-            // Another important reason for removing the listener is that it can be triggered AFTER a
+            // Another important reason for removing the listener is that it can be triggered
+            // AFTER a
             // device orientation change but BEFORE DialpadView's onDetachedFromWindow() and
-            // onFinishInflate() are called, i.e., the listener will attempt to adjust the layout before
+            // onFinishInflate() are called, i.e., the listener will attempt to adjust the layout
+            // before
             // it is inflated, which results in a crash.
             getViewTreeObserver().removeOnPreDrawListener(this);
 
@@ -542,7 +563,8 @@ public class DialpadView extends LinearLayout {
         }
 
         /**
-         * Return true if not all key layouts have the same width. This method must be called when the
+         * Return true if not all key layouts have the same width. This method must be called
+         * when the
          * device is in landscape mode.
          */
         private boolean shouldAdjustKeyWidths() {
@@ -572,7 +594,8 @@ public class DialpadView extends LinearLayout {
             Assert.checkState(!isLandscapeMode);
 
             DialpadKeyButton dialpadKey = (DialpadKeyButton) findViewById(BUTTON_IDS[0]);
-            LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(R.id.dialpad_key_layout);
+            LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(
+                    R.id.dialpad_key_layout);
             final int height = keyLayout.getHeight();
 
             // BUTTON_IDS[i] is the resource ID for button i when 0 <= i && i <= 9.
@@ -615,13 +638,15 @@ public class DialpadView extends LinearLayout {
             // For example, BUTTON_IDS[3] is the resource ID for button "3" on the dialpad.
             for (int i = 0; i <= 9; i++) {
                 DialpadKeyButton dialpadKey = (DialpadKeyButton) findViewById(BUTTON_IDS[i]);
-                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(R.id.dialpad_key_layout);
+                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(
+                        R.id.dialpad_key_layout);
                 maxHeight = Math.max(maxHeight, keyLayout.getHeight());
             }
 
             for (int i = 0; i <= 9; i++) {
                 DialpadKeyButton dialpadKey = (DialpadKeyButton) findViewById(BUTTON_IDS[i]);
-                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(R.id.dialpad_key_layout);
+                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(
+                        R.id.dialpad_key_layout);
 
                 MaterialTextView numberView =
                         (MaterialTextView) keyLayout.findViewById(R.id.dialpad_key_number);
@@ -629,7 +654,8 @@ public class DialpadView extends LinearLayout {
                         (MarginLayoutParams) numberView.getLayoutParams();
 
                 LinearLayout iconOrLettersLayout =
-                        (LinearLayout) keyLayout.findViewById(R.id.dialpad_key_icon_or_letters_layout);
+                        (LinearLayout) keyLayout.findViewById(
+                                R.id.dialpad_key_icon_or_letters_layout);
                 iconOrLettersLayout.setLayoutParams(
                         new LayoutParams(
                                 LayoutParams.WRAP_CONTENT /* width */,
@@ -643,7 +669,8 @@ public class DialpadView extends LinearLayout {
         /**
          * Make the widths of all keys the same.
          *
-         * <p>When the device is in landscape mode, we first find the maximum width among key layouts.
+         * <p>When the device is in landscape mode, we first find the maximum width among key
+         * layouts.
          * Then we adjust the width of each layout's horizontal placeholder so that each key has the
          * same width.
          *
@@ -656,13 +683,15 @@ public class DialpadView extends LinearLayout {
             int maxWidth = 0;
             for (int buttonId : BUTTON_IDS) {
                 DialpadKeyButton dialpadKey = (DialpadKeyButton) findViewById(buttonId);
-                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(R.id.dialpad_key_layout);
+                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(
+                        R.id.dialpad_key_layout);
                 maxWidth = Math.max(maxWidth, keyLayout.getWidth());
             }
 
             for (int buttonId : BUTTON_IDS) {
                 DialpadKeyButton dialpadKey = (DialpadKeyButton) findViewById(buttonId);
-                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(R.id.dialpad_key_layout);
+                LinearLayout keyLayout = (LinearLayout) dialpadKey.findViewById(
+                        R.id.dialpad_key_layout);
                 View horizontalPlaceholder =
                         keyLayout.findViewById(R.id.dialpad_key_horizontal_placeholder);
                 horizontalPlaceholder.setLayoutParams(

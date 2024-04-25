@@ -27,12 +27,10 @@ import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.os.BuildCompat;
 import androidx.core.os.UserManagerCompat;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.database.FilteredNumberContract;
@@ -82,7 +80,8 @@ public class FilteredNumbersUtil {
                 new AsyncTask<Object, Void, Boolean>() {
                     @Override
                     public Boolean doInBackground(Object... params) {
-                        if (context == null || !PermissionsUtil.hasContactsReadPermissions(context)) {
+                        if (context == null || !PermissionsUtil.hasContactsReadPermissions(
+                                context)) {
                             return false;
                         }
 
@@ -151,8 +150,10 @@ public class FilteredNumbersUtil {
                         try {
                             while (phoneCursor.moveToNext()) {
                                 final String normalizedNumber =
-                                        phoneCursor.getString(PhoneQuery.NORMALIZED_NUMBER_COLUMN_INDEX);
-                                final String number = phoneCursor.getString(PhoneQuery.NUMBER_COLUMN_INDEX);
+                                        phoneCursor.getString(
+                                                PhoneQuery.NORMALIZED_NUMBER_COLUMN_INDEX);
+                                final String number = phoneCursor.getString(
+                                        PhoneQuery.NUMBER_COLUMN_INDEX);
                                 if (normalizedNumber != null) {
                                     // Block the phone number of the contact.
                                     mFilteredNumberAsyncQueryHandler.blockNumber(
@@ -163,7 +164,8 @@ public class FilteredNumbersUtil {
                             phoneCursor.close();
                         }
 
-                        // Clear SEND_TO_VOICEMAIL on all contacts. The setting has been imported to Dialer.
+                        // Clear SEND_TO_VOICEMAIL on all contacts. The setting has been imported
+                        // to Dialer.
                         ContentValues newValues = new ContentValues();
                         newValues.put(Contacts.SEND_TO_VOICEMAIL, 0);
                         context
@@ -184,7 +186,8 @@ public class FilteredNumbersUtil {
                                 listener.onImportComplete();
                             }
                         } else {
-                            String toastStr = context.getString(R.string.send_to_voicemail_import_failed);
+                            String toastStr = context.getString(
+                                    R.string.send_to_voicemail_import_failed);
                             Toast.makeText(context, toastStr, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -253,9 +256,11 @@ public class FilteredNumbersUtil {
                             new Notification.Builder(context)
                                     .setSmallIcon(R.drawable.quantum_ic_block_white_24)
                                     .setContentTitle(
-                                            context.getString(R.string.call_blocking_disabled_notification_title))
+                                            context.getString(
+                                                    R.string.call_blocking_disabled_notification_title))
                                     .setContentText(
-                                            context.getString(R.string.call_blocking_disabled_notification_text))
+                                            context.getString(
+                                                    R.string.call_blocking_disabled_notification_text))
                                     .setAutoCancel(true);
 
                     if (BuildCompat.isAtLeastO()) {
@@ -278,7 +283,8 @@ public class FilteredNumbersUtil {
                     StorageComponent.get(context)
                             .unencryptedSharedPrefs()
                             .edit()
-                            .putBoolean(NOTIFIED_CALL_BLOCKING_DISABLED_BY_EMERGENCY_CALL_PREF_KEY, true)
+                            .putBoolean(NOTIFIED_CALL_BLOCKING_DISABLED_BY_EMERGENCY_CALL_PREF_KEY,
+                                    true)
                             .apply();
                 });
     }
@@ -299,7 +305,8 @@ public class FilteredNumbersUtil {
      * @param e164Number The e164 formatted version of the number, or {@code null} if such a format
      *                   doesn't exist..
      * @param number     The number to attempt blocking.
-     * @return The version of the given number that can be blocked with the current blocking solution.
+     * @return The version of the given number that can be blocked with the current blocking
+     * solution.
      */
     @Nullable
     public static String getBlockableNumber(
@@ -314,7 +321,8 @@ public class FilteredNumbersUtil {
         if (LogUtil.isVerboseEnabled()) {
             long thresholdMs =
                     Settings.System.getLong(
-                            context.getContentResolver(), RECENT_EMERGENCY_CALL_THRESHOLD_SETTINGS_KEY, 0);
+                            context.getContentResolver(),
+                            RECENT_EMERGENCY_CALL_THRESHOLD_SETTINGS_KEY, 0);
             return thresholdMs > 0 ? thresholdMs : RECENT_EMERGENCY_CALL_THRESHOLD_MS;
         } else {
             return RECENT_EMERGENCY_CALL_THRESHOLD_MS;
@@ -378,12 +386,14 @@ public class FilteredNumbersUtil {
 
     public static class PhoneQuery {
 
-        public static final String[] PROJECTION = {Contacts._ID, Phone.NORMALIZED_NUMBER, Phone.NUMBER};
+        public static final String[] PROJECTION =
+                {Contacts._ID, Phone.NORMALIZED_NUMBER, Phone.NUMBER};
 
         public static final int ID_COLUMN_INDEX = 0;
         public static final int NORMALIZED_NUMBER_COLUMN_INDEX = 1;
         public static final int NUMBER_COLUMN_INDEX = 2;
 
-        public static final String SELECT_SEND_TO_VOICEMAIL_TRUE = Contacts.SEND_TO_VOICEMAIL + "=1";
+        public static final String SELECT_SEND_TO_VOICEMAIL_TRUE =
+                Contacts.SEND_TO_VOICEMAIL + "=1";
     }
 }

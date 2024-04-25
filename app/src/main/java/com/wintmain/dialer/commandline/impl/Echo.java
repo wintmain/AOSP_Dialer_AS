@@ -17,14 +17,12 @@
 package com.wintmain.dialer.commandline.impl;
 
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-
-import com.wintmain.dialer.commandline.Arguments;
-import com.wintmain.dialer.commandline.Command;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.wintmain.dialer.commandline.Arguments;
+import com.wintmain.dialer.commandline.Command;
 
 import javax.inject.Inject;
 

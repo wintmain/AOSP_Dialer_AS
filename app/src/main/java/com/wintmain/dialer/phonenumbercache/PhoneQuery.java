@@ -50,7 +50,8 @@ final class PhoneQuery {
     static final int ADDITIONAL_CONTACT_INFO_CARRIER_PRESENCE = 1;
 
     /**
-     * Projection to look up the ContactInfo. Does not include DISPLAY_NAME_ALTERNATIVE as that column
+     * Projection to look up the ContactInfo. Does not include DISPLAY_NAME_ALTERNATIVE as that
+     * column
      * isn't available in ContactsCommon.PhoneLookup. We should always use this projection starting
      * from NYC onward.
      */

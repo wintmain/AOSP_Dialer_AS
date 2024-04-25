@@ -19,12 +19,9 @@ package com.wintmain.dialer.app.calllog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.core.util.Pair;
-
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
-
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
@@ -37,7 +34,8 @@ public class MissedCallNotificationReceiver extends BroadcastReceiver {
     public static final String ACTION_SHOW_MISSED_CALLS_NOTIFICATION =
             "android.telecom.action.SHOW_MISSED_CALLS_NOTIFICATION";
 
-    public static final String EXTRA_NOTIFICATION_COUNT = "android.telecom.extra.NOTIFICATION_COUNT";
+    public static final String EXTRA_NOTIFICATION_COUNT =
+            "android.telecom.extra.NOTIFICATION_COUNT";
 
     public static final String EXTRA_NOTIFICATION_PHONE_NUMBER =
             "android.telecom.extra.NOTIFICATION_PHONE_NUMBER";
@@ -62,7 +60,8 @@ public class MissedCallNotificationReceiver extends BroadcastReceiver {
 
         int count =
                 intent.getIntExtra(
-                        EXTRA_NOTIFICATION_COUNT, CallLogNotificationsService.UNKNOWN_MISSED_CALL_COUNT);
+                        EXTRA_NOTIFICATION_COUNT,
+                        CallLogNotificationsService.UNKNOWN_MISSED_CALL_COUNT);
         String phoneNumber = intent.getStringExtra(EXTRA_NOTIFICATION_PHONE_NUMBER);
 
         PendingResult pendingResult = goAsync();

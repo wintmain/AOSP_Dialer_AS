@@ -22,9 +22,10 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import androidx.annotation.Nullable;
 import androidx.loader.content.CursorLoader;
+import com.google.auto.value.AutoValue;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
-import com.google.auto.value.AutoValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,20 +58,11 @@ public final class DirectoriesCursorLoader extends CursorLoader {
                 ContactsContract.Directory._ID);
     }
 
-    @Override
-    public Cursor loadInBackground() {
-        if (!PermissionsUtil.hasContactsReadPermissions(getContext())) {
-            LogUtil.i("DirectoriesCursorLoader.loadInBackground", "Contacts permission denied.");
-            return null;
-        }
-        return super.loadInBackground();
-    }
-
     /**
      * Creates a complete list of directories from the data set loaded by this loader.
      *
      * @param cursor A cursor pointing to the data set loaded by this loader. The caller must ensure
-     *     the cursor is not null.
+     *               the cursor is not null.
      * @return A list of directories.
      */
     public static List<Directory> toDirectories(Cursor cursor) {
@@ -91,10 +83,20 @@ public final class DirectoriesCursorLoader extends CursorLoader {
         return directories;
     }
 
+    @Override
+    public Cursor loadInBackground() {
+        if (!PermissionsUtil.hasContactsReadPermissions(getContext())) {
+            LogUtil.i("DirectoriesCursorLoader.loadInBackground", "Contacts permission denied.");
+            return null;
+        }
+        return super.loadInBackground();
+    }
+
     /** POJO representing the results returned from {@link DirectoriesCursorLoader}. */
     @AutoValue
     public abstract static class Directory {
-        public static Directory create(long id, @Nullable String displayName, boolean supportsPhotos) {
+        public static Directory create(long id, @Nullable String displayName,
+                boolean supportsPhotos) {
             return new AutoValue_DirectoriesCursorLoader_Directory(id, displayName, supportsPhotos);
         }
 

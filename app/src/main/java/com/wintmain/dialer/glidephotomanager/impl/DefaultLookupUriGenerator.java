@@ -21,9 +21,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.DisplayNameSources;
-
 import com.wintmain.dialer.glidephotomanager.PhotoInfo;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +62,8 @@ final class DefaultLookupUriGenerator {
                 .buildUpon()
                 .appendPath("encoded")
                 .encodedFragment(lookupJson.toString())
-                // Directory is required in the URI but it does not exist, use MAX_VALUE to avoid clashing
+                // Directory is required in the URI but it does not exist, use MAX_VALUE to avoid
+                // clashing
                 // with other directory
                 .appendQueryParameter(
                         ContactsContract.DIRECTORY_PARAM_KEY, String.valueOf(Integer.MAX_VALUE))

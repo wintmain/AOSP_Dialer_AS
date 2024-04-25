@@ -18,21 +18,19 @@ package com.wintmain.dialer.phonelookup;
 
 import android.content.Context;
 import android.telecom.Call;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-
-import com.wintmain.dialer.DialerPhoneNumber;
-import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
-import com.wintmain.dialer.location.GeoUtil;
-import com.wintmain.dialer.phonenumberproto.DialerPhoneNumberUtil;
-import com.wintmain.dialer.telecom.TelecomCallUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.wintmain.dialer.DialerPhoneNumber;
+import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
+import com.wintmain.dialer.location.GeoUtil;
+import com.wintmain.dialer.phonenumberproto.DialerPhoneNumberUtil;
+import com.wintmain.dialer.telecom.TelecomCallUtil;
 
 /**
  * Provides operations related to retrieving information about phone numbers.
@@ -46,7 +44,8 @@ public interface PhoneLookup<T> {
     /**
      * Returns a future containing a new info for the number associated with the provided call.
      *
-     * <p>The returned message should contain populated data for the sub-message corresponding to this
+     * <p>The returned message should contain populated data for the sub-message corresponding to
+     * this
      * {@link PhoneLookup}. For example, the CP2 implementation returns a {@link
      * PhoneLookupInfo.Cp2Info} sub-message.
      *
@@ -54,7 +53,8 @@ public interface PhoneLookup<T> {
      * info in the given call, i.e., it simply extracts the phone number from the call and delegates
      * to {@link #lookup(DialerPhoneNumber)}.
      *
-     * <p>However, for {@link PhoneLookup} implementations that need info in the call (such as one for
+     * <p>However, for {@link PhoneLookup} implementations that need info in the call (such as
+     * one for
      * CNAP), they should override this method.
      */
     default ListenableFuture<T> lookup(Context appContext, Call call) {
@@ -64,9 +64,11 @@ public interface PhoneLookup<T> {
         ListenableFuture<DialerPhoneNumber> numberFuture =
                 backgroundExecutor.submit(
                         () -> {
-                            DialerPhoneNumberUtil dialerPhoneNumberUtil = new DialerPhoneNumberUtil();
+                            DialerPhoneNumberUtil dialerPhoneNumberUtil =
+                                    new DialerPhoneNumberUtil();
                             return dialerPhoneNumberUtil.parse(
-                                    TelecomCallUtil.getNumber(call), GeoUtil.getCurrentCountryIso(appContext));
+                                    TelecomCallUtil.getNumber(call),
+                                    GeoUtil.getCurrentCountryIso(appContext));
                         });
 
         return Futures.transformAsync(numberFuture, this::lookup, MoreExecutors.directExecutor());
@@ -75,7 +77,8 @@ public interface PhoneLookup<T> {
     /**
      * Returns a future containing a new info for the provided number.
      *
-     * <p>The returned message should contain populated data for the sub-message corresponding to this
+     * <p>The returned message should contain populated data for the sub-message corresponding to
+     * this
      * {@link PhoneLookup}. For example, the CP2 implementation returns a {@link
      * PhoneLookupInfo.Cp2Info} sub-message.
      *
@@ -97,10 +100,12 @@ public interface PhoneLookup<T> {
      * must contain the exact same keys as the provided map. Most implementations will rely on last
      * modified timestamps to efficiently only update the data which needs to be updated.
      *
-     * <p>If there are no changes required, it is valid for this method to simply return the provided
+     * <p>If there are no changes required, it is valid for this method to simply return the
+     * provided
      * {@code existingInfoMap}.
      *
-     * <p>If there is no longer information associated with a number (for example, a local contact was
+     * <p>If there is no longer information associated with a number (for example, a local
+     * contact was
      * deleted) the returned map should contain an empty info for that number.
      */
     ListenableFuture<ImmutableMap<DialerPhoneNumber, T>> getMostRecentInfo(
@@ -113,7 +118,8 @@ public interface PhoneLookup<T> {
     void setSubMessage(PhoneLookupInfo.Builder phoneLookupInfo, T subMessage);
 
     /**
-     * Gets the sub-message that this {@link PhoneLookup} is responsible for from the provided {@code
+     * Gets the sub-message that this {@link PhoneLookup} is responsible for from the provided
+     * {@code
      * phoneLookupInfo}.
      */
     T getSubMessage(PhoneLookupInfo phoneLookupInfo);
@@ -122,8 +128,10 @@ public interface PhoneLookup<T> {
      * Called when the results of the {@link #getMostRecentInfo(ImmutableMap)} have been applied by
      * the caller.
      *
-     * <p>Typically implementations will use this to store a "last processed" timestamp so that future
-     * invocations of {@link #isDirty(ImmutableSet)} and {@link #getMostRecentInfo(ImmutableMap)} can
+     * <p>Typically implementations will use this to store a "last processed" timestamp so that
+     * future
+     * invocations of {@link #isDirty(ImmutableSet)} and {@link #getMostRecentInfo(ImmutableMap)}
+     * can
      * be efficiently implemented.
      */
     ListenableFuture<Void> onSuccessfulBulkUpdate();
@@ -135,13 +143,15 @@ public interface PhoneLookup<T> {
     void unregisterContentObservers();
 
     /**
-     * Clear any data written by this lookup. This is called when the new call log framework has been
+     * Clear any data written by this lookup. This is called when the new call log framework has
+     * been
      * disabled (because for example there was a problem with it).
      */
     ListenableFuture<Void> clearData();
 
     /**
-     * The name of this lookup for logging purposes. This is generally the same as the class name (but
+     * The name of this lookup for logging purposes. This is generally the same as the class name
+     * (but
      * should not use methods from {@link Class} because the class names are generally obfuscated by
      * Proguard.
      */

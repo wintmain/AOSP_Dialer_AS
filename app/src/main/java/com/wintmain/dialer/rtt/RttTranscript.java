@@ -32,7 +32,8 @@ public final class RttTranscript extends
     private java.lang.String id_;
     private java.lang.String number_;
     private long timestamp_;
-    private com.google.protobuf.Internal.ProtobufList<com.wintmain.dialer.rtt.RttTranscriptMessage> messages_;
+    private com.google.protobuf.Internal.ProtobufList<com.wintmain.dialer.rtt.RttTranscriptMessage>
+            messages_;
 
     private RttTranscript() {
         id_ = "";
@@ -84,7 +85,8 @@ public final class RttTranscript extends
                 DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public static com.wintmain.dialer.rtt.RttTranscript parseDelimitedFrom(java.io.InputStream input)
+    public static com.wintmain.dialer.rtt.RttTranscript parseDelimitedFrom(
+            java.io.InputStream input)
             throws java.io.IOException {
         return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
@@ -535,7 +537,9 @@ public final class RttTranscript extends
 
     public int getSerializedSize() {
         int size = memoizedSerializedSize;
-        if (size != -1) return size;
+        if (size != -1) {
+            return size;
+        }
 
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -578,7 +582,8 @@ public final class RttTranscript extends
             }
             case VISIT: {
                 Visitor visitor = (Visitor) arg0;
-                com.wintmain.dialer.rtt.RttTranscript other = (com.wintmain.dialer.rtt.RttTranscript) arg1;
+                com.wintmain.dialer.rtt.RttTranscript other =
+                        (com.wintmain.dialer.rtt.RttTranscript) arg1;
                 id_ = visitor.visitString(
                         hasId(), id_,
                         other.hasId(), other.id_);
@@ -634,10 +639,13 @@ public final class RttTranscript extends
                             case 34: {
                                 if (!messages_.isModifiable()) {
                                     messages_ =
-                                            com.google.protobuf.GeneratedMessageLite.mutableCopy(messages_);
+                                            com.google.protobuf.GeneratedMessageLite.mutableCopy(
+                                                    messages_);
                                 }
                                 messages_.add(
-                                        input.readMessage(com.wintmain.dialer.rtt.RttTranscriptMessage.parser(), extensionRegistry));
+                                        input.readMessage(
+                                                com.wintmain.dialer.rtt.RttTranscriptMessage.parser(),
+                                                extensionRegistry));
                                 break;
                             }
                         }

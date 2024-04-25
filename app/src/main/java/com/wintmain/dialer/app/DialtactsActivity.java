@@ -36,24 +36,12 @@ import android.telecom.PhoneAccount;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.ActionMode;
-import android.view.DragEvent;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnDragListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.ActionBar;
@@ -63,9 +51,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
 import com.android.contacts.common.dialog.ClearFrequentsDialog;
 import com.android.contacts.common.list.OnPhoneNumberPickerActionListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
 import com.wintmain.dialer.animation.AnimationListenerAdapter;
@@ -73,14 +63,8 @@ import com.wintmain.dialer.app.calllog.CallLogActivity;
 import com.wintmain.dialer.app.calllog.CallLogAdapter;
 import com.wintmain.dialer.app.calllog.CallLogFragment;
 import com.wintmain.dialer.app.calllog.IntentProvider;
-import com.wintmain.dialer.app.list.DialtactsPagerAdapter;
+import com.wintmain.dialer.app.list.*;
 import com.wintmain.dialer.app.list.DialtactsPagerAdapter.TabIndex;
-import com.wintmain.dialer.app.list.DragDropController;
-import com.wintmain.dialer.app.list.ListsFragment;
-import com.wintmain.dialer.app.list.OldSpeedDialFragment;
-import com.wintmain.dialer.app.list.OnDragDropListener;
-import com.wintmain.dialer.app.list.OnListFragmentScrolledListener;
-import com.wintmain.dialer.app.list.PhoneFavoriteSquareTileView;
 import com.wintmain.dialer.app.settings.DialerSettingsActivity;
 import com.wintmain.dialer.app.settings.DialerSettingsActivityCompt;
 import com.wintmain.dialer.app.widget.ActionBarController;
@@ -130,9 +114,6 @@ import com.wintmain.dialer.util.PermissionsUtil;
 import com.wintmain.dialer.util.TouchPointManager;
 import com.wintmain.dialer.util.ViewUtil;
 import com.wintmain.dialer.widget.FloatingActionButtonController;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -248,7 +229,8 @@ public class DialtactsActivity extends AppCompatActivity
      */
     private boolean firstLaunch;
     /**
-     * Search query to be applied to the SearchView in the ActionBar once onCreateOptionsMenu has been
+     * Search query to be applied to the SearchView in the ActionBar once onCreateOptionsMenu has
+     * been
      * called.
      */
     private String pendingSearchViewQuery;
@@ -293,7 +275,8 @@ public class DialtactsActivity extends AppCompatActivity
                     final String newText = s.toString();
                     if (newText.equals(searchQuery)) {
                         // If the query hasn't changed (perhaps due to activity being destroyed
-                        // and restored, or user launching the same DIAL intent twice), then there is
+                        // and restored, or user launching the same DIAL intent twice), then
+                        // there is
                         // no need to do anything here.
                         return;
                     }
@@ -302,16 +285,19 @@ public class DialtactsActivity extends AppCompatActivity
                         PerformanceReport.recordClick(UiAction.Type.TEXT_CHANGE_WITH_INPUT);
                     }
 
-                    LogUtil.v("DialtactsActivity.onTextChanged", "called with new query: " + newText);
+                    LogUtil.v("DialtactsActivity.onTextChanged",
+                            "called with new query: " + newText);
                     LogUtil.v("DialtactsActivity.onTextChanged", "previous query: " + searchQuery);
                     searchQuery = newText;
 
                     // Show search fragment only when the query string is changed to non-empty text.
                     if (!TextUtils.isEmpty(newText)) {
-                        // Call enterSearchUi only if we are switching search modes, or showing a search
+                        // Call enterSearchUi only if we are switching search modes, or showing a
+                        // search
                         // fragment for the first time.
                         final boolean sameSearchMode =
-                                (isDialpadShown && inDialpadSearch) || (!isDialpadShown && inRegularSearch);
+                                (isDialpadShown && inDialpadSearch) || (!isDialpadShown
+                                        && inRegularSearch);
                         if (!sameSearchMode) {
                             enterSearchUi(isDialpadShown, searchQuery, true /* animate */);
                         }
@@ -337,7 +323,8 @@ public class DialtactsActivity extends AppCompatActivity
                         PerformanceReport.recordClick(UiAction.Type.OPEN_SEARCH);
                         actionBarController.onSearchBoxTapped();
                         enterSearchUi(
-                                false /* smartDialSearch */, searchView.getText().toString(), true /* animate */);
+                                false /* smartDialSearch */, searchView.getText().toString(),
+                                true /* animate */);
                     }
                 }
             };
@@ -369,7 +356,8 @@ public class DialtactsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         firstLaunch = true;
         isLastTabEnabled =
-                ConfigProviderComponent.get(this).getConfigProvider().getBoolean("last_tab_enabled", false);
+                ConfigProviderComponent.get(this).getConfigProvider().getBoolean("last_tab_enabled",
+                        false);
 
         final Resources resources = getResources();
         actionBarHeight = resources.getDimensionPixelSize(R.dimen.action_bar_height_large);
@@ -400,11 +388,13 @@ public class DialtactsActivity extends AppCompatActivity
                 .setOnClickListener(v -> exitSearchUi());
 
         isLandscape =
-                getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+                getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_LANDSCAPE;
         previouslySelectedTabIndex = DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL;
         FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
         floatingActionButton.setOnClickListener(this);
-        floatingActionButtonController = new FloatingActionButtonController(this, floatingActionButton);
+        floatingActionButtonController = new FloatingActionButtonController(this,
+                floatingActionButton);
 
         ImageButton optionsMenuButton =
                 searchEditTextLayout.findViewById(R.id.dialtacts_options_menu_button);
@@ -429,7 +419,8 @@ public class DialtactsActivity extends AppCompatActivity
             savedLanguageCode = savedInstanceState.getString(KEY_SAVED_LANGUAGE_CODE);
             wasConfigurationChange = savedInstanceState.getBoolean(KEY_WAS_CONFIGURATION_CHANGE);
             isDialpadShown = savedInstanceState.getBoolean(KEY_IS_DIALPAD_SHOWN);
-            floatingActionButtonController.setVisible(savedInstanceState.getBoolean(KEY_FAB_VISIBLE));
+            floatingActionButtonController.setVisible(
+                    savedInstanceState.getBoolean(KEY_FAB_VISIBLE));
             actionBarController.restoreInstanceState(savedInstanceState);
         }
 
@@ -437,10 +428,12 @@ public class DialtactsActivity extends AppCompatActivity
         if (isLandscape) {
             slideIn =
                     AnimationUtils.loadAnimation(
-                            this, isLayoutRtl ? R.anim.dialpad_slide_in_left : R.anim.dialpad_slide_in_right);
+                            this, isLayoutRtl ? R.anim.dialpad_slide_in_left
+                                    : R.anim.dialpad_slide_in_right);
             slideOut =
                     AnimationUtils.loadAnimation(
-                            this, isLayoutRtl ? R.anim.dialpad_slide_out_left : R.anim.dialpad_slide_out_right);
+                            this, isLayoutRtl ? R.anim.dialpad_slide_out_left
+                                    : R.anim.dialpad_slide_out_right);
         } else {
             slideIn = AnimationUtils.loadAnimation(this, R.anim.dialpad_slide_in_bottom);
             slideOut = AnimationUtils.loadAnimation(this, R.anim.dialpad_slide_out_bottom);
@@ -511,7 +504,8 @@ public class DialtactsActivity extends AppCompatActivity
         // savedInstanceState so it must be hidden again.
         if (!isDialpadShown && dialpadFragment != null && !dialpadFragment.isHidden()) {
             LogUtil.i(
-                    "DialtactsActivity.onResume", "mDialpadFragment attached but not hidden, forcing hide");
+                    "DialtactsActivity.onResume",
+                    "mDialpadFragment attached but not hidden, forcing hide");
             getSupportFragmentManager().beginTransaction().hide(dialpadFragment).commit();
         }
 
@@ -537,7 +531,8 @@ public class DialtactsActivity extends AppCompatActivity
 
         // Start the thread that updates the smart dial database if
         // (1) the activity is not recreated with a new configuration, or
-        // (2) the activity is recreated with a new configuration but the change is a language change.
+        // (2) the activity is recreated with a new configuration but the change is a language
+        // change.
         boolean isLanguageChanged =
                 !LocaleUtils.getLocale(this).getISO3Language().equals(savedLanguageCode);
         if (!wasConfigurationChange || isLanguageChanged) {
@@ -558,9 +553,11 @@ public class DialtactsActivity extends AppCompatActivity
                 listsFragment.showTab(DialtactsPagerAdapter.TAB_INDEX_HISTORY);
             } else if (getIntent().hasExtra(EXTRA_SHOW_TAB)) {
                 int index =
-                        getIntent().getIntExtra(EXTRA_SHOW_TAB, DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL);
+                        getIntent().getIntExtra(EXTRA_SHOW_TAB,
+                                DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL);
                 if (index < listsFragment.getTabCount()) {
-                    // Hide dialpad since this is an explicit intent to show a specific tab, which is coming
+                    // Hide dialpad since this is an explicit intent to show a specific tab,
+                    // which is coming
                     // from missed call or voicemail notification.
                     hideDialpadFragment(false, false);
                     exitSearchUi();
@@ -671,7 +668,8 @@ public class DialtactsActivity extends AppCompatActivity
         if (resId == R.id.floating_action_button) {
             if (!isDialpadShown) {
                 LogUtil.i(
-                        "DialtactsActivity.onClick", "floating action button clicked, going to show dialpad");
+                        "DialtactsActivity.onClick",
+                        "floating action button clicked, going to show dialpad");
                 PerformanceReport.recordClick(UiAction.Type.OPEN_DIALPAD);
                 inCallDialpadUp = false;
                 showDialpadFragment(true);
@@ -688,7 +686,8 @@ public class DialtactsActivity extends AppCompatActivity
                         ActivityRequestCodes.DIALTACTS_VOICE_SEARCH);
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(
-                                DialtactsActivity.this, R.string.voice_search_not_available, Toast.LENGTH_SHORT)
+                                DialtactsActivity.this, R.string.voice_search_not_available,
+                                Toast.LENGTH_SHORT)
                         .show();
             }
         } else if (resId == R.id.dialtacts_options_menu_button) {
@@ -740,26 +739,32 @@ public class DialtactsActivity extends AppCompatActivity
         } else if (requestCode == ActivityRequestCodes.DIALTACTS_CALL_COMPOSER) {
             if (resultCode == RESULT_FIRST_USER) {
                 LogUtil.i(
-                        "DialtactsActivity.onActivityResult", "returned from call composer, error occurred");
+                        "DialtactsActivity.onActivityResult",
+                        "returned from call composer, error occurred");
                 String message =
                         getString(
                                 R.string.call_composer_connection_failed,
                                 data.getStringExtra(CallComposerActivity.KEY_CONTACT_NAME));
                 Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG).show();
             } else {
-                LogUtil.i("DialtactsActivity.onActivityResult", "returned from call composer, no error");
+                LogUtil.i("DialtactsActivity.onActivityResult",
+                        "returned from call composer, no error");
             }
         } else if (requestCode == ActivityRequestCodes.DIALTACTS_CALL_DETAILS) {
             if (resultCode == RESULT_OK
                     && data != null
-                    && data.getBooleanExtra(OldCallDetailsActivity.EXTRA_HAS_ENRICHED_CALL_DATA, false)) {
+                    && data.getBooleanExtra(OldCallDetailsActivity.EXTRA_HAS_ENRICHED_CALL_DATA,
+                    false)) {
                 String number = data.getStringExtra(OldCallDetailsActivity.EXTRA_PHONE_NUMBER);
                 int snackbarDurationMillis = 5_000;
-                Snackbar.make(parentLayout, getString(R.string.ec_data_deleted), snackbarDurationMillis)
+                Snackbar.make(parentLayout, getString(R.string.ec_data_deleted),
+                                snackbarDurationMillis)
                         .setAction(
                                 R.string.view_conversation,
-                                v -> startActivity(IntentProvider.getSendSmsIntentProvider(number).getIntent(this)))
-                        .setActionTextColor(getResources().getColor(R.color.dialer_snackbar_action_text_color))
+                                v -> startActivity(IntentProvider.getSendSmsIntentProvider(number)
+                                        .getIntent(this)))
+                        .setActionTextColor(
+                                getResources().getColor(R.color.dialer_snackbar_action_text_color))
                         .show();
             }
         } else if (requestCode == ActivityRequestCodes.DIALTACTS_DUO) {
@@ -791,7 +796,8 @@ public class DialtactsActivity extends AppCompatActivity
 
         listsFragment.setUserVisibleHint(false);
 
-        final androidx.fragment.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        final androidx.fragment.app.FragmentTransaction ft =
+                getSupportFragmentManager().beginTransaction();
         if (dialpadFragment == null) {
             dialpadFragment = new DialpadFragment();
             ft.add(R.id.dialtacts_container, dialpadFragment, TAG_DIALPAD_FRAGMENT);
@@ -818,7 +824,8 @@ public class DialtactsActivity extends AppCompatActivity
         DialerExecutorComponent.get(this)
                 .dialerExecutorFactory()
                 .createUiTaskBuilder(
-                        getSupportFragmentManager(), "Query last phone number", Calls::getLastOutgoingCall)
+                        getSupportFragmentManager(), "Query last phone number",
+                        Calls::getLastOutgoingCall)
                 .onSuccess(callback::lastOutgoingCall)
                 .build()
                 .executeParallel(this);
@@ -851,7 +858,8 @@ public class DialtactsActivity extends AppCompatActivity
     }
 
     /**
-     * Initiates animations and other visual updates to hide the dialpad. The fragment is hidden in a
+     * Initiates animations and other visual updates to hide the dialpad. The fragment is hidden
+     * in a
      * callback after the hide animation ends.
      *
      * @see #commitDialpadFragmentHide
@@ -899,8 +907,10 @@ public class DialtactsActivity extends AppCompatActivity
      * Finishes hiding the dialpad fragment after any animations are completed.
      */
     private void commitDialpadFragmentHide() {
-        if (!stateSaved && dialpadFragment != null && !dialpadFragment.isHidden() && !isDestroyed()) {
-            final androidx.fragment.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (!stateSaved && dialpadFragment != null && !dialpadFragment.isHidden()
+                && !isDestroyed()) {
+            final androidx.fragment.app.FragmentTransaction ft =
+                    getSupportFragmentManager().beginTransaction();
             ft.hide(dialpadFragment);
             ft.commit();
         }
@@ -910,8 +920,10 @@ public class DialtactsActivity extends AppCompatActivity
     private void updateSearchFragmentPosition() {
         if (newSearchFragment != null) {
             int animationDuration = getResources().getInteger(R.integer.dialpad_slide_in_duration);
-            int actionbarHeight = getResources().getDimensionPixelSize(R.dimen.action_bar_height_large);
-            int shadowHeight = getResources().getDrawable(R.drawable.search_shadow).getIntrinsicHeight();
+            int actionbarHeight = getResources().getDimensionPixelSize(
+                    R.dimen.action_bar_height_large);
+            int shadowHeight = getResources().getDrawable(R.drawable.search_shadow)
+                    .getIntrinsicHeight();
             int start = isDialpadShown() ? actionbarHeight - shadowHeight : 0;
             int end = isDialpadShown() ? 0 : actionbarHeight - shadowHeight;
             newSearchFragment.animatePosition(start, end, animationDuration);
@@ -1026,7 +1038,8 @@ public class DialtactsActivity extends AppCompatActivity
         if (showDialpadChooser || isDialIntent || isAddCallIntent) {
             LogUtil.i(
                     "DialtactsActivity.displayFragment",
-                    "show dialpad fragment (showDialpadChooser: %b, isDialIntent: %b, isAddCallIntent: %b)",
+                    "show dialpad fragment (showDialpadChooser: %b, isDialIntent: %b, "
+                            + "isAddCallIntent: %b)",
                     showDialpadChooser,
                     isDialIntent,
                     isAddCallIntent);
@@ -1041,7 +1054,8 @@ public class DialtactsActivity extends AppCompatActivity
                     StorageComponent.get(this)
                             .unencryptedSharedPrefs()
                             .getInt(KEY_LAST_TAB, DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL);
-            // If voicemail tab is saved and its availability changes, we still move to the voicemail tab
+            // If voicemail tab is saved and its availability changes, we still move to the
+            // voicemail tab
             // but it is quickly removed and shown the contacts tab.
             if (listsFragment != null) {
                 listsFragment.showTab(tabIndex);
@@ -1109,7 +1123,8 @@ public class DialtactsActivity extends AppCompatActivity
             transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
         }
 
-        NewSearchFragment fragment = (NewSearchFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        NewSearchFragment fragment =
+                (NewSearchFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
             fragment = NewSearchFragment.newInstance();
             transaction.add(R.id.dialtacts_frame, fragment, tag);
@@ -1160,14 +1175,16 @@ public class DialtactsActivity extends AppCompatActivity
                         public void onHidden(FloatingActionButton floatingActionButton) {
                             super.onHidden(floatingActionButton);
                             onPageScrolled(
-                                    listsFragment.getCurrentTabIndex(), 0 /* offset */, 0 /* pixelOffset */);
+                                    listsFragment.getCurrentTabIndex(), 0 /* offset */,
+                                    0 /* pixelOffset */);
                             floatingActionButtonController.scaleIn();
                         }
                     });
         } else if (!floatingActionButtonController.isVisible()) {
             onPageScrolled(listsFragment.getCurrentTabIndex(), 0 /* offset */, 0 /* pixelOffset */);
             ThreadUtil.getUiThreadHandler()
-                    .postDelayed(() -> floatingActionButtonController.scaleIn(), FAB_SCALE_IN_DELAY_MS);
+                    .postDelayed(() -> floatingActionButtonController.scaleIn(),
+                            FAB_SCALE_IN_DELAY_MS);
         }
 
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -1301,7 +1318,8 @@ public class DialtactsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentScroll(int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+    public void onListFragmentScroll(int firstVisibleItem, int visibleItemCount,
+            int totalItemCount) {
         // TODO: No-op for now. This should eventually show/hide the actionBar based on
         // interactions with the ListsFragments.
     }
@@ -1352,7 +1370,8 @@ public class DialtactsActivity extends AppCompatActivity
     }
 
     /**
-     * Allows the SpeedDialFragment to attach the drag controller to mRemoveViewContainer once it has
+     * Allows the SpeedDialFragment to attach the drag controller to mRemoveViewContainer once it
+     * has
      * been attached to the activity.
      */
     @Override
@@ -1474,7 +1493,8 @@ public class DialtactsActivity extends AppCompatActivity
         if (!newFavoritesIsEnabled()
                 && !isLandscape
                 && !isInSearchUi()
-                && listsFragment.getCurrentTabIndex() == DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL) {
+                && listsFragment.getCurrentTabIndex()
+                == DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL) {
             return FloatingActionButtonController.ALIGN_MIDDLE;
         }
         return FloatingActionButtonController.ALIGN_END;
@@ -1495,13 +1515,15 @@ public class DialtactsActivity extends AppCompatActivity
     public void interactionError(@InteractionErrorCode int interactionErrorCode) {
         switch (interactionErrorCode) {
             case InteractionErrorCode.USER_LEAVING_ACTIVITY:
-                // This is expected to happen if the user exits the activity before the interaction occurs.
+                // This is expected to happen if the user exits the activity before the
+                // interaction occurs.
                 return;
             case InteractionErrorCode.CONTACT_NOT_FOUND:
             case InteractionErrorCode.CONTACT_HAS_NO_NUMBER:
             case InteractionErrorCode.OTHER_ERROR:
             default:
-                // All other error codes are unexpected. For example, it should be impossible to start an
+                // All other error codes are unexpected. For example, it should be impossible to
+                // start an
                 // interaction with an invalid contact from the Dialtacts activity.
                 Assert.fail("PhoneNumberInteraction error: " + interactionErrorCode);
         }
@@ -1552,7 +1574,8 @@ public class DialtactsActivity extends AppCompatActivity
     @Override
     public void onContactSelected(ImageView photo, Uri contactUri, long contactId) {
         Logger.get(this)
-                .logInteraction(InteractionEvent.Type.OPEN_QUICK_CONTACT_FROM_CONTACTS_FRAGMENT_ITEM);
+                .logInteraction(
+                        InteractionEvent.Type.OPEN_QUICK_CONTACT_FROM_CONTACTS_FRAGMENT_ITEM);
         QuickContact.showQuickContact(
                 this, photo, contactUri, QuickContact.MODE_LARGE, null /* excludeMimes */);
     }

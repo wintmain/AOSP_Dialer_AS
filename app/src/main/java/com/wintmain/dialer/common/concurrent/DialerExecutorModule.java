@@ -16,27 +16,18 @@
 package com.wintmain.dialer.common.concurrent;
 
 import android.os.AsyncTask;
-
-import com.wintmain.dialer.common.LogUtil;
-import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
-import com.wintmain.dialer.common.concurrent.Annotations.LightweightExecutor;
-import com.wintmain.dialer.common.concurrent.Annotations.NonUiParallel;
-import com.wintmain.dialer.common.concurrent.Annotations.NonUiSerial;
-import com.wintmain.dialer.common.concurrent.Annotations.Ui;
-import com.wintmain.dialer.common.concurrent.Annotations.UiParallel;
-import com.wintmain.dialer.common.concurrent.Annotations.UiSerial;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
-import javax.inject.Singleton;
-
+import com.wintmain.dialer.common.LogUtil;
+import com.wintmain.dialer.common.concurrent.Annotations.*;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Module which provides concurrency bindings.
@@ -103,7 +94,8 @@ public abstract class DialerExecutorModule {
     @Provides
     @Singleton
     @LightweightExecutor
-    static ListeningExecutorService provideLightweightExecutor(@UiParallel ExecutorService delegate) {
+    static ListeningExecutorService provideLightweightExecutor(
+            @UiParallel ExecutorService delegate) {
         return MoreExecutors.listeningDecorator(delegate);
     }
 

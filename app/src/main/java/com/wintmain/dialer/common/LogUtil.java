@@ -27,16 +27,17 @@ public class LogUtil {
     public static final String TAG = "Dialer";
     private static final String SEPARATOR = " - ";
 
-    private LogUtil() {}
+    private LogUtil() {
+    }
 
     /**
      * Log at a verbose level. Verbose logs should generally be filtered out, but may be useful when
      * additional information is needed (e.g. to see how a particular flow evolved). These logs will
      * not generally be available on production builds.
      *
-     * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'.
-     * @param msg The message you would like logged, possibly with format arguments.
+     * @param tag  An identifier to allow searching for related logs. Generally of the form
+     *             'Class.method'.
+     * @param msg  The message you would like logged, possibly with format arguments.
      * @param args Optional arguments to be used in the formatted string.
      * @see {@link String#format(String, Object...)}
      * @see {@link android.util.Log#v(String, String)}
@@ -50,9 +51,9 @@ public class LogUtil {
      * troubleshooting or evaluating flow. These logs will not generally be available on production
      * builds.
      *
-     * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'
-     * @param msg The message you would like logged, possibly with format arguments
+     * @param tag  An identifier to allow searching for related logs. Generally of the form
+     *             'Class.method'
+     * @param msg  The message you would like logged, possibly with format arguments
      * @param args Optional arguments to be used in the formatted string
      * @see {@link String#format(String, Object...)}
      * @see {@link android.util.Log#d(String, String)}
@@ -62,12 +63,13 @@ public class LogUtil {
     }
 
     /**
-     * Log at an info level. Info logs provide information that would be useful to have on production
+     * Log at an info level. Info logs provide information that would be useful to have on
+     * production
      * builds for troubleshooting.
      *
-     * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'.
-     * @param msg The message you would like logged, possibly with format arguments.
+     * @param tag  An identifier to allow searching for related logs. Generally of the form
+     *             'Class.method'.
+     * @param msg  The message you would like logged, possibly with format arguments.
      * @param args Optional arguments to be used in the formatted string.
      * @see {@link String#format(String, Object...)}
      * @see {@link android.util.Log#i(String, String)}
@@ -80,21 +82,23 @@ public class LogUtil {
      * Log entry into a method at the info level.
      *
      * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'.
+     *            'Class.method'.
      */
     public static void enterBlock(String tag) {
         println(android.util.Log.INFO, TAG, tag, "enter");
     }
 
     /**
-     * Log at a warn level. Warn logs indicate a possible error (e.g. a default switch branch was hit,
-     * or a null object was expected to be non-null), but recovery is possible. This may be used when
+     * Log at a warn level. Warn logs indicate a possible error (e.g. a default switch branch was
+     * hit,
+     * or a null object was expected to be non-null), but recovery is possible. This may be used
+     * when
      * it is not guaranteed that an indeterminate or bad state was entered, just that something may
      * have gone wrong.
      *
-     * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'.
-     * @param msg The message you would like logged, possibly with format arguments.
+     * @param tag  An identifier to allow searching for related logs. Generally of the form
+     *             'Class.method'.
+     * @param msg  The message you would like logged, possibly with format arguments.
      * @param args Optional arguments to be used in the formatted string.
      * @see {@link String#format(String, Object...)}
      * @see {@link android.util.Log#w(String, String)}
@@ -105,12 +109,13 @@ public class LogUtil {
 
     /**
      * Log at an error level. Error logs are used when it is known that an error occurred and is
-     * possibly fatal. This is used to log information that will be useful for troubleshooting a crash
+     * possibly fatal. This is used to log information that will be useful for troubleshooting a
+     * crash
      * or other severe condition (e.g. error codes, state values, etc.).
      *
-     * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'.
-     * @param msg The message you would like logged, possibly with format arguments.
+     * @param tag  An identifier to allow searching for related logs. Generally of the form
+     *             'Class.method'.
+     * @param msg  The message you would like logged, possibly with format arguments.
      * @param args Optional arguments to be used in the formatted string.
      * @see {@link String#format(String, Object...)}
      * @see {@link android.util.Log#e(String, String)}
@@ -120,13 +125,15 @@ public class LogUtil {
     }
 
     /**
-     * Log an exception at an error level. Error logs are used when it is known that an error occurred
-     * and is possibly fatal. This is used to log information that will be useful for troubleshooting
+     * Log an exception at an error level. Error logs are used when it is known that an error
+     * occurred
+     * and is possibly fatal. This is used to log information that will be useful for
+     * troubleshooting
      * a crash or other severe condition (e.g. error codes, state values, etc.).
      *
-     * @param tag An identifier to allow searching for related logs. Generally of the form
-     *     'Class.method'.
-     * @param msg The message you would like logged.
+     * @param tag       An identifier to allow searching for related logs. Generally of the form
+     *                  'Class.method'.
+     * @param msg       The message you would like logged.
      * @param throwable The exception to log.
      * @see {@link String#format(String, Object...)}
      * @see {@link android.util.Log#e(String, String)}
@@ -146,7 +153,7 @@ public class LogUtil {
      * default logging to avoid leaking PII in logcat.
      *
      * @return text as is if {@value #TAG}'s log level is set to DEBUG or VERBOSE or on non-release
-     *     builds; returns a redacted version otherwise.
+     * builds; returns a redacted version otherwise.
      */
     public static String sanitizePii(@Nullable Object object) {
         if (object == null) {

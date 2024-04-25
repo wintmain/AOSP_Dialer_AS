@@ -17,11 +17,9 @@
 package com.wintmain.dialer.phonenumbercache;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-
 import com.wintmain.dialer.logging.ContactSource;
 
 import java.io.InputStream;
@@ -31,7 +29,8 @@ public interface CachedNumberLookupService {
     CachedContactInfo buildCachedContactInfo(ContactInfo info);
 
     /**
-     * Perform a lookup using the cached number lookup service to return contact information stored in
+     * Perform a lookup using the cached number lookup service to return contact information
+     * stored in
      * the cache that corresponds to the given number.
      *
      * @param context Valid context

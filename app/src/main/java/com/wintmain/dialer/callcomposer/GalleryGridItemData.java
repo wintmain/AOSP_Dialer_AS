@@ -22,9 +22,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore.Images.Media;
 import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.common.Assert;
 
 import java.io.File;

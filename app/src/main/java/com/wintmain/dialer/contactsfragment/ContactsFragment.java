@@ -16,8 +16,6 @@
 
 package com.wintmain.dialer.contactsfragment;
 
-import static android.Manifest.permission.READ_CONTACTS;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +29,6 @@ import android.view.View.OnScrollChangeListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +40,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Recycler;
 import androidx.recyclerview.widget.RecyclerView.State;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.FragmentUtils;
@@ -58,6 +54,8 @@ import com.wintmain.dialer.widget.EmptyContentView.OnEmptyViewActionButtonClicke
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
+
+import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * Fragment containing a list of all contacts.
@@ -159,14 +157,16 @@ public class ContactsFragment extends Fragment
         recyclerView = view.findViewById(R.id.recycler_view);
         adapter =
                 new ContactsAdapter(
-                        getContext(), header, FragmentUtils.getParent(this, OnContactSelectedListener.class));
+                        getContext(), header,
+                        FragmentUtils.getParent(this, OnContactSelectedListener.class));
         recyclerView.setAdapter(adapter);
         manager =
                 new LinearLayoutManager(getContext()) {
                     @Override
                     public void onLayoutChildren(Recycler recycler, State state) {
                         super.onLayoutChildren(recycler, state);
-                        int itemsShown = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
+                        int itemsShown =
+                                findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
                         if (adapter.getItemCount() > itemsShown) {
                             fastScroller.setVisibility(View.VISIBLE);
                             recyclerView.setOnScrollChangeListener(ContactsFragment.this);
@@ -280,11 +280,13 @@ public class ContactsFragment extends Fragment
                 anchoredHeader.setText(anchoredHeaderString);
                 anchoredHeader.setVisibility(View.VISIBLE);
                 getContactHolder(firstVisibleItem).getHeaderView().setVisibility(View.INVISIBLE);
-                getContactHolder(firstCompletelyVisible).getHeaderView().setVisibility(View.INVISIBLE);
+                getContactHolder(firstCompletelyVisible).getHeaderView().setVisibility(
+                        View.INVISIBLE);
             } else {
                 anchoredHeader.setVisibility(View.INVISIBLE);
                 getContactHolder(firstVisibleItem).getHeaderView().setVisibility(View.VISIBLE);
-                getContactHolder(firstCompletelyVisible).getHeaderView().setVisibility(View.VISIBLE);
+                getContactHolder(firstCompletelyVisible).getHeaderView().setVisibility(
+                        View.VISIBLE);
             }
         }
     }
@@ -298,7 +300,8 @@ public class ContactsFragment extends Fragment
         if (emptyContentView.getActionLabel() == R.string.permission_single_turn_on) {
             String[] deniedPermissions =
                     PermissionsUtil.getPermissionsCurrentlyDenied(
-                            requireContext(), PermissionsUtil.allContactsGroupPermissionsUsedInDialer);
+                            requireContext(),
+                            PermissionsUtil.allContactsGroupPermissionsUsedInDialer);
             if (deniedPermissions.length > 0) {
                 LogUtil.i(
                         "ContactsFragment.onEmptyViewActionButtonClicked",
@@ -310,9 +313,11 @@ public class ContactsFragment extends Fragment
                 == R.string.all_contacts_empty_add_contact_action) {
             // Add new contact
             DialerUtils.startActivityWithErrorToast(
-                    getContext(), IntentUtil.getNewContactIntent(), R.string.add_contact_not_available);
+                    getContext(), IntentUtil.getNewContactIntent(),
+                    R.string.add_contact_not_available);
         } else {
-            throw Assert.createIllegalStateFailException("Invalid empty content view action label.");
+            throw Assert.createIllegalStateFailException(
+                    "Invalid empty content view action label.");
         }
     }
 

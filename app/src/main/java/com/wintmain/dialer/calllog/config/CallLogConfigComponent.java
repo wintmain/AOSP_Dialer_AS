@@ -16,10 +16,8 @@
 package com.wintmain.dialer.calllog.config;
 
 import android.content.Context;
-
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-
 import dagger.Subcomponent;
 
 /**

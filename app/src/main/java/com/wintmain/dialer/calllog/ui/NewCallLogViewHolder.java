@@ -18,7 +18,6 @@ package com.wintmain.dialer.calllog.ui;
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.provider.CallLog.Calls;
-
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.text.TextUtils;
@@ -28,20 +27,16 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityNodeInfo.AccessibilityAction;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllog.model.CoalescedRow;
 import com.wintmain.dialer.calllog.ui.NewCallLogAdapter.PopCounts;
 import com.wintmain.dialer.calllog.ui.menu.NewCallLogMenu;
-import com.wintmain.dialer.calllogutils.CallLogEntryDescriptions;
-import com.wintmain.dialer.calllogutils.CallLogEntryText;
-import com.wintmain.dialer.calllogutils.CallLogRowActions;
-import com.wintmain.dialer.calllogutils.PhoneAccountUtils;
-import com.wintmain.dialer.calllogutils.PhotoInfoBuilder;
+import com.wintmain.dialer.calllogutils.*;
 import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
 import com.wintmain.dialer.compat.telephony.TelephonyManagerCompat;
 import com.wintmain.dialer.oem.MotorolaUtils;
@@ -49,8 +44,7 @@ import com.wintmain.dialer.phonenumberutil.PhoneNumberHelper;
 import com.wintmain.dialer.telecom.TelecomUtil;
 import com.wintmain.dialer.time.Clock;
 import com.wintmain.dialer.widget.ContactPhotoView;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
+
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
@@ -107,13 +101,16 @@ final class NewCallLogViewHolder extends RecyclerView.ViewHolder {
         // The row ID is used to make sure async updates are applied to the correct views.
         currentRowId = coalescedRow.getId();
 
-        // Even if there is additional real time processing necessary, we still want to immediately show
-        // what information we have, rather than an empty card. For example, if CP2 information needs to
+        // Even if there is additional real time processing necessary, we still want to
+        // immediately show
+        // what information we have, rather than an empty card. For example, if CP2 information
+        // needs to
         // be queried on the fly, we can still show the phone number until the contact name loads.
         displayRow(coalescedRow);
         configA11yForRow(coalescedRow);
 
-        // Note: This leaks the view holder via the callback (which is an inner class), but this is OK
+        // Note: This leaks the view holder via the callback (which is an inner class), but this
+        // is OK
         // because we only create ~10 of them (and they'll be collected assuming all jobs finish).
         Futures.addCallback(
                 realtimeRowProcessor.applyRealtimeProcessing(coalescedRow),
@@ -124,7 +121,8 @@ final class NewCallLogViewHolder extends RecyclerView.ViewHolder {
     private void displayRow(CoalescedRow row) {
         // TODO(zachh): Handle RTL properly.
         primaryTextView.setText(CallLogEntryText.buildPrimaryText(activity, row));
-        secondaryTextView.setText(CallLogEntryText.buildSecondaryTextForEntries(activity, clock, row));
+        secondaryTextView.setText(
+                CallLogEntryText.buildSecondaryTextForEntries(activity, clock, row));
 
         if (isUnreadMissedCall(row)) {
             primaryTextView.setTextAppearance(R.style.primary_textview_unread_call);
@@ -158,14 +156,16 @@ final class NewCallLogViewHolder extends RecyclerView.ViewHolder {
         callLogEntryRootView.setAccessibilityDelegate(
                 new AccessibilityDelegate() {
                     @Override
-                    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
+                    public void onInitializeAccessibilityNodeInfo(View host,
+                            AccessibilityNodeInfo info) {
                         super.onInitializeAccessibilityNodeInfo(host, info);
                         info.addAction(
                                 new AccessibilityAction(
                                         AccessibilityNodeInfo.ACTION_CLICK,
                                         activity
                                                 .getResources()
-                                                .getString(R.string.a11y_new_call_log_entry_tap_action)));
+                                                .getString(
+                                                        R.string.a11y_new_call_log_entry_tap_action)));
                     }
                 });
     }
@@ -303,13 +303,15 @@ final class NewCallLogViewHolder extends RecyclerView.ViewHolder {
             callButton.setImageResource(R.drawable.quantum_ic_videocam_vd_theme_24);
             callButton.setContentDescription(
                     TextUtils.expandTemplate(
-                            activity.getResources().getText(R.string.a11y_new_call_log_entry_video_call),
+                            activity.getResources()
+                                    .getText(R.string.a11y_new_call_log_entry_video_call),
                             CallLogEntryText.buildPrimaryText(activity, row)));
         } else {
             callButton.setImageResource(R.drawable.quantum_ic_call_vd_theme_24);
             callButton.setContentDescription(
                     TextUtils.expandTemplate(
-                            activity.getResources().getText(R.string.a11y_new_call_log_entry_voice_call),
+                            activity.getResources()
+                                    .getText(R.string.a11y_new_call_log_entry_voice_call),
                             CallLogEntryText.buildPrimaryText(activity, row)));
         }
 
@@ -325,13 +327,15 @@ final class NewCallLogViewHolder extends RecyclerView.ViewHolder {
 
         @Override
         public void onSuccess(CoalescedRow updatedRow) {
-            // If the user scrolled then this ViewHolder may not correspond to the completed task and
+            // If the user scrolled then this ViewHolder may not correspond to the completed task
+            // and
             // there's nothing to do.
             if (originalRow.getId() != currentRowId) {
                 popCounts.didNotPop++;
                 return;
             }
-            // Only update the UI if the updated row differs from the original row (which has already
+            // Only update the UI if the updated row differs from the original row (which has
+            // already
             // been displayed).
             if (!updatedRow.equals(originalRow)) {
                 displayRow(updatedRow);

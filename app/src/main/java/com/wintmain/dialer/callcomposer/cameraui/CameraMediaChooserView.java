@@ -24,7 +24,6 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callcomposer.camera.CameraManager;
 import com.wintmain.dialer.callcomposer.camera.HardwareCameraPreview;
@@ -51,23 +50,24 @@ public class CameraMediaChooserView extends FrameLayout {
         final Bundle bundle = new Bundle();
         bundle.putParcelable(STATE_SUPER, super.onSaveInstanceState());
         final int cameraIndex = CameraManager.get().getCameraIndex();
-        LogUtil.i("CameraMediaChooserView.onSaveInstanceState", "saving camera index:" + cameraIndex);
+        LogUtil.i("CameraMediaChooserView.onSaveInstanceState",
+                "saving camera index:" + cameraIndex);
         bundle.putInt(STATE_CAMERA_INDEX, cameraIndex);
         return bundle;
     }
 
     @Override
     protected void onRestoreInstanceState(final Parcelable state) {
-        if (!(state instanceof Bundle)) {
+        if (!(state instanceof Bundle bundle)) {
             return;
         }
 
-        final Bundle bundle = (Bundle) state;
         final int cameraIndex = bundle.getInt(STATE_CAMERA_INDEX);
         super.onRestoreInstanceState(bundle.getParcelable(STATE_SUPER));
 
         LogUtil.i(
-                "CameraMediaChooserView.onRestoreInstanceState", "restoring camera index:" + cameraIndex);
+                "CameraMediaChooserView.onRestoreInstanceState",
+                "restoring camera index:" + cameraIndex);
         if (cameraIndex != -1) {
             CameraManager.get().selectCameraByIndex(cameraIndex);
         } else {

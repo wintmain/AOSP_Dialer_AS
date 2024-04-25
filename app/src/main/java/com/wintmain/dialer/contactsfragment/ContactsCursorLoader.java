@@ -20,9 +20,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.text.TextUtils;
-
 import androidx.loader.content.CursorLoader;
-
 import com.wintmain.dialer.contacts.ContactsComponent;
 
 /**

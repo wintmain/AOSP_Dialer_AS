@@ -17,7 +17,6 @@
 package com.wintmain.dialer.enrichedcall.extensions;
 
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.enrichedcall.Session;
 import com.wintmain.dialer.enrichedcall.Session.State;

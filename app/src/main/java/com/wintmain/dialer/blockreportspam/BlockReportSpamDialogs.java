@@ -24,12 +24,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blocking.FilteredNumberCompat;
 
@@ -183,7 +181,8 @@ public final class BlockReportSpamDialogs {
                     (CheckBox) dialogView.findViewById(R.id.report_number_as_spam_action);
             // Listen for changes on the checkbox and update if orientation changes
             isSpamCheckbox.setChecked(spamChecked);
-            isSpamCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> spamChecked = isChecked);
+            isSpamCheckbox.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> spamChecked = isChecked);
 
             TextView details = (TextView) dialogView.findViewById(R.id.block_details);
             details.setText(getBlockMessage(getContext()));
@@ -192,12 +191,14 @@ public final class BlockReportSpamDialogs {
             Dialog blockReportSpamDialog =
                     alertDialogBuilder
                             .setView(dialogView)
-                            .setTitle(getString(R.string.block_report_number_alert_title, displayNumber))
+                            .setTitle(getString(R.string.block_report_number_alert_title,
+                                    displayNumber))
                             .setPositiveButton(
                                     R.string.block_number_ok,
                                     (dialog, which) -> {
                                         dismiss();
-                                        onSpamDialogClickListener.onClick(isSpamCheckbox.isChecked());
+                                        onSpamDialogClickListener.onClick(
+                                                isSpamCheckbox.isChecked());
                                     })
                             .create();
             blockReportSpamDialog.setCanceledOnTouchOutside(true);
@@ -239,14 +240,17 @@ public final class BlockReportSpamDialogs {
             AlertDialog.Builder alertDialogBuilder = createDialogBuilder(getActivity(), this);
             Dialog dialog =
                     alertDialogBuilder
-                            .setTitle(getString(R.string.block_number_confirmation_title, displayNumber))
+                            .setTitle(getString(R.string.block_number_confirmation_title,
+                                    displayNumber))
                             .setMessage(
                                     isSpamEnabled
                                             ? getString(
-                                            R.string.block_number_alert_details, getBlockMessage(getContext()))
+                                            R.string.block_number_alert_details,
+                                            getBlockMessage(getContext()))
                                             : getString(R.string.block_report_number_alert_details))
                             .setPositiveButton(
-                                    R.string.block_number_ok, createGenericOnClickListener(this, positiveListener))
+                                    R.string.block_number_ok,
+                                    createGenericOnClickListener(this, positiveListener))
                             .create();
             dialog.setCanceledOnTouchOutside(true);
             return dialog;
@@ -256,7 +260,8 @@ public final class BlockReportSpamDialogs {
     /**
      * Dialog for blocking a number.
      *
-     * <p>This dialog is for a spam number that hasn't been blocked. For example, if the user receives
+     * <p>This dialog is for a spam number that hasn't been blocked. For example, if the user
+     * receives
      * a spam call, this dialog will be shown if they would like to block the number.
      */
     public static class DialogFragmentForBlockingNumber extends CommonDialogsFragment {
@@ -282,10 +287,12 @@ public final class BlockReportSpamDialogs {
             AlertDialog.Builder alertDialogBuilder = createDialogBuilder(getActivity(), this);
             Dialog dialog =
                     alertDialogBuilder
-                            .setTitle(getString(R.string.block_number_confirmation_title, displayNumber))
+                            .setTitle(getString(R.string.block_number_confirmation_title,
+                                    displayNumber))
                             .setMessage(getString(R.string.block_report_number_alert_details))
                             .setPositiveButton(
-                                    R.string.block_number_ok, createGenericOnClickListener(this, positiveListener))
+                                    R.string.block_number_ok,
+                                    createGenericOnClickListener(this, positiveListener))
                             .create();
             dialog.setCanceledOnTouchOutside(true);
             return dialog;
@@ -295,7 +302,8 @@ public final class BlockReportSpamDialogs {
     /**
      * Dialog for unblocking a number and marking it as not spam.
      *
-     * <p>This dialog is used in the old call log, where unblocking a number will also mark it as not
+     * <p>This dialog is used in the old call log, where unblocking a number will also mark it as
+     * not
      * spam.
      */
     public static class DialogFragmentForUnblockingNumberAndReportingAsNotSpam
@@ -330,7 +338,8 @@ public final class BlockReportSpamDialogs {
             if (isSpam) {
                 alertDialogBuilder
                         .setMessage(R.string.unblock_number_alert_details)
-                        .setTitle(getString(R.string.unblock_report_number_alert_title, displayNumber));
+                        .setTitle(getString(R.string.unblock_report_number_alert_title,
+                                displayNumber));
             } else {
                 alertDialogBuilder.setMessage(
                         getString(R.string.unblock_report_number_alert_title, displayNumber));
@@ -338,7 +347,8 @@ public final class BlockReportSpamDialogs {
             Dialog dialog =
                     alertDialogBuilder
                             .setPositiveButton(
-                                    R.string.unblock_number_ok, createGenericOnClickListener(this, positiveListener))
+                                    R.string.unblock_number_ok,
+                                    createGenericOnClickListener(this, positiveListener))
                             .create();
             dialog.setCanceledOnTouchOutside(true);
             return dialog;
@@ -348,7 +358,8 @@ public final class BlockReportSpamDialogs {
     /**
      * Dialog for unblocking a number.
      *
-     * <p>This dialog is used in the new call log, where unblocking a number will *not* mark it as not
+     * <p>This dialog is used in the new call log, where unblocking a number will *not* mark it
+     * as not
      * spam.
      */
     public static class DialogFragmentForUnblockingNumber extends CommonDialogsFragment {
@@ -377,7 +388,8 @@ public final class BlockReportSpamDialogs {
             Dialog dialog =
                     alertDialogBuilder
                             .setPositiveButton(
-                                    R.string.unblock_number_ok, createGenericOnClickListener(this, positiveListener))
+                                    R.string.unblock_number_ok,
+                                    createGenericOnClickListener(this, positiveListener))
                             .create();
             dialog.setCanceledOnTouchOutside(true);
             return dialog;
@@ -410,7 +422,8 @@ public final class BlockReportSpamDialogs {
             Dialog dialog =
                     alertDialogBuilder
                             .setTitle(R.string.report_not_spam_alert_title)
-                            .setMessage(getString(R.string.report_not_spam_alert_details, displayNumber))
+                            .setMessage(getString(R.string.report_not_spam_alert_details,
+                                    displayNumber))
                             .setPositiveButton(
                                     R.string.report_not_spam_alert_button,
                                     createGenericOnClickListener(this, positiveListener))

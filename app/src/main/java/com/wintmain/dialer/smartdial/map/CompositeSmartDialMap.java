@@ -17,12 +17,10 @@
 package com.wintmain.dialer.smartdial.map;
 
 import android.content.Context;
-
 import androidx.annotation.VisibleForTesting;
 import androidx.collection.SimpleArrayMap;
-
-import com.wintmain.dialer.i18n.LocaleUtils;
 import com.google.common.base.Optional;
+import com.wintmain.dialer.i18n.LocaleUtils;
 
 import java.util.Objects;
 
@@ -70,7 +68,8 @@ public class CompositeSmartDialMap {
     }
 
     /**
-     * Returns true if the provided character is a letter, and can be mapped to a key on the dialpad.
+     * Returns true if the provided character is a letter, and can be mapped to a key on the
+     * dialpad.
      *
      * <p>The provided character is expected to be a normalized character. See {@link
      * SmartDialMap#normalizeCharacter(char)} for details.

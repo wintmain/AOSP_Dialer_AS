@@ -24,7 +24,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 public interface CallLogConfig {
 
     /**
-     * Updates the config values. This may kick off a lot of work so should be done infrequently, for
+     * Updates the config values. This may kick off a lot of work so should be done infrequently,
+     * for
      * example by a scheduled job or broadcast receiver which rarely fires.
      */
     ListenableFuture<Void> update();

@@ -20,7 +20,6 @@ import android.content.ComponentName;
 import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.telecom.PhoneAccountHandle;
-
 import com.wintmain.dialer.constants.Constants;
 
 /**
@@ -35,10 +34,12 @@ import com.wintmain.dialer.constants.Constants;
 public final class PreferredSimFallbackContract {
 
     /**
-     * Check the meta-data "com.wintmain.dialer.PREFERRED_SIM_FALLBACK_AUTHORITY" to get the authority
+     * Check the meta-data "com.wintmain.dialer.PREFERRED_SIM_FALLBACK_AUTHORITY" to get the
+     * authority
      * of the default dialer if it support it.
      */
-    public static final String AUTHORITY = Constants.get().getPreferredSimFallbackProviderAuthority();
+    public static final String AUTHORITY =
+            Constants.get().getPreferredSimFallbackProviderAuthority();
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
@@ -49,13 +50,15 @@ public final class PreferredSimFallbackContract {
 
         /**
          * Unique key that should match {@link
-         * android.provider.ContactsContract.CommonDataKinds.Phone#_ID} of the data row it is associated
+         * android.provider.ContactsContract.CommonDataKinds.Phone#_ID} of the data row it is
+         * associated
          * with.
          */
         public static final String DATA_ID = "data_id";
 
         /**
-         * The flattened {@link android.content.ComponentName} of a {@link PhoneAccountHandle} that is
+         * The flattened {@link android.content.ComponentName} of a {@link PhoneAccountHandle}
+         * that is
          * the preferred {@code PhoneAccountHandle} to call the contact with. Used by {@link
          * CommonDataKinds.Phone}.
          *
@@ -66,7 +69,8 @@ public final class PreferredSimFallbackContract {
                 "preferred_phone_account_component_name";
 
         /**
-         * The ID of a {@link PhoneAccountHandle} that is the preferred {@code PhoneAccountHandle} to
+         * The ID of a {@link PhoneAccountHandle} that is the preferred {@code PhoneAccountHandle
+         * } to
          * call the contact with. Used by {@link CommonDataKinds.Phone}.
          *
          * @see PhoneAccountHandle#getId() ()

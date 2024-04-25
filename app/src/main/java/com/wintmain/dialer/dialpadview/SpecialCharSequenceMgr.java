@@ -16,18 +16,12 @@
 
 package com.wintmain.dialer.dialpadview;
 
-import static org.apache.commons.io.IOUtils.closeQuietly;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -49,17 +43,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
 import com.android.contacts.common.database.NoNullCursorAsyncQueryHandler;
 import com.android.contacts.common.util.ContactDisplayUtils;
 import com.android.contacts.common.widget.SelectPhoneAccountDialogFragment;
 import com.android.contacts.common.widget.SelectPhoneAccountDialogFragment.SelectPhoneAccountListener;
 import com.android.contacts.common.widget.SelectPhoneAccountDialogOptionsUtil;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -68,14 +64,12 @@ import com.wintmain.dialer.oem.MotorolaUtils;
 import com.wintmain.dialer.oem.TranssionUtils;
 import com.wintmain.dialer.telecom.TelecomUtil;
 import com.wintmain.dialer.util.PermissionsUtil;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
  * Helper class to listen for some magic character sequences that are handled specially by Dialer.
@@ -98,11 +92,13 @@ public class SpecialCharSequenceMgr {
      * possible crash.
      *
      * <p>QueryHandler may call {@link ProgressDialog#dismiss()} when the screen is already gone,
-     * which will cause the app crash. This variable enables the class to prevent the crash on {@link
+     * which will cause the app crash. This variable enables the class to prevent the crash on
+     * {@link
      * #cleanup()}.
      *
      * <p>TODO: Remove this and replace it (and {@link #cleanup()}) with better implementation. One
-     * complication is that we have SpecialCharSequenceMgr in Phone package too, which has *slightly*
+     * complication is that we have SpecialCharSequenceMgr in Phone package too, which has
+     * *slightly*
      * different implementation. Note that Phone package doesn't have this problem, so the class on
      * Phone side doesn't have this functionality. Fundamental fix would be to have one shared
      * implementation and resolve this corner case more gracefully.
@@ -240,14 +236,16 @@ public class SpecialCharSequenceMgr {
                     handleAdnQuery(handler, sc, uri);
                 } else {
                     SelectPhoneAccountListener callback =
-                            new HandleAdnEntryAccountSelectedCallback(applicationContext, handler, sc);
+                            new HandleAdnEntryAccountSelectedCallback(applicationContext, handler,
+                                    sc);
                     DialogFragment dialogFragment =
                             SelectPhoneAccountDialogFragment.newInstance(
                                     SelectPhoneAccountDialogOptionsUtil.builderWithAccounts(
                                                     subscriptionAccountHandles)
                                             .build(),
                                     callback);
-                    dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), TAG_SELECT_ACCT_FRAGMENT);
+                    dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(),
+                            TAG_SELECT_ACCT_FRAGMENT);
                 }
 
                 return true;
@@ -258,7 +256,8 @@ public class SpecialCharSequenceMgr {
         return false;
     }
 
-    private static void handleAdnQuery(QueryHandler handler, SimContactQueryCookie cookie, Uri uri) {
+    private static void handleAdnQuery(QueryHandler handler, SimContactQueryCookie cookie,
+            Uri uri) {
         if (handler == null || cookie == null || uri == null) {
             LogUtil.w("SpecialCharSequenceMgr.handleAdnQuery", "queryAdn parameters incorrect");
             return;
@@ -290,21 +289,25 @@ public class SpecialCharSequenceMgr {
                     TelecomUtil.getSubscriptionPhoneAccounts(context);
             boolean hasUserSelectedDefault =
                     subscriptionAccountHandles.contains(
-                            TelecomUtil.getDefaultOutgoingPhoneAccount(context, PhoneAccount.SCHEME_TEL));
+                            TelecomUtil.getDefaultOutgoingPhoneAccount(context,
+                                    PhoneAccount.SCHEME_TEL));
 
             if (subscriptionAccountHandles.size() <= 1 || hasUserSelectedDefault) {
                 // Don't bring up the dialog for single-SIM or if the default outgoing account is
                 // a subscription account.
                 return TelecomUtil.handleMmi(context, input, null);
             } else {
-                SelectPhoneAccountListener listener = new HandleMmiAccountSelectedCallback(context, input);
+                SelectPhoneAccountListener listener = new HandleMmiAccountSelectedCallback(context,
+                        input);
 
                 DialogFragment dialogFragment =
                         SelectPhoneAccountDialogFragment.newInstance(
-                                SelectPhoneAccountDialogOptionsUtil.builderWithAccounts(subscriptionAccountHandles)
+                                SelectPhoneAccountDialogOptionsUtil.builderWithAccounts(
+                                                subscriptionAccountHandles)
                                         .build(),
                                 listener);
-                dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), TAG_SELECT_ACCT_FRAGMENT);
+                dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(),
+                        TAG_SELECT_ACCT_FRAGMENT);
             }
             return true;
         }
@@ -338,7 +341,8 @@ public class SpecialCharSequenceMgr {
                                 holder,
                                 deviceId,
                                 /* showDecimal */
-                                context.getResources().getBoolean(R.bool.show_device_id_in_hex_and_decimal),
+                                context.getResources()
+                                        .getBoolean(R.bool.show_device_id_in_hex_and_decimal),
                                 /* showBarcode */ false);
                     }
                 }
@@ -373,7 +377,8 @@ public class SpecialCharSequenceMgr {
 
         ViewGroup row =
                 (ViewGroup)
-                        LayoutInflater.from(holder.getContext()).inflate(R.layout.row_deviceid, holder, false);
+                        LayoutInflater.from(holder.getContext()).inflate(R.layout.row_deviceid,
+                                holder, false);
         holder.addView(row);
 
         // Remove the check digit, if exists. This digit is a checksum of the ID.
@@ -381,7 +386,8 @@ public class SpecialCharSequenceMgr {
         // and https://en.wikipedia.org/wiki/Mobile_equipment_identifier
         String hex = deviceId.length() == 15 ? deviceId.substring(0, 14) : deviceId;
 
-        // If this is the valid length IMEI or MEID (14 digits), show it in all formats, otherwise fall
+        // If this is the valid length IMEI or MEID (14 digits), show it in all formats,
+        // otherwise fall
         // back to just showing the raw hex
         if (hex.length() == 14 && showDecimal) {
             ((TextView) row.findViewById(R.id.deviceid_hex)).setText(hex);
@@ -394,17 +400,21 @@ public class SpecialCharSequenceMgr {
 
         final ImageView barcode = row.findViewById(R.id.deviceid_barcode);
         if (showBarcode) {
-            // Wait until the layout pass has completed so we the barcode is measured before drawing. We
-            // do this by adding a layout listener and setting the bitmap after getting the callback.
+            // Wait until the layout pass has completed so we the barcode is measured before
+            // drawing. We
+            // do this by adding a layout listener and setting the bitmap after getting the
+            // callback.
             barcode
                     .getViewTreeObserver()
                     .addOnGlobalLayoutListener(
                             new OnGlobalLayoutListener() {
                                 @Override
                                 public void onGlobalLayout() {
-                                    barcode.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                    barcode.getViewTreeObserver().removeOnGlobalLayoutListener(
+                                            this);
                                     Bitmap barcodeBitmap =
-                                            generateBarcode(hex, barcode.getWidth(), barcode.getHeight());
+                                            generateBarcode(hex, barcode.getWidth(),
+                                                    barcode.getHeight());
                                     if (barcodeBitmap != null) {
                                         barcode.setImageBitmap(barcodeBitmap);
                                     }
@@ -449,7 +459,8 @@ public class SpecialCharSequenceMgr {
     }
 
     /**
-     * This method generates a 2d barcode using the zxing library. Each pixel of the bitmap is either
+     * This method generates a 2d barcode using the zxing library. Each pixel of the bitmap is
+     * either
      * black or white painted vertically. We determine which color using the BitMatrix.get(x, y)
      * method.
      */
@@ -477,13 +488,15 @@ public class SpecialCharSequenceMgr {
     private static boolean handleRegulatoryInfoDisplay(Context context, String input) {
         if (input.equals(MMI_REGULATORY_INFO_DISPLAY)) {
             LogUtil.i(
-                    "SpecialCharSequenceMgr.handleRegulatoryInfoDisplay", "sending intent to settings app");
+                    "SpecialCharSequenceMgr.handleRegulatoryInfoDisplay",
+                    "sending intent to settings app");
             Intent showRegInfoIntent = new Intent(Settings.ACTION_SHOW_REGULATORY_INFO);
             try {
                 context.startActivity(showRegInfoIntent);
             } catch (ActivityNotFoundException e) {
                 LogUtil.e(
-                        "SpecialCharSequenceMgr.handleRegulatoryInfoDisplay", "startActivity() failed: ", e);
+                        "SpecialCharSequenceMgr.handleRegulatoryInfoDisplay",
+                        "startActivity() failed: ", e);
             }
             return true;
         }
@@ -505,7 +518,8 @@ public class SpecialCharSequenceMgr {
 
         @Override
         public void onPhoneAccountSelected(
-                PhoneAccountHandle selectedAccountHandle, boolean setDefault, @Nullable String callId) {
+                PhoneAccountHandle selectedAccountHandle, boolean setDefault,
+                @Nullable String callId) {
             Uri uri = TelecomUtil.getAdnUriForPhoneAccount(context, selectedAccountHandle);
             handleAdnQuery(queryHandler, cookie, uri);
             // TODO: Show error dialog if result isn't valid.
@@ -524,7 +538,8 @@ public class SpecialCharSequenceMgr {
 
         @Override
         public void onPhoneAccountSelected(
-                PhoneAccountHandle selectedAccountHandle, boolean setDefault, @Nullable String callId) {
+                PhoneAccountHandle selectedAccountHandle, boolean setDefault,
+                @Nullable String callId) {
             TelecomUtil.handleMmi(context, input, selectedAccountHandle);
         }
     }
@@ -567,7 +582,8 @@ public class SpecialCharSequenceMgr {
         }
 
         /**
-         * Cancel the ADN query by stopping the operation and signaling the cookie that a cancel request
+         * Cancel the ADN query by stopping the operation and signaling the cookie that a cancel
+         * request
          * is made.
          */
         @Override
@@ -623,7 +639,8 @@ public class SpecialCharSequenceMgr {
                 // caller name.
                 if ((c != null) && (text != null) && (c.moveToPosition(sc.contactNum))) {
                     String name = c.getString(c.getColumnIndexOrThrow(ADN_NAME_COLUMN_NAME));
-                    String number = c.getString(c.getColumnIndexOrThrow(ADN_PHONE_NUMBER_COLUMN_NAME));
+                    String number = c.getString(
+                            c.getColumnIndexOrThrow(ADN_PHONE_NUMBER_COLUMN_NAME));
 
                     // fill the text in.
                     text.getText().replace(0, 0, number);

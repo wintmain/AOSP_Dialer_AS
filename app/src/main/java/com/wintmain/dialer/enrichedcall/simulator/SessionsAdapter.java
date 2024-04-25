@@ -18,10 +18,8 @@ package com.wintmain.dialer.enrichedcall.simulator;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 
@@ -45,7 +43,8 @@ class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     @Override
     public SessionViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        return new SessionViewHolder(inflater.inflate(R.layout.session_view_holder, viewGroup, false));
+        return new SessionViewHolder(
+                inflater.inflate(R.layout.session_view_holder, viewGroup, false));
     }
 
     @Override

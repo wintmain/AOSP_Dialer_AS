@@ -127,7 +127,8 @@ public class CallRecordingDataStore {
                 long mediaId = cursor.getLong(2);
                 // FIXME: need to check whether media entry still exists?
                 resultList.add(
-                        new CallRecording(phoneNumber, callCreationDate, fileName, creationDate, mediaId));
+                        new CallRecording(phoneNumber, callCreationDate, fileName, creationDate,
+                                mediaId));
             }
             cursor.close();
         } catch (SQLiteException e) {
@@ -171,7 +172,8 @@ public class CallRecordingDataStore {
         ContentValues cv = new ContentValues(1);
         cv.put(CallRecordingsContract.CallRecording.COLUMN_NAME_MEDIA_ID, mediaId);
         mDatabase.update(CallRecordingsContract.CallRecording.TABLE_NAME, cv,
-                CallRecordingsContract.CallRecording._ID + " = ?", new String[]{String.valueOf(id)});
+                CallRecordingsContract.CallRecording._ID + " = ?",
+                new String[]{String.valueOf(id)});
     }
 
     static class CallRecordingsContract {
@@ -196,12 +198,15 @@ public class CallRecordingDataStore {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + CallRecordingsContract.CallRecording.TABLE_NAME + " (" +
-                    CallRecordingsContract.CallRecording._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    CallRecordingsContract.CallRecording._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    +
                     CallRecordingsContract.CallRecording.COLUMN_NAME_PHONE_NUMBER + " TEXT," +
                     CallRecordingsContract.CallRecording.COLUMN_NAME_CALL_DATE + " LONG," +
-                    CallRecordingsContract.CallRecording.COLUMN_NAME_RECORDING_FILENAME + " TEXT, " +
+                    CallRecordingsContract.CallRecording.COLUMN_NAME_RECORDING_FILENAME + " TEXT, "
+                    +
                     CallRecordingsContract.CallRecording.COLUMN_NAME_CREATION_DATE + " LONG," +
-                    CallRecordingsContract.CallRecording.COLUMN_NAME_MEDIA_ID + " INTEGER DEFAULT 0" +
+                    CallRecordingsContract.CallRecording.COLUMN_NAME_MEDIA_ID + " INTEGER DEFAULT 0"
+                    +
                     ");"
             );
 

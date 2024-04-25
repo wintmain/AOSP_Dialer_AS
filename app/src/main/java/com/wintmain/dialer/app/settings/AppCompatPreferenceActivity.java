@@ -22,7 +22,6 @@ import android.preference.PreferenceActivity;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;

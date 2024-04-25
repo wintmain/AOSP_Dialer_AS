@@ -19,10 +19,8 @@ package com.wintmain.dialer.shortcuts;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
-
 import com.wintmain.dialer.common.Assert;
 
 import java.util.ArrayList;

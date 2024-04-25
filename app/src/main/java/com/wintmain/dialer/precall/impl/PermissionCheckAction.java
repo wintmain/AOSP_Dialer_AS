@@ -18,7 +18,6 @@ package com.wintmain.dialer.precall.impl;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.precall.PreCallAction;

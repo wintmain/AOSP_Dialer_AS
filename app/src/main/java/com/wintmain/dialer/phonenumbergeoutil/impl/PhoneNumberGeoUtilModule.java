@@ -19,11 +19,10 @@ package com.wintmain.dialer.phonenumbergeoutil.impl;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.phonenumbergeoutil.PhoneNumberGeoUtil;
-
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
+
+import javax.inject.Singleton;
 
 /**
  * Module which binds {@link PhoneNumberGeoUtilImpl}.

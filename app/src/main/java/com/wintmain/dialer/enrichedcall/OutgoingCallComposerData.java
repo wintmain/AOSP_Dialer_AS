@@ -17,12 +17,10 @@
 package com.wintmain.dialer.enrichedcall;
 
 import android.net.Uri;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.wintmain.dialer.common.Assert;
 import com.google.auto.value.AutoValue;
+import com.wintmain.dialer.common.Assert;
 
 /**
  * Value type holding references to all data that could be provided for the call composer.

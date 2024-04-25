@@ -5,11 +5,11 @@ package com.wintmain.dialer.lookup;
  * @Author wintmain    <wosintmain@gmail.com>
  * @Date 2023-06-30 23:34:56
  */
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-
 import com.wintmain.dialer.lookup.yellowpages.YellowPagesReverseLookup;
 import com.wintmain.dialer.lookup.zabasearch.ZabaSearchReverseLookup;
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
@@ -43,15 +43,17 @@ public abstract class ReverseLookup {
                 || provider.equals(LookupSettings.RLP_YELLOWPAGES_CA))
                 && INSTANCE instanceof YellowPagesReverseLookup) {
             return true;
-        } else return provider.equals(LookupSettings.RLP_ZABASEARCH)
-                && INSTANCE instanceof ZabaSearchReverseLookup;
+        } else {
+            return provider.equals(LookupSettings.RLP_ZABASEARCH)
+                    && INSTANCE instanceof ZabaSearchReverseLookup;
+        }
     }
 
     /**
      * Lookup image
      *
      * @param context The application context
-     * @param uri The image URI
+     * @param uri     The image URI
      */
     public Bitmap lookupImage(Context context, Uri uri) {
         return null;
@@ -60,11 +62,11 @@ public abstract class ReverseLookup {
     /**
      * Perform phone number lookup.
      *
-     * @param context The application context
+     * @param context          The application context
      * @param normalizedNumber The normalized phone number
-     * @param formattedNumber The formatted phone number
+     * @param formattedNumber  The formatted phone number
      * @return The phone number info object
      */
     public abstract ContactInfo lookupNumber(Context context,
-                String normalizedNumber, String formattedNumber) throws IOException;
+            String normalizedNumber, String formattedNumber) throws IOException;
 }

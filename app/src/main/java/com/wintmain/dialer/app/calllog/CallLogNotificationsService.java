@@ -21,12 +21,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
@@ -124,7 +122,8 @@ public class CallLogNotificationsService extends IntentService {
         }
 
         if (!PermissionsUtil.hasPermission(this, android.Manifest.permission.READ_CALL_LOG)
-                || !PermissionsUtil.hasPermission(this, android.Manifest.permission.WRITE_CALL_LOG)) {
+                || !PermissionsUtil.hasPermission(this,
+                android.Manifest.permission.WRITE_CALL_LOG)) {
             LogUtil.e("CallLogNotificationsService.onHandleIntent", "no READ_CALL_LOG permission");
             return;
         }
@@ -149,7 +148,8 @@ public class CallLogNotificationsService extends IntentService {
                                 intent.getData());
                 break;
             default:
-                LogUtil.e("CallLogNotificationsService.onHandleIntent", "no handler for action: " + action);
+                LogUtil.e("CallLogNotificationsService.onHandleIntent",
+                        "no handler for action: " + action);
                 break;
         }
     }

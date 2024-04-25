@@ -16,27 +16,30 @@
 
 package com.wintmain.dialer.simulator.stub;
 
-import com.wintmain.dialer.simulator.SimulatorEnrichedCall;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.wintmain.dialer.simulator.SimulatorEnrichedCall;
+
 import javax.inject.Inject;
 
 /** Stub implementation of {@link SimulatorEnrichedCall}. */
 public class SimulatorEnrichedCallStub implements SimulatorEnrichedCall {
 
-  @Inject
-  public SimulatorEnrichedCallStub() {}
+    @Inject
+    public SimulatorEnrichedCallStub() {
+    }
 
-  @Override
-  public ListenableFuture<Void> setupIncomingEnrichedCall(String number) {
-    return Futures.immediateFuture(null);
-  }
+    @Override
+    public ListenableFuture<Void> setupIncomingEnrichedCall(String number) {
+        return Futures.immediateFuture(null);
+    }
 
-  @Override
-  public ListenableFuture<Void> setupOutgoingEnrichedCall(String number) {
-    return Futures.immediateFuture(null);
-  }
+    @Override
+    public ListenableFuture<Void> setupOutgoingEnrichedCall(String number) {
+        return Futures.immediateFuture(null);
+    }
 
-  @Override
-  public void onEnrichedCallStateChanged() {}
+    @Override
+    public void onEnrichedCallStateChanged() {
+    }
 }

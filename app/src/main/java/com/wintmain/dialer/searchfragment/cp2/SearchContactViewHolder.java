@@ -27,11 +27,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;
@@ -153,7 +151,8 @@ public final class SearchContactViewHolder extends ViewHolder implements OnClick
         String number = cursor.getString(Projections.PHONE_NUMBER);
         Uri contactUri =
                 Contacts.getLookupUri(
-                        cursor.getLong(Projections.CONTACT_ID), cursor.getString(Projections.LOOKUP_KEY));
+                        cursor.getLong(Projections.CONTACT_ID),
+                        cursor.getString(Projections.LOOKUP_KEY));
 
         contact
                 .setNumber(number)
@@ -184,7 +183,8 @@ public final class SearchContactViewHolder extends ViewHolder implements OnClick
     }
 
     /**
-     * Binds the ViewHolder with a cursor from {@link SearchContactsCursorLoader} with the data found
+     * Binds the ViewHolder with a cursor from {@link SearchContactsCursorLoader} with the data
+     * found
      * at the cursors set position.
      */
     public void bind(SearchCursor cursor, String query) {
@@ -197,9 +197,9 @@ public final class SearchContactViewHolder extends ViewHolder implements OnClick
                 TextUtils.isEmpty(label)
                         ? number
                         : context.getString(
-                        R.string.call_subject_type_and_number,
-                        label,
-                        number);
+                                R.string.call_subject_type_and_number,
+                                label,
+                                number);
 
         nameOrNumberView.setText(QueryBoldingUtil.getNameWithQueryBolded(query, name, context));
         numberView.setText(QueryBoldingUtil.getNumberWithQueryBolded(query, secondaryInfo));

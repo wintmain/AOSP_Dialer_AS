@@ -18,22 +18,21 @@ package com.wintmain.dialer.calllog;
 
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.calllog.datasources.CallLogDataSource;
 import com.wintmain.dialer.calllog.datasources.DataSources;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.Ui;
 import com.wintmain.dialer.inject.ApplicationContext;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Coordinates work across {@link DataSources}.
@@ -103,10 +102,14 @@ public final class CallLogFramework {
         return Futures.transform(
                 Futures.allAsList(allFutures),
                 unused -> {
-                    // Send a broadcast to the OldMainActivityPeer to remove the NewCallLogFragment and
-                    // NewVoicemailFragment if it is currently attached. If this is not done, user interaction
-                    // with the fragment could cause call log framework state to be unexpectedly written. For
-                    // example scrolling could cause the AnnotatedCallLog to be read (which would trigger
+                    // Send a broadcast to the OldMainActivityPeer to remove the
+                    // NewCallLogFragment and
+                    // NewVoicemailFragment if it is currently attached. If this is not done,
+                    // user interaction
+                    // with the fragment could cause call log framework state to be unexpectedly
+                    // written. For
+                    // example scrolling could cause the AnnotatedCallLog to be read (which would
+                    // trigger
                     // database creation).
                     LocalBroadcastManager.getInstance(appContext)
                             .sendBroadcastSync(new Intent("disableCallLogFramework"));

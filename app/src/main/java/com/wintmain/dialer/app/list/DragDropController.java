@@ -57,7 +57,8 @@ public class DragDropController {
         v.getLocationOnScreen(locationOnScreen);
         final int screenX = x + locationOnScreen[0];
         final int screenY = y + locationOnScreen[1];
-        final PhoneFavoriteSquareTileView view = dragItemContainer.getViewForLocation(screenX, screenY);
+        final PhoneFavoriteSquareTileView view = dragItemContainer.getViewForLocation(screenX,
+                screenY);
         for (int i = 0; i < onDragDropListeners.size(); i++) {
             onDragDropListeners.get(i).onDragHovered(screenX, screenY, view);
         }

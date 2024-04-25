@@ -22,11 +22,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 
 /**
@@ -47,7 +45,8 @@ public class FastScroller extends RelativeLayout {
     public FastScroller(Context context, AttributeSet attrs) {
         super(context, attrs);
         touchTargetWidth =
-                context.getResources().getDimensionPixelSize(R.dimen.fast_scroller_touch_target_width);
+                context.getResources().getDimensionPixelSize(
+                        R.dimen.fast_scroller_touch_target_width);
     }
 
     @Override
@@ -65,7 +64,8 @@ public class FastScroller extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        // Don't override if touch event isn't within desired touch target and dragging hasn't started.
+        // Don't override if touch event isn't within desired touch target and dragging hasn't
+        // started.
         if (!dragStarted && getWidth() - touchTargetWidth - event.getX() > 0) {
             return super.onTouchEvent(event);
         }
@@ -124,7 +124,8 @@ public class FastScroller extends RelativeLayout {
         if (!scrollBar.isSelected()) {
             int verticalScrollOffset = recyclerView.computeVerticalScrollOffset();
             int verticalScrollRange = recyclerView.computeVerticalScrollRange();
-            float proportion = (float) verticalScrollOffset / ((float) verticalScrollRange - getHeight());
+            float proportion =
+                    (float) verticalScrollOffset / ((float) verticalScrollRange - getHeight());
             setContainerAndScrollBarPosition(getHeight() * proportion);
         }
     }
@@ -136,6 +137,7 @@ public class FastScroller extends RelativeLayout {
                 getValueInRange(getHeight() - scrollBarHeight, (int) (y - scrollBarHeight / 2)));
         container.setY(
                 getValueInRange(
-                        getHeight() - containerHeight - scrollBarHeight / 2, (int) (y - containerHeight)));
+                        getHeight() - containerHeight - scrollBarHeight / 2,
+                        (int) (y - containerHeight)));
     }
 }

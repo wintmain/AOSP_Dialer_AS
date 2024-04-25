@@ -17,9 +17,7 @@
 package com.wintmain.dialer.constants;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.proguard.UsedByReflection;
 
@@ -43,7 +41,8 @@ public abstract class Constants {
                 instance = (Constants) clazz.getConstructor().newInstance();
             } catch (ReflectiveOperationException e) {
                 Assert.fail(
-                        "Unable to create an instance of ConstantsImpl. To fix this error include one of the "
+                        "Unable to create an instance of ConstantsImpl. To fix this error include"
+                                + " one of the "
                                 + "constants modules (googledialer, aosp etc...) in your target.");
             }
         }

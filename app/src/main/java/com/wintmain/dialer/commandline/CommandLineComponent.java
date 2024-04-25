@@ -17,12 +17,10 @@
 package com.wintmain.dialer.commandline;
 
 import android.content.Context;
-
+import com.google.common.collect.ImmutableMap;
 import com.wintmain.dialer.function.Supplier;
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-import com.google.common.collect.ImmutableMap;
-
 import dagger.Subcomponent;
 
 /**

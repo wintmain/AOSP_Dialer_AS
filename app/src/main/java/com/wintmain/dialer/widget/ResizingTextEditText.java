@@ -19,7 +19,6 @@ package com.wintmain.dialer.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.util.ViewUtil;
 
@@ -36,7 +35,8 @@ public class ResizingTextEditText extends androidx.appcompat.widget.AppCompatEdi
         originalTextSize = (int) getTextSize();
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ResizingText);
         minTextSize =
-                (int) a.getDimension(R.styleable.ResizingText_resizing_text_min_size, originalTextSize);
+                (int) a.getDimension(R.styleable.ResizingText_resizing_text_min_size,
+                        originalTextSize);
         a.recycle();
     }
 

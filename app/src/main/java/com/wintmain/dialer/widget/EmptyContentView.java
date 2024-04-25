@@ -24,9 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.StringRes;
-
 import com.wintmain.dialer.R;
 
 public class EmptyContentView extends LinearLayout implements View.OnClickListener {
@@ -52,7 +50,8 @@ public class EmptyContentView extends LinearLayout implements View.OnClickListen
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public EmptyContentView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public EmptyContentView(Context context, AttributeSet attrs, int defStyleAttr,
+            int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         inflateLayout();
 

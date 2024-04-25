@@ -18,9 +18,7 @@ package com.wintmain.dialer.promotion.impl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.configprovider.ConfigProvider;
 import com.wintmain.dialer.duo.Duo;
@@ -29,9 +27,8 @@ import com.wintmain.dialer.promotion.Promotion;
 import com.wintmain.dialer.spannable.ContentWithLearnMoreSpanner;
 import com.wintmain.dialer.storage.Unencrypted;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Duo promotion.
@@ -42,7 +39,8 @@ final class DuoPromotion implements Promotion {
     @VisibleForTesting
     static final String FLAG_DUO_DISCLOSURE_AUTO_DISMISS_AFTER_VIEWED_TIME_MILLIS =
             "show_duo_disclosure_auto_dismiss_after_viewed_time_millis";
-    private static final String SHARED_PREF_KEY_DUO_DISCLOSURE_DISMISSED = "duo_disclosure_dismissed";
+    private static final String SHARED_PREF_KEY_DUO_DISCLOSURE_DISMISSED =
+            "duo_disclosure_dismissed";
     private static final String SHARED_PREF_KEY_DUO_DISCLOSURE_FIRST_VIEW_TIME_MILLIS =
             "duo_disclosure_first_viewed_time_ms";
     private final Context appContext;
@@ -96,7 +94,8 @@ final class DuoPromotion implements Promotion {
                 sharedPreferences.getLong(SHARED_PREF_KEY_DUO_DISCLOSURE_FIRST_VIEW_TIME_MILLIS, 0);
         return System.currentTimeMillis() - duoDisclosureFirstViewTimeMillis
                 <= configProvider.getLong(
-                FLAG_DUO_DISCLOSURE_AUTO_DISMISS_AFTER_VIEWED_TIME_MILLIS, TimeUnit.DAYS.toMillis(1));
+                FLAG_DUO_DISCLOSURE_AUTO_DISMISS_AFTER_VIEWED_TIME_MILLIS,
+                TimeUnit.DAYS.toMillis(1));
     }
 
     @Override
@@ -105,7 +104,8 @@ final class DuoPromotion implements Promotion {
             sharedPreferences
                     .edit()
                     .putLong(
-                            SHARED_PREF_KEY_DUO_DISCLOSURE_FIRST_VIEW_TIME_MILLIS, System.currentTimeMillis())
+                            SHARED_PREF_KEY_DUO_DISCLOSURE_FIRST_VIEW_TIME_MILLIS,
+                            System.currentTimeMillis())
                     .apply();
         }
     }

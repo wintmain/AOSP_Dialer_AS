@@ -24,7 +24,8 @@ package com.wintmain.dialer.callintent;
     /* package */ static final String EXTRA_CALL_SPECIFIC_APP_DATA =
             "com.wintmain.dialer.callintent.CALL_SPECIFIC_APP_DATA";
 
-    // This is a hidden system extra. For outgoing calls Dialer sets it and parses it but for incoming
+    // This is a hidden system extra. For outgoing calls Dialer sets it and parses it but for
+    // incoming
     // calls Telecom sets it and Dialer parses it.
     /* package */ static final String EXTRA_CALL_CREATED_TIME_MILLIS =
             "android.telecom.extra.CALL_CREATED_TIME_MILLIS";

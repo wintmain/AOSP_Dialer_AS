@@ -16,9 +16,6 @@
 
 package com.wintmain.dialer.interactions;
 
-import static android.Manifest.permission.READ_CONTACTS;
-import static android.Manifest.permission.WRITE_CONTACTS;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,8 +24,10 @@ import android.net.Uri;
 import android.provider.ContactsContract.PhoneLookup;
 import android.provider.ContactsContract.PinnedPositions;
 import android.text.TextUtils;
-
 import com.wintmain.dialer.util.PermissionsUtil;
+
+import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.WRITE_CONTACTS;
 
 /**
  * This broadcast receiver is used to listen to outgoing calls and undemote formerly demoted
@@ -77,7 +76,8 @@ public class UndemoteOutgoingCallReceiver extends BroadcastReceiver {
         if (!PermissionsUtil.hasPermission(context, READ_CONTACTS)) {
             return NO_CONTACT_FOUND;
         }
-        final Uri contactUri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        final Uri contactUri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
+                Uri.encode(number));
         final Cursor cursor;
         try {
             cursor =

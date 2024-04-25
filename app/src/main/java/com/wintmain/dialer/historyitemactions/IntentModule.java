@@ -18,10 +18,9 @@ package com.wintmain.dialer.historyitemactions;
 
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
-
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.logging.DialerImpression;
@@ -29,7 +28,6 @@ import com.wintmain.dialer.logging.Logger;
 import com.wintmain.dialer.precall.PreCall;
 import com.wintmain.dialer.util.DialerUtils;
 import com.wintmain.dialer.util.IntentUtil;
-import com.google.common.collect.ImmutableList;
 
 /**
  * {@link HistoryItemActionModule} useful for making easy to build modules based on starting an
@@ -50,7 +48,8 @@ public class IntentModule implements HistoryItemActionModule {
      * instead.
      */
     @Deprecated
-    public IntentModule(Context context, Intent intent, @StringRes int text, @DrawableRes int image) {
+    public IntentModule(Context context, Intent intent, @StringRes int text,
+            @DrawableRes int image) {
         this(context, intent, text, image, /* impressions = */ ImmutableList.of());
     }
 
@@ -103,7 +102,8 @@ public class IntentModule implements HistoryItemActionModule {
      */
     @Deprecated
     public static IntentModule newModuleForSendingTextMessage(Context context, String number) {
-        return newModuleForSendingTextMessage(context, number, /* impressions = */ ImmutableList.of());
+        return newModuleForSendingTextMessage(context, number, /* impressions = */
+                ImmutableList.of());
     }
 
     /**

@@ -19,9 +19,7 @@ package com.wintmain.dialer.contactsfragment;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.util.DialerUtils;
 import com.wintmain.dialer.util.IntentUtil;

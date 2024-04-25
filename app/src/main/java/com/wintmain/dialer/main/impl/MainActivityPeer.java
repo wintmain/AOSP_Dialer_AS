@@ -18,12 +18,7 @@ package com.wintmain.dialer.main.impl;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -39,7 +34,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,8 +44,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.android.contacts.common.list.OnPhoneNumberPickerActionListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
 import com.wintmain.dialer.app.MainComponent;
@@ -60,12 +57,7 @@ import com.wintmain.dialer.app.calllog.CallLogFragment;
 import com.wintmain.dialer.app.calllog.CallLogFragment.CallLogFragmentListener;
 import com.wintmain.dialer.app.calllog.CallLogNotificationsService;
 import com.wintmain.dialer.app.calllog.IntentProvider;
-import com.wintmain.dialer.app.list.DragDropController;
-import com.wintmain.dialer.app.list.OldSpeedDialFragment;
-import com.wintmain.dialer.app.list.OnDragDropListener;
-import com.wintmain.dialer.app.list.OnListFragmentScrolledListener;
-import com.wintmain.dialer.app.list.PhoneFavoriteSquareTileView;
-import com.wintmain.dialer.app.list.RemoveView;
+import com.wintmain.dialer.app.list.*;
 import com.wintmain.dialer.app.settings.DialerSettingsActivityCompt;
 import com.wintmain.dialer.callcomposer.CallComposerActivity;
 import com.wintmain.dialer.calldetails.OldCallDetailsActivity;
@@ -110,10 +102,6 @@ import com.wintmain.dialer.speeddial.SpeedDialFragment;
 import com.wintmain.dialer.storage.StorageComponent;
 import com.wintmain.dialer.telecom.TelecomUtil;
 import com.wintmain.dialer.util.DialerUtils;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +112,8 @@ import java.util.Optional;
  *
  * <p>TODO(calderwoodra): Deprecate this class when we launch NewmainActivityPeer.
  */
-public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPeer, FragmentUtilListener {
+public class MainActivityPeer
+        implements com.wintmain.dialer.main.MainActivityPeer, FragmentUtilListener {
 
     private static final String KEY_SAVED_LANGUAGE_CODE = "saved_language_code";
     private static final String KEY_CURRENT_TAB = "current_tab";
@@ -211,10 +200,12 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
     private void initUiListeners() {
         getLastOutgoingCallListener =
                 DialerExecutorComponent.get(activity)
-                        .createUiListener(activity.getSupportFragmentManager(), "Query last phone number");
+                        .createUiListener(activity.getSupportFragmentManager(),
+                                "Query last phone number");
         missedCallObserverUiListener =
                 DialerExecutorComponent.get(activity)
-                        .createUiListener(activity.getSupportFragmentManager(), "Missed call observer");
+                        .createUiListener(activity.getSupportFragmentManager(),
+                                "Missed call observer");
     }
 
     @SuppressLint("CutPasteId")
@@ -230,7 +221,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
         FloatingActionButton fab = activity.findViewById(R.id.fab);
         fab.setOnClickListener(
                 v -> {
-                    Logger.get(activity).logImpression(DialerImpression.Type.MAIN_CLICK_FAB_TO_OPEN_DIALPAD);
+                    Logger.get(activity).logImpression(
+                            DialerImpression.Type.MAIN_CLICK_FAB_TO_OPEN_DIALPAD);
                     searchController.showDialpad(true);
                     if (callLogAdapterOnActionModeStateChangedListener.isEnabled) {
                         LogUtil.i("MainActivityPeer.onFabClicked", "closing multiselect");
@@ -242,11 +234,12 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
         activity.setSupportActionBar(activity.findViewById(R.id.toolbar));
 
         bottomNav = activity.findViewById(R.id.bottom_nav_bar);
-        MainBottomNavBarBottomNavTabListener bottomNavTabListener = new MainBottomNavBarBottomNavTabListener(
-                activity,
-                activity.getSupportFragmentManager(),
-                fab,
-                bottomSheet);
+        MainBottomNavBarBottomNavTabListener bottomNavTabListener =
+                new MainBottomNavBarBottomNavTabListener(
+                        activity,
+                        activity.getSupportFragmentManager(),
+                        fab,
+                        bottomSheet);
         bottomNav.addOnTabSelectedListener(bottomNavTabListener);
 
         missedCallCountObserver =
@@ -260,7 +253,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
 
         searchController =
                 getNewMainSearchController(
-                        bottomNav, fab, toolbar, activity.findViewById(R.id.toolbar_shadow), snackbarContainer);
+                        bottomNav, fab, toolbar, activity.findViewById(R.id.toolbar_shadow),
+                        snackbarContainer);
         toolbar.setSearchBarListener(searchController);
 
         onDialpadQueryChangedListener = getNewOnDialpadQueryChangedListener(searchController);
@@ -309,8 +303,10 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
 
     private void onHandleIntent(Intent intent) {
         // Some important implementation notes:
-        //  1) If the intent contains extra data to open to a specific screen (e.g. DIAL intent), when
-        //     the user leaves that screen, they will return here and add see a blank screen unless we
+        //  1) If the intent contains extra data to open to a specific screen (e.g. DIAL intent),
+        //  when
+        //     the user leaves that screen, they will return here and add see a blank screen
+        //     unless we
         //     select a tab here.
         //  2) Don't return early here in case the intent does contain extra data.
         //  3) External intents should take priority over other intents (like Calls.CONTENT_TYPE).
@@ -399,18 +395,22 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
         }
 
         /*
-         * While the activity is running, listen for the call log framework being disabled. If this is
+         * While the activity is running, listen for the call log framework being disabled. If
+         * this is
          * not done, user interaction with the fragment could cause call log framework state to be
          * unexpectedly written. For example scrolling could cause the AnnotatedCallLog to be read
          * (which would trigger database creation).
          */
         LocalBroadcastManager.getInstance(activity)
                 .registerReceiver(
-                        disableCallLogFrameworkReceiver, new IntentFilter("disableCallLogFramework"));
+                        disableCallLogFrameworkReceiver,
+                        new IntentFilter("disableCallLogFramework"));
 
         /*
-         * Similar to above, if the new call log/new voicemail is being shown and then the activity is
-         * paused, when the user returns we need to remove the NewCallLogFragment if the framework has
+         * Similar to above, if the new call log/new voicemail is being shown and then the
+         * activity is
+         * paused, when the user returns we need to remove the NewCallLogFragment if the
+         * framework has
          * been disabled in the meantime.
          */
 
@@ -419,7 +419,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
                 () ->
                         MetricsComponent.get(activity)
                                 .metrics()
-                                .recordMemory(Metrics.OLD_MAIN_ACTIVITY_PEER_ON_RESUME_MEMORY_EVENT_NAME),
+                                .recordMemory(
+                                        Metrics.OLD_MAIN_ACTIVITY_PEER_ON_RESUME_MEMORY_EVENT_NAME),
                 1000);
     }
 
@@ -431,7 +432,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
     @Override
     public void onActivityPause() {
         searchController.onActivityPause();
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(disableCallLogFrameworkReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(
+                disableCallLogFrameworkReceiver);
         activity.getContentResolver().unregisterContentObserver(missedCallCountObserver);
     }
 
@@ -459,7 +461,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString(KEY_SAVED_LANGUAGE_CODE, LocaleUtils.getLocale(activity).getISO3Language());
+        bundle.putString(KEY_SAVED_LANGUAGE_CODE,
+                LocaleUtils.getLocale(activity).getISO3Language());
         bundle.putInt(KEY_CURRENT_TAB, bottomNav.getSelectedTab());
         searchController.onSaveInstanceState(bundle);
     }
@@ -476,20 +479,23 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
         } else if (requestCode == ActivityRequestCodes.DIALTACTS_CALL_COMPOSER) {
             if (resultCode == AppCompatActivity.RESULT_FIRST_USER) {
                 LogUtil.i(
-                        "MainActivityPeer.onActivityResult", "returned from call composer, error occurred");
+                        "MainActivityPeer.onActivityResult",
+                        "returned from call composer, error occurred");
                 String message =
                         activity.getString(
                                 R.string.call_composer_connection_failed,
                                 data.getStringExtra(CallComposerActivity.KEY_CONTACT_NAME));
                 Snackbar.make(snackbarContainer, message, Snackbar.LENGTH_LONG).show();
             } else {
-                LogUtil.i("MainActivityPeer.onActivityResult", "returned from call composer, no error");
+                LogUtil.i("MainActivityPeer.onActivityResult",
+                        "returned from call composer, no error");
             }
 
         } else if (requestCode == ActivityRequestCodes.DIALTACTS_CALL_DETAILS) {
             if (resultCode == AppCompatActivity.RESULT_OK
                     && data != null
-                    && data.getBooleanExtra(OldCallDetailsActivity.EXTRA_HAS_ENRICHED_CALL_DATA, false)) {
+                    && data.getBooleanExtra(OldCallDetailsActivity.EXTRA_HAS_ENRICHED_CALL_DATA,
+                    false)) {
                 String number = data.getStringExtra(OldCallDetailsActivity.EXTRA_PHONE_NUMBER);
                 int snackbarDurationMillis = 5_000;
                 Snackbar.make(
@@ -500,9 +506,11 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
                                 R.string.view_conversation,
                                 v ->
                                         activity.startActivity(
-                                                IntentProvider.getSendSmsIntentProvider(number).getIntent(activity)))
+                                                IntentProvider.getSendSmsIntentProvider(number)
+                                                        .getIntent(activity)))
                         .setActionTextColor(
-                                ContextCompat.getColor(activity, R.color.dialer_snackbar_action_text_color))
+                                ContextCompat.getColor(activity,
+                                        R.color.dialer_snackbar_action_text_color))
                         .show();
             }
 
@@ -524,18 +532,28 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
 
     private void checkAndRequestPermissions() {
         int camera = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA);
-        int storage = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int loc = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
-        int loc2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        int contacts = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS);
-        int contacts2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CONTACTS);
-        int phone = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE);
-        int calllog = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CALL_LOG);
-        int calllog2 = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CALL_LOG);
-        int numbers = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_NUMBERS);
+        int storage = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int loc = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        int loc2 = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int contacts = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_CONTACTS);
+        int contacts2 = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_CONTACTS);
+        int phone = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_PHONE_STATE);
+        int calllog = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_CALL_LOG);
+        int calllog2 = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_CALL_LOG);
+        int numbers = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_PHONE_NUMBERS);
         int nfc = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            nfc = ContextCompat.checkSelfPermission(activity, Manifest.permission.BLUETOOTH_CONNECT);
+            nfc = ContextCompat.checkSelfPermission(activity,
+                    Manifest.permission.BLUETOOTH_CONNECT);
         }
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -586,12 +604,14 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         LogUtil.enterBlock("MainActivityPeer.onrequestpermission");
         if (requestCode == ActivityRequestCodes.REQUEST_ID_MULTIPLE_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED) {
-                Snackbar.make(snackbarContainer, "Permissions Granted", Snackbar.LENGTH_LONG).show();
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_NUMBERS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Snackbar.make(snackbarContainer, "Permissions Granted", Snackbar.LENGTH_LONG)
+                        .show();
             }
         }
     }
@@ -700,7 +720,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
         private final UiListener<String> listener;
 
         MainDialpadListener(
-                Context context, MainSearchController searchController, UiListener<String> uiListener) {
+                Context context, MainSearchController searchController,
+                UiListener<String> uiListener) {
             this.context = context;
             this.searchController = searchController;
             this.listener = uiListener;
@@ -1010,7 +1031,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
     }
 
     /**
-     * Handles the callbacks for {@link OldSpeedDialFragment} and drag/drop logic for drag to remove.
+     * Handles the callbacks for {@link OldSpeedDialFragment} and drag/drop logic for drag to
+     * remove.
      *
      * @see OldSpeedDialFragment.HostInterface
      * @see OnDragDropListener
@@ -1051,7 +1073,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
             rootLayout.setOnDragListener(
                     (v, event) -> {
                         if (event.getAction() == DragEvent.ACTION_DRAG_LOCATION) {
-                            dragDropController.handleDragHovered(v, (int) event.getX(), (int) event.getY());
+                            dragDropController.handleDragHovered(v, (int) event.getX(),
+                                    (int) event.getY());
                         }
                         return true;
                     });
@@ -1105,7 +1128,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
      *
      * @see SpeedDialFragment.HostInterface
      */
-    private static final class MainSpeedDialFragmentHost implements SpeedDialFragment.HostInterface {
+    private static final class MainSpeedDialFragmentHost
+            implements SpeedDialFragment.HostInterface {
 
         private final MainToolbar toolbar;
         private final ViewGroup rootLayout;
@@ -1137,7 +1161,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
     }
 
     /**
-     * Implementation of {@link OnBottomNavTabSelectedListener} that handles logic for showing each of
+     * Implementation of {@link OnBottomNavTabSelectedListener} that handles logic for showing
+     * each of
      * the main tabs and FAB.
      *
      * <p>TODO(calderwoodra, uabdullah): Rethink the logic for showing/hiding the FAB when new
@@ -1252,7 +1277,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
          * <p>Executes all fragment shows/hides in one transaction with no conflicting transactions
          * (like showing and hiding the same fragment in the same transaction). See a bug.
          *
-         * <p>Special care should be taken to avoid calling this method several times in a short window
+         * <p>Special care should be taken to avoid calling this method several times in a short
+         * window
          * as it can lead to fragments overlapping.
          */
         private void showFragment(
@@ -1270,7 +1296,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
 
             if (!fragmentShown && fragment != null) {
                 LogUtil.i(
-                        "MainBottomNavBarBottomNavTabListener.showFragment", "Not added yet: " + fragment);
+                        "MainBottomNavBarBottomNavTabListener.showFragment",
+                        "Not added yet: " + fragment);
                 transaction.add(R.id.fragment_container, fragment, tag);
             }
 
@@ -1309,7 +1336,8 @@ public class MainActivityPeer implements com.wintmain.dialer.main.MainActivityPe
         }
 
         /**
-         * Get the last tab shown to the user, or the speed dial tab if this is the first time the user
+         * Get the last tab shown to the user, or the speed dial tab if this is the first time
+         * the user
          * has opened the app.
          */
         @TabIndex

@@ -19,14 +19,12 @@ package com.wintmain.dialer.precall.impl;
 import android.content.Context;
 import android.net.Uri;
 import android.telecom.PhoneAccount;
-
 import androidx.annotation.MainThread;
-
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.precall.PreCallAction;
 import com.wintmain.dialer.precall.PreCallCoordinator;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Fix common malformed number before it is dialed. Rewrite the number to the first handler that can

@@ -18,11 +18,7 @@ package com.wintmain.dialer.searchfragment.cp2;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.CharArrayBuffer;
-import android.database.ContentObserver;
-import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.database.MatrixCursor;
+import android.database.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
@@ -30,22 +26,15 @@ import android.provider.ContactsContract.CommonDataKinds.Organization;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.TextUtils;
 import android.util.ArrayMap;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.collection.ArraySet;
-
 import com.wintmain.dialer.searchfragment.common.Projections;
 import com.wintmain.dialer.searchfragment.common.QueryFilteringUtil;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Wrapper for a cursor containing all on device contacts.
@@ -110,13 +99,15 @@ final class ContactFilterCursor implements Cursor {
         // Group then combine contact data
         List<Cp2Contact> coalescedContacts = new ArrayList<>();
         for (Integer contactId : contactIdsToPosition.keySet()) {
-            List<Cp2Contact> duplicateContacts = getAllContactsWithContactId(contactId, cp2Contacts);
+            List<Cp2Contact> duplicateContacts = getAllContactsWithContactId(contactId,
+                    cp2Contacts);
             coalescedContacts.addAll(coalesceContacts(duplicateContacts));
         }
 
         // Sort the contacts back into the exact same order they were inside of {@code cursor}
         coalescedContacts.sort((o1, o2) -> compare(contactIdsToPosition, o1, o2));
-        MatrixCursor newCursor = new MatrixCursor(Projections.CP2_PROJECTION, coalescedContacts.size());
+        MatrixCursor newCursor = new MatrixCursor(Projections.CP2_PROJECTION,
+                coalescedContacts.size());
         for (Cp2Contact contact : coalescedContacts) {
             newCursor.addRow(contact.toCursorRow());
         }
@@ -131,12 +122,16 @@ final class ContactFilterCursor implements Cursor {
             if (contact.mimeType().equals(Phone.CONTENT_ITEM_TYPE)) {
                 phoneContacts.add(contact);
             } else if (contact.mimeType().equals(Organization.CONTENT_ITEM_TYPE)) {
-                // Since a contact can have more than one company name but they aren't visible to the user
-                // in our search UI, we can lazily concatenate them together to make them all searchable.
+                // Since a contact can have more than one company name but they aren't visible to
+                // the user
+                // in our search UI, we can lazily concatenate them together to make them all
+                // searchable.
                 companyName.append(" ").append(contact.companyName());
             } else if (contact.mimeType().equals(Nickname.CONTENT_ITEM_TYPE)) {
-                // Since a contact can have more than one nickname but they aren't visible to the user
-                // in our search UI, we can lazily concatenate them together to make them all searchable.
+                // Since a contact can have more than one nickname but they aren't visible to the
+                // user
+                // in our search UI, we can lazily concatenate them together to make them all
+                // searchable.
                 nickName.append(" ").append(contact.nickName());
             }
         }
@@ -148,7 +143,8 @@ final class ContactFilterCursor implements Cursor {
             coalescedContacts.add(
                     phoneContact
                             .toBuilder()
-                            .setCompanyName(companyName.length() == 0 ? null : companyName.toString())
+                            .setCompanyName(
+                                    companyName.length() == 0 ? null : companyName.toString())
                             .setNickName(nickName.length() == 0 ? null : nickName.toString())
                             .build());
         }
@@ -167,7 +163,8 @@ final class ContactFilterCursor implements Cursor {
             Cp2Contact contact1 = phoneContacts.get(i);
             for (int j = i + 1; j < phoneContacts.size(); /* don't iterate by default */) {
                 Cp2Contact contact2 = phoneContacts.get(j);
-                int qualification = getQualification(contact2.phoneNumber(), contact1.phoneNumber());
+                int qualification = getQualification(contact2.phoneNumber(),
+                        contact1.phoneNumber());
                 if (qualification == Qualification.CURRENT_MORE_QUALIFIED) {
                     phoneContacts.remove(contact2);
                 } else if (qualification == Qualification.NEW_NUMBER_IS_MORE_QUALIFIED) {
@@ -182,7 +179,8 @@ final class ContactFilterCursor implements Cursor {
     }
 
     /**
-     * @param number              that may or may not be more qualified than the existing most qualified number
+     * @param number              that may or may not be more qualified than the existing most
+     *                            qualified number
      * @param mostQualifiedNumber currently most qualified number associated with same contact
      * @return {@link Qualification} where the more qualified number is the number with the most
      * digits. If the digits are the same, the number with the most formatting is more qualified.
@@ -247,7 +245,8 @@ final class ContactFilterCursor implements Cursor {
             for (String query : queryMatches) {
                 tree.put(query, position);
             }
-            String number = QueryFilteringUtil.digitsOnly(cursor.getString(Projections.PHONE_NUMBER));
+            String number = QueryFilteringUtil.digitsOnly(
+                    cursor.getString(Projections.PHONE_NUMBER));
             Set<String> numberSubstrings = new ArraySet<>();
             numberSubstrings.add(number);
             for (int start = 0; start < number.length(); start++) {

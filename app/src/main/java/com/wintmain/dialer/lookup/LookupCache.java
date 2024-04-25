@@ -25,19 +25,12 @@ import android.telephony.TelephonyManager;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.util.Log;
-
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
 import com.wintmain.dialer.util.DialerUtils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class LookupCache {

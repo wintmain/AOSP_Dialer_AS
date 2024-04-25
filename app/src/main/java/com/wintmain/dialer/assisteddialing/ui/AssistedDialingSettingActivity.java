@@ -17,8 +17,8 @@
 package com.wintmain.dialer.assisteddialing.ui;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
+import androidx.appcompat.app.AppCompatActivity;
 
 /** The Settings Activity for Assisted Dialing. */
 public class AssistedDialingSettingActivity extends AppCompatActivity {

@@ -17,7 +17,6 @@
 package com.wintmain.dialer.enrichedcall.videoshare;
 
 import android.view.SurfaceView;
-
 import androidx.annotation.NonNull;
 
 /**

@@ -18,11 +18,9 @@ package com.wintmain.dialer.calllog.ui;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
@@ -32,7 +30,10 @@ import androidx.loader.content.Loader;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllog.CallLogComponent;
 import com.wintmain.dialer.calllog.RefreshAnnotatedCallLogReceiver;
@@ -43,7 +44,6 @@ import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.DefaultFutureCallback;
 import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
-import com.wintmain.dialer.common.concurrent.SupportUiListener;
 import com.wintmain.dialer.common.concurrent.ThreadUtil;
 import com.wintmain.dialer.common.concurrent.UiListener;
 import com.wintmain.dialer.metrics.Metrics;
@@ -54,22 +54,18 @@ import com.wintmain.dialer.promotion.PromotionComponent;
 import com.wintmain.dialer.util.PermissionsUtil;
 import com.wintmain.dialer.widget.EmptyContentView;
 import com.wintmain.dialer.widget.EmptyContentView.OnEmptyViewActionButtonClickedListener;
-import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
+
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /** The "new" call log fragment implementation, which is built on top of the annotated call log. */
-public final class NewCallLogFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static final int PHONE_PERMISSIONS_REQUEST_CODE = 1;
-    private static final int LOADER_ID = 0;
+public final class NewCallLogFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @VisibleForTesting
     static final long MARK_ALL_CALLS_READ_WAIT_MILLIS = TimeUnit.SECONDS.toMillis(3);
-
+    private static final int PHONE_PERMISSIONS_REQUEST_CODE = 1;
+    private static final int LOADER_ID = 0;
     private RecyclerView recyclerView;
     private EmptyContentView emptyContentView;
     private RefreshAnnotatedCallLogReceiver refreshAnnotatedCallLogReceiver;
@@ -105,9 +101,11 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
         boolean isHidden = isHidden();
         LogUtil.i("NewCallLogFragment.onResume", "isHidden = %s", isHidden);
 
-        // As a fragment's onResume() is tied to the containing Activity's onResume(), being resumed is
+        // As a fragment's onResume() is tied to the containing Activity's onResume(), being
+        // resumed is
         // not equivalent to becoming visible.
-        // For example, when an activity with a hidden fragment is resumed, the fragment's onResume()
+        // For example, when an activity with a hidden fragment is resumed, the fragment's
+        // onResume()
         // will be called but it is not visible.
         if (!isHidden) {
             onFragmentShown();
@@ -176,16 +174,20 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
 
         // There are some types of data that we show in the call log that are not represented in the
         // AnnotatedCallLog. For example, CP2 information for invalid numbers can sometimes only be
-        // fetched at display time. Because of this, we need to clear the adapter's cache and update it
-        // whenever the user arrives at the call log (rather than relying on changes to the CursorLoader
+        // fetched at display time. Because of this, we need to clear the adapter's cache and
+        // update it
+        // whenever the user arrives at the call log (rather than relying on changes to the
+        // CursorLoader
         // alone).
         if (recyclerView.getAdapter() != null) {
             ((NewCallLogAdapter) recyclerView.getAdapter()).clearCache();
             recyclerView.getAdapter().notifyDataSetChanged();
         }
 
-        // We shouldn't mark the calls as read immediately when the 3 second timer expires because we
-        // don't want to disrupt the UI; instead we set a bit indicating to mark them read when the user
+        // We shouldn't mark the calls as read immediately when the 3 second timer expires
+        // because we
+        // don't want to disrupt the UI; instead we set a bit indicating to mark them read when
+        // the user
         // leaves the fragment (in onPause).
         shouldMarkCallsRead = false;
         ThreadUtil.getUiThreadHandler()
@@ -226,7 +228,8 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
         recyclerView = view.findViewById(R.id.new_call_log_recycler_view);
         recyclerView.addOnScrollListener(
                 new RecyclerViewJankLogger(
-                        MetricsComponent.get(getContext()).metrics(), Metrics.NEW_CALL_LOG_JANK_EVENT_NAME));
+                        MetricsComponent.get(getContext()).metrics(),
+                        Metrics.NEW_CALL_LOG_JANK_EVENT_NAME));
 
         emptyContentView = view.findViewById(R.id.new_call_log_empty_content_view);
         configureEmptyContentView();
@@ -251,35 +254,13 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
         emptyContentView.setActionClickedListener(new TurnOnPhonePermissions());
     }
 
-    private class TurnOnPhonePermissions implements OnEmptyViewActionButtonClickedListener {
-
-        @Override
-        public void onEmptyViewActionButtonClicked() {
-            if (getContext() == null) {
-                LogUtil.w("TurnOnPhonePermissions.onEmptyViewActionButtonClicked", "no context");
-                return;
-            }
-            String[] deniedPermissions =
-                    PermissionsUtil.getPermissionsCurrentlyDenied(
-                            getContext(), PermissionsUtil.allPhoneGroupPermissionsUsedInDialer);
-            if (deniedPermissions.length > 0) {
-                LogUtil.i(
-                        "TurnOnPhonePermissions.onEmptyViewActionButtonClicked",
-                        "requesting permissions: %s",
-                        Arrays.toString(deniedPermissions));
-                // Don't implement onRequestPermissionsResult; instead rely on views being updated in
-                // #onFragmentShown.
-                requestPermissions(deniedPermissions, PHONE_PERMISSIONS_REQUEST_CODE);
-            }
-        }
-    }
-
     private void registerRefreshAnnotatedCallLogReceiver() {
         LogUtil.enterBlock("NewCallLogFragment.registerRefreshAnnotatedCallLogReceiver");
 
         LocalBroadcastManager.getInstance(getContext())
                 .registerReceiver(
-                        refreshAnnotatedCallLogReceiver, RefreshAnnotatedCallLogReceiver.getIntentFilter());
+                        refreshAnnotatedCallLogReceiver,
+                        RefreshAnnotatedCallLogReceiver.getIntentFilter());
     }
 
     private void unregisterRefreshAnnotatedCallLogReceiver() {
@@ -303,7 +284,8 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
         LogUtil.enterBlock("NewCallLogFragment.onLoadFinished");
 
         if (newCursor == null) {
-            // This might be possible when the annotated call log hasn't been created but we're trying
+            // This might be possible when the annotated call log hasn't been created but we're
+            // trying
             // to show the call log.
             LogUtil.w("NewCallLogFragment.onLoadFinished", "null cursor");
             return;
@@ -323,8 +305,10 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
                     // TODO(zachh): Handle empty cursor by showing empty view.
                     if (recyclerView.getAdapter() == null) {
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        // Note: It's not clear if this callback can be invoked when there's no associated
-                        // activity, but if crashes are observed here it may be possible to use getContext()
+                        // Note: It's not clear if this callback can be invoked when there's no
+                        // associated
+                        // activity, but if crashes are observed here it may be possible to use
+                        // getContext()
                         // instead.
                         Activity activity = Assert.isNotNull(getActivity());
                         recyclerView.setAdapter(
@@ -341,12 +325,15 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
                     }
                 },
                 throwable -> {
-                    // Coalescing can fail if the cursor passed to Coalescer is closed by the loader while
+                    // Coalescing can fail if the cursor passed to Coalescer is closed by the
+                    // loader while
                     // the work is still in progress.
                     // This can happen when the loader restarts and finishes loading data before the
                     // coalescing work is completed.
-                    // This failure is identified by ExpectedCoalescerException and doesn't need to be
-                    // thrown as coalescing will be restarted on the latest data obtained by the loader.
+                    // This failure is identified by ExpectedCoalescerException and doesn't need
+                    // to be
+                    // thrown as coalescing will be restarted on the latest data obtained by the
+                    // loader.
                     if (!(throwable instanceof Coalescer.ExpectedCoalescerException)) {
                         throw new AssertionError(throwable);
                     }
@@ -357,5 +344,29 @@ public final class NewCallLogFragment extends Fragment implements LoaderManager.
     public void onLoaderReset(Loader<Cursor> loader) {
         LogUtil.enterBlock("NewCallLogFragment.onLoaderReset");
         recyclerView.setAdapter(null);
+    }
+
+    private class TurnOnPhonePermissions implements OnEmptyViewActionButtonClickedListener {
+
+        @Override
+        public void onEmptyViewActionButtonClicked() {
+            if (getContext() == null) {
+                LogUtil.w("TurnOnPhonePermissions.onEmptyViewActionButtonClicked", "no context");
+                return;
+            }
+            String[] deniedPermissions =
+                    PermissionsUtil.getPermissionsCurrentlyDenied(
+                            getContext(), PermissionsUtil.allPhoneGroupPermissionsUsedInDialer);
+            if (deniedPermissions.length > 0) {
+                LogUtil.i(
+                        "TurnOnPhonePermissions.onEmptyViewActionButtonClicked",
+                        "requesting permissions: %s",
+                        Arrays.toString(deniedPermissions));
+                // Don't implement onRequestPermissionsResult; instead rely on views being
+                // updated in
+                // #onFragmentShown.
+                requestPermissions(deniedPermissions, PHONE_PERMISSIONS_REQUEST_CODE);
+            }
+        }
     }
 }

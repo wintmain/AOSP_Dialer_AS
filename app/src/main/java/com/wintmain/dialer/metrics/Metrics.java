@@ -17,7 +17,6 @@
 package com.wintmain.dialer.metrics;
 
 import android.app.Application;
-
 import androidx.annotation.Nullable;
 
 /** Logs metrics. */
@@ -48,7 +47,8 @@ public interface Metrics {
             "RefreshAnnotatedCallLogReceiver.ForceRefreshNoChangesNeeded";
 
     String INITIAL_FILL_EVENT_NAME = "RefreshAnnotatedCallLog.Initial.Fill";
-    String INITIAL_ON_SUCCESSFUL_FILL_EVENT_NAME = "RefreshAnnotatedCallLog.Initial.OnSuccessfulFill";
+    String INITIAL_ON_SUCCESSFUL_FILL_EVENT_NAME =
+            "RefreshAnnotatedCallLog.Initial.OnSuccessfulFill";
     String INITIAL_APPLY_MUTATIONS_EVENT_NAME = "RefreshAnnotatedCallLog.Initial.ApplyMutations";
 
     String IS_DIRTY_EVENT_NAME = "RefreshAnnotatedCallLog.IsDirty";
@@ -77,8 +77,8 @@ public interface Metrics {
      * Starts a timer for which the name is not yet known.
      *
      * @return opaque identifier for the event which should be provided back to {@link
-     *     #stopUnnamedTimer(int, String)} to stop the timer. Null if the timer cannot be started, for
-     *     example because the user is locked.
+     * #stopUnnamedTimer(int, String)} to stop the timer. Null if the timer cannot be started, for
+     * example because the user is locked.
      */
     @Nullable
     Integer startUnnamedTimer();

@@ -20,7 +20,6 @@ import android.app.Application;
 import android.os.Trace;
 import androidx.annotation.NonNull;
 import androidx.core.os.BuildCompat;
-
 import com.wintmain.dialer.blocking.BlockedNumbersAutoMigrator;
 import com.wintmain.dialer.blocking.FilteredNumberAsyncQueryHandler;
 import com.wintmain.dialer.calllog.CallLogComponent;

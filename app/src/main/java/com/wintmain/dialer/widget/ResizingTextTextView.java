@@ -19,10 +19,9 @@ package com.wintmain.dialer.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-
+import com.google.android.material.textview.MaterialTextView;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.util.ViewUtil;
-import com.google.android.material.textview.MaterialTextView;
 
 /**
  * TextView which resizes dynamically with respect to text length.
@@ -37,7 +36,8 @@ public class ResizingTextTextView extends MaterialTextView {
         originalTextSize = (int) getTextSize();
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ResizingText);
         minTextSize =
-                (int) a.getDimension(R.styleable.ResizingText_resizing_text_min_size, originalTextSize);
+                (int) a.getDimension(R.styleable.ResizingText_resizing_text_min_size,
+                        originalTextSize);
         a.recycle();
     }
 

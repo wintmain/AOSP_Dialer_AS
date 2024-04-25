@@ -17,11 +17,9 @@
 package com.wintmain.dialer.enrichedcall.stub;
 
 import android.content.BroadcastReceiver.PendingResult;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.calldetails.CallDetailsEntries;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
 import com.wintmain.dialer.common.Assert;

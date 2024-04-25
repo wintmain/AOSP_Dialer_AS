@@ -20,10 +20,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-
 import androidx.annotation.NonNull;
 import androidx.loader.content.CursorLoader;
-
 import com.android.contacts.common.extensions.PhoneDirectoryExtenderAccessor;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.searchfragment.common.Projections;
@@ -41,12 +39,16 @@ public final class NearbyPlacesCursorLoader extends CursorLoader {
     private final long directoryId;
 
     /**
-     * @param directoryIds List of directoryIds associated with all directories on device. Required in
-     *                     order to find a directory ID for the nearby places cursor that doesn't collide with
+     * @param directoryIds List of directoryIds associated with all directories on device.
+     *                     Required in
+     *                     order to find a directory ID for the nearby places cursor that doesn't
+     *                     collide with
      *                     existing directories.
      */
-    public NearbyPlacesCursorLoader(Context context, String query, @NonNull List<Long> directoryIds) {
-        super(context, getContentUri(context, query), Projections.DATA_PROJECTION, null, null, null);
+    public NearbyPlacesCursorLoader(Context context, String query,
+            @NonNull List<Long> directoryIds) {
+        super(context, getContentUri(context, query), Projections.DATA_PROJECTION, null, null,
+                null);
         this.directoryId = getDirectoryId(directoryIds);
     }
 

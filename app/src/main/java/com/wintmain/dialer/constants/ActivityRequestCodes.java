@@ -39,7 +39,8 @@ public final class ActivityRequestCodes {
      */
     public static final int DIALTACTS_CALL_DETAILS = 4;
     /**
-     * Request code for {@link com.wintmain.dialer.speeddial.SpeedDialFragment} contact picker intent.
+     * Request code for {@link com.wintmain.dialer.speeddial.SpeedDialFragment} contact picker
+     * intent.
      */
     public static final int SPEED_DIAL_ADD_FAVORITE = 5;
 

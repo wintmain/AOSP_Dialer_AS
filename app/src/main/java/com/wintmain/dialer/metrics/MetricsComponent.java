@@ -17,27 +17,25 @@
 package com.wintmain.dialer.metrics;
 
 import android.content.Context;
-
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-
 import dagger.Subcomponent;
 
 /** Component for metrics. */
 @Subcomponent
 public abstract class MetricsComponent {
 
-    public abstract Metrics metrics();
-
-    public abstract Metrics.Initializer metricsInitializer();
-
-    public abstract FutureTimer futureTimer();
-
     public static MetricsComponent get(Context context) {
         return ((MetricsComponent.HasComponent)
                 ((HasRootComponent) context.getApplicationContext()).component())
                 .metricsComponent();
     }
+
+    public abstract Metrics metrics();
+
+    public abstract Metrics.Initializer metricsInitializer();
+
+    public abstract FutureTimer futureTimer();
 
     /** Used to refer to the root application component. */
     @IncludeInDialerRoot

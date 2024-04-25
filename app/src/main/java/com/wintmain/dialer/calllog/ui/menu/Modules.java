@@ -18,7 +18,6 @@ package com.wintmain.dialer.calllog.ui.menu;
 
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calldetails.CallDetailsActivity;
 import com.wintmain.dialer.calldetails.CallDetailsHeaderInfo;
@@ -40,7 +39,8 @@ import java.util.List;
 final class Modules {
 
     /**
-     * Returns a list of {@link HistoryItemActionModule HistoryItemActionModules}, which are items in
+     * Returns a list of {@link HistoryItemActionModule HistoryItemActionModules}, which are
+     * items in
      * the bottom sheet.
      */
     static List<HistoryItemActionModule> fromRow(Context context, CoalescedRow row) {
@@ -73,7 +73,8 @@ final class Modules {
     private static HistoryItemActionModule createModuleForAccessingCallDetails(
             Context context, CoalescedRow row) {
         boolean canReportAsInvalidNumber =
-                !row.getIsVoicemailCall() && row.getNumberAttributes().getCanReportAsInvalidNumber();
+                !row.getIsVoicemailCall() && row.getNumberAttributes()
+                        .getCanReportAsInvalidNumber();
 
         return new IntentModule(
                 context,
@@ -111,9 +112,11 @@ final class Modules {
                 .setFeatures(row.getFeatures())
                 .setLookupUri(row.getNumberAttributes().getLookupUri())
                 .setPhoneAccountComponentName(row.getPhoneAccountComponentName())
-                .setCanReportAsInvalidNumber(row.getNumberAttributes().getCanReportAsInvalidNumber())
+                .setCanReportAsInvalidNumber(
+                        row.getNumberAttributes().getCanReportAsInvalidNumber())
                 .setCanSupportAssistedDialing(canSupportAssistedDialing(row))
-                .setCanSupportCarrierVideoCall(row.getNumberAttributes().getCanSupportCarrierVideoCall())
+                .setCanSupportCarrierVideoCall(
+                        row.getNumberAttributes().getCanSupportCarrierVideoCall())
                 .setIsBlocked(row.getNumberAttributes().getIsBlocked())
                 .setIsEmergencyNumber(row.getNumberAttributes().getIsEmergencyNumber())
                 .setIsSpam(row.getNumberAttributes().getIsSpam())

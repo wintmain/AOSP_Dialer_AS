@@ -18,9 +18,7 @@ package com.wintmain.dialer.calllogutils;
 
 import android.content.Context;
 import android.provider.CallLog.Calls;
-
 import androidx.core.os.BuildCompat;
-
 import com.wintmain.dialer.NumberAttributes;
 import com.wintmain.dialer.calllog.model.CoalescedRow;
 import com.wintmain.dialer.glidephotomanager.PhotoInfo;
@@ -41,11 +39,14 @@ public final class PhotoInfoBuilder {
 //                .setIsVoicemail(coalescedRow.getIsVoicemailCall())
                 .setIsSpam(
                         Spam.shouldShowAsSpam(
-                                coalescedRow.getNumberAttributes().getIsSpam(), coalescedRow.getCallType()))
-                .setIsVideo((coalescedRow.getFeatures() & Calls.FEATURES_VIDEO) == Calls.FEATURES_VIDEO)
+                                coalescedRow.getNumberAttributes().getIsSpam(),
+                                coalescedRow.getCallType()))
+                .setIsVideo(
+                        (coalescedRow.getFeatures() & Calls.FEATURES_VIDEO) == Calls.FEATURES_VIDEO)
                 .setIsRtt(
                         BuildCompat.isAtLeastP()
-                                && (coalescedRow.getFeatures() & Calls.FEATURES_RTT) == Calls.FEATURES_RTT);
+                                && (coalescedRow.getFeatures() & Calls.FEATURES_RTT)
+                                == Calls.FEATURES_RTT);
     }
 
     /**

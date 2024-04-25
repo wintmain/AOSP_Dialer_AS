@@ -33,16 +33,10 @@ import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.util.Pair;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.annotation.RequiresPermission;
-import androidx.annotation.VisibleForTesting;
+import androidx.annotation.*;
 import androidx.core.content.ContextCompat;
-
-import com.wintmain.dialer.common.LogUtil;
 import com.google.common.base.Optional;
+import com.wintmain.dialer.common.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +55,8 @@ public abstract class TelecomUtil {
     private static final String TAG = "TelecomUtil";
     /**
      * Cache for {@link #isVoicemailNumber(Context, PhoneAccountHandle, String)}. Both
-     * PhoneAccountHandle and number are cached because multiple numbers might be mapped to true, and
+     * PhoneAccountHandle and number are cached because multiple numbers might be mapped to true,
+     * and
      * comparing with {@link #getVoicemailNumber(Context, PhoneAccountHandle)} will not suffice.
      */
     private static final Map<Pair<PhoneAccountHandle, String>, Boolean> isVoicemailNumberCache =
@@ -111,7 +106,8 @@ public abstract class TelecomUtil {
             try {
                 return getTelecomManager(context).getAdnUriForPhoneAccount(handle);
             } catch (SecurityException e) {
-                LogUtil.w(TAG, "TelecomManager.getAdnUriForPhoneAccount called without permission.");
+                LogUtil.w(TAG,
+                        "TelecomManager.getAdnUriForPhoneAccount called without permission.");
             }
         }
         return null;
@@ -187,7 +183,8 @@ public abstract class TelecomUtil {
     }
 
     /**
-     * @return the {@link SubscriptionInfo} of the SIM if {@code phoneAccountHandle} corresponds to a
+     * @return the {@link SubscriptionInfo} of the SIM if {@code phoneAccountHandle} corresponds
+     * to a
      * valid SIM. Absent otherwise.
      */
     public static Optional<SubscriptionInfo> getSubscriptionInfo(
@@ -198,8 +195,10 @@ public abstract class TelecomUtil {
         if (!hasPermission(context, permission.READ_PHONE_STATE)) {
             return Optional.absent();
         }
-        SubscriptionManager subscriptionManager = context.getSystemService(SubscriptionManager.class);
-        List<SubscriptionInfo> subscriptionInfos = subscriptionManager.getActiveSubscriptionInfoList();
+        SubscriptionManager subscriptionManager = context.getSystemService(
+                SubscriptionManager.class);
+        List<SubscriptionInfo> subscriptionInfos =
+                subscriptionManager.getActiveSubscriptionInfoList();
         if (subscriptionInfos == null) {
             return Optional.absent();
         }
@@ -212,7 +211,8 @@ public abstract class TelecomUtil {
     }
 
     /**
-     * Returns true if there is a dialer managed call in progress. Self managed calls starting from O
+     * Returns true if there is a dialer managed call in progress. Self managed calls starting
+     * from O
      * are not included.
      */
     public static boolean isInManagedCall(Context context) {
@@ -224,9 +224,11 @@ public abstract class TelecomUtil {
     }
 
     /**
-     * {@link TelecomManager#isVoiceMailNumber(PhoneAccountHandle, String)} takes about 10ms, which is
+     * {@link TelecomManager#isVoiceMailNumber(PhoneAccountHandle, String)} takes about 10ms,
+     * which is
      * way too slow for regular purposes. This method will cache the result for the life time of the
-     * process. The cache will not be invalidated, for example, if the voicemail number is changed by
+     * process. The cache will not be invalidated, for example, if the voicemail number is
+     * changed by
      * setting up apps like Google Voicemail, the result will be wrong. These events are rare.
      */
     public static boolean isVoicemailNumber(
@@ -259,7 +261,8 @@ public abstract class TelecomUtil {
      *
      * @param context context.
      * @param intent  the call intent.
-     * @return {@code true} if we successfully attempted to place the call, {@code false} if it failed
+     * @return {@code true} if we successfully attempted to place the call, {@code false} if it
+     * failed
      * due to a permission check.
      */
     public static boolean placeCall(Context context, Intent intent) {
@@ -296,7 +299,8 @@ public abstract class TelecomUtil {
      */
     @Deprecated
     public static boolean hasReadPhoneStatePermission(Context context) {
-        return isDefaultDialer(context) || hasPermission(context, Manifest.permission.READ_PHONE_STATE);
+        return isDefaultDialer(context) || hasPermission(context,
+                Manifest.permission.READ_PHONE_STATE);
     }
 
     /**
@@ -353,12 +357,16 @@ public abstract class TelecomUtil {
         public boolean isInManagedCall(Context context) {
             if (hasReadPhoneStatePermission(context)) {
                 // The TelecomManager#isInCall method returns true anytime the user is in a call.
-                // Starting in O, the APIs include support for self-managed ConnectionServices so that other
-                // apps like Duo can tell Telecom about its calls.  So, if the user is in a Duo call,
+                // Starting in O, the APIs include support for self-managed ConnectionServices so
+                // that other
+                // apps like Duo can tell Telecom about its calls.  So, if the user is in a Duo
+                // call,
                 // isInCall would return true.
-                // Dialer uses this to determine whether to show the "return to call in progress" when
+                // Dialer uses this to determine whether to show the "return to call in progress"
+                // when
                 // Dialer is launched.
-                // Instead, Dialer should use TelecomManager#isInManagedCall, which only returns true if the
+                // Instead, Dialer should use TelecomManager#isInManagedCall, which only returns
+                // true if the
                 // device is in a managed call which Dialer would know about.
                 return getTelecomManager(context).isInManagedCall();
             }

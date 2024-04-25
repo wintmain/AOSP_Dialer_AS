@@ -21,19 +21,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.promotion.Promotion;
 
 /** ViewHolder for {@link NewCallLogAdapter} to display the Duo disclosure card. */
 public class PromotionCardViewHolder extends RecyclerView.ViewHolder {
-
-    /** Listener to be called when promotion card is dismissed. */
-    interface DismissListener {
-        void onDismiss();
-    }
 
     private final Button okButton;
     private final Promotion promotion;
@@ -50,7 +43,8 @@ public class PromotionCardViewHolder extends RecyclerView.ViewHolder {
 
         TextView cardDetailsView = itemView.findViewById(R.id.new_call_log_promotion_card_details);
         cardDetailsView.setText(promotion.getDetails());
-        cardDetailsView.setMovementMethod(LinkMovementMethod.getInstance()); // make the link clickable
+        cardDetailsView.setMovementMethod(
+                LinkMovementMethod.getInstance()); // make the link clickable
 
         // Obtain a reference to the "OK, got it" button.
         okButton = itemView.findViewById(R.id.new_call_log_promotion_card_ok);
@@ -62,5 +56,10 @@ public class PromotionCardViewHolder extends RecyclerView.ViewHolder {
                     promotion.dismiss();
                     listener.onDismiss();
                 });
+    }
+
+    /** Listener to be called when promotion card is dismissed. */
+    interface DismissListener {
+        void onDismiss();
     }
 }

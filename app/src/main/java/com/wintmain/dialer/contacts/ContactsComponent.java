@@ -17,26 +17,24 @@
 package com.wintmain.dialer.contacts;
 
 import android.content.Context;
-
 import com.wintmain.dialer.contacts.displaypreference.ContactDisplayPreferences;
 import com.wintmain.dialer.contacts.hiresphoto.HighResolutionPhotoRequester;
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-
 import dagger.Subcomponent;
 
 /** Component for contacts related utilities */
 @Subcomponent
 public abstract class ContactsComponent {
 
-    public abstract ContactDisplayPreferences contactDisplayPreferences();
-
-    public abstract HighResolutionPhotoRequester highResolutionPhotoLoader();
-
     public static ContactsComponent get(Context context) {
         return ((HasComponent) ((HasRootComponent) context.getApplicationContext()).component())
                 .contactsComponent();
     }
+
+    public abstract ContactDisplayPreferences contactDisplayPreferences();
+
+    public abstract HighResolutionPhotoRequester highResolutionPhotoLoader();
 
     /** Used to refer to the root application component. */
     @IncludeInDialerRoot

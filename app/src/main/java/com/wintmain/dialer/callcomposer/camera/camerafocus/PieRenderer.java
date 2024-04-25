@@ -20,13 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
-import android.graphics.PointF;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
@@ -35,7 +29,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
-
 import com.wintmain.dialer.R;
 
 import java.util.ArrayList;
@@ -279,7 +272,8 @@ public class PieRenderer extends OverlayRenderer implements FocusIndicator {
         layoutItems(items, (float) (Math.PI / 2), inner, outer, gap);
     }
 
-    private void layoutItems(List<PieItem> items, float centerAngle, int inner, int outer, int gap) {
+    private void layoutItems(List<PieItem> items, float centerAngle, int inner, int outer,
+            int gap) {
         float emptyangle = PIE_SWEEP / 16;
         float sweep = (PIE_SWEEP - 2 * emptyangle) / items.size();
         float angle = centerAngle - PIE_SWEEP / 2 + emptyangle + sweep / 2;
@@ -317,8 +311,10 @@ public class PieRenderer extends OverlayRenderer implements FocusIndicator {
     }
 
     private Path makeSlice(float start, float end, int outer, int inner, Point center) {
-        RectF bb = new RectF(center.x - outer, center.y - outer, center.x + outer, center.y + outer);
-        RectF bbi = new RectF(center.x - inner, center.y - inner, center.x + inner, center.y + inner);
+        RectF bb = new RectF(center.x - outer, center.y - outer, center.x + outer,
+                center.y + outer);
+        RectF bbi = new RectF(center.x - inner, center.y - inner, center.x + inner,
+                center.y + inner);
         Path path = new Path();
         path.arcTo(bb, start, end - start, true);
         path.arcTo(bbi, end, start - end);
@@ -477,7 +473,8 @@ public class PieRenderer extends OverlayRenderer implements FocusIndicator {
 
     private boolean hasMoved(MotionEvent e) {
         return touchSlopSquared
-                < (e.getX() - down.x) * (e.getX() - down.x) + (e.getY() - down.y) * (e.getY() - down.y);
+                < (e.getX() - down.x) * (e.getX() - down.x) + (e.getY() - down.y) * (e.getY()
+                - down.y);
     }
 
     /**
@@ -666,7 +663,8 @@ public class PieRenderer extends OverlayRenderer implements FocusIndicator {
     private void drawLine(Canvas canvas, int angle, Paint p) {
         convertCart(angle, circleSize - innerOffset, point1);
         convertCart(angle, circleSize - innerOffset + innerOffset / 3, point2);
-        canvas.drawLine(point1.x + focusX, point1.y + focusY, point2.x + focusX, point2.y + focusY, p);
+        canvas.drawLine(point1.x + focusX, point1.y + focusY, point2.x + focusX, point2.y + focusY,
+                p);
     }
 
     @Override

@@ -26,9 +26,7 @@ import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.View;
-
 import androidx.core.os.BuildCompat;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.calllog.calllogcache.CallLogCache;
 import com.wintmain.dialer.calllogutils.PhoneCallDetails;
@@ -127,7 +125,8 @@ public class PhoneCallDetailsHelper {
                 (details.features & TelephonyManagerCompat.FEATURES_ASSISTED_DIALING)
                         == TelephonyManagerCompat.FEATURES_ASSISTED_DIALING);
         if (BuildCompat.isAtLeastP()) {
-            views.callTypeIcons.setShowRtt((details.features & Calls.FEATURES_RTT) == Calls.FEATURES_RTT);
+            views.callTypeIcons.setShowRtt(
+                    (details.features & Calls.FEATURES_RTT) == Calls.FEATURES_RTT);
         }
         views.callTypeIcons.requestLayout();
         views.callTypeIcons.setVisibility(View.VISIBLE);
@@ -148,7 +147,8 @@ public class PhoneCallDetailsHelper {
             if (!TextUtils.isEmpty(accountLabel)) {
                 accountLabel =
                         resources.getString(
-                                R.string.call_log_via_number_phone_account, accountLabel, details.viaNumber);
+                                R.string.call_log_via_number_phone_account, accountLabel,
+                                details.viaNumber);
             } else {
                 accountLabel = resources.getString(R.string.call_log_via_number, details.viaNumber);
             }
@@ -197,7 +197,8 @@ public class PhoneCallDetailsHelper {
 
 
     /**
-     * Builds a string containing the call location and date. For voicemail logs only the call date is
+     * Builds a string containing the call location and date. For voicemail logs only the call
+     * date is
      * returned because location information is displayed in the call action button
      *
      * @param details The call details.
@@ -223,8 +224,10 @@ public class PhoneCallDetailsHelper {
     }
 
     /**
-     * For a call, if there is an associated contact for the caller, return the known call type (e.g.
-     * mobile, home, work). If there is no associated contact, attempt to use the caller's location if
+     * For a call, if there is an associated contact for the caller, return the known call type
+     * (e.g.
+     * mobile, home, work). If there is no associated contact, attempt to use the caller's
+     * location if
      * known.
      *
      * @param details Call details to use.
@@ -250,7 +253,8 @@ public class PhoneCallDetailsHelper {
                 numberFormattedLabel =
                         phoneTypeLabelForTest != null
                                 ? phoneTypeLabelForTest
-                                : Phone.getTypeLabel(resources, details.numberType, details.numberLabel);
+                                : Phone.getTypeLabel(resources, details.numberType,
+                                        details.numberLabel);
             }
         }
         if (!TextUtils.isEmpty(details.namePrimary) && TextUtils.isEmpty(numberFormattedLabel)) {
@@ -260,7 +264,8 @@ public class PhoneCallDetailsHelper {
     }
 
     /**
-     * Get the call date/time of the call. For the call log this is relative to the current time. e.g.
+     * Get the call date/time of the call. For the call log this is relative to the current time.
+     * e.g.
      *
      * @param details Call details to use.
      * @return String representing when the call occurred.

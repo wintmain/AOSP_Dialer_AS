@@ -99,7 +99,8 @@ class IfdData {
     }
 
     /**
-     * Returns true if all tags in this two IFDs are equal. Note that tags of IFDs offset or thumbnail
+     * Returns true if all tags in this two IFDs are equal. Note that tags of IFDs offset or
+     * thumbnail
      * offset will be ignored.
      */
     @Override
@@ -110,8 +111,7 @@ class IfdData {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof IfdData) {
-            IfdData data = (IfdData) obj;
+        if (obj instanceof IfdData data) {
             if (data.getId() == ifdId && data.getTagCount() == getTagCount()) {
                 ExifTag[] tags = data.getAllTags();
                 for (ExifTag tag : tags) {

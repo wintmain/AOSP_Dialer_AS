@@ -17,7 +17,6 @@
 package com.wintmain.dialer.util;
 
 import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
 
 /**

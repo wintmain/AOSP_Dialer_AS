@@ -25,10 +25,16 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.WorkerThread;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
 import com.wintmain.dialer.calllog.datasources.CallLogDataSource;
@@ -45,24 +51,11 @@ import com.wintmain.dialer.phonelookup.composite.CompositePhoneLookup;
 import com.wintmain.dialer.phonelookup.database.PhoneLookupHistoryDatabaseHelper;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract.PhoneLookupHistory;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.protobuf.InvalidProtocolBufferException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 
 /**
  * Responsible for maintaining the columns in the annotated call log which are derived from phone
@@ -78,7 +71,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
     /**
      * Keyed by normalized number (the primary key for PhoneLookupHistory).
      *
-     * <p>This is state saved between the {@link CallLogDataSource#fill(CallLogMutations)} and {@link
+     * <p>This is state saved between the {@link CallLogDataSource#fill(CallLogMutations)} and
+     * {@link
      * CallLogDataSource#onSuccessfulFill()} operations.
      */
     private final Map<String, PhoneLookupInfo> phoneLookupHistoryRowsToUpdate = new ArrayMap<>();
@@ -87,7 +81,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
      * Normalized numbers (the primary key for PhoneLookupHistory) which should be deleted from
      * PhoneLookupHistory.
      *
-     * <p>This is state saved between the {@link CallLogDataSource#fill(CallLogMutations)} and {@link
+     * <p>This is state saved between the {@link CallLogDataSource#fill(CallLogMutations)} and
+     * {@link
      * CallLogDataSource#onSuccessfulFill()} operations.
      */
     private final Set<String> phoneLookupHistoryRowsToDelete = new ArraySet<>();
@@ -166,10 +161,12 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
      *   <li>Finds the phone numbers of interest by taking the union of the distinct
      *       DialerPhoneNumbers from the AnnotatedCallLog and the pending inserts provided in {@code
      *       mutations}
-     *   <li>Uses them to fetch the current information from PhoneLookupHistory, in order to construct
+     *   <li>Uses them to fetch the current information from PhoneLookupHistory, in order to
+     *   construct
      *       a map from DialerPhoneNumber to PhoneLookupInfo
      *       <ul>
-     *         <li>If no PhoneLookupInfo is found (e.g. app data was cleared?) an empty value is used.
+     *         <li>If no PhoneLookupInfo is found (e.g. app data was cleared?) an empty value is
+     *         used.
      *       </ul>
      *   <li>Looks through the provided set of mutations
      *   <li>For inserts, uses the contents of PhoneLookupHistory to populate the fields of the
@@ -180,7 +177,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
      *   <li>Looks through the results of getMostRecentInfo
      *       <ul>
      *         <li>For each number, checks if the original PhoneLookupInfo differs from the new one
-     *         <li>If so, it applies the update to the mutations and (in onSuccessfulFill) writes the
+     *         <li>If so, it applies the update to the mutations and (in onSuccessfulFill) writes
+     *         the
      *             new value back to the PhoneLookupHistory.
      *       </ul>
      * </ul>
@@ -194,7 +192,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
                 mutations.getUpdates().size(),
                 mutations.getDeletes().size());
 
-        // Clear state saved since the last call to fill. This is necessary in case fill is called but
+        // Clear state saved since the last call to fill. This is necessary in case fill is
+        // called but
         // onSuccessfulFill is not called during a previous flow.
         phoneLookupHistoryRowsToUpdate.clear();
         phoneLookupHistoryRowsToDelete.clear();
@@ -202,14 +201,16 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
         // First query information from annotated call log (and include pending inserts).
         ListenableFuture<Map<DialerPhoneNumber, Set<Long>>> annotatedCallLogIdsByNumberFuture =
                 backgroundExecutorService.submit(
-                        () -> collectIdAndNumberFromAnnotatedCallLogAndPendingInserts(appContext, mutations));
+                        () -> collectIdAndNumberFromAnnotatedCallLogAndPendingInserts(appContext,
+                                mutations));
 
         // Use it to create the original info map.
         ListenableFuture<ImmutableMap<DialerPhoneNumber, PhoneLookupInfo>> originalInfoMapFuture =
                 Futures.transform(
                         annotatedCallLogIdsByNumberFuture,
                         annotatedCallLogIdsByNumber ->
-                                queryPhoneLookupHistoryForNumbers(appContext, annotatedCallLogIdsByNumber.keySet()),
+                                queryPhoneLookupHistoryForNumbers(appContext,
+                                        annotatedCallLogIdsByNumber.keySet()),
                         backgroundExecutorService);
 
         // Use the original info map to generate the updated info map by delegating to
@@ -233,30 +234,42 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
 
                     // First populate the insert mutations
                     ImmutableMap.Builder<Long, PhoneLookupInfo>
-                            originalPhoneLookupHistoryDataByAnnotatedCallLogId = ImmutableMap.builder();
-                    for (Entry<DialerPhoneNumber, PhoneLookupInfo> entry : originalInfoMap.entrySet()) {
+                            originalPhoneLookupHistoryDataByAnnotatedCallLogId =
+                            ImmutableMap.builder();
+                    for (Entry<DialerPhoneNumber, PhoneLookupInfo> entry :
+                            originalInfoMap.entrySet()) {
                         DialerPhoneNumber dialerPhoneNumber = entry.getKey();
                         PhoneLookupInfo phoneLookupInfo = entry.getValue();
-                        for (Long id : Objects.requireNonNull(annotatedCallLogIdsByNumber.get(dialerPhoneNumber))) {
-                            originalPhoneLookupHistoryDataByAnnotatedCallLogId.put(id, phoneLookupInfo);
+                        for (Long id : Objects.requireNonNull(
+                                annotatedCallLogIdsByNumber.get(dialerPhoneNumber))) {
+                            originalPhoneLookupHistoryDataByAnnotatedCallLogId.put(id,
+                                    phoneLookupInfo);
                         }
                     }
-                    populateInserts(originalPhoneLookupHistoryDataByAnnotatedCallLogId.build(), mutations);
+                    populateInserts(originalPhoneLookupHistoryDataByAnnotatedCallLogId.build(),
+                            mutations);
 
-                    // Compute and save the PhoneLookupHistory rows which can be deleted in onSuccessfulFill.
+                    // Compute and save the PhoneLookupHistory rows which can be deleted in
+                    // onSuccessfulFill.
                     phoneLookupHistoryRowsToDelete.addAll(
-                            computePhoneLookupHistoryRowsToDelete(annotatedCallLogIdsByNumber, mutations));
+                            computePhoneLookupHistoryRowsToDelete(annotatedCallLogIdsByNumber,
+                                    mutations));
 
                     // Now compute the rows to update.
-                    ImmutableMap.Builder<Long, PhoneLookupInfo> rowsToUpdate = ImmutableMap.builder();
-                    for (Entry<DialerPhoneNumber, PhoneLookupInfo> entry : updatedInfoMap.entrySet()) {
+                    ImmutableMap.Builder<Long, PhoneLookupInfo> rowsToUpdate =
+                            ImmutableMap.builder();
+                    for (Entry<DialerPhoneNumber, PhoneLookupInfo> entry :
+                            updatedInfoMap.entrySet()) {
                         DialerPhoneNumber dialerPhoneNumber = entry.getKey();
                         PhoneLookupInfo upToDateInfo = entry.getValue();
-                        if (!Objects.requireNonNull(originalInfoMap.get(dialerPhoneNumber)).equals(upToDateInfo)) {
-                            for (Long id : Objects.requireNonNull(annotatedCallLogIdsByNumber.get(dialerPhoneNumber))) {
+                        if (!Objects.requireNonNull(originalInfoMap.get(dialerPhoneNumber)).equals(
+                                upToDateInfo)) {
+                            for (Long id : Objects.requireNonNull(
+                                    annotatedCallLogIdsByNumber.get(dialerPhoneNumber))) {
                                 rowsToUpdate.put(id, upToDateInfo);
                             }
-                            // Also save the updated information so that it can be written to PhoneLookupHistory
+                            // Also save the updated information so that it can be written to
+                            // PhoneLookupHistory
                             // in onSuccessfulFill.
                             // Note: This loses country info when number is not valid.
                             String normalizedNumber = dialerPhoneNumber.getNormalizedNumber();
@@ -268,7 +281,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
 
         ListenableFuture<ImmutableMap<Long, PhoneLookupInfo>> rowsToUpdateFuture =
                 Futures.whenAllSucceed(
-                                annotatedCallLogIdsByNumberFuture, updatedInfoMapFuture, originalInfoMapFuture)
+                                annotatedCallLogIdsByNumberFuture, updatedInfoMapFuture,
+                                originalInfoMapFuture)
                         .call(
                                 computeRowsToUpdate,
                                 backgroundExecutorService /* PhoneNumberUtil may do disk IO */);
@@ -295,7 +309,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
         ListenableFuture<Void> writePhoneLookupHistory =
                 backgroundExecutorService.submit(() -> writePhoneLookupHistory(appContext));
 
-        // If that succeeds, delegate to the composite PhoneLookup to notify all PhoneLookups that both
+        // If that succeeds, delegate to the composite PhoneLookup to notify all PhoneLookups
+        // that both
         // the AnnotatedCallLog and PhoneLookupHistory have been successfully updated.
         return Futures.transformAsync(
                 writePhoneLookupHistory,
@@ -395,7 +410,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
 
             if (cursor == null) {
                 LogUtil.e(
-                        "PhoneLookupDataSource.collectIdAndNumberFromAnnotatedCallLogAndPendingInserts",
+                        "PhoneLookupDataSource"
+                                + ".collectIdAndNumberFromAnnotatedCallLogAndPendingInserts",
                         "null cursor");
                 return ImmutableMap.of();
             }
@@ -444,7 +460,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
         String[] questionMarks = new String[normalizedNumbers.length];
         Arrays.fill(questionMarks, "?");
         String selection =
-                PhoneLookupHistory.NORMALIZED_NUMBER + " in (" + TextUtils.join(",", questionMarks) + ")";
+                PhoneLookupHistory.NORMALIZED_NUMBER + " in (" + TextUtils.join(",", questionMarks)
+                        + ")";
 
         Map<String, PhoneLookupInfo> normalizedNumberToInfoMap = new ArrayMap<>();
         try (Cursor cursor =
@@ -453,7 +470,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
                              .query(
                                      PhoneLookupHistory.CONTENT_URI,
                                      new String[]{
-                                             PhoneLookupHistory.NORMALIZED_NUMBER, PhoneLookupHistory.PHONE_LOOKUP_INFO,
+                                             PhoneLookupHistory.NORMALIZED_NUMBER,
+                                             PhoneLookupHistory.PHONE_LOOKUP_INFO,
                                      },
                                      selection,
                                      normalizedNumbers,
@@ -469,7 +487,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
                     String normalizedNumber = cursor.getString(normalizedNumberColumn);
                     PhoneLookupInfo phoneLookupInfo;
                     try {
-                        phoneLookupInfo = PhoneLookupInfo.parseFrom(cursor.getBlob(phoneLookupInfoColumn));
+                        phoneLookupInfo = PhoneLookupInfo.parseFrom(
+                                cursor.getBlob(phoneLookupInfoColumn));
                     } catch (InvalidProtocolBufferException e) {
                         throw new IllegalStateException(e);
                     }
@@ -478,15 +497,20 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
             }
         }
 
-        // We have the required information in normalizedNumberToInfoMap but it's keyed by normalized
-        // number instead of DialerPhoneNumber. Build and return a new map keyed by DialerPhoneNumber.
+        // We have the required information in normalizedNumberToInfoMap but it's keyed by
+        // normalized
+        // number instead of DialerPhoneNumber. Build and return a new map keyed by
+        // DialerPhoneNumber.
         return ImmutableMap.copyOf(
                 Maps.asMap(
                         uniqueDialerPhoneNumbers,
                         (dialerPhoneNumber) -> {
-                            String normalizedNumber = dialerPhoneNumberToNormalizedNumbers.get(dialerPhoneNumber);
-                            PhoneLookupInfo phoneLookupInfo = normalizedNumberToInfoMap.get(normalizedNumber);
-                            // If data is cleared or for other reasons, the PhoneLookupHistory may not contain an
+                            String normalizedNumber = dialerPhoneNumberToNormalizedNumbers.get(
+                                    dialerPhoneNumber);
+                            PhoneLookupInfo phoneLookupInfo = normalizedNumberToInfoMap.get(
+                                    normalizedNumber);
+                            // If data is cleared or for other reasons, the PhoneLookupHistory
+                            // may not contain an
                             // entry for a number. Just use an empty value for that case.
                             return phoneLookupInfo == null
                                     ? PhoneLookupInfo.getDefaultInstance()
@@ -519,26 +543,36 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
                  *
                  * 1) An incoming call from "Bob" arrives; "Bob" is written to PhoneLookupHistory.
                  * 2) User changes Bob's name to "Robert".
-                 * 3) User opens call log, and this code is invoked with the inserted call as a mutation.
+                 * 3) User opens call log, and this code is invoked with the inserted call as a
+                 * mutation.
                  *
-                 * In populateInserts, we retrieved "Bob" from PhoneLookupHistory and wrote it to the insert
-                 * mutation, which is wrong. We need to actually ask the phone lookups for the most up to
+                 * In populateInserts, we retrieved "Bob" from PhoneLookupHistory and wrote it to
+                 *  the insert
+                 * mutation, which is wrong. We need to actually ask the phone lookups for the
+                 * most up to
                  * date information ("Robert"), and update the "insert" mutation again.
                  *
-                 * Having understood this, you may wonder why populateInserts() is needed at all--excellent
+                 * Having understood this, you may wonder why populateInserts() is needed at
+                 * all--excellent
                  * question! Consider:
                  *
-                 * 1) An incoming call from number 123 ("Bob") arrives at time T1; "Bob" is written to
+                 * 1) An incoming call from number 123 ("Bob") arrives at time T1; "Bob" is
+                 * written to
                  * PhoneLookupHistory.
-                 * 2) User opens call log at time T2 and "Bob" is written to it, and everything is fine; the
+                 * 2) User opens call log at time T2 and "Bob" is written to it, and everything
+                 * is fine; the
                  * call log can be considered accurate as of T2.
-                 * 3) An incoming call from number 456 ("John") arrives at time T3. Let's say the contact
+                 * 3) An incoming call from number 456 ("John") arrives at time T3. Let's say the
+                 *  contact
                  * info for John was last modified at time T0.
-                 * 4) Now imagine that populateInserts() didn't exist; the phone lookup will ask for any
-                 * information for phone number 456 which has changed since T2--but "John" hasn't changed
+                 * 4) Now imagine that populateInserts() didn't exist; the phone lookup will ask
+                 * for any
+                 * information for phone number 456 which has changed since T2--but "John" hasn't
+                 *  changed
                  * since then so no contact information would be found.
                  *
-                 * The populateInserts() method avoids this problem by always first populating inserted
+                 * The populateInserts() method avoids this problem by always first populating
+                 * inserted
                  * mutations from PhoneLookupHistory; in this case "John" would be copied during
                  * populateInserts() and there wouldn't be further updates needed here.
                  */
@@ -550,7 +584,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
                 updateContentValues(contentValuesToUpdate, phoneLookupInfo);
                 continue;
             }
-            // Else this row is not already scheduled for insert or update and we need to schedule it.
+            // Else this row is not already scheduled for insert or update and we need to
+            // schedule it.
             ContentValues contentValues = new ContentValues();
             updateContentValues(contentValues, phoneLookupInfo);
             mutations.getUpdates().put(id, contentValues);
@@ -558,7 +593,8 @@ public final class PhoneLookupDataSource implements CallLogDataSource {
     }
 
     private Set<String> computePhoneLookupHistoryRowsToDelete(
-            Map<DialerPhoneNumber, Set<Long>> annotatedCallLogIdsByNumber, CallLogMutations mutations) {
+            Map<DialerPhoneNumber, Set<Long>> annotatedCallLogIdsByNumber,
+            CallLogMutations mutations) {
         if (mutations.getDeletes().isEmpty()) {
             return ImmutableSet.of();
         }

@@ -16,11 +16,9 @@
 package com.wintmain.dialer.phonelookup;
 
 import android.content.Context;
-
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
 import com.wintmain.dialer.phonelookup.composite.CompositePhoneLookup;
-
 import dagger.Subcomponent;
 
 /**

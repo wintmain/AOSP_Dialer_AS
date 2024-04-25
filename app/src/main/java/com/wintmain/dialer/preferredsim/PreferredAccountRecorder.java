@@ -19,11 +19,9 @@ package com.wintmain.dialer.preferredsim;
 import android.content.ContentValues;
 import android.content.Context;
 import android.telecom.PhoneAccountHandle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
 import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
@@ -64,21 +62,25 @@ public class PreferredAccountRecorder {
         if (suggestion != null) {
             if (suggestion.phoneAccountHandle.equals(selectedAccountHandle)) {
                 Logger.get(context)
-                        .logImpression(DialerImpression.Type.DUAL_SIM_SELECTION_SUGGESTED_SIM_SELECTED);
+                        .logImpression(
+                                DialerImpression.Type.DUAL_SIM_SELECTION_SUGGESTED_SIM_SELECTED);
             } else {
                 Logger.get(context)
-                        .logImpression(DialerImpression.Type.DUAL_SIM_SELECTION_NON_SUGGESTED_SIM_SELECTED);
+                        .logImpression(
+                                DialerImpression.Type.DUAL_SIM_SELECTION_NON_SUGGESTED_SIM_SELECTED);
             }
         }
 
         if (dataId != null && setDefault) {
-            Logger.get(context).logImpression(DialerImpression.Type.DUAL_SIM_SELECTION_PREFERRED_SET);
+            Logger.get(context).logImpression(
+                    DialerImpression.Type.DUAL_SIM_SELECTION_PREFERRED_SET);
             DialerExecutorComponent.get(context)
                     .dialerExecutorFactory()
                     .createNonUiTaskBuilder(new WritePreferredAccountWorker())
                     .build()
                     .executeParallel(
-                            new WritePreferredAccountWorkerInput(context, dataId, selectedAccountHandle));
+                            new WritePreferredAccountWorkerInput(context, dataId,
+                                    selectedAccountHandle));
         }
         if (number != null) {
             DialerExecutorComponent.get(context)
@@ -97,7 +99,8 @@ public class PreferredAccountRecorder {
         private final boolean remember;
 
         public UserSelectionReporter(
-                @NonNull PhoneAccountHandle phoneAccountHandle, @Nullable String number, boolean remember) {
+                @NonNull PhoneAccountHandle phoneAccountHandle, @Nullable String number,
+                boolean remember) {
             this.phoneAccountHandle = Assert.isNotNull(phoneAccountHandle);
             this.number = Assert.isNotNull(number);
             this.remember = remember;
@@ -138,7 +141,8 @@ public class PreferredAccountRecorder {
             ContentValues values = new ContentValues();
             values.put(
                     PreferredSim.PREFERRED_PHONE_ACCOUNT_COMPONENT_NAME,
-                    Objects.requireNonNull(input).phoneAccountHandle.getComponentName().flattenToString());
+                    Objects.requireNonNull(input).phoneAccountHandle.getComponentName()
+                            .flattenToString());
             values.put(PreferredSim.PREFERRED_PHONE_ACCOUNT_ID, input.phoneAccountHandle.getId());
             input
                     .context

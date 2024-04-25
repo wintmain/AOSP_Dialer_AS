@@ -29,7 +29,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 
 import java.util.Locale;
@@ -37,11 +36,7 @@ import java.util.Locale;
 /** Provides static functions to work with views */
 public class ViewUtil {
 
-    private ViewUtil() {}
-
-    /** Similar to {@link Runnable} but takes a View parameter to operate on */
-    public interface ViewRunnable {
-        void run(@NonNull View view);
+    private ViewUtil() {
     }
 
     /**
@@ -54,7 +49,8 @@ public class ViewUtil {
         final ViewGroup.LayoutParams p = view.getLayoutParams();
         if (p.width < 0) {
             throw new IllegalStateException(
-                    "Expecting view's width to be a constant rather " + "than a result of the layout pass");
+                    "Expecting view's width to be a constant rather "
+                            + "than a result of the layout pass");
         }
         return p.width;
     }
@@ -70,7 +66,8 @@ public class ViewUtil {
     }
 
     public static boolean isRtl() {
-        return TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL;
+        return TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
+                == View.LAYOUT_DIRECTION_RTL;
     }
 
     public static void resizeText(TextView textView, int originalTextSize, int minTextSize) {
@@ -140,5 +137,10 @@ public class ViewUtil {
         PowerManager powerManager = context.getSystemService(PowerManager.class);
         return Settings.Global.getFloat(contentResolver, Global.ANIMATOR_DURATION_SCALE, 1.0f) == 0
                 || powerManager.isPowerSaveMode();
+    }
+
+    /** Similar to {@link Runnable} but takes a View parameter to operate on */
+    public interface ViewRunnable {
+        void run(@NonNull View view);
     }
 }

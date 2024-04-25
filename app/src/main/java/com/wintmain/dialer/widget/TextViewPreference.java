@@ -22,7 +22,6 @@ import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
-
 import com.wintmain.dialer.R;
 
 /**
@@ -32,7 +31,8 @@ import com.wintmain.dialer.R;
 public class TextViewPreference extends Preference {
 
     /**
-     * The resource ID of the text to be populated in the {@link TextView} when a resource ID is used.
+     * The resource ID of the text to be populated in the {@link TextView} when a resource ID is
+     * used.
      */
     private int textResourceId = 0;
 
@@ -49,13 +49,17 @@ public class TextViewPreference extends Preference {
     /**
      * Instantiates the {@link TextViewPreference} instance.
      *
-     * @param context      The Context this is associated with, through which it can access the current
+     * @param context      The Context this is associated with, through which it can access the
+     *                     current
      *                     theme, resources, etc.
      * @param attrs        The attributes of the XML tag that is inflating the preference.
      * @param defStyleAttr An attribute in the current theme that contains a reference to a style
-     *                     resource that supplies default values for the view. Can be 0 to not look for defaults.
-     * @param defStyleRes  A resource identifier of a style resource that supplies default values for
-     *                     the view, used only if defStyleAttr is 0 or can not be found in the theme. Can be 0 to not
+     *                     resource that supplies default values for the view. Can be 0 to not
+     *                     look for defaults.
+     * @param defStyleRes  A resource identifier of a style resource that supplies default values
+     *                     for
+     *                     the view, used only if defStyleAttr is 0 or can not be found in the
+     *                     theme. Can be 0 to not
      *                     look for defaults.
      */
     public TextViewPreference(
@@ -68,11 +72,13 @@ public class TextViewPreference extends Preference {
     /**
      * Instantiates the {@link TextViewPreference} instance.
      *
-     * @param context      The Context this is associated with, through which it can access the current
+     * @param context      The Context this is associated with, through which it can access the
+     *                     current
      *                     theme, resources, etc.
      * @param attrs        The attributes of the XML tag that is inflating the preference.
      * @param defStyleAttr An attribute in the current theme that contains a reference to a style
-     *                     resource that supplies default values for the view. Can be 0 to not look for defaults.
+     *                     resource that supplies default values for the view. Can be 0 to not
+     *                     look for defaults.
      */
     public TextViewPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);

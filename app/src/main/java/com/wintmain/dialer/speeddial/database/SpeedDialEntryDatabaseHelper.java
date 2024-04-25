@@ -22,13 +22,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-
-import com.wintmain.dialer.common.Assert;
-import com.wintmain.dialer.common.database.Selection;
-import com.wintmain.dialer.speeddial.database.SpeedDialEntry.Channel;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.wintmain.dialer.common.Assert;
+import com.wintmain.dialer.common.database.Selection;
+import com.wintmain.dialer.speeddial.database.SpeedDialEntry.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,8 @@ public final class SpeedDialEntryDatabaseHelper extends SQLiteOpenHelper
 
     /**
      * If the pinned position is absent, then we need to write an impossible value in the table like
-     * -1 so that it doesn't default to 0. When we read this value from the table, we'll translate it
+     * -1 so that it doesn't default to 0. When we read this value from the table, we'll
+     * translate it
      * to Optional.absent() in the resulting {@link SpeedDialEntry}.
      */
     private static final int PINNED_POSITION_ABSENT = -1;
@@ -127,12 +127,14 @@ public final class SpeedDialEntryDatabaseHelper extends SQLiteOpenHelper
                             Channel.builder()
                                     .setNumber(number)
                                     .setPhoneType(cursor.getInt(POSITION_PHONE_TYPE))
-                                    .setLabel(Optional.of(cursor.getString(POSITION_PHONE_LABEL)).or(""))
+                                    .setLabel(Optional.of(cursor.getString(POSITION_PHONE_LABEL))
+                                            .or(""))
                                     .setTechnology(cursor.getInt(POSITION_PHONE_TECHNOLOGY))
                                     .build();
                 }
 
-                Optional<Integer> pinnedPosition = Optional.of(cursor.getInt(POSITION_PINNED_POSITION));
+                Optional<Integer> pinnedPosition = Optional.of(
+                        cursor.getInt(POSITION_PINNED_POSITION));
                 if (pinnedPosition.or(PINNED_POSITION_ABSENT) == PINNED_POSITION_ABSENT) {
                     pinnedPosition = Optional.absent();
                 }
@@ -174,13 +176,16 @@ public final class SpeedDialEntryDatabaseHelper extends SQLiteOpenHelper
         ImmutableMap.Builder<SpeedDialEntry, Long> insertedEntriesToIdsMap = ImmutableMap.builder();
         for (SpeedDialEntry entry : entries) {
             Assert.checkArgument(entry.id() == null);
-            long id = writeableDatabase.insert(TABLE_NAME, null, buildContentValuesWithoutId(entry));
+            long id = writeableDatabase.insert(TABLE_NAME, null,
+                    buildContentValuesWithoutId(entry));
             if (id == -1L) {
                 throw Assert.createUnsupportedOperationFailException(
                         "Attempted to insert a row that already exists.");
             }
-            // It's impossible to insert two identical entries but this is an important assumption we need
-            // to verify because there's an assumption that each entry will correspond to exactly one id.
+            // It's impossible to insert two identical entries but this is an important
+            // assumption we need
+            // to verify because there's an assumption that each entry will correspond to exactly
+            // one id.
             // ImmutableMap#put verifies this check for us.
             insertedEntriesToIdsMap.put(entry, id);
         }
@@ -295,7 +300,8 @@ public final class SpeedDialEntryDatabaseHelper extends SQLiteOpenHelper
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            ImmutableMap<SpeedDialEntry, Long> insertedEntriesToIdsMap = insert(db, entriesToInsert);
+            ImmutableMap<SpeedDialEntry, Long> insertedEntriesToIdsMap = insert(db,
+                    entriesToInsert);
             update(db, entriesToUpdate);
             delete(db, entriesToDelete);
             db.setTransactionSuccessful();

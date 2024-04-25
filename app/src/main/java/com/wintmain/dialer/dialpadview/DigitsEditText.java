@@ -22,7 +22,6 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
-
 import com.wintmain.dialer.widget.ResizingTextEditText;
 
 /**

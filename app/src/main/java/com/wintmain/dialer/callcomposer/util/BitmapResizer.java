@@ -18,9 +18,7 @@ package com.wintmain.dialer.callcomposer.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -49,7 +47,8 @@ public final class BitmapResizer {
         matrix.postRotate(rotation);
 
         LogUtil.i(
-                "BitmapResizer.resizeForEnrichedCalling", "starting height: %d, width: %d", height, width);
+                "BitmapResizer.resizeForEnrichedCalling", "starting height: %d, width: %d", height,
+                width);
 
         if (width <= MAX_OUTPUT_RESOLUTION && height <= MAX_OUTPUT_RESOLUTION) {
             LogUtil.i("BitmapResizer.resizeForEnrichedCalling", "no resizing needed");

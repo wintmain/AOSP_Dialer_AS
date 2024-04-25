@@ -17,7 +17,6 @@
 package com.wintmain.dialer.commandline;
 
 import androidx.annotation.NonNull;
-
 import com.google.common.util.concurrent.ListenableFuture;
 
 /**

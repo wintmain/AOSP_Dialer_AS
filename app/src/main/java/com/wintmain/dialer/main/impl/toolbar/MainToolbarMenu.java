@@ -21,9 +21,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.simulator.Simulator;
 import com.wintmain.dialer.simulator.SimulatorComponent;

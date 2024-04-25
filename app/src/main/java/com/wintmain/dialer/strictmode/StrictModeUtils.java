@@ -21,11 +21,9 @@ import android.content.Context;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
-
 import androidx.annotation.AnyThread;
 import androidx.core.os.UserManagerCompat;
 import androidx.preference.PreferenceManager;
-
 import com.wintmain.dialer.buildtype.BuildType;
 import com.wintmain.dialer.buildtype.BuildType.Type;
 import com.wintmain.dialer.function.Supplier;

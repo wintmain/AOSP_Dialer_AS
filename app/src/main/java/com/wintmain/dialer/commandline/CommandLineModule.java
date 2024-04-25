@@ -16,21 +16,15 @@
 
 package com.wintmain.dialer.commandline;
 
-import com.wintmain.dialer.commandline.impl.ActiveCallsCommand;
-import com.wintmain.dialer.commandline.impl.BlockingCommand;
-import com.wintmain.dialer.commandline.impl.CallCommand;
-import com.wintmain.dialer.commandline.impl.Echo;
-import com.wintmain.dialer.commandline.impl.Help;
-import com.wintmain.dialer.commandline.impl.Version;
+import com.google.common.collect.ImmutableMap;
+import com.wintmain.dialer.commandline.impl.*;
 import com.wintmain.dialer.function.Supplier;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-import com.google.common.collect.ImmutableMap;
-
-import javax.inject.Inject;
-
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Inject;
 
 /**
  * Provides {@link Command}

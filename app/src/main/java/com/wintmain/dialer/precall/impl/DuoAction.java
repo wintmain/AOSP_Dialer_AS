@@ -18,9 +18,13 @@ package com.wintmain.dialer.precall.impl;
 
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.concurrent.Annotations.Ui;
@@ -29,16 +33,9 @@ import com.wintmain.dialer.duo.DuoComponent;
 import com.wintmain.dialer.precall.PreCallAction;
 import com.wintmain.dialer.precall.PreCallCoordinator;
 import com.wintmain.dialer.precall.PreCallCoordinator.PendingAction;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 /**
  * Checks if a duo call is actually callable, and request an activity for {@link
@@ -80,10 +77,13 @@ public class DuoAction implements PreCallAction {
                 new FutureCallback<ImmutableMap<String, ReachabilityData>>() {
                     @Override
                     public void onSuccess(ImmutableMap<String, ReachabilityData> result) {
-                        if (!result.containsKey(number) || !Objects.requireNonNull(result.get(number)).videoCallable()) {
+                        if (!result.containsKey(number) || !Objects.requireNonNull(
+                                result.get(number)).videoCallable()) {
                             LogUtil.w(
                                     "DuoAction.runWithUi",
-                                    number + " number no longer duo reachable, falling back to carrier video call");
+                                    number
+                                            + " number no longer duo reachable, falling back to "
+                                            + "carrier video call");
                             coordinator.getBuilder().setIsDuoCall(false);
                         }
                         pendingAction.finish();

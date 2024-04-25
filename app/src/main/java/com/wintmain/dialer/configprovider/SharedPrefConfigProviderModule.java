@@ -19,11 +19,10 @@ package com.wintmain.dialer.configprovider;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
 import com.wintmain.dialer.storage.StorageModule;
-
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
+
+import javax.inject.Singleton;
 
 /**
  * Dagger module providing {@link ConfigProvider} based on shared preferences.

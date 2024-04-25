@@ -20,14 +20,13 @@ import android.content.Context;
 import android.provider.CallLog.Calls;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
-
+import com.google.common.base.Optional;
+import com.google.common.collect.Collections2;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllog.model.CoalescedRow;
 import com.wintmain.dialer.duo.DuoComponent;
 import com.wintmain.dialer.spam.Spam;
 import com.wintmain.dialer.time.Clock;
-import com.google.common.base.Optional;
-import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,7 +82,8 @@ public final class CallLogEntryText {
     /**
      * The secondary text to be shown in the main call log entry list.
      *
-     * <p>This method first obtains a list of strings to be shown in order and then concatenates them
+     * <p>This method first obtains a list of strings to be shown in order and then concatenates
+     * them
      * with " • ".
      *
      * <p>Examples:
@@ -99,7 +99,8 @@ public final class CallLogEntryText {
     public static CharSequence buildSecondaryTextForEntries(
             Context context, Clock clock, CoalescedRow row) {
         return joinSecondaryTextComponents(
-                buildSecondaryTextListForEntries(context, clock, row, /* abbreviateDateTime = */ true));
+                buildSecondaryTextListForEntries(context, clock, row, /* abbreviateDateTime = */
+                        true));
     }
 
     /**
@@ -143,7 +144,8 @@ public final class CallLogEntryText {
         if (row.getNumberAttributes().getIsEmergencyNumber()) {
             return Collections.singletonList(
                     CallLogDates.newCallLogTimestampLabel(
-                            context, clock.currentTimeMillis(), row.getTimestamp(), abbreviateDateTime));
+                            context, clock.currentTimeMillis(), row.getTimestamp(),
+                            abbreviateDateTime));
         }
 
         List<CharSequence> components = new ArrayList<>();
@@ -159,7 +161,8 @@ public final class CallLogEntryText {
 
         components.add(
                 CallLogDates.newCallLogTimestampLabel(
-                        context, clock.currentTimeMillis(), row.getTimestamp(), abbreviateDateTime));
+                        context, clock.currentTimeMillis(), row.getTimestamp(),
+                        abbreviateDateTime));
         return components;
     }
 
@@ -216,7 +219,8 @@ public final class CallLogEntryText {
 
         components.add(getNumberTypeLabel(context, row));
 
-        // If there's a presentation name, we showed it in the primary text and shouldn't show any name
+        // If there's a presentation name, we showed it in the primary text and shouldn't show
+        // any name
         // or number here.
         Optional<String> presentationName =
                 PhoneNumberDisplayUtil.getNameForPresentation(context, row.getNumberPresentation());
@@ -225,7 +229,8 @@ public final class CallLogEntryText {
         }
 
         if (TextUtils.isEmpty(row.getNumberAttributes().getName())) {
-            // If the name is empty the number is shown as the primary text and there's nothing to add.
+            // If the name is empty the number is shown as the primary text and there's nothing
+            // to add.
             return joinSecondaryTextComponents(components);
         }
         if (TextUtils.isEmpty(row.getFormattedNumber())) {
@@ -258,17 +263,20 @@ public final class CallLogEntryText {
             }
 
             boolean isDuoCall =
-                    DuoComponent.get(context).getDuo().isDuoAccount(row.getPhoneAccountComponentName());
+                    DuoComponent.get(context).getDuo().isDuoAccount(
+                            row.getPhoneAccountComponentName());
             secondaryText.append(
                     context.getText(
-                            isDuoCall ? R.string.new_call_log_duo_video : R.string.new_call_log_carrier_video));
+                            isDuoCall ? R.string.new_call_log_duo_video
+                                    : R.string.new_call_log_carrier_video));
         }
 
         // Show the location if
         // (1) there is no number type label, and
         // (2) the call should not be shown as spam.
         if (TextUtils.isEmpty(numberTypeLabel)
-                && !Spam.shouldShowAsSpam(row.getNumberAttributes().getIsSpam(), row.getCallType())) {
+                && !Spam.shouldShowAsSpam(row.getNumberAttributes().getIsSpam(),
+                row.getCallType())) {
             // If number attributes contain a location (obtained from a PhoneLookup), use it instead
             // of the one from the annotated call log.
             String location =

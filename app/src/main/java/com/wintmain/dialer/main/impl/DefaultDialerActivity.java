@@ -7,20 +7,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telecom.TelecomManager;
 import android.view.View;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.widget.EmptyContentView;
 
 @RequiresApi(api = Build.VERSION_CODES.Q)
 public class DefaultDialerActivity extends AppCompatActivity
         implements EmptyContentView.OnEmptyViewActionButtonClickedListener {
-
-    private RoleManager mRoleManager;
 
     private final ActivityResultLauncher<Intent> mDefaultDialerLauncher =
             registerForActivityResult(
@@ -29,7 +25,8 @@ public class DefaultDialerActivity extends AppCompatActivity
                         if (result.getResultCode() == RESULT_OK) {
                             finish();
                         }
-            });
+                    });
+    private RoleManager mRoleManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

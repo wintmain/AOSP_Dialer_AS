@@ -14,22 +14,23 @@
   ~ limitations under the License
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@android:color/transparent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
-    <ListView android:id="@+id/license_list"
+    <ListView
+        android:id="@+id/license_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingTop="0dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:clipToPadding="false"
+        android:drawSelectorOnTop="false"
         android:paddingBottom="0dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:clipToPadding="false"
-        android:drawSelectorOnTop="false"
-        android:cacheColorHint="@android:color/transparent"
-        android:scrollbarAlwaysDrawVerticalTrack="true" />
+        android:paddingTop="0dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarStyle="outsideOverlay" />
 </LinearLayout>

@@ -18,10 +18,8 @@ package com.wintmain.dialer.precall;
 
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.util.DialerUtils;
 

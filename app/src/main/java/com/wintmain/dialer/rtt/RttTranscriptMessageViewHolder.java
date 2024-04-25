@@ -25,9 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.glidephotomanager.GlidePhotoManagerComponent;
 import com.wintmain.dialer.glidephotomanager.PhotoInfo;
@@ -58,8 +56,10 @@ public class RttTranscriptMessageViewHolder extends ViewHolder {
         params.gravity = message.getIsRemote() ? Gravity.START : Gravity.END;
         params.topMargin =
                 isSameGroup
-                        ? resources.getDimensionPixelSize(R.dimen.rtt_transcript_same_group_message_margin_top)
-                        : resources.getDimensionPixelSize(R.dimen.rtt_transcript_message_margin_top);
+                        ? resources.getDimensionPixelSize(
+                        R.dimen.rtt_transcript_same_group_message_margin_top)
+                        : resources.getDimensionPixelSize(
+                                R.dimen.rtt_transcript_message_margin_top);
         container.setLayoutParams(params);
         messageTextView.setEnabled(message.getIsRemote());
         if (message.getIsRemote()) {

@@ -27,9 +27,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.lettertile.LetterTileDrawable;
@@ -69,7 +67,8 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
 
     /**
      * Given a {@link DefaultImageRequest}, returns an Uri that can be used to request a letter tile
-     * avatar when passed to the {@link ContactPhotoManager}. The internal implementation of this uri
+     * avatar when passed to the {@link ContactPhotoManager}. The internal implementation of this
+     * uri
      * is not guaranteed to remain the same across application versions, so the actual uri should
      * never be persisted in long-term storage and reused.
      *
@@ -89,7 +88,8 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
                 builder.appendQueryParameter(IDENTIFIER_PARAM_KEY, request.identifier);
             }
             if (request.contactType != LetterTileDrawable.TYPE_DEFAULT) {
-                builder.appendQueryParameter(CONTACT_TYPE_PARAM_KEY, String.valueOf(request.contactType));
+                builder.appendQueryParameter(CONTACT_TYPE_PARAM_KEY,
+                        String.valueOf(request.contactType));
             }
             if (request.scale != SCALE_DEFAULT) {
                 builder.appendQueryParameter(SCALE_PARAM_KEY, String.valueOf(request.scale));
@@ -98,14 +98,16 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
                 builder.appendQueryParameter(OFFSET_PARAM_KEY, String.valueOf(request.offset));
             }
             if (request.isCircular != IS_CIRCULAR_DEFAULT) {
-                builder.appendQueryParameter(IS_CIRCULAR_PARAM_KEY, String.valueOf(request.isCircular));
+                builder.appendQueryParameter(IS_CIRCULAR_PARAM_KEY,
+                        String.valueOf(request.isCircular));
             }
         }
         return builder.build();
     }
 
     /**
-     * Adds a business contact type encoded fragment to the URL. Used to ensure photo URLS from Nearby
+     * Adds a business contact type encoded fragment to the URL. Used to ensure photo URLS from
+     * Nearby
      * Places can be identified as business photo URLs rather than URLs for personal contact photos.
      *
      * @param photoUrl The photo URL to modify.
@@ -254,7 +256,8 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
                 new ContactPhotoManager.DefaultImageRequest(
                         displayName, lookupKey, contactType, true /* isCircular */);
         if (photoId == 0 && photoUri != null) {
-            loadDirectoryPhoto(badge, photoUri, false /* darkTheme */, true /* isCircular */, request);
+            loadDirectoryPhoto(badge, photoUri, false /* darkTheme */, true /* isCircular */,
+                    request);
         } else {
             loadThumbnail(badge, photoId, false /* darkTheme */, true /* isCircular */, request);
         }
@@ -267,14 +270,18 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
      *
      * @param view                The target view
      * @param photoUri            The uri of the photo to load
-     * @param requestedExtent     Specifies an approximate Max(width, height) of the targetView. This is
-     *                            useful if the source image can be a lot bigger that the target, so that the decoding is
-     *                            done using efficient sampling. If requestedExtent is specified, no sampling of the image is
+     * @param requestedExtent     Specifies an approximate Max(width, height) of the targetView.
+     *                            This is
+     *                            useful if the source image can be a lot bigger that the target,
+     *                            so that the decoding is
+     *                            done using efficient sampling. If requestedExtent is specified,
+     *                            no sampling of the image is
      *                            performed
      * @param darkTheme           Whether the background is dark. This is used for default avatars
      * @param defaultImageRequest {@link DefaultImageRequest} object that specifies how a default
      *                            letter tile avatar should be drawn.
-     * @param defaultProvider     The provider of default avatars (this is used if photoUri doesn't refer
+     * @param defaultProvider     The provider of default avatars (this is used if photoUri
+     *                            doesn't refer
      *                            to an existing image)
      */
     public abstract void loadPhoto(
@@ -313,7 +320,8 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
 
     /**
      * Calls {@link #loadPhoto(ImageView, Uri, int, boolean, boolean, DefaultImageRequest,
-     * DefaultImageProvider)} with {@link #DEFAULT_AVATAR} and with the assumption, that the image is
+     * DefaultImageProvider)} with {@link #DEFAULT_AVATAR} and with the assumption, that the
+     * image is
      * a thumbnail.
      *
      * @param defaultImageRequest {@link DefaultImageRequest} object that specifies how a default
@@ -383,12 +391,15 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
     public static class DefaultImageRequest {
 
         /**
-         * Used to indicate that a drawable that represents a contact without any contact details should
+         * Used to indicate that a drawable that represents a contact without any contact details
+         * should
          * be returned.
          */
-        public static final DefaultImageRequest EMPTY_DEFAULT_IMAGE_REQUEST = new DefaultImageRequest();
+        public static final DefaultImageRequest EMPTY_DEFAULT_IMAGE_REQUEST =
+                new DefaultImageRequest();
         /**
-         * Used to indicate that a drawable that represents a business without a business photo should
+         * Used to indicate that a drawable that represents a business without a business photo
+         * should
          * be returned.
          */
         public static final DefaultImageRequest EMPTY_DEFAULT_BUSINESS_IMAGE_REQUEST =
@@ -400,7 +411,8 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
         public static final DefaultImageRequest EMPTY_CIRCULAR_DEFAULT_IMAGE_REQUEST =
                 new DefaultImageRequest(null, null, true);
         /**
-         * Used to indicate that a circular drawable that represents a business without a business photo
+         * Used to indicate that a circular drawable that represents a business without a
+         * business photo
          * should be returned.
          */
         public static final DefaultImageRequest EMPTY_CIRCULAR_BUSINESS_IMAGE_REQUEST =
@@ -410,32 +422,42 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
          */
         public String displayName;
         /**
-         * A unique and deterministic string that can be used to identify this contact. This is usually
+         * A unique and deterministic string that can be used to identify this contact. This is
+         * usually
          * the contact's lookup key, but other contact details can be used as well, especially for
-         * non-local or temporary contacts that might not have a lookup key. This is used to determine
+         * non-local or temporary contacts that might not have a lookup key. This is used to
+         * determine
          * the color of the tile.
          */
         public String identifier;
         /**
-         * The type of this contact. This contact type may be used to decide the kind of image to use in
+         * The type of this contact. This contact type may be used to decide the kind of image to
+         * use in
          * the case where a unique letter cannot be generated from the contact's display name and
          * identifier.
          */
         public @LetterTileDrawable.ContactType
         int contactType = LetterTileDrawable.TYPE_DEFAULT;
         /**
-         * The amount to scale the letter or bitmap to, as a ratio of its default size (from a range of
+         * The amount to scale the letter or bitmap to, as a ratio of its default size (from a
+         * range of
          * 0.0f to 2.0f). The default value is 1.0f.
          */
         public float scale = SCALE_DEFAULT;
         /**
-         * The amount to vertically offset the letter or image to within the tile. The provided offset
+         * The amount to vertically offset the letter or image to within the tile. The provided
+         * offset
          * must be within the range of -0.5f to 0.5f. If set to -0.5f, the letter will be shifted
-         * upwards by 0.5 times the height of the canvas it is being drawn on, which means it will be
-         * drawn with the center of the letter starting at the top edge of the canvas. If set to 0.5f,
-         * the letter will be shifted downwards by 0.5 times the height of the canvas it is being drawn
-         * on, which means it will be drawn with the center of the letter starting at the bottom edge of
-         * the canvas. The default is 0.0f, which means the letter is drawn in the exact vertical center
+         * upwards by 0.5 times the height of the canvas it is being drawn on, which means it
+         * will be
+         * drawn with the center of the letter starting at the top edge of the canvas. If set to
+         * 0.5f,
+         * the letter will be shifted downwards by 0.5 times the height of the canvas it is being
+         * drawn
+         * on, which means it will be drawn with the center of the letter starting at the bottom
+         * edge of
+         * the canvas. The default is 0.0f, which means the letter is drawn in the exact vertical
+         * center
          * of the tile.
          */
         public float offset = OFFSET_DEFAULT;
@@ -481,14 +503,17 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
     public abstract static class DefaultImageProvider {
 
         /**
-         * Applies the default avatar to the ImageView. Extent is an indicator for the size (width or
+         * Applies the default avatar to the ImageView. Extent is an indicator for the size
+         * (width or
          * height). If darkTheme is set, the avatar is one that looks better on dark background
          *
-         * @param defaultImageRequest {@link DefaultImageRequest} object that specifies how a default
+         * @param defaultImageRequest {@link DefaultImageRequest} object that specifies how a
+         *                            default
          *                            letter tile avatar should be drawn.
          */
         public abstract void applyDefaultImage(
-                ImageView view, int extent, boolean darkTheme, DefaultImageRequest defaultImageRequest);
+                ImageView view, int extent, boolean darkTheme,
+                DefaultImageRequest defaultImageRequest);
     }
 
     /**
@@ -511,7 +536,8 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
             // letter
             if (TextUtils.isEmpty(defaultImageRequest.identifier)) {
                 drawable.setCanonicalDialerLetterTileDetails(
-                        null, defaultImageRequest.displayName, tileShape, defaultImageRequest.contactType);
+                        null, defaultImageRequest.displayName, tileShape,
+                        defaultImageRequest.contactType);
             } else {
                 drawable.setCanonicalDialerLetterTileDetails(
                         defaultImageRequest.displayName,
@@ -526,8 +552,10 @@ public abstract class ContactPhotoManager implements ComponentCallbacks2 {
 
         @Override
         public void applyDefaultImage(
-                ImageView view, int extent, boolean darkTheme, DefaultImageRequest defaultImageRequest) {
-            final Drawable drawable = getDefaultImageForContact(view.getResources(), defaultImageRequest);
+                ImageView view, int extent, boolean darkTheme,
+                DefaultImageRequest defaultImageRequest) {
+            final Drawable drawable = getDefaultImageForContact(view.getResources(),
+                    defaultImageRequest);
             view.setImageDrawable(drawable);
         }
     }

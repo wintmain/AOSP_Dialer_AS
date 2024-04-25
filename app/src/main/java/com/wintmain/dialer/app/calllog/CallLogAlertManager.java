@@ -19,9 +19,7 @@ package com.wintmain.dialer.app.calllog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.alert.AlertManager;
 import com.wintmain.dialer.common.Assert;
@@ -82,7 +80,8 @@ public class CallLogAlertManager implements AlertManager {
     }
 
     /**
-     * Does nothing. The view this ViewHolder show is directly managed by {@link CallLogAlertManager}
+     * Does nothing. The view this ViewHolder show is directly managed by
+     * {@link CallLogAlertManager}
      */
     private static class AlertViewHolder extends RecyclerView.ViewHolder {
         private AlertViewHolder(View view) {

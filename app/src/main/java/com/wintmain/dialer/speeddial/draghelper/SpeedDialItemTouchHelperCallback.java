@@ -18,13 +18,11 @@ package com.wintmain.dialer.speeddial.draghelper;
 
 import android.content.Context;
 import android.graphics.Canvas;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import com.wintmain.dialer.logging.DialerImpression;
 import com.wintmain.dialer.logging.Logger;
 
@@ -61,18 +59,21 @@ public class SpeedDialItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean canDropOver(
-            @NonNull RecyclerView recyclerView, @NonNull ViewHolder current, @NonNull ViewHolder target) {
+            @NonNull RecyclerView recyclerView, @NonNull ViewHolder current,
+            @NonNull ViewHolder target) {
         return adapter.canDropOver(target);
     }
 
     @Override
-    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder) {
+    public int getMovementFlags(@NonNull RecyclerView recyclerView,
+            @NonNull ViewHolder viewHolder) {
         if (!adapter.canDropOver(viewHolder)) {
             return makeMovementFlags(0, 0);
         }
 
         int dragFlags =
-                ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END;
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START
+                        | ItemTouchHelper.END;
         return makeMovementFlags(dragFlags, /* swipeFlags */ 0);
     }
 
@@ -129,7 +130,8 @@ public class SpeedDialItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 adapter.dropOnRemoveView(viewHolder);
             }
             if (!movedOverRemoveView) {
-                // when the view is over a droppable target, onMove() will be called before onChildDraw()
+                // when the view is over a droppable target, onMove() will be called before
+                // onChildDraw()
                 // thus if onMove() is not called, it is not over a droppable target.
                 inRemoveView = false;
                 adapter.leaveRemoveView();

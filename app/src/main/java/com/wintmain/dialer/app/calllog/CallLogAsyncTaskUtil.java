@@ -21,9 +21,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.provider.CallLog;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
-
 import com.wintmain.dialer.common.concurrent.AsyncTaskExecutor;
 import com.wintmain.dialer.common.concurrent.AsyncTaskExecutors;
 import com.wintmain.dialer.util.PermissionsUtil;
@@ -38,7 +36,8 @@ public class CallLogAsyncTaskUtil {
         asyncTaskExecutor = AsyncTaskExecutors.createThreadPoolExecutor();
     }
 
-    public static void markCallAsRead(@NonNull final Context context, @NonNull final long[] callIds) {
+    public static void markCallAsRead(@NonNull final Context context,
+            @NonNull final long[] callIds) {
         if (!PermissionsUtil.hasPhonePermissions(context)
                 || !PermissionsUtil.hasCallLogWritePermissions(context)) {
             return;
@@ -54,7 +53,8 @@ public class CallLogAsyncTaskUtil {
                     public Void doInBackground(Void... params) {
 
                         StringBuilder where = new StringBuilder();
-                        where.append(CallLog.Calls.TYPE).append(" = ").append(CallLog.Calls.MISSED_TYPE);
+                        where.append(CallLog.Calls.TYPE).append(" = ").append(
+                                CallLog.Calls.MISSED_TYPE);
                         where.append(" AND ");
 
                         Long[] callIdLongs = new Long[callIds.length];

@@ -16,14 +16,14 @@
 
 package com.wintmain.dialer.simulator;
 
-import com.wintmain.dialer.enrichedcall.EnrichedCallManager;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.wintmain.dialer.enrichedcall.EnrichedCallManager;
 
 /** Setup enriched calling environment for {@link Simulator}. */
 public interface SimulatorEnrichedCall extends EnrichedCallManager.StateChangedListener {
-  /** Setup a session for an incoming enriched call. */
-  ListenableFuture<Void> setupIncomingEnrichedCall(String number);
+    /** Setup a session for an incoming enriched call. */
+    ListenableFuture<Void> setupIncomingEnrichedCall(String number);
 
-  /** Setup a session for outgoing enriched call. */
-  ListenableFuture<Void> setupOutgoingEnrichedCall(String number);
+    /** Setup a session for outgoing enriched call. */
+    ListenableFuture<Void> setupOutgoingEnrichedCall(String number);
 }

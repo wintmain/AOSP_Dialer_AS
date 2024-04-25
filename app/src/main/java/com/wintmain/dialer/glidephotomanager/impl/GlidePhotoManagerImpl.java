@@ -23,14 +23,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
-import android.telecom.TelecomManager;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.glide.GlideApp;
@@ -42,9 +39,8 @@ import com.wintmain.dialer.i18n.DialerBidiFormatter;
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.lettertile.LetterTileDrawable;
 
-import java.util.List;
-
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Implementation of {@link GlidePhotoManager}
@@ -70,7 +66,8 @@ public class GlidePhotoManagerImpl implements GlidePhotoManager {
      * Return the "lookup key" inside the lookup URI. If the URI does not contain the key (i.e, JSON
      * based prepopulated URIs for non-contact entries), the URI itself is returned.
      *
-     * <p>The lookup URI has the format of Contacts.CONTENT_LOOKUP_URI/lookupKey/rowId. For JSON based
+     * <p>The lookup URI has the format of Contacts.CONTENT_LOOKUP_URI/lookupKey/rowId. For JSON
+     * based
      * URI, it would be Contacts.CONTENT_LOOKUP_URI/encoded#JSON
      */
     private static String getIdentifier(String lookupUri) {
@@ -107,9 +104,12 @@ public class GlidePhotoManagerImpl implements GlidePhotoManager {
         Assert.isMainThread();
         imageView.setContentDescription(
                 TextUtils.expandTemplate(
-                        appContext.getText(R.string.a11y_glide_photo_manager_contact_photo_description),
-                        // The display name in "photoInfo" can be a contact name, a number, or a mixture of text
-                        // and a phone number. We use DialerBidiFormatter to wrap the phone number with TTS
+                        appContext.getText(
+                                R.string.a11y_glide_photo_manager_contact_photo_description),
+                        // The display name in "photoInfo" can be a contact name, a number, or a
+                        // mixture of text
+                        // and a phone number. We use DialerBidiFormatter to wrap the phone
+                        // number with TTS
                         // span.
                         DialerBidiFormatter.format(photoInfo.getName())));
         GlideRequest<Drawable> request = buildRequest(GlideApp.with(imageView), photoInfo);
@@ -118,7 +118,8 @@ public class GlidePhotoManagerImpl implements GlidePhotoManager {
 
     @SuppressLint("CheckResult")
     private GlideRequest<Drawable> buildRequest(GlideRequests requestManager, PhotoInfo photoInfo) {
-        // Warning: Glide ignores extra attributes on BitmapDrawable such as tint and draw the bitmap
+        // Warning: Glide ignores extra attributes on BitmapDrawable such as tint and draw the
+        // bitmap
         // directly so be sure not to set tint in the XML of any drawable referenced below.
 
         GlideRequest<Drawable> request;
@@ -137,7 +138,8 @@ public class GlidePhotoManagerImpl implements GlidePhotoManager {
 
         } else if (photoInfo.getPhotoId() != 0) {
             request =
-                    requestManager.load(ContentUris.withAppendedId(Data.CONTENT_URI, photoInfo.getPhotoId()));
+                    requestManager.load(
+                            ContentUris.withAppendedId(Data.CONTENT_URI, photoInfo.getPhotoId()));
 
         } else {
             // load null to indicate fallback should be used.
@@ -157,7 +159,8 @@ public class GlidePhotoManagerImpl implements GlidePhotoManager {
     }
 
     /**
-     * Generate the default drawable when photos are not available. Used when the photo is loading or
+     * Generate the default drawable when photos are not available. Used when the photo is
+     * loading or
      * no photo is available.
      */
     private LetterTileDrawable getDefaultDrawable(PhotoInfo photoInfo) {

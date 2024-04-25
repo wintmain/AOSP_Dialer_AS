@@ -18,10 +18,8 @@ package com.wintmain.dialer.calllog.observer;
 
 import android.database.ContentObserver;
 import android.net.Uri;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.calllog.notifier.RefreshAnnotatedCallLogNotifier;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -49,7 +47,8 @@ public final class MarkDirtyObserver extends ContentObserver {
     public void onChange(boolean selfChange, Uri uri) {
         Assert.isMainThread();
         LogUtil.i(
-                "MarkDirtyObserver.onChange", "Uri:%s, SelfChange:%b", String.valueOf(uri), selfChange);
+                "MarkDirtyObserver.onChange", "Uri:%s, SelfChange:%b", String.valueOf(uri),
+                selfChange);
 
         refreshAnnotatedCallLogNotifier.markDirtyAndNotify();
     }

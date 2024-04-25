@@ -20,10 +20,12 @@ import android.database.StaleDataException;
 import android.provider.CallLog.Calls;
 import android.telecom.PhoneAccountHandle;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.wintmain.dialer.CoalescedIds;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.NumberAttributes;
@@ -36,14 +38,9 @@ import com.wintmain.dialer.metrics.FutureTimer;
 import com.wintmain.dialer.metrics.Metrics;
 import com.wintmain.dialer.phonenumberproto.DialerPhoneNumberUtil;
 import com.wintmain.dialer.telecom.TelecomUtil;
-import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.protobuf.InvalidProtocolBufferException;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 /**
  * Combines adjacent rows in {@link AnnotatedCallLog}.
@@ -74,13 +71,15 @@ public class Coalescer {
             @NonNull Cursor allAnnotatedCallLogRowsSortedByTimestampDesc) {
         ListenableFuture<ImmutableList<CoalescedRow>> coalescingFuture =
                 backgroundExecutorService.submit(
-                        () -> coalesceInternal(Assert.isNotNull(allAnnotatedCallLogRowsSortedByTimestampDesc)));
+                        () -> coalesceInternal(
+                                Assert.isNotNull(allAnnotatedCallLogRowsSortedByTimestampDesc)));
         futureTimer.applyTiming(coalescingFuture, Metrics.NEW_CALL_LOG_COALESCE);
         return coalescingFuture;
     }
 
     /**
-     * Reads the entire {@link AnnotatedCallLog} into memory from the provided cursor and then builds
+     * Reads the entire {@link AnnotatedCallLog} into memory from the provided cursor and then
+     * builds
      * and returns a list of {@link CoalescedRow coalesced rows}, which is the result of combining
      * adjacent rows which should be collapsed for display purposes.
      *
@@ -107,7 +106,8 @@ public class Coalescer {
 
             long coalescedRowId = 0;
             do {
-                boolean isRowMerged = rowCombiner.mergeRow(allAnnotatedCallLogRowsSortedByTimestampDesc);
+                boolean isRowMerged = rowCombiner.mergeRow(
+                        allAnnotatedCallLogRowsSortedByTimestampDesc);
 
                 if (isRowMerged) {
                     allAnnotatedCallLogRowsSortedByTimestampDesc.moveToNext();
@@ -123,28 +123,38 @@ public class Coalescer {
             return coalescedRowListBuilder.build();
 
         } catch (Exception exception) {
-            // Coalescing can fail if cursor "allAnnotatedCallLogRowsSortedByTimestampDesc" is closed by
+            // Coalescing can fail if cursor "allAnnotatedCallLogRowsSortedByTimestampDesc" is
+            // closed by
             // its loader while the work is still in progress.
             //
-            // This can happen when the loader restarts and finishes loading data before the coalescing
+            // This can happen when the loader restarts and finishes loading data before the
+            // coalescing
             // work is completed.
             //
-            // This kind of failure doesn't have to crash the app as coalescing will be restarted on the
-            // latest data obtained by the loader. Therefore, we inspect the exception here and throw an
+            // This kind of failure doesn't have to crash the app as coalescing will be restarted
+            // on the
+            // latest data obtained by the loader. Therefore, we inspect the exception here and
+            // throw an
             // ExpectedCoalescerException if it is the case described above.
             //
-            // The type of expected exception depends on whether AbstractWindowedCursor#checkPosition() is
+            // The type of expected exception depends on whether
+            // AbstractWindowedCursor#checkPosition() is
             // called when the cursor is closed.
-            //   (1) If it is called before the cursor is closed, we will get IllegalStateException thrown
+            //   (1) If it is called before the cursor is closed, we will get
+            //   IllegalStateException thrown
             //       by SQLiteClosable when it attempts to acquire a reference to the database.
             //   (2) Otherwise, we will get StaleDataException thrown by AbstractWindowedCursor's
             //       checkPosition() method.
             //
-            // Note that it would be more accurate to inspect the stack trace to locate the origin of the
+            // Note that it would be more accurate to inspect the stack trace to locate the
+            // origin of the
             // exception. However, according to the documentation on Throwable#getStackTrace, "some
-            // virtual machines may, under some circumstances, omit one or more stack frames from the
-            // stack trace". "In the extreme case, a virtual machine that has no stack trace information
-            // concerning this throwable is permitted to return a zero-length array from this method."
+            // virtual machines may, under some circumstances, omit one or more stack frames from
+            // the
+            // stack trace". "In the extreme case, a virtual machine that has no stack trace
+            // information
+            // concerning this throwable is permitted to return a zero-length array from this
+            // method."
             // Therefore, the best we can do is to inspect the message in the exception.
             // TODO(linyuh): try to avoid the expected failure.
             String message = exception.getMessage();
@@ -198,7 +208,8 @@ public class Coalescer {
             geocodedLocationColumn =
                     annotatedCallLogRow.getColumnIndexOrThrow(AnnotatedCallLog.GEOCODED_LOCATION);
             phoneAccountComponentNameColumn =
-                    annotatedCallLogRow.getColumnIndexOrThrow(AnnotatedCallLog.PHONE_ACCOUNT_COMPONENT_NAME);
+                    annotatedCallLogRow.getColumnIndexOrThrow(
+                            AnnotatedCallLog.PHONE_ACCOUNT_COMPONENT_NAME);
             phoneAccountIdColumn =
                     annotatedCallLogRow.getColumnIndexOrThrow(AnnotatedCallLog.PHONE_ACCOUNT_ID);
             featuresColumn = annotatedCallLogRow.getColumnIndexOrThrow(AnnotatedCallLog.FEATURES);
@@ -208,7 +219,8 @@ public class Coalescer {
         }
 
         /**
-         * Prepares {@link RowCombiner} for building a new group of rows by clearing information on all
+         * Prepares {@link RowCombiner} for building a new group of rows by clearing information
+         * on all
          * previously merged rows.
          */
         void startNewGroup() {
@@ -222,7 +234,8 @@ public class Coalescer {
          * @return true if the given row is merged.
          */
         boolean mergeRow(Cursor annotatedCallLogRow) {
-            Assert.checkArgument(annotatedCallLogRow.getInt(callTypeColumn) != Calls.VOICEMAIL_TYPE);
+            Assert.checkArgument(
+                    annotatedCallLogRow.getInt(callTypeColumn) != Calls.VOICEMAIL_TYPE);
 
             if (!canMergeRow(annotatedCallLogRow)) {
                 return false;
@@ -238,8 +251,10 @@ public class Coalescer {
 
             // Set fields that use the most recent value.
             // Rows passed to Coalescer are already sorted in descending order of timestamp. If the
-            // coalesced ID list is not empty, it means RowCombiner has merged the most recent row in a
-            // group and there is no need to continue as we only set fields that use the most recent value
+            // coalesced ID list is not empty, it means RowCombiner has merged the most recent
+            // row in a
+            // group and there is no need to continue as we only set fields that use the most
+            // recent value
             // from this point forward.
             if (!coalescedIdsBuilder.getCoalescedIdList().isEmpty()) {
                 coalescedIdsBuilder.addCoalescedId(annotatedCallLogRow.getInt(idColumn));
@@ -253,13 +268,16 @@ public class Coalescer {
                     .setIsNew(annotatedCallLogRow.getInt(isNewColumn) == 1)
                     .setCallType(annotatedCallLogRow.getInt(callTypeColumn));
 
-            // Two different DialerPhoneNumbers could be combined if they are different but considered
-            // to be a match by libphonenumber; in this case we arbitrarily select the most recent one.
+            // Two different DialerPhoneNumbers could be combined if they are different but
+            // considered
+            // to be a match by libphonenumber; in this case we arbitrarily select the most
+            // recent one.
             try {
                 coalescedRowBuilder.setNumber(
                         DialerPhoneNumber.parseFrom(annotatedCallLogRow.getBlob(numberColumn)));
             } catch (InvalidProtocolBufferException e) {
-                throw Assert.createAssertionFailException("Unable to parse DialerPhoneNumber bytes", e);
+                throw Assert.createAssertionFailException("Unable to parse DialerPhoneNumber bytes",
+                        e);
             }
 
             String formattedNumber = annotatedCallLogRow.getString(formattedNumberColumn);
@@ -285,9 +303,11 @@ public class Coalescer {
 
             try {
                 coalescedRowBuilder.setNumberAttributes(
-                        NumberAttributes.parseFrom(annotatedCallLogRow.getBlob(numberAttributesColumn)));
+                        NumberAttributes.parseFrom(
+                                annotatedCallLogRow.getBlob(numberAttributesColumn)));
             } catch (InvalidProtocolBufferException e) {
-                throw Assert.createAssertionFailException("Unable to parse NumberAttributes bytes", e);
+                throw Assert.createAssertionFailException("Unable to parse NumberAttributes bytes",
+                        e);
             }
 
             coalescedIdsBuilder.addCoalescedId(annotatedCallLogRow.getInt(idColumn));
@@ -302,7 +322,8 @@ public class Coalescer {
         }
 
         /**
-         * Returns true if the given {@link AnnotatedCallLog} row can be merged into the current group.
+         * Returns true if the given {@link AnnotatedCallLog} row can be merged into the current
+         * group.
          */
         private boolean canMergeRow(Cursor annotatedCallLogRow) {
             return coalescedIdsBuilder.getCoalescedIdList().isEmpty()
@@ -360,7 +381,8 @@ public class Coalescer {
                 }
                 rowPhoneNumber = DialerPhoneNumber.parseFrom(rowPhoneNumberBytes);
             } catch (InvalidProtocolBufferException e) {
-                throw Assert.createAssertionFailException("Unable to parse DialerPhoneNumber bytes", e);
+                throw Assert.createAssertionFailException("Unable to parse DialerPhoneNumber bytes",
+                        e);
             }
 
             if (dialerPhoneNumberUtil == null) {

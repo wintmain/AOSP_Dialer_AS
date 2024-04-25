@@ -24,18 +24,16 @@ import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.android.contacts.common.util.ContactDisplayUtils;
+import com.google.android.material.snackbar.Snackbar;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blocking.FilteredNumberAsyncQueryHandler.OnBlockNumberListener;
 import com.wintmain.dialer.blocking.FilteredNumberAsyncQueryHandler.OnUnblockNumberListener;
 import com.wintmain.dialer.logging.InteractionEvent;
 import com.wintmain.dialer.logging.Logger;
-import com.google.android.material.snackbar.Snackbar;
 
 /**
  * Fragment for confirming and enacting blocking/unblocking a number. Also invokes snackbar
@@ -128,12 +126,14 @@ public class BlockNumberDialogFragment extends DialogFragment {
             okText = getString(R.string.unblock_number_ok);
             message =
                     ContactDisplayUtils.getTtsSpannedPhoneNumber(
-                                    getResources(), R.string.unblock_number_confirmation_title, displayNumber)
+                                    getResources(), R.string.unblock_number_confirmation_title,
+                                    displayNumber)
                             .toString();
         } else {
             title =
                     ContactDisplayUtils.getTtsSpannedPhoneNumber(
-                            getResources(), R.string.old_block_number_confirmation_title, displayNumber);
+                            getResources(), R.string.old_block_number_confirmation_title,
+                            displayNumber);
             okText = getString(R.string.block_number_ok);
             if (FilteredNumberCompat.useNewFiltering(getContext())) {
                 message = getString(R.string.block_number_confirmation_message_new_filtering);
@@ -198,7 +198,8 @@ public class BlockNumberDialogFragment extends DialogFragment {
     }
 
     private int getActionTextColor() {
-        return requireContext().getResources().getColor(R.color.dialer_snackbar_action_text_color, null);
+        return requireContext().getResources().getColor(R.color.dialer_snackbar_action_text_color,
+                null);
     }
 
     private void blockNumber() {
@@ -284,7 +285,8 @@ public class BlockNumberDialogFragment extends DialogFragment {
      * Use a callback interface to update UI after success/undo. Favor this approach over other more
      * standard paradigms because of the variety of scenarios in which the DialogFragment can be
      * invoked (by an Activity, by a fragment, by an adapter, by an adapter list item). Because of
-     * this, we do NOT support retaining state on rotation, and will dismiss the dialog upon rotation
+     * this, we do NOT support retaining state on rotation, and will dismiss the dialog upon
+     * rotation
      * instead.
      */
     public interface Callback {

@@ -20,16 +20,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
-
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.buildtype.BuildType;
 import com.wintmain.dialer.buildtype.BuildType.Type;
 import com.wintmain.dialer.commandline.Command.IllegalCommandLineArgumentException;
 import com.wintmain.dialer.common.LogUtil;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
 
 /**
  * Receives broadcasts to the component from adb shell. Must be on bugfood or have debug logging
@@ -84,7 +82,8 @@ public class CommandLineReceiver extends BroadcastReceiver {
                         @Override
                         public void onFailure(@NonNull Throwable throwable) {
                             if (throwable instanceof IllegalCommandLineArgumentException) {
-                                LogUtil.e(outputTag, throwable.getMessage() + "\n\nusage:\n" + command.getUsage());
+                                LogUtil.e(outputTag, throwable.getMessage() + "\n\nusage:\n"
+                                        + command.getUsage());
                             }
                             LogUtil.e(outputTag, "error running command future", throwable);
                         }

@@ -21,10 +21,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
-
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import com.wintmain.dialer.common.Assert;
 
 /**
@@ -61,7 +59,8 @@ public class SpeedDialFavoritesViewHolderOnTouchListener implements OnTouchListe
                 return true;
             case MotionEvent.ACTION_MOVE:
                 // If the user has long clicked the view
-                if (event.getEventTime() - event.getDownTime() > ViewConfiguration.getLongPressTimeout()) {
+                if (event.getEventTime() - event.getDownTime()
+                        > ViewConfiguration.getLongPressTimeout()) {
                     // Perform long click if we haven't already
                     if (!hasPerformedLongClick) {
                         v.performLongClick();
@@ -74,7 +73,8 @@ public class SpeedDialFavoritesViewHolderOnTouchListener implements OnTouchListe
                 }
                 return true;
             case MotionEvent.ACTION_UP:
-                if (event.getEventTime() - event.getDownTime() < ViewConfiguration.getLongPressTimeout()) {
+                if (event.getEventTime() - event.getDownTime()
+                        < ViewConfiguration.getLongPressTimeout()) {
                     v.performClick();
                 }
                 // fallthrough

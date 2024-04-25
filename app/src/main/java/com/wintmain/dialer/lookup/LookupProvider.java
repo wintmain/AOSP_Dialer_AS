@@ -36,31 +36,23 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.Contacts;
 import android.provider.Settings;
 import android.util.Log;
-
 import androidx.core.app.ActivityCompat;
-
 import com.wintmain.dialer.lookup.google.GoogleForwardLookup;
 import com.wintmain.dialer.phonenumbercache.ContactInfo;
 import com.wintmain.dialer.searchfragment.common.Projections;
 import com.wintmain.dialer.util.PermissionsUtil;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 public class LookupProvider extends ContentProvider {
     public static final String AUTHORITY = "com.wintmain.dialer.lookup";
@@ -97,8 +89,10 @@ public class LookupProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, final String[] projection, String selection,
-                        String[] selectionArgs, String sortOrder) {
-        if (DEBUG) Log.v(TAG, "query: " + uri);
+            String[] selectionArgs, String sortOrder) {
+        if (DEBUG) {
+            Log.v(TAG, "query: " + uri);
+        }
 
         Location lastLocation = null;
         final int match = uriMatcher.match(uri);
@@ -137,7 +131,8 @@ public class LookupProvider extends ContentProvider {
                 final Location finalLastLocation = lastLocation;
                 final int finalMaxResults = maxResults;
 
-                return execute(() -> handleFilter(match, projection, filter, finalMaxResults, finalLastLocation));
+                return execute(() -> handleFilter(match, projection, filter, finalMaxResults,
+                        finalLastLocation));
         }
 
         return null;
@@ -213,7 +208,11 @@ public class LookupProvider extends ContentProvider {
         LocationManager locationManager = getContext().getSystemService(LocationManager.class);
 
         try {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
 
                 return null;
             }
@@ -236,7 +235,9 @@ public class LookupProvider extends ContentProvider {
                     PROVIDER = provider;
                 }
             }, Looper.getMainLooper());
-            if (DEBUG) Log.v(TAG, "provider(" + PROVIDER + ")");
+            if (DEBUG) {
+                Log.v(TAG, "provider(" + PROVIDER + ")");
+            }
             return locationManager.getLastKnownLocation(PROVIDER);
         } catch (IllegalArgumentException e) {
             return null;
@@ -253,8 +254,10 @@ public class LookupProvider extends ContentProvider {
      * @return Cursor for the results
      */
     private Cursor handleFilter(int type, String[] projection, String filter,
-                                int maxResults, Location lastLocation) {
-        if (DEBUG) Log.v(TAG, "handleFilter(" + filter + ")");
+            int maxResults, Location lastLocation) {
+        if (DEBUG) {
+            Log.v(TAG, "handleFilter(" + filter + ")");
+        }
 
         if (filter == null) {
             return null;
@@ -264,23 +267,25 @@ public class LookupProvider extends ContentProvider {
             return null;
         }
 
-        try {
-            filter = URLDecoder.decode(filter, "UTF-8");
-        } catch (UnsupportedEncodingException ignored) {
-        }
+        filter = URLDecoder.decode(filter, StandardCharsets.UTF_8);
 
         ArrayList<ContactInfo> results = new ArrayList<>();
         if (type == NEARBY || type == NEARBY_AND_PEOPLE) {
-            List<ContactInfo> nearby = GoogleForwardLookup.lookup(getContext(), filter, lastLocation);
+            List<ContactInfo> nearby = GoogleForwardLookup.lookup(getContext(), filter,
+                    lastLocation);
 //            List<ContactInfo> nearby = null;
-             if (nearby != null) {
-                if (DEBUG) Log.v(TAG, "adding places");
+            if (nearby != null) {
+                if (DEBUG) {
+                    Log.v(TAG, "adding places");
+                }
                 results.addAll(nearby);
             }
         }
 
         if (results.isEmpty()) {
-            if (DEBUG) Log.v(TAG, "handleFilter(" + filter + "): No results");
+            if (DEBUG) {
+                Log.v(TAG, "handleFilter(" + filter + "): No results");
+            }
             return null;
         }
 
@@ -369,7 +374,9 @@ public class LookupProvider extends ContentProvider {
 
         if (city != null) {
             return city;
-        } else return address;
+        } else {
+            return address;
+        }
     }
 
     /**

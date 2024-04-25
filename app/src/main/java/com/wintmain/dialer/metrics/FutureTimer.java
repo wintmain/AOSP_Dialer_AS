@@ -17,23 +17,20 @@
 package com.wintmain.dialer.metrics;
 
 import android.os.SystemClock;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-
-import com.wintmain.dialer.common.LogUtil;
-import com.wintmain.dialer.common.concurrent.Annotations.LightweightExecutor;
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import com.wintmain.dialer.common.LogUtil;
+import com.wintmain.dialer.common.concurrent.Annotations.LightweightExecutor;
 
 import javax.inject.Inject;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Applies logcat and metric logging to a supplied future.
@@ -51,7 +48,8 @@ public final class FutureTimer {
 
     @Inject
     public FutureTimer(
-            Metrics metrics, @LightweightExecutor ListeningExecutorService lightweightExecutorService) {
+            Metrics metrics,
+            @LightweightExecutor ListeningExecutorService lightweightExecutorService) {
         this.metrics = metrics;
         this.lightweightExecutorService = lightweightExecutorService;
     }
@@ -60,8 +58,10 @@ public final class FutureTimer {
      * Applies logcat and metric logging to the supplied future.
      *
      * <p>This should be called as soon as possible after the future is submitted for execution, as
-     * timing is not started until this method is called. While work for the supplied future may have
-     * already begun, the time elapsed since it started is expected to be negligible for the purposes
+     * timing is not started until this method is called. While work for the supplied future may
+     * have
+     * already begun, the time elapsed since it started is expected to be negligible for the
+     * purposes
      * of tracking heavyweight operations (which is what this method is intended for).
      */
     public <T> void applyTiming(ListenableFuture<T> future, String eventName) {
@@ -126,7 +126,8 @@ public final class FutureTimer {
                                             LogUtil.sanitizePii(result));
                                     break;
                                 default:
-                                    throw new UnsupportedOperationException("unknown logcat mode: " + logCatMode);
+                                    throw new UnsupportedOperationException(
+                                            "unknown logcat mode: " + logCatMode);
                             }
                             return;
                         }
@@ -135,7 +136,8 @@ public final class FutureTimer {
                         if (LogUtil.isDebugEnabled()) {
                             switch (logCatMode) {
                                 case LogCatMode.DONT_LOG_VALUES:
-                                    // Operation was fast and we're not logging values, so don't log anything.
+                                    // Operation was fast and we're not logging values, so don't
+                                    // log anything.
                                     break;
                                 case LogCatMode.LOG_VALUES:
                                     LogUtil.d(
@@ -146,14 +148,16 @@ public final class FutureTimer {
                                             LogUtil.sanitizePii(result));
                                     break;
                                 default:
-                                    throw new UnsupportedOperationException("unknown logcat mode: " + logCatMode);
+                                    throw new UnsupportedOperationException(
+                                            "unknown logcat mode: " + logCatMode);
                             }
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
-                        // This callback is just for logging performance metrics; errors are handled elsewhere.
+                        // This callback is just for logging performance metrics; errors are
+                        // handled elsewhere.
                     }
                 },
                 lightweightExecutorService);
@@ -166,14 +170,16 @@ public final class FutureTimer {
     @IntDef({LogCatMode.DONT_LOG_VALUES, LogCatMode.LOG_VALUES})
     public @interface LogCatMode {
         /**
-         * Don't ever log the result of the future to logcat. For example, may be appropriate if your
+         * Don't ever log the result of the future to logcat. For example, may be appropriate if
+         * your
          * future returns a proto and you don't want to spam the logs with multi-line entries, or if
          * your future returns void/null and so would have no value being logged.
          */
         int DONT_LOG_VALUES = 1;
         /**
          * Always log the result of the future to logcat (at DEBUG level). Useful when your future
-         * returns a type which has a short and useful string representation (such as a boolean). PII
+         * returns a type which has a short and useful string representation (such as a boolean).
+         * PII
          * will be sanitized.
          */
         int LOG_VALUES = 2;

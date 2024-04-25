@@ -27,19 +27,16 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.wintmain.dialer.about.AboutPhoneFragment;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import com.wintmain.dialer.R;
+import com.wintmain.dialer.about.AboutPhoneFragment;
 import com.wintmain.dialer.assisteddialing.ConcreteCreator;
 import com.wintmain.dialer.blocking.FilteredNumberCompat;
 import com.wintmain.dialer.common.LogUtil;
@@ -72,7 +69,8 @@ public class DialerSettingsActivity extends AppCompatPreferenceActivity {
             if (headerToOpen != null && headers != null) {
                 for (Header header : headers) {
                     if (headerToOpen.equals(header.fragment)) {
-                        LogUtil.i("DialerSettingsActivity.onCreate", "switching to header: " + headerToOpen);
+                        LogUtil.i("DialerSettingsActivity.onCreate",
+                                "switching to header: " + headerToOpen);
                         switchToHeader(header);
                         break;
                     }
@@ -133,7 +131,8 @@ public class DialerSettingsActivity extends AppCompatPreferenceActivity {
             target.add(callSettingsHeader);
         } else {
             Header phoneAccountSettingsHeader = new Header();
-            Intent phoneAccountSettingsIntent = new Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
+            Intent phoneAccountSettingsIntent = new Intent(
+                    TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
             phoneAccountSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             phoneAccountSettingsHeader.titleRes = R.string.phone_account_settings_label;
@@ -205,14 +204,15 @@ public class DialerSettingsActivity extends AppCompatPreferenceActivity {
 
     /**
      * @return the only SIM phone account, or {@code null} if there are none or more than one. Note:
-     *     having a empty SIM slot still count as a PhoneAccountHandle that is "invalid", and
-     *     voicemail settings should still be available for it.
+     * having a empty SIM slot still count as a PhoneAccountHandle that is "invalid", and
+     * voicemail settings should still be available for it.
      */
     @Nullable
     private PhoneAccountHandle getSoleSimAccount() {
         TelecomManager telecomManager = getSystemService(TelecomManager.class);
         PhoneAccountHandle result = null;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -220,14 +220,16 @@ public class DialerSettingsActivity extends AppCompatPreferenceActivity {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            for (PhoneAccountHandle phoneAccountHandle : telecomManager.getCallCapablePhoneAccounts()) {
+            for (PhoneAccountHandle phoneAccountHandle :
+                    telecomManager.getCallCapablePhoneAccounts()) {
                 PhoneAccount phoneAccount = telecomManager.getPhoneAccount(phoneAccountHandle);
                 if (phoneAccount == null) {
                     continue;
                 }
                 if (phoneAccount.hasCapabilities(PhoneAccount.CAPABILITY_SIM_SUBSCRIPTION)) {
                     LogUtil.i(
-                            "DialerSettingsActivity.getSoleSimAccount", phoneAccountHandle + " is a SIM account");
+                            "DialerSettingsActivity.getSoleSimAccount",
+                            phoneAccountHandle + " is a SIM account");
                     if (result != null) {
                         return null;
                     }
@@ -245,7 +247,8 @@ public class DialerSettingsActivity extends AppCompatPreferenceActivity {
 
     /**
      * Returns {@code true} or {@code false} based on whether the display options setting should be
-     * shown. For languages such as Chinese, Japanese, or Korean, display options aren't useful since
+     * shown. For languages such as Chinese, Japanese, or Korean, display options aren't useful
+     * since
      * contacts are sorted and displayed family name first by default.
      *
      * @return {@code true} if the display options should be shown, {@code false} otherwise.
@@ -259,11 +262,11 @@ public class DialerSettingsActivity extends AppCompatPreferenceActivity {
      * For the "sounds and vibration" setting, we go directly to the system sound settings fragment.
      * This helps since:
      * <li>We don't need a separate Dialer sounds and vibrations fragment, as everything we need is
-     *     present in the system sounds fragment.
+     * present in the system sounds fragment.
      * <li>OEM's e.g Moto that support dual sim ring-tones no longer need to update the dialer sound
-     *     and settings fragment.
+     * and settings fragment.
      *
-     *     <p>For all other settings, we launch our our preferences fragment.
+     * <p>For all other settings, we launch our our preferences fragment.
      */
     @Override
     public void onHeaderClick(Header header, int position) {

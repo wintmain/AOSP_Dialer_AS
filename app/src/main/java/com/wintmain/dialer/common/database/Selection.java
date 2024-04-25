@@ -17,17 +17,11 @@
 package com.wintmain.dialer.common.database;
 
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.common.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Utility to build SQL selections. Handles string concatenation, nested statements, empty
@@ -87,7 +81,8 @@ public final class Selection {
     }
 
     /**
-     * @return a Selection built from regular selection string/args pair. The result selection will be
+     * @return a Selection built from regular selection string/args pair. The result selection
+     * will be
      * enclosed in a parenthesis.
      */
     @NonNull
@@ -140,7 +135,8 @@ public final class Selection {
                 case ')':
                     depth--;
                     if (depth == 0) {
-                        // First '(' closed before the string has ended,need an additional level of nesting.
+                        // First '(' closed before the string has ended,need an additional level
+                        // of nesting.
                         // For example "(A) AND (B)" should become "((A) AND (B))"
                         return "(" + string + ")";
                     }
@@ -196,7 +192,8 @@ public final class Selection {
         }
 
         /**
-         * Expands to "<column> <operator>". {@link #is(String, Object)} should be used if the condition
+         * Expands to "<column> <operator>". {@link #is(String, Object)} should be used if the
+         * condition
          * is comparing to a string or a user input value, which must be sanitized.
          */
         @NonNull
@@ -210,7 +207,8 @@ public final class Selection {
 
         public Selection in(Collection<String> values) {
             return fromString(
-                    column + " IN (" + TextUtils.join(",", Collections.nCopies(values.size(), "?")) + ")",
+                    column + " IN (" + TextUtils.join(",", Collections.nCopies(values.size(), "?"))
+                            + ")",
                     values);
         }
     }

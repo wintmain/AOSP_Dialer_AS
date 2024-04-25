@@ -19,7 +19,6 @@ package com.wintmain.dialer.calllogutils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.format.Formatter;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.util.DialerUtils;
 
@@ -55,7 +54,8 @@ public class CallLogDurations {
             // example output: "1s"
             formatPattern =
                     context.getString(
-                            R.string.call_duration_short_format_pattern, Long.toString(seconds), secondsString);
+                            R.string.call_duration_short_format_pattern, Long.toString(seconds),
+                            secondsString);
         }
 
         // Since we don't want to update the strings.xml, we need to remove the quotations from the
@@ -72,9 +72,11 @@ public class CallLogDurations {
             String secondsString = res.getQuantityString(R.plurals.a11y_seconds, seconds);
             // example output: "1 minute 1 second", "2 minutes 2 seconds", ect.
             return context.getString(
-                    R.string.a11y_call_duration_format, minutes, minutesString, seconds, secondsString);
+                    R.string.a11y_call_duration_format, minutes, minutesString, seconds,
+                    secondsString);
         } else {
-            String secondsString = res.getQuantityString(R.plurals.a11y_seconds, (int) elapsedSeconds);
+            String secondsString = res.getQuantityString(R.plurals.a11y_seconds,
+                    (int) elapsedSeconds);
             // example output: "1 second", "2 seconds"
             return context.getString(
                     R.string.a11y_call_duration_short_format, elapsedSeconds, secondsString);

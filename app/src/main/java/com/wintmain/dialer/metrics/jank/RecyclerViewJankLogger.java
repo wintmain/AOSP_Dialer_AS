@@ -19,7 +19,6 @@ package com.wintmain.dialer.metrics.jank;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
-
 import com.wintmain.dialer.metrics.Metrics;
 
 /**

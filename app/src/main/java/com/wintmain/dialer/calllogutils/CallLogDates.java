@@ -20,7 +20,6 @@ import android.content.Context;
 import android.icu.lang.UCharacter;
 import android.icu.text.BreakIterator;
 import android.text.format.DateUtils;
-
 import com.wintmain.dialer.R;
 
 import java.util.Calendar;
@@ -65,12 +64,14 @@ public final class CallLogDates {
                             DateUtils.MINUTE_IN_MILLIS,
                             DateUtils.FORMAT_ABBREV_RELATIVE)
                     .toString()
-                    // The platform method DateUtils#getRelativeTimeSpanString adds a dot ('.') after the
-                    // abbreviated time unit for some languages (e.g., "8 min. ago") but we prefer not to
+                    // The platform method DateUtils#getRelativeTimeSpanString adds a dot ('.')
+                    // after the
+                    // abbreviated time unit for some languages (e.g., "8 min. ago") but we
+                    // prefer not to
                     // have the dot.
                     .replace(".", "")
                     : DateUtils.getRelativeTimeSpanString(
-                    timestampMillis, nowMillis, DateUtils.MINUTE_IN_MILLIS);
+                            timestampMillis, nowMillis, DateUtils.MINUTE_IN_MILLIS);
         }
 
         int dayDifference = getDayDifference(nowMillis, timestampMillis);
@@ -96,7 +97,8 @@ public final class CallLogDates {
     }
 
     /**
-     * Formats the provided timestamp (in milliseconds) into date and time suitable for display in the
+     * Formats the provided timestamp (in milliseconds) into date and time suitable for display
+     * in the
      * current locale.
      *
      * <p>For example, returns a string like "Wednesday, May 25, 2016, 8:02PM" or "Chorshanba, 2016
@@ -155,14 +157,19 @@ public final class CallLogDates {
     }
 
     private static CharSequence toTitleCase(CharSequence value) {
-        // We want the beginning of the date string to be capitalized, even if the word at the beginning
-        // of the string is not usually capitalized. For example, "Wednesdsay" in Uzbek is "chorshanba”
-        // (not capitalized). To handle this issue we apply title casing to the start of the sentence so
+        // We want the beginning of the date string to be capitalized, even if the word at the
+        // beginning
+        // of the string is not usually capitalized. For example, "Wednesdsay" in Uzbek is
+        // "chorshanba”
+        // (not capitalized). To handle this issue we apply title casing to the start of the
+        // sentence so
         // that "chorshanba, 2016 may 25,20:02" becomes "Chorshanba, 2016 may 25,20:02".
 
-        // Using the ICU library is safer than just applying toUpperCase() on the first letter of the
+        // Using the ICU library is safer than just applying toUpperCase() on the first letter of
+        // the
         // word because in some languages, there can be multiple starting characters which should be
-        // upper-cased together. For example in Dutch "ij" is a digraph in which both letters should be
+        // upper-cased together. For example in Dutch "ij" is a digraph in which both letters
+        // should be
         // capitalized together.
 
         // TITLECASE_NO_LOWERCASE is necessary so that things that are already capitalized are not
@@ -202,15 +209,20 @@ public final class CallLogDates {
         Calendar startOfReferenceDay = Calendar.getInstance();
         startOfReferenceDay.setTimeInMillis(secondTimestamp);
 
-        // This is attempting to find the start of the reference day, but it's not quite right due to
-        // daylight savings. Unfortunately there doesn't seem to be a way to get the correct start of
-        // the day without using Joda or Java8, both of which are disallowed. This means that the wrong
+        // This is attempting to find the start of the reference day, but it's not quite right
+        // due to
+        // daylight savings. Unfortunately there doesn't seem to be a way to get the correct
+        // start of
+        // the day without using Joda or Java8, both of which are disallowed. This means that the
+        // wrong
         // formatting may be applied on days with time changes (though the displayed values will be
         // correct).
-        startOfReferenceDay.add(Calendar.HOUR_OF_DAY, -startOfReferenceDay.get(Calendar.HOUR_OF_DAY));
+        startOfReferenceDay.add(Calendar.HOUR_OF_DAY,
+                -startOfReferenceDay.get(Calendar.HOUR_OF_DAY));
         startOfReferenceDay.add(Calendar.MINUTE, -startOfReferenceDay.get(Calendar.MINUTE));
         startOfReferenceDay.add(Calendar.SECOND, -startOfReferenceDay.get(Calendar.SECOND));
-        startOfReferenceDay.add(Calendar.MILLISECOND, -startOfReferenceDay.get(Calendar.MILLISECOND));
+        startOfReferenceDay.add(Calendar.MILLISECOND,
+                -startOfReferenceDay.get(Calendar.MILLISECOND));
 
         Calendar other = Calendar.getInstance();
         other.setTimeInMillis(firstTimestamp);
@@ -226,7 +238,8 @@ public final class CallLogDates {
 
     /**
      * Returns true if the two timestamps are within one year. It is the caller's responsibility to
-     * ensure both timestamps are in milliseconds. Failure to do so will result in undefined behavior.
+     * ensure both timestamps are in milliseconds. Failure to do so will result in undefined
+     * behavior.
      *
      * <p>Note that the difference is based on 365/366-day periods.
      *

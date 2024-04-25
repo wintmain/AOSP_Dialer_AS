@@ -23,9 +23,9 @@ import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import androidx.annotation.Nullable;
-
+import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback;
+import com.google.android.material.snackbar.Snackbar;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -40,13 +40,12 @@ import com.wintmain.dialer.performancereport.PerformanceReport;
 import com.wintmain.dialer.storage.StorageComponent;
 import com.wintmain.dialer.util.DialerUtils;
 import com.wintmain.dialer.util.IntentUtil;
-import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback;
-import com.google.android.material.snackbar.Snackbar;
 
 /** Helper class to handle all post call actions. */
 public class PostCall {
 
-    private static final String KEY_POST_CALL_CALL_DISCONNECT_TIME = "post_call_call_disconnect_time";
+    private static final String KEY_POST_CALL_CALL_DISCONNECT_TIME =
+            "post_call_call_disconnect_time";
     private static final String KEY_POST_CALL_CALL_CONNECT_TIME = "post_call_call_connect_time";
     private static final String KEY_POST_CALL_CALL_NUMBER = "post_call_call_number";
     private static final String KEY_POST_CALL_MESSAGE_SENT = "post_call_message_sent";
@@ -74,7 +73,8 @@ public class PostCall {
     }
 
     private static void promptUserToSendMessage(Activity activity, View rootView) {
-        LogUtil.i("PostCall.promptUserToSendMessage", "returned from call, showing post call SnackBar");
+        LogUtil.i("PostCall.promptUserToSendMessage",
+                "returned from call, showing post call SnackBar");
         String number = Assert.isNotNull(getPhoneNumber(activity));
         String message = activity.getString(R.string.post_call_message);
         EnrichedCallManager manager = EnrichedCallComponent.get(activity).getEnrichedCallManager();
@@ -85,7 +85,8 @@ public class PostCall {
                 LogUtil.sanitizePhoneNumber(number), capabilities);
 
         boolean isRcsPostCall = capabilities != null && capabilities.isPostCallCapable();
-        String actionText = isRcsPostCall ? activity.getString(R.string.post_call_add_message) : activity.getString(R.string.post_call_send_message);
+        String actionText = isRcsPostCall ? activity.getString(R.string.post_call_add_message)
+                : activity.getString(R.string.post_call_send_message);
 
         OnClickListener onClickListener =
                 v -> {
@@ -100,9 +101,11 @@ public class PostCall {
                 .getLong("post_call_prompt_duration_ms", 8_000);
         activeSnackbar = Snackbar.make(rootView, message, durationMs)
                 .setAction(actionText, onClickListener)
-                .setActionTextColor(activity.getResources().getColor(R.color.dialer_snackbar_action_text_color));
+                .setActionTextColor(activity.getResources()
+                        .getColor(R.color.dialer_snackbar_action_text_color));
         activeSnackbar.show();
-        Logger.get(activity).logImpression(DialerImpression.Type.POST_CALL_PROMPT_USER_TO_SEND_MESSAGE);
+        Logger.get(activity).logImpression(
+                DialerImpression.Type.POST_CALL_PROMPT_USER_TO_SEND_MESSAGE);
         StorageComponent.get(activity)
                 .unencryptedSharedPrefs()
                 .edit()
@@ -155,7 +158,8 @@ public class PostCall {
                 .apply();
     }
 
-    public static void onCallDisconnected(Context context, String number, long callConnectedMillis) {
+    public static void onCallDisconnected(Context context, String number,
+            long callConnectedMillis) {
         StorageComponent.get(context)
                 .unencryptedSharedPrefs()
                 .edit()
@@ -210,7 +214,8 @@ public class PostCall {
         long timeSinceDisconnect = System.currentTimeMillis() - disconnectTimeMillis;
         long callDurationMillis = disconnectTimeMillis - connectTimeMillis;
 
-        boolean callDisconnectedByUser = manager.getBoolean(KEY_POST_CALL_DISCONNECT_PRESSED, false);
+        boolean callDisconnectedByUser = manager.getBoolean(KEY_POST_CALL_DISCONNECT_PRESSED,
+                false);
 
         ConfigProvider binding = ConfigProviderComponent.get(context).getConfigProvider();
         return disconnectTimeMillis != -1

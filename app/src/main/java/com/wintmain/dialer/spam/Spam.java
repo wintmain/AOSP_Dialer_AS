@@ -19,18 +19,16 @@ package com.wintmain.dialer.spam;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.provider.CallLog.Calls;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.logging.ContactLookupResult;
 import com.wintmain.dialer.logging.ContactSource;
 import com.wintmain.dialer.logging.ReportingLocation;
 import com.wintmain.dialer.spam.status.SpamStatus;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.ListenableFuture;
 
 /**
  * Allows the container application to mark calls as spam.
@@ -91,10 +89,14 @@ public interface Spam {
      * list needs to occur or not.
      *
      * @param isEnabledByUser true if spam is enabled by the user. Generally, this value should be
-     *                        passed as {@link SpamSettings#isSpamEnabled()}. In the scenario where the user toggles the
-     *                        spam setting isSpamEnabled returns stale data: the SharedPreferences will not have updated
-     *                        prior to executing {@link OnPreferenceChangeListener#onPreferenceChange(Preference,
-     *                        Object)}. For that case, use the new value provided in the onPreferenceChange callback.
+     *                        passed as {@link SpamSettings#isSpamEnabled()}. In the scenario
+     *                        where the user toggles the
+     *                        spam setting isSpamEnabled returns stale data: the
+     *                        SharedPreferences will not have updated
+     *                        prior to executing
+     *                        {@link OnPreferenceChangeListener#onPreferenceChange(Preference,
+     *                        Object)}. For that case, use the new value provided in the
+     *                        onPreferenceChange callback.
      * @return a future containing no value. It is only an indication of success or failure of the
      * operation.
      */
@@ -113,7 +115,8 @@ public interface Spam {
      * Returns a {@link ListenableFuture} indicating whether the spam data have been updated since
      * {@code timestampMillis}.
      *
-     * <p>It is the caller's responsibility to ensure the timestamp is in milliseconds. Failure to do
+     * <p>It is the caller's responsibility to ensure the timestamp is in milliseconds. Failure
+     * to do
      * so will result in undefined behavior.
      */
     @NonNull
@@ -124,12 +127,16 @@ public interface Spam {
      *
      * @param number                  The number to be reported.
      * @param countryIso              The country ISO of the number.
-     * @param callType                Whether the type of call is missed, voicemail, etc. Example of this is {@link
+     * @param callType                Whether the type of call is missed, voicemail, etc. Example
+     *                                of this is {@link
      *                                android.provider.CallLog.Calls#VOICEMAIL_TYPE}.
-     * @param from                    Where in the dialer this was reported from. Must be one of {@link
+     * @param from                    Where in the dialer this was reported from. Must be one of
+     *                                {@link
      *                                com.wintmain.dialer.logging.ReportingLocation}.
-     * @param contactLookupResultType The result of the contact lookup for this phone number. Must be
-     *                                one of {@link com.wintmain.dialer.logging.ContactLookupResult}.
+     * @param contactLookupResultType The result of the contact lookup for this phone number.
+     *                                Must be
+     *                                one of
+     *                                {@link com.wintmain.dialer.logging.ContactLookupResult}.
      */
     void reportSpamFromAfterCallNotification(
             String number,
@@ -143,12 +150,14 @@ public interface Spam {
      *
      * @param number            The number to be reported.
      * @param countryIso        The country ISO of the number.
-     * @param callType          Whether the type of call is missed, voicemail, etc. Example of this is {@link
+     * @param callType          Whether the type of call is missed, voicemail, etc. Example of
+     *                          this is {@link
      *                          android.provider.CallLog.Calls#VOICEMAIL_TYPE}.
      * @param from              Where in the dialer this was reported from. Must be one of {@link
      *                          com.wintmain.dialer.logging.ReportingLocation}.
      * @param contactSourceType If we have cached contact information for the phone number, this
-     *                          indicates its source. Must be one of {@link com.wintmain.dialer.logging.ContactSource}.
+     *                          indicates its source. Must be one of
+     *                          {@link com.wintmain.dialer.logging.ContactSource}.
      */
     void reportSpamFromCallHistory(
             String number,
@@ -162,12 +171,16 @@ public interface Spam {
      *
      * @param number                  The number to be reported.
      * @param countryIso              The country ISO of the number.
-     * @param callType                Whether the type of call is missed, voicemail, etc. Example of this is {@link
+     * @param callType                Whether the type of call is missed, voicemail, etc. Example
+     *                                of this is {@link
      *                                android.provider.CallLog.Calls#VOICEMAIL_TYPE}.
-     * @param from                    Where in the dialer this was reported from. Must be one of {@link
+     * @param from                    Where in the dialer this was reported from. Must be one of
+     *                                {@link
      *                                com.wintmain.dialer.logging.ReportingLocation}.
-     * @param contactLookupResultType The result of the contact lookup for this phone number. Must be
-     *                                one of {@link com.wintmain.dialer.logging.ContactLookupResult}.
+     * @param contactLookupResultType The result of the contact lookup for this phone number.
+     *                                Must be
+     *                                one of
+     *                                {@link com.wintmain.dialer.logging.ContactLookupResult}.
      */
     void reportNotSpamFromAfterCallNotification(
             String number,
@@ -181,12 +194,14 @@ public interface Spam {
      *
      * @param number            The number to be reported.
      * @param countryIso        The country ISO of the number.
-     * @param callType          Whether the type of call is missed, voicemail, etc. Example of this is {@link
+     * @param callType          Whether the type of call is missed, voicemail, etc. Example of
+     *                          this is {@link
      *                          android.provider.CallLog.Calls#VOICEMAIL_TYPE}.
      * @param from              Where in the dialer this was reported from. Must be one of {@link
      *                          com.wintmain.dialer.logging.ReportingLocation}.
      * @param contactSourceType If we have cached contact information for the phone number, this
-     *                          indicates its source. Must be one of {@link com.wintmain.dialer.logging.ContactSource}.
+     *                          indicates its source. Must be one of
+     *                          {@link com.wintmain.dialer.logging.ContactSource}.
      */
     void reportNotSpamFromCallHistory(
             String number,

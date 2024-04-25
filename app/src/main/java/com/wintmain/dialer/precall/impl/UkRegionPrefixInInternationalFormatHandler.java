@@ -18,11 +18,10 @@ package com.wintmain.dialer.precall.impl;
 
 import android.content.Context;
 import android.telephony.PhoneNumberUtils;
-
+import com.google.common.base.Optional;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
 import com.wintmain.dialer.precall.impl.MalformedNumberRectifier.MalformedNumberHandler;
-import com.google.common.base.Optional;
 
 /**
  * It is customary in UK to present numbers as "+44 (0) xx xxxx xxxx". This is actually a amalgam of
@@ -46,9 +45,11 @@ class UkRegionPrefixInInternationalFormatHandler implements MalformedNumberHandl
         if (!PhoneNumberUtils.normalizeNumber(number).startsWith(MALFORMED_PREFIX)) {
             return Optional.absent();
         }
-        LogUtil.i("UkRegionPrefixInInternationalFormatHandler.handle", "removing (0) in UK numbers");
+        LogUtil.i("UkRegionPrefixInInternationalFormatHandler.handle",
+                "removing (0) in UK numbers");
 
-        // libPhoneNumber is not used because we want to keep post dial digits, and this is on the main
+        // libPhoneNumber is not used because we want to keep post dial digits, and this is on
+        // the main
         // thread.
         String convertedNumber = PhoneNumberUtils.convertKeypadLettersToDigits(number);
         StringBuilder result = new StringBuilder();

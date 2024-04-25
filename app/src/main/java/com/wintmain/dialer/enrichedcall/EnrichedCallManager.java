@@ -17,11 +17,9 @@
 package com.wintmain.dialer.enrichedcall;
 
 import android.content.BroadcastReceiver.PendingResult;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.calldetails.CallDetailsEntries;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
 import com.wintmain.dialer.enrichedcall.historyquery.proto.HistoryResult;
@@ -63,7 +61,8 @@ public interface EnrichedCallManager {
     /**
      * Unregisters the given {@link CapabilitiesListener}.
      *
-     * <p>As a result of this method, the listener will not receive capabilities of the given number.
+     * <p>As a result of this method, the listener will not receive capabilities of the given
+     * number.
      */
     @MainThread
     void unregisterCapabilitiesListener(@NonNull CapabilitiesListener listener);
@@ -91,14 +90,16 @@ public interface EnrichedCallManager {
     long startCallComposerSession(@NonNull String number);
 
     /**
-     * Sends the given information through an open enriched call session. As per the enriched calling
+     * Sends the given information through an open enriched call session. As per the enriched
+     * calling
      * spec, up to two messages are sent: the first is an enriched call data message that optionally
      * includes the subject and the second is the optional image data message.
      *
      * @param sessionId the id for the session. See {@link #startCallComposerSession(String)}
      * @param data      the {@link MultimediaData}
      * @throws IllegalArgumentException if there's no open session with the given number
-     * @throws IllegalStateException    if the session isn't in the {@link Session#STATE_STARTED} state
+     * @throws IllegalStateException    if the session isn't in the {@link Session#STATE_STARTED}
+     *                                  state
      */
     @MainThread
     void sendCallComposerData(long sessionId, @NonNull MultimediaData data);
@@ -135,7 +136,8 @@ public interface EnrichedCallManager {
     /**
      * Registers the given {@link StateChangedListener}.
      *
-     * <p>As a result of this method, the listener will receive updates when the state of any enriched
+     * <p>As a result of this method, the listener will receive updates when the state of any
+     * enriched
      * call changes.
      */
     @MainThread
@@ -147,7 +149,8 @@ public interface EnrichedCallManager {
      */
     @MainThread
     @Nullable
-    Session getSession(@NonNull String uniqueCallId, @NonNull String number, @Nullable Filter filter);
+    Session getSession(@NonNull String uniqueCallId, @NonNull String number,
+            @Nullable Filter filter);
 
     /**
      * Returns the {@link Session} for the given sessionId, or {@code null} if no session exists.
@@ -174,7 +177,8 @@ public interface EnrichedCallManager {
     /**
      * Registers the given {@link HistoricalDataChangedListener}.
      *
-     * <p>As a result of this method, the listener will receive updates when the state of any enriched
+     * <p>As a result of this method, the listener will receive updates when the state of any
+     * enriched
      * call historical data changes.
      */
     @MainThread
@@ -183,7 +187,8 @@ public interface EnrichedCallManager {
     /**
      * Unregisters the given {@link HistoricalDataChangedListener}.
      *
-     * <p>As a result of this method, the listener will not receive updates when the state of enriched
+     * <p>As a result of this method, the listener will not receive updates when the state of
+     * enriched
      * call historical data changes.
      */
     @MainThread
@@ -197,7 +202,8 @@ public interface EnrichedCallManager {
     void requestAllHistoricalData(@NonNull String number, @NonNull CallDetailsEntries entries);
 
     /**
-     * Returns a mapping of enriched call data for all of the given {@link CallDetailsEntries}, which
+     * Returns a mapping of enriched call data for all of the given {@link CallDetailsEntries},
+     * which
      * should not be modified. A {@code null} return indicates that clients should call {@link
      * #requestAllHistoricalData(String, CallDetailsEntries)}.
      *
@@ -219,7 +225,8 @@ public interface EnrichedCallManager {
     /**
      * Unregisters the given {@link StateChangedListener}.
      *
-     * <p>As a result of this method, the listener will not receive updates when the state of enriched
+     * <p>As a result of this method, the listener will not receive updates when the state of
+     * enriched
      * calls changes.
      */
     @MainThread
@@ -255,15 +262,18 @@ public interface EnrichedCallManager {
      *
      * @param pendingResult PendingResult form a broadcast receiver. The broadcast might be received
      *                      when dialer is not in the foreground, and can not start {@link
-     *                      com.wintmain.dialer.app.calllog.CallLogNotificationsService} to handle the event. The
-     *                      pendingResult allows dialer to hold on to resources when the event is handled in a
+     *                      com.wintmain.dialer.app.calllog.CallLogNotificationsService} to
+     *                      handle the event. The
+     *                      pendingResult allows dialer to hold on to resources when the event is
+     *                      handled in a
      *                      background thread. TODO(a bug): migrate CallLogNotificationsService to a
      *                      JobIntentService so it can be used in the background.
      * @throws IllegalStateException if there's no session for the given id
      */
     @MainThread
     void onIncomingPostCallData(
-            @NonNull PendingResult pendingResult, long sessionId, @NonNull MultimediaData multimediaData);
+            @NonNull PendingResult pendingResult, long sessionId,
+            @NonNull MultimediaData multimediaData);
 
     /**
      * Registers the given {@link VideoShareListener}.
@@ -277,7 +287,8 @@ public interface EnrichedCallManager {
     /**
      * Unregisters the given {@link VideoShareListener}.
      *
-     * <p>As a result of this method, the listener will not receive updates when any video share state
+     * <p>As a result of this method, the listener will not receive updates when any video share
+     * state
      * changes.
      */
     @MainThread
@@ -352,7 +363,8 @@ public interface EnrichedCallManager {
     interface StateChangedListener {
 
         /**
-         * Callback fired when state changes. Listeners should call {@link #getSession(long)} or {@link
+         * Callback fired when state changes. Listeners should call {@link #getSession(long)} or
+         * {@link
          * #getSession(String, String, Filter)} to retrieve the new state.
          */
         void onEnrichedCallStateChanged();

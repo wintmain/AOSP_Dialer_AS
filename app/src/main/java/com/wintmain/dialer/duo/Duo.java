@@ -20,15 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.telecom.Call;
 import android.telecom.PhoneAccountHandle;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
+import androidx.annotation.*;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
+
 import java.util.List;
 
 /** Interface for Duo video call integration. */
@@ -42,8 +39,9 @@ public interface Duo {
     boolean isInstalled(@NonNull Context context);
 
     /**
-     * @return true if Duo is installed and the user has gone through the set-up flow confirming their
-     *     phone number.
+     * @return true if Duo is installed and the user has gone through the set-up flow confirming
+     * their
+     * phone number.
      */
     boolean isActivated(@NonNull Context context);
 
@@ -52,8 +50,9 @@ public interface Duo {
     boolean isReachable(@NonNull Context context, @Nullable String number);
 
     /**
-     * @return true if the number supports upgrading a voice call to a Duo video call. Returns {@code
-     *     null} if result is unknown.
+     * @return true if the number supports upgrading a voice call to a Duo video call. Returns
+     * {@code
+     * null} if result is unknown.
      */
     @MainThread
     Optional<Boolean> supportsUpgrade(
@@ -84,7 +83,7 @@ public interface Duo {
 
     /**
      * @return an Intent to start a Duo video call with the parameter number. Must be started using
-     *     startActivityForResult.
+     * startActivityForResult.
      */
     @MainThread
     Optional<Intent> getCallIntent(@NonNull String number);
@@ -94,7 +93,7 @@ public interface Duo {
 
     /**
      * @return an Intent to invite the parameter number to use duo. Must be started using
-     *     startActivityForResult.
+     * startActivityForResult.
      */
     Optional<Intent> getInviteIntent(String number);
 
@@ -130,29 +129,14 @@ public interface Duo {
     /** Reachability information for a number. */
     @AutoValue
     abstract class ReachabilityData {
-        public enum Status {
-            UNKNOWN,
-
-            /**
-             * The number is callable. Apps should further look up “AUDIO_CALLABLE” and “VIDEO_CALLABLE”
-             * keys for supported modes.
-             */
-            CALL,
-
-            /** The number is not callable. Apps can send an invite to the contact via INVITE intent. */
-            INVITE,
-
-            /**
-             * Neither Tachystick nor Duo is registered. Apps should show “setup” icon and send REGISTER
-             * intent to.
-             */
-            SETUP,
-
-            /**
-             * Indicates that the number is callable but user needs to set up (Tachystick/Duo) before
-             * calling.
-             */
-            SETUP_AND_CALL
+        public static ReachabilityData create(
+                Status status,
+                String number,
+                boolean audioCallable,
+                boolean videoCallable,
+                boolean supportsUpgrade) {
+            return new AutoValue_Duo_ReachabilityData(
+                    status, number, audioCallable, videoCallable, supportsUpgrade);
         }
 
         public abstract Status status();
@@ -165,14 +149,35 @@ public interface Duo {
 
         public abstract boolean supportsUpgrade();
 
-        public static ReachabilityData create(
-                Status status,
-                String number,
-                boolean audioCallable,
-                boolean videoCallable,
-                boolean supportsUpgrade) {
-            return new AutoValue_Duo_ReachabilityData(
-                    status, number, audioCallable, videoCallable, supportsUpgrade);
+        public enum Status {
+            UNKNOWN,
+
+            /**
+             * The number is callable. Apps should further look up “AUDIO_CALLABLE” and
+             * “VIDEO_CALLABLE”
+             * keys for supported modes.
+             */
+            CALL,
+
+            /**
+             * The number is not callable. Apps can send an invite to the contact via INVITE
+             * intent.
+             */
+            INVITE,
+
+            /**
+             * Neither Tachystick nor Duo is registered. Apps should show “setup” icon and send
+             * REGISTER
+             * intent to.
+             */
+            SETUP,
+
+            /**
+             * Indicates that the number is callable but user needs to set up (Tachystick/Duo)
+             * before
+             * calling.
+             */
+            SETUP_AND_CALL
         }
     }
 }

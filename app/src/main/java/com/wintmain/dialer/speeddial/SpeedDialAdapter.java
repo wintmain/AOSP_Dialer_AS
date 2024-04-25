@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.FrameLayout;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +29,7 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.speeddial.FavoritesViewHolder.FavoriteContactsListener;
@@ -39,7 +38,6 @@ import com.wintmain.dialer.speeddial.SpeedDialFragment.HostInterface;
 import com.wintmain.dialer.speeddial.SuggestionViewHolder.SuggestedContactsListener;
 import com.wintmain.dialer.speeddial.draghelper.SpeedDialItemTouchHelperCallback.ItemTouchHelperAdapter;
 import com.wintmain.dialer.speeddial.loader.SpeedDialUiItem;
-import com.google.common.collect.ImmutableList;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -109,15 +107,18 @@ public final class SpeedDialAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         favoritesListener);
             case RowType.SUGGESTION:
                 return new SuggestionViewHolder(
-                        inflater.inflate(R.layout.suggestion_row_layout, parent, false), suggestedListener);
+                        inflater.inflate(R.layout.suggestion_row_layout, parent, false),
+                        suggestedListener);
             case RowType.STARRED_HEADER:
             case RowType.SUGGESTION_HEADER:
                 return new HeaderViewHolder(
-                        inflater.inflate(R.layout.speed_dial_header_layout, parent, false), headerListener);
+                        inflater.inflate(R.layout.speed_dial_header_layout, parent, false),
+                        headerListener);
             case RowType.REMOVE_VIEW:
                 removeViewHolder =
                         new RemoveViewHolder(
-                                inflater.inflate(R.layout.favorite_remove_view_layout, parent, false));
+                                inflater.inflate(R.layout.favorite_remove_view_layout, parent,
+                                        false));
                 return removeViewHolder;
             default:
                 throw Assert.createIllegalStateFailException("Invalid viewType: " + viewType);
@@ -170,10 +171,12 @@ public final class SpeedDialAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int positionOfSuggestionHeader = NON_CONTACT_ITEM_NUMBER_BEFORE_FAVORITES;
         for (int i = 0; i < speedDialUiItems.size(); i++) {
             if (speedDialUiItems.get(i).isStarred()) {
-                positionToRowTypeMap.put(i + NON_CONTACT_ITEM_NUMBER_BEFORE_FAVORITES, RowType.STARRED);
+                positionToRowTypeMap.put(i + NON_CONTACT_ITEM_NUMBER_BEFORE_FAVORITES,
+                        RowType.STARRED);
                 positionOfSuggestionHeader++;
             } else {
-                positionToRowTypeMap.put(i + NON_CONTACT_ITEM_NUMBER_BEFORE_SUGGESTION, RowType.SUGGESTION);
+                positionToRowTypeMap.put(i + NON_CONTACT_ITEM_NUMBER_BEFORE_SUGGESTION,
+                        RowType.SUGGESTION);
             }
         }
         if (!speedDialUiItems.get(speedDialUiItems.size() - 1).isStarred()) {
@@ -194,7 +197,8 @@ public final class SpeedDialAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         speedDialUiItems.sort(
                 (o1, o2) -> {
                     if (o1.isStarred() && o2.isStarred()) {
-                        return Integer.compare(o1.pinnedPosition().or(-1), o2.pinnedPosition().or(-1));
+                        return Integer.compare(o1.pinnedPosition().or(-1),
+                                o2.pinnedPosition().or(-1));
                     }
                     return Boolean.compare(o2.isStarred(), o1.isStarred());
                 });
@@ -317,11 +321,13 @@ public final class SpeedDialAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      * Returns true if there are suggested contacts.
      */
     public boolean hasFrequents() {
-        return !speedDialUiItems.isEmpty() && getItemViewType(getItemCount() - 1) == RowType.SUGGESTION;
+        return !speedDialUiItems.isEmpty() && getItemViewType(getItemCount() - 1)
+                == RowType.SUGGESTION;
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({RowType.STARRED_HEADER, RowType.SUGGESTION_HEADER, RowType.STARRED, RowType.SUGGESTION, RowType.REMOVE_VIEW})
+    @IntDef({RowType.STARRED_HEADER, RowType.SUGGESTION_HEADER, RowType.STARRED, RowType.SUGGESTION,
+            RowType.REMOVE_VIEW})
     @interface RowType {
         int REMOVE_VIEW = 0;
         int STARRED_HEADER = 1;

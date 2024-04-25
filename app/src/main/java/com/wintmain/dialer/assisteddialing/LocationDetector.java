@@ -18,10 +18,8 @@ package com.wintmain.dialer.assisteddialing;
 
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.common.LogUtil;
 
 import java.util.Locale;
@@ -46,7 +44,8 @@ final class LocationDetector {
         this.userProvidedHomeCountry = userProvidedHomeCountry;
     }
 
-    // TODO(erfanian):  confirm this is based on ISO 3166-1 alpha-2. libphonenumber expects Unicode's
+    // TODO(erfanian):  confirm this is based on ISO 3166-1 alpha-2. libphonenumber expects
+    //  Unicode's
     // CLDR
     // TODO(erfanian):  confirm these are still valid in a multi-sim environment.
 
@@ -58,8 +57,10 @@ final class LocationDetector {
 
         if (!TextUtils.isEmpty(userProvidedHomeCountry)) {
             LogUtil.i(
-                    "LocationDetector.getUpperCaseUserRoamingCountry", "user provided home country code");
-            return Optional.of(Objects.requireNonNull(userProvidedHomeCountry).toUpperCase(Locale.US));
+                    "LocationDetector.getUpperCaseUserRoamingCountry",
+                    "user provided home country code");
+            return Optional.of(
+                    Objects.requireNonNull(userProvidedHomeCountry).toUpperCase(Locale.US));
         }
 
         String simCountryIso = telephonyManager.getSimCountryIso();
@@ -80,7 +81,8 @@ final class LocationDetector {
         if (networkCountryIso != null) {
             return Optional.of(telephonyManager.getNetworkCountryIso().toUpperCase(Locale.US));
         }
-        LogUtil.i("LocationDetector.getUpperCaseUserRoamingCountry", "user roaming country was null");
+        LogUtil.i("LocationDetector.getUpperCaseUserRoamingCountry",
+                "user roaming country was null");
         return Optional.empty();
     }
 }

@@ -17,7 +17,6 @@
 package com.wintmain.dialer.contacts.hiresphoto;
 
 import android.net.Uri;
-
 import com.google.common.util.concurrent.ListenableFuture;
 
 /**

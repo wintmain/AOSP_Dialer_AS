@@ -35,15 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.QuickContactBadge;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,8 +44,8 @@ import androidx.core.content.FileProvider;
 import androidx.core.util.Pair;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-
 import com.android.incallui.callpending.CallPendingActivity;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.callcomposer.CallComposerFragment.CallComposerListener;
 import com.wintmain.dialer.callintent.CallInitiationType;
@@ -85,7 +77,6 @@ import com.wintmain.dialer.util.ViewUtil;
 import com.wintmain.dialer.widget.BidiTextView;
 import com.wintmain.dialer.widget.DialerToolbar;
 import com.wintmain.dialer.widget.LockableViewPager;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.io.File;
 import java.util.Objects;
@@ -129,7 +120,8 @@ public class CallComposerActivity extends AppCompatActivity
     private DialerContact contact;
     private final Runnable sessionStartedTimedOut =
             () -> {
-                LogUtil.i("CallComposerActivity.sessionStartedTimedOutRunnable", "session never started");
+                LogUtil.i("CallComposerActivity.sessionStartedTimedOutRunnable",
+                        "session never started");
                 setFailedResultAndFinish();
             };
     private final Runnable placeTelecomCallRunnable =
@@ -216,7 +208,8 @@ public class CallComposerActivity extends AppCompatActivity
             onPageSelected(currentIndex);
         }
 
-        // Since we can't animate the views until they are ready to be drawn, we use this listener to
+        // Since we can't animate the views until they are ready to be drawn, we use this
+        // listener to
         // track that and animate the call compose UI as soon as it's ready.
         ViewUtil.doOnPreDraw(
                 windowContainer,
@@ -243,7 +236,8 @@ public class CallComposerActivity extends AppCompatActivity
     private void onCopyAndResizeImageSuccess(Pair<File, String> output) {
         Uri shareableUri =
                 FileProvider.getUriForFile(
-                        CallComposerActivity.this, Constants.get().getFileProviderAuthority(), output.first);
+                        CallComposerActivity.this, Constants.get().getFileProviderAuthority(),
+                        output.first);
 
         placeRCSCall(
                 MultimediaData.builder().setImage(grantUriPermission(shareableUri), output.second));
@@ -269,7 +263,8 @@ public class CallComposerActivity extends AppCompatActivity
             sessionId = getEnrichedCallManager().startCallComposerSession(contact.getNumber());
         } else if (getEnrichedCallManager().getSession(sessionId) == null) {
             LogUtil.i(
-                    "CallComposerActivity.onResume", "session closed while activity paused, creating new");
+                    "CallComposerActivity.onResume",
+                    "session closed while activity paused, creating new");
             sessionId = getEnrichedCallManager().startCallComposerSession(contact.getNumber());
         } else {
             LogUtil.i("CallComposerActivity.onResume", "session still open, using old");
@@ -311,7 +306,8 @@ public class CallComposerActivity extends AppCompatActivity
 
         switch (state) {
             case Session.STATE_STARTING:
-                timeoutHandler.postDelayed(sessionStartedTimedOut, getSessionStartedTimeoutMillis());
+                timeoutHandler.postDelayed(sessionStartedTimedOut,
+                        getSessionStartedTimeoutMillis());
                 if (sendAndCallReady) {
                     showLoadingUi();
                 }
@@ -336,7 +332,8 @@ public class CallComposerActivity extends AppCompatActivity
                     //  1. Message sent with no data
                     //  2. Image uploaded
                     //  3. url sent
-                    // Once we receive 3 message sent updates, we know that we can proceed with the call.
+                    // Once we receive 3 message sent updates, we know that we can proceed with
+                    // the call.
                     timeoutHandler.removeCallbacks(placeTelecomCallRunnable);
                     placeTelecomCall();
                 }
@@ -382,7 +379,8 @@ public class CallComposerActivity extends AppCompatActivity
         if (!sessionReady()) {
             sendAndCallReady = true;
             showLoadingUi();
-            LogUtil.i("CallComposerActivity.onClick", "sendAndCall pressed, but the session isn't ready");
+            LogUtil.i("CallComposerActivity.onClick",
+                    "sendAndCall pressed, but the session isn't ready");
             Logger.get(this)
                     .logImpression(
                             DialerImpression.Type
@@ -394,23 +392,23 @@ public class CallComposerActivity extends AppCompatActivity
                 (CallComposerFragment) adapter.instantiateItem(pager, currentIndex);
         MultimediaData.Builder builder = MultimediaData.builder();
 
-        if (fragment instanceof MessageComposerFragment) {
-            MessageComposerFragment messageComposerFragment = (MessageComposerFragment) fragment;
+        if (fragment instanceof MessageComposerFragment messageComposerFragment) {
             builder.setText(Objects.requireNonNull(messageComposerFragment.getMessage()));
             placeRCSCall(builder);
         }
-        if (fragment instanceof GalleryComposerFragment) {
-            GalleryComposerFragment galleryComposerFragment = (GalleryComposerFragment) fragment;
+        if (fragment instanceof GalleryComposerFragment galleryComposerFragment) {
             // If the current data is not a copy, make one.
             if (!galleryComposerFragment.selectedDataIsCopy()) {
                 copyAndResizeExecutor.executeParallel(
-                        Objects.requireNonNull(galleryComposerFragment.getGalleryData()).getFileUri());
+                        Objects.requireNonNull(galleryComposerFragment.getGalleryData())
+                                .getFileUri());
             } else {
                 Uri shareableUri =
                         FileProvider.getUriForFile(
                                 this,
                                 Constants.get().getFileProviderAuthority(),
-                                new File(Objects.requireNonNull(Objects.requireNonNull(galleryComposerFragment.getGalleryData()).getFilePath())));
+                                new File(Objects.requireNonNull(Objects.requireNonNull(
+                                        galleryComposerFragment.getGalleryData()).getFilePath())));
 
                 builder.setImage(
                         grantUriPermission(shareableUri),
@@ -419,11 +417,11 @@ public class CallComposerActivity extends AppCompatActivity
                 placeRCSCall(builder);
             }
         }
-        if (fragment instanceof CameraComposerFragment) {
-            CameraComposerFragment cameraComposerFragment = (CameraComposerFragment) fragment;
+        if (fragment instanceof CameraComposerFragment cameraComposerFragment) {
             cameraComposerFragment.getCameraUriWhenReady(
                     uri -> {
-                        builder.setImage(grantUriPermission(uri), cameraComposerFragment.getMimeType());
+                        builder.setImage(grantUriPermission(uri),
+                                cameraComposerFragment.getMimeType());
                         placeRCSCall(builder);
                     });
         }
@@ -474,7 +472,8 @@ public class CallComposerActivity extends AppCompatActivity
         // Show a toast for privacy purposes if this is the first time a user uses call composer.
         if (preferences.getBoolean(KEY_IS_FIRST_CALL_COMPOSE, true)) {
             int privacyMessage =
-                    data.hasImageData() ? R.string.image_sent_messages : R.string.message_sent_messages;
+                    data.hasImageData() ? R.string.image_sent_messages
+                            : R.string.message_sent_messages;
             Toast toast = Toast.makeText(this, privacyMessage, Toast.LENGTH_LONG);
             int yOffset = getResources().getDimensionPixelOffset(R.dimen.privacy_toast_y_offset);
             toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, yOffset);
@@ -494,7 +493,8 @@ public class CallComposerActivity extends AppCompatActivity
         PreCall.start(
                 this,
                 new CallIntentBuilder(contact.getNumber(), CallInitiationType.Type.CALL_COMPOSER)
-                        // Call composer is only active if the number is associated with a known contact.
+                        // Call composer is only active if the number is associated with a known
+                        // contact.
                         .setAllowAssistedDial(true));
         setResult(RESULT_OK);
         finish();
@@ -524,7 +524,8 @@ public class CallComposerActivity extends AppCompatActivity
             UiUtil.hideKeyboardFrom(this, windowContainer);
         }
         currentIndex = position;
-        CallComposerFragment fragment = (CallComposerFragment) adapter.instantiateItem(pager, position);
+        CallComposerFragment fragment = (CallComposerFragment) adapter.instantiateItem(pager,
+                position);
         animateSendAndCall(fragment.shouldHide());
         setMediaIconSelected(position);
     }
@@ -556,7 +557,8 @@ public class CallComposerActivity extends AppCompatActivity
             // Unregister first to avoid receiving a callback when the session closes
             getEnrichedCallManager().unregisterStateChangedListener(this);
 
-            // If the user presses the back button when the session fails, there's a race condition here
+            // If the user presses the back button when the session fails, there's a race
+            // condition here
             // since we clean up failed sessions.
             if (getEnrichedCallManager().getSession(sessionId) != null) {
                 getEnrichedCallManager().endCallComposerSession(sessionId);
@@ -581,9 +583,11 @@ public class CallComposerActivity extends AppCompatActivity
      */
     private void onHandleIntent(Intent intent) {
         if (intent.getExtras().containsKey(ARG_CALL_COMPOSER_CONTACT_BASE64)) {
-            // Invoked from launch_call_composer.py. The proto is provided as a base64 encoded string.
+            // Invoked from launch_call_composer.py. The proto is provided as a base64 encoded
+            // string.
             byte[] bytes =
-                    Base64.decode(intent.getStringExtra(ARG_CALL_COMPOSER_CONTACT_BASE64), Base64.DEFAULT);
+                    Base64.decode(intent.getStringExtra(ARG_CALL_COMPOSER_CONTACT_BASE64),
+                            Base64.DEFAULT);
             try {
                 contact = DialerContact.parseFrom(bytes);
             } catch (InvalidProtocolBufferException e) {
@@ -623,9 +627,9 @@ public class CallComposerActivity extends AppCompatActivity
                     TextUtils.isEmpty(contact.getNumberLabel())
                             ? contact.getDisplayNumber()
                             : getString(
-                            R.string.call_subject_type_and_number,
-                            contact.getNumberLabel(),
-                            contact.getDisplayNumber());
+                                    R.string.call_subject_type_and_number,
+                                    contact.getNumberLabel(),
+                                    contact.getDisplayNumber());
             numberView.setText(secondaryInfo);
             toolbar.setSubtitle(secondaryInfo);
         } else {
@@ -754,8 +758,10 @@ public class CallComposerActivity extends AppCompatActivity
             int startRadius = shouldHide ? centerX : 0;
             int endRadius = shouldHide ? 0 : centerX;
 
-            // When the device rotates and state is restored, the send and call button may not be attached
-            // yet and this causes a crash when we attempt to to reveal it. To prevent this, we wait until
+            // When the device rotates and state is restored, the send and call button may not be
+            // attached
+            // yet and this causes a crash when we attempt to to reveal it. To prevent this, we
+            // wait until
             // {@code sendAndCall} is ready, then animate and reveal it.
             ViewUtil.doOnPreDraw(
                     sendAndCall,
@@ -780,7 +786,8 @@ public class CallComposerActivity extends AppCompatActivity
                                         if (isSendAndCallHidingOrHidden) {
                                             sendAndCall.setVisibility(View.INVISIBLE);
                                         } else {
-                                            // hide buttons to prevent overdrawing and talkback discoverability
+                                            // hide buttons to prevent overdrawing and talkback
+                                            // discoverability
                                             cameraIcon.setVisibility(View.GONE);
                                             galleryIcon.setVisibility(View.GONE);
                                             messageIcon.setVisibility(View.GONE);
@@ -809,7 +816,8 @@ public class CallComposerActivity extends AppCompatActivity
 
     private void setFailedResultAndFinish() {
         setResult(
-                RESULT_FIRST_USER, new Intent().putExtra(KEY_CONTACT_NAME, contact.getNameOrNumber()));
+                RESULT_FIRST_USER,
+                new Intent().putExtra(KEY_CONTACT_NAME, contact.getNameOrNumber()));
         finish();
     }
 

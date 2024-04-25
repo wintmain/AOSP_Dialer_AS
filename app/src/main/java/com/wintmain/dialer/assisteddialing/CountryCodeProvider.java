@@ -18,18 +18,11 @@ package com.wintmain.dialer.assisteddialing;
 
 import android.text.TextUtils;
 import android.util.ArraySet;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProvider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,7 +52,8 @@ public final class CountryCodeProvider {
                         .map(v -> v.toUpperCase(Locale.US))
                         .collect(Collectors.toCollection(ArraySet::new));
         LogUtil.i(
-                "CountryCodeProvider.CountryCodeProvider", "Using country codes: " + supportedCountryCodes);
+                "CountryCodeProvider.CountryCodeProvider",
+                "Using country codes: " + supportedCountryCodes);
     }
 
     /**
@@ -81,7 +75,8 @@ public final class CountryCodeProvider {
 
         if (tokenizer.countTokens() < 1) {
             LogUtil.i(
-                    "Constraints.parseConfigProviderCountryCodes", "insufficient provided country codes");
+                    "Constraints.parseConfigProviderCountryCodes",
+                    "insufficient provided country codes");
             return DEFAULT_COUNTRY_CODES;
         }
 

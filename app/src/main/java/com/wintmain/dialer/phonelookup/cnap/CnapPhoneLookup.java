@@ -20,7 +20,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.telecom.Call;
 import android.text.TextUtils;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -31,12 +36,6 @@ import com.wintmain.dialer.phonelookup.PhoneLookup;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.CnapInfo;
 import com.wintmain.dialer.phonelookup.database.contract.PhoneLookupHistoryContract.PhoneLookupHistory;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import javax.inject.Inject;
 
@@ -70,7 +69,8 @@ public final class CnapPhoneLookup implements PhoneLookup<CnapInfo> {
     }
 
     /**
-     * CNAP info cannot be retrieved when all we have is a number. The best we can do is returning the
+     * CNAP info cannot be retrieved when all we have is a number. The best we can do is
+     * returning the
      * existing info in {@link PhoneLookupHistory}.
      */
     @Override
@@ -81,7 +81,8 @@ public final class CnapPhoneLookup implements PhoneLookup<CnapInfo> {
                             Selection.builder()
                                     .and(
                                             Selection.column(PhoneLookupHistory.NORMALIZED_NUMBER)
-                                                    .is("=", dialerPhoneNumber.getNormalizedNumber()))
+                                                    .is("=",
+                                                            dialerPhoneNumber.getNormalizedNumber()))
                                     .build();
 
                     try (Cursor cursor =
@@ -104,14 +105,16 @@ public final class CnapPhoneLookup implements PhoneLookup<CnapInfo> {
                         }
 
                         // At ths point, we expect only one row in the cursor as
-                        // PhoneLookupHistory.NORMALIZED_NUMBER is the primary key of table PhoneLookupHistory.
+                        // PhoneLookupHistory.NORMALIZED_NUMBER is the primary key of table
+                        // PhoneLookupHistory.
                         Assert.checkState(cursor.getCount() == 1);
 
                         int phoneLookupInfoColumn =
                                 cursor.getColumnIndexOrThrow(PhoneLookupHistory.PHONE_LOOKUP_INFO);
                         PhoneLookupInfo phoneLookupInfo;
                         try {
-                            phoneLookupInfo = PhoneLookupInfo.parseFrom(cursor.getBlob(phoneLookupInfoColumn));
+                            phoneLookupInfo = PhoneLookupInfo.parseFrom(
+                                    cursor.getBlob(phoneLookupInfoColumn));
                         } catch (InvalidProtocolBufferException e) {
                             throw new IllegalStateException(e);
                         }

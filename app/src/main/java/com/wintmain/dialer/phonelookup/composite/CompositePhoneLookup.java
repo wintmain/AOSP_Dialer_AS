@@ -18,11 +18,18 @@ package com.wintmain.dialer.phonelookup.composite;
 
 import android.content.Context;
 import android.telecom.Call;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.calllog.CallLogState;
 import com.wintmain.dialer.common.LogUtil;
@@ -35,21 +42,11 @@ import com.wintmain.dialer.metrics.Metrics;
 import com.wintmain.dialer.phonelookup.PhoneLookup;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.Builder;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 /**
  * {@link PhoneLookup} which delegates to a configured set of {@link PhoneLookup PhoneLookups},
@@ -174,13 +171,16 @@ public final class CompositePhoneLookup {
         for (PhoneLookup<?> phoneLookup : phoneLookups) {
             ListenableFuture<Boolean> isDirtyFuture = phoneLookup.isDirty(phoneNumbers);
             futures.add(isDirtyFuture);
-            String eventName = String.format(Metrics.IS_DIRTY_TEMPLATE, phoneLookup.getLoggingName());
+            String eventName = String.format(Metrics.IS_DIRTY_TEMPLATE,
+                    phoneLookup.getLoggingName());
             futureTimer.applyTiming(isDirtyFuture, eventName, LogCatMode.LOG_VALUES);
         }
-        // Executes all child lookups (possibly in parallel), completing when the first composite lookup
+        // Executes all child lookups (possibly in parallel), completing when the first composite
+        // lookup
         // which returns "true" completes, and cancels the others.
         ListenableFuture<Boolean> firstMatching =
-                DialerFutures.firstMatching(futures, Preconditions::checkNotNull, false /* defaultValue */);
+                DialerFutures.firstMatching(futures, Preconditions::checkNotNull,
+                        false /* defaultValue */);
         String eventName = String.format(Metrics.IS_DIRTY_TEMPLATE, getLoggingName());
         futureTimer.applyTiming(firstMatching, eventName, LogCatMode.LOG_VALUES);
         return firstMatching;
@@ -200,31 +200,41 @@ public final class CompositePhoneLookup {
                 callLogState.isBuilt(),
                 isBuilt -> {
                     Preconditions.checkNotNull(isBuilt);
-                    List<ListenableFuture<ImmutableMap<DialerPhoneNumber, ?>>> futures = new ArrayList<>();
+                    List<ListenableFuture<ImmutableMap<DialerPhoneNumber, ?>>> futures =
+                            new ArrayList<>();
                     for (PhoneLookup phoneLookup : phoneLookups) {
-                        futures.add(buildSubmapAndGetMostRecentInfo(existingInfoMap, phoneLookup, isBuilt));
+                        futures.add(buildSubmapAndGetMostRecentInfo(existingInfoMap, phoneLookup,
+                                isBuilt));
                     }
-                    ListenableFuture<ImmutableMap<DialerPhoneNumber, PhoneLookupInfo>> combinedFuture =
+                    ListenableFuture<ImmutableMap<DialerPhoneNumber, PhoneLookupInfo>>
+                            combinedFuture =
                             Futures.transform(
                                     Futures.allAsList(futures),
                                     (allMaps) -> {
                                         Preconditions.checkNotNull(allMaps);
-                                        ImmutableMap.Builder<DialerPhoneNumber, PhoneLookupInfo> combinedMap =
+                                        ImmutableMap.Builder<DialerPhoneNumber, PhoneLookupInfo>
+                                                combinedMap =
                                                 ImmutableMap.builder();
-                                        for (DialerPhoneNumber dialerPhoneNumber : existingInfoMap.keySet()) {
-                                            PhoneLookupInfo.Builder combinedInfo = PhoneLookupInfo.newBuilder();
+                                        for (DialerPhoneNumber dialerPhoneNumber :
+                                                existingInfoMap.keySet()) {
+                                            PhoneLookupInfo.Builder combinedInfo =
+                                                    PhoneLookupInfo.newBuilder();
                                             for (int i = 0; i < allMaps.size(); i++) {
-                                                ImmutableMap<DialerPhoneNumber, ?> map = allMaps.get(i);
+                                                ImmutableMap<DialerPhoneNumber, ?> map =
+                                                        allMaps.get(i);
                                                 Object subInfo = map.get(dialerPhoneNumber);
                                                 if (subInfo == null) {
                                                     throw new IllegalStateException(
-                                                            "A sublookup didn't return an info for number: "
+                                                            "A sublookup didn't return an info "
+                                                                    + "for number: "
                                                                     + LogUtil.sanitizePhoneNumber(
                                                                     dialerPhoneNumber.getNormalizedNumber()));
                                                 }
-                                                phoneLookups.get(i).setSubMessage(combinedInfo, subInfo);
+                                                phoneLookups.get(i).setSubMessage(combinedInfo,
+                                                        subInfo);
                                             }
-                                            combinedMap.put(dialerPhoneNumber, combinedInfo.build());
+                                            combinedMap.put(dialerPhoneNumber,
+                                                    combinedInfo.build());
                                         }
                                         return combinedMap.build();
                                     },
@@ -262,15 +272,18 @@ public final class CompositePhoneLookup {
                     Preconditions.checkNotNull(isBuilt);
                     List<ListenableFuture<Void>> futures = new ArrayList<>();
                     for (PhoneLookup<?> phoneLookup : phoneLookups) {
-                        ListenableFuture<Void> phoneLookupFuture = phoneLookup.onSuccessfulBulkUpdate();
+                        ListenableFuture<Void> phoneLookupFuture =
+                                phoneLookup.onSuccessfulBulkUpdate();
                         futures.add(phoneLookupFuture);
                         String eventName =
-                                onSuccessfulBulkUpdatedEventName(phoneLookup.getLoggingName(), isBuilt);
+                                onSuccessfulBulkUpdatedEventName(phoneLookup.getLoggingName(),
+                                        isBuilt);
                         futureTimer.applyTiming(phoneLookupFuture, eventName);
                     }
                     ListenableFuture<Void> combinedFuture =
                             Futures.transform(
-                                    Futures.allAsList(futures), unused -> null, lightweightExecutorService);
+                                    Futures.allAsList(futures), unused -> null,
+                                    lightweightExecutorService);
                     String eventName = onSuccessfulBulkUpdatedEventName(getLoggingName(), isBuilt);
                     futureTimer.applyTiming(combinedFuture, eventName);
                     return combinedFuture;

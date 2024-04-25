@@ -17,12 +17,11 @@
 package com.wintmain.dialer.preferredsim;
 
 import android.telecom.PhoneAccountHandle;
-
 import com.android.contacts.common.widget.SelectPhoneAccountDialogOptions;
-import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider.Suggestion;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider.Suggestion;
 
 import java.util.List;
 
@@ -33,12 +32,14 @@ import java.util.List;
 public interface PreferredAccountWorker {
 
     /**
-     * @return a {@link SelectPhoneAccountDialogOptions} for a dialog to select SIM for voicemail call
+     * @return a {@link SelectPhoneAccountDialogOptions} for a dialog to select SIM for voicemail
+     * call
      */
     SelectPhoneAccountDialogOptions getVoicemailDialogOptions();
 
     /**
-     * Return {@link Result} for the best {@link PhoneAccountHandle} among {@code candidates} to call
+     * Return {@link Result} for the best {@link PhoneAccountHandle} among {@code candidates} to
+     * call
      * the number with. If none are eligible, a {@link SelectPhoneAccountDialogOptions} will be
      * provided to show a dialog for the user to manually select.
      */
@@ -61,15 +62,18 @@ public interface PreferredAccountWorker {
         }
 
         /**
-         * The phone account to dial with for the number. Absent if no account can be auto selected. If
+         * The phone account to dial with for the number. Absent if no account can be auto
+         * selected. If
          * absent, {@link #getSelectedPhoneAccountHandle()} will be present to show a dialog for the
          * user to manually select.
          */
         public abstract Optional<PhoneAccountHandle> getSelectedPhoneAccountHandle();
 
         /**
-         * The {@link SelectPhoneAccountDialogOptions} that should be used to show the selection dialog.
-         * Absent if {@link #getSelectedPhoneAccountHandle()} is present, which should be used directly
+         * The {@link SelectPhoneAccountDialogOptions} that should be used to show the selection
+         * dialog.
+         * Absent if {@link #getSelectedPhoneAccountHandle()} is present, which should be used
+         * directly
          * instead of asking the user.
          */
         public abstract Optional<SelectPhoneAccountDialogOptions.Builder> getDialogOptionsBuilder();

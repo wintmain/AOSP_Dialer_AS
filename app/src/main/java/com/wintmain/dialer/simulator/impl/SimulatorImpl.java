@@ -16,45 +16,44 @@
 
 package com.wintmain.dialer.simulator.impl;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.ActionProvider;
-import com.wintmain.dialer.buildtype.BuildType;
-import com.wintmain.dialer.buildtype.BuildType.Type;
-import com.wintmain.dialer.common.LogUtil;
+import androidx.appcompat.app.AppCompatActivity;
 import com.wintmain.dialer.simulator.Simulator;
+
 import javax.inject.Inject;
 
 /** The entry point for the simulator feature. */
 final class SimulatorImpl implements Simulator {
 
-  private boolean simulatorMode = true;
+    private boolean simulatorMode = true;
 
-  @Inject
-  public SimulatorImpl() {}
+    @Inject
+    public SimulatorImpl() {
+    }
 
-  @Override
-  public boolean shouldShow() {
+    @Override
+    public boolean shouldShow() {
 //    return BuildType.get() == Type.BUGFOOD || LogUtil.isDebugEnabled();
-    return true;
-  }
+        return true;
+    }
 
-  @Override
-  public ActionProvider getActionProvider(AppCompatActivity activity) {
-    return new SimulatorMainPortal(activity).getActionProvider();
-  }
+    @Override
+    public ActionProvider getActionProvider(AppCompatActivity activity) {
+        return new SimulatorMainPortal(activity).getActionProvider();
+    }
 
-  @Override
-  public boolean isSimulatorMode() {
-    return simulatorMode;
-  }
+    @Override
+    public boolean isSimulatorMode() {
+        return simulatorMode;
+    }
 
-  @Override
-  public void enableSimulatorMode() {
-    simulatorMode = true;
-  }
+    @Override
+    public void enableSimulatorMode() {
+        simulatorMode = true;
+    }
 
-  @Override
-  public void disableSimulatorMode() {
-    simulatorMode = false;
-  }
+    @Override
+    public void disableSimulatorMode() {
+        simulatorMode = false;
+    }
 }

@@ -19,12 +19,10 @@ package com.wintmain.dialer.protos;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-
-import com.wintmain.dialer.common.Assert;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.MessageLite;
+import com.wintmain.dialer.common.Assert;
 
 /**
  * Useful methods for using Protocol Buffers with Android.
@@ -68,7 +66,8 @@ public final class ProtoParsers {
     }
 
     /**
-     * Retrieve a proto from a trusted bundle which was created within the current executable/version.
+     * Retrieve a proto from a trusted bundle which was created within the current
+     * executable/version.
      *
      * @throws IllegalStateException if the proto cannot be parsed
      */
@@ -97,7 +96,8 @@ public final class ProtoParsers {
     }
 
     /**
-     * Retrieve a proto from a trusted bundle which was created within the current executable/version.
+     * Retrieve a proto from a trusted bundle which was created within the current
+     * executable/version.
      *
      * @throws RuntimeException if the proto cannot be parsed
      */
@@ -108,7 +108,8 @@ public final class ProtoParsers {
     }
 
     /**
-     * Stores a proto in a Bundle, for later retrieval by {@link #get(Bundle, String, MessageLite)} or
+     * Stores a proto in a Bundle, for later retrieval by
+     * {@link #get(Bundle, String, MessageLite)} or
      */
     public static void put(
             @NonNull Bundle bundle, @NonNull String key, @NonNull MessageLite message) {
@@ -119,7 +120,8 @@ public final class ProtoParsers {
     }
 
     /**
-     * Stores a proto in an Intent, for later retrieval by {@link #get(Bundle, String, MessageLite)}.
+     * Stores a proto in an Intent, for later retrieval by
+     * {@link #get(Bundle, String, MessageLite)}.
      * Needs separate method because Intent has similar to but different API than Bundle.
      */
     public static void put(

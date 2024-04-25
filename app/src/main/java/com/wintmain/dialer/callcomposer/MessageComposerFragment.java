@@ -29,9 +29,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.R;
 
 import java.util.Objects;
@@ -80,11 +78,13 @@ public class MessageComposerFragment extends CallComposerFragment
                     new TextWatcher() {
                         @Override
 
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1,
+                                int i2) {
                         }
 
                         @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        public void onTextChanged(CharSequence charSequence, int i, int i1,
+                                int i2) {
                         }
 
                         @Override

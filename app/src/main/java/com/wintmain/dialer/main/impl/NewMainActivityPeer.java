@@ -19,12 +19,12 @@ package com.wintmain.dialer.main.impl;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.calllog.CallLogComponent;
 import com.wintmain.dialer.calllog.ui.NewCallLogFragment;
@@ -33,9 +33,6 @@ import com.wintmain.dialer.main.MainActivityPeer;
 import com.wintmain.dialer.main.impl.bottomnav.BottomNavBar;
 import com.wintmain.dialer.main.impl.bottomnav.BottomNavBar.OnBottomNavTabSelectedListener;
 import com.wintmain.dialer.main.impl.bottomnav.BottomNavBar.TabIndex;
-//import com.wintmain.dialer.voicemail.listui.NewVoicemailFragment;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
 
 /** MainActivityPeer that implements the new fragments. */
 public class NewMainActivityPeer implements MainActivityPeer {
@@ -51,35 +48,44 @@ public class NewMainActivityPeer implements MainActivityPeer {
         mainActivity.setContentView(R.layout.main_activity);
         MainBottomNavBarBottomNavTabListener bottomNavBarBottomNavTabListener =
                 new MainBottomNavBarBottomNavTabListener(
-                        mainActivity.getSupportFragmentManager(), mainActivity.getApplicationContext());
+                        mainActivity.getSupportFragmentManager(),
+                        mainActivity.getApplicationContext());
         BottomNavBar bottomNav = mainActivity.findViewById(R.id.bottom_nav_bar);
         bottomNav.addOnTabSelectedListener(bottomNavBarBottomNavTabListener);
         bottomNav.selectTab(TabIndex.SPEED_DIAL);
     }
 
     @Override
-    public void onActivityResume() {}
+    public void onActivityResume() {
+    }
 
     @Override
-    public void onUserLeaveHint() {}
+    public void onUserLeaveHint() {
+    }
 
     @Override
-    public void onActivityPause() {}
+    public void onActivityPause() {
+    }
 
     @Override
-    public void onActivityStop() {}
+    public void onActivityStop() {
+    }
 
     @Override
-    public void onNewIntent(Intent intent) {}
+    public void onNewIntent(Intent intent) {
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {}
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle) {}
+    public void onSaveInstanceState(Bundle bundle) {
+    }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
 
     }
 
@@ -89,7 +95,8 @@ public class NewMainActivityPeer implements MainActivityPeer {
     }
 
     /**
-     * Implementation of {@link OnBottomNavTabSelectedListener} that handles logic for showing each of
+     * Implementation of {@link OnBottomNavTabSelectedListener} that handles logic for showing
+     * each of
      * the main tabs.
      */
     private static final class MainBottomNavBarBottomNavTabListener
@@ -150,7 +157,8 @@ public class NewMainActivityPeer implements MainActivityPeer {
 //        public void onVoicemailSelected() {
 //            hideAllFragments();
 //            NewVoicemailFragment fragment =
-//                    (NewVoicemailFragment) supportFragmentManager.findFragmentByTag(VOICEMAIL_TAG);
+//                    (NewVoicemailFragment) supportFragmentManager.findFragmentByTag
+//                    (VOICEMAIL_TAG);
 //            if (fragment == null) {
 //                supportFragmentManager
 //                        .beginTransaction()
@@ -172,10 +180,12 @@ public class NewMainActivityPeer implements MainActivityPeer {
             Fragment callLogFragment = supportFragmentManager.findFragmentByTag(CALL_LOG_TAG);
             if (callLogFragment != null) {
                 if (callLogFragment.isVisible()) {
-                    // If the user taps any bottom nav button and the call log is showing, immediately cancel
+                    // If the user taps any bottom nav button and the call log is showing,
+                    // immediately cancel
                     // missed calls (unbold them and clear their notifications).
                     Futures.addCallback(
-                            // TODO(zachh): Use dagger to create Peer and MainBottomNavBarBottomNavTabListener.
+                            // TODO(zachh): Use dagger to create Peer and
+                            //  MainBottomNavBarBottomNavTabListener.
                             CallLogComponent.get(appContext).getClearMissedCalls().clearAll(),
                             new DefaultFutureCallback<>(),
                             MoreExecutors.directExecutor());

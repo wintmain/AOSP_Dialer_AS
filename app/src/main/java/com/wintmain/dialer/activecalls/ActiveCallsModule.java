@@ -19,11 +19,10 @@ package com.wintmain.dialer.activecalls;
 import com.wintmain.dialer.activecalls.impl.ActiveCallsImpl;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
+
+import javax.inject.Singleton;
 
 /**
  * Module for {@link ActiveCallsComponent}

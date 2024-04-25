@@ -17,7 +17,6 @@
 package com.wintmain.dialer.spam.status;
 
 import androidx.annotation.IntDef;
-
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Optional;
 
@@ -42,7 +41,8 @@ public abstract class GlobalSpamListStatus {
     int getStatus();
 
     /**
-     * Returns the timestamp (in milliseconds) representing when a number's spam status was put on the
+     * Returns the timestamp (in milliseconds) representing when a number's spam status was put
+     * on the
      * list, or {@code Optional.absent()} if the number is not on the list.
      */
     public abstract Optional<Long> getTimestampMillis();

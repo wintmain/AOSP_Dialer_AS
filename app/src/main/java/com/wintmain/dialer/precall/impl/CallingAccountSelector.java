@@ -22,12 +22,10 @@ import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telephony.PhoneNumberUtils;
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
 import com.android.contacts.common.widget.SelectPhoneAccountDialogFragment;
 import com.android.contacts.common.widget.SelectPhoneAccountDialogFragment.SelectPhoneAccountListener;
 import com.android.contacts.common.widget.SelectPhoneAccountDialogOptions;
@@ -45,9 +43,8 @@ import com.wintmain.dialer.preferredsim.PreferredAccountWorker;
 import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider;
 import com.wintmain.dialer.preferredsim.suggestion.SuggestionProvider.Suggestion;
 
-import java.util.List;
-
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * PreCallAction to select which phone account to call with. Ignored if there's only one account
@@ -106,7 +103,8 @@ public class CallingAccountSelector implements PreCallAction {
                         null,
                         null,
                         null);
-                Logger.get(coordinator.getActivity()).logImpression(Type.DUAL_SIM_SELECTION_VOICEMAIL);
+                Logger.get(coordinator.getActivity()).logImpression(
+                        Type.DUAL_SIM_SELECTION_VOICEMAIL);
                 break;
             case PhoneAccount.SCHEME_TEL:
                 processPreferredAccount(coordinator);
@@ -134,10 +132,12 @@ public class CallingAccountSelector implements PreCallAction {
         coordinator.listen(
                 preferredAccountWorker.selectAccount(
                         phoneNumber,
-                        activity.getSystemService(TelecomManager.class).getCallCapablePhoneAccounts()),
+                        activity.getSystemService(TelecomManager.class)
+                                .getCallCapablePhoneAccounts()),
                 result -> {
                     if (isDiscarding) {
-                        // pendingAction is dropped by the coordinator before onDiscard is triggered.
+                        // pendingAction is dropped by the coordinator before onDiscard is
+                        // triggered.
                         return;
                     }
                     if (result.getSelectedPhoneAccountHandle().isPresent()) {
@@ -156,7 +156,8 @@ public class CallingAccountSelector implements PreCallAction {
 
                         coordinator
                                 .getBuilder()
-                                .setPhoneAccountHandle(result.getSelectedPhoneAccountHandle().get());
+                                .setPhoneAccountHandle(
+                                        result.getSelectedPhoneAccountHandle().get());
                         pendingAction.finish();
                         return;
                     }
@@ -190,7 +191,8 @@ public class CallingAccountSelector implements PreCallAction {
                                 coordinator,
                                 pendingAction,
                                 new PreferredAccountRecorder(number, suggestion, dataId)));
-        selectPhoneAccountDialogFragment.show(coordinator.getActivity().getSupportFragmentManager(), TAG_CALLING_ACCOUNT_SELECTOR);
+        selectPhoneAccountDialogFragment.show(coordinator.getActivity().getSupportFragmentManager(),
+                TAG_CALLING_ACCOUNT_SELECTOR);
     }
 
     @MainThread
@@ -220,7 +222,8 @@ public class CallingAccountSelector implements PreCallAction {
         @MainThread
         @Override
         public void onPhoneAccountSelected(
-                PhoneAccountHandle selectedAccountHandle, boolean setDefault, @Nullable String callId) {
+                PhoneAccountHandle selectedAccountHandle, boolean setDefault,
+                @Nullable String callId) {
             coordinator.getBuilder().setPhoneAccountHandle(selectedAccountHandle);
             recorder.record(coordinator.getActivity(), selectedAccountHandle, setDefault);
             listener.finish();

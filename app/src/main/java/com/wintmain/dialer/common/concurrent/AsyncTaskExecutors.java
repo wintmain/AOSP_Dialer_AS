@@ -17,9 +17,7 @@
 package com.wintmain.dialer.common.concurrent;
 
 import android.os.AsyncTask;
-
 import androidx.annotation.MainThread;
-
 import com.wintmain.dialer.common.Assert;
 
 import java.util.concurrent.Executor;
@@ -41,7 +39,8 @@ public final class AsyncTaskExecutors {
     private static AsyncTaskExecutorFactory injectedAsyncTaskExecutorFactory = null;
 
     /**
-     * Creates an AsyncTaskExecutor that submits tasks to run with {@link AsyncTask#SERIAL_EXECUTOR}.
+     * Creates an AsyncTaskExecutor that submits tasks to run with
+     * {@link AsyncTask#SERIAL_EXECUTOR}.
      */
     public static AsyncTaskExecutor createAsyncTaskExecutor() {
         synchronized (AsyncTaskExecutors.class) {
@@ -90,7 +89,8 @@ public final class AsyncTaskExecutors {
         @SafeVarargs
         @Override
         @MainThread
-        public final <T> AsyncTask<T, ?, ?> submit(Object identifer, AsyncTask<T, ?, ?> task, T... params) {
+        public final <T> AsyncTask<T, ?, ?> submit(Object identifer, AsyncTask<T, ?, ?> task,
+                T... params) {
             Assert.isMainThread();
             return task.executeOnExecutor(executor, params);
         }

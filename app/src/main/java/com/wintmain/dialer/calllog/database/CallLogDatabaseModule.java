@@ -30,7 +30,8 @@ public class CallLogDatabaseModule {
     static int provideMaxRows() {
         /*
          * We sometimes run queries where we potentially pass every ID into a where clause using the
-         * (?,?,?,...) syntax. The maximum number of host parameters is 999, so that's the maximum size
+         * (?,?,?,...) syntax. The maximum number of host parameters is 999, so that's the
+         * maximum size
          * this table can be. See https://www.sqlite.org/limits.html for more details.
          */
         return 999;

@@ -26,7 +26,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
 import com.wintmain.dialer.util.DialerUtils;
@@ -135,7 +134,8 @@ public class SearchEditTextLayout extends FrameLayout {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        clearButtonView.setVisibility(TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE);
+                        clearButtonView.setVisibility(
+                                TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE);
                     }
 
                     @Override

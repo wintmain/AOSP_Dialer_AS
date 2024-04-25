@@ -22,7 +22,6 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
-
 import androidx.annotation.NonNull;
 
 public final class CallRecording implements Parcelable {
@@ -45,7 +44,7 @@ public final class CallRecording implements Parcelable {
     public final long mediaId;
 
     public CallRecording(String phoneNumber, long creationTime,
-                         String fileName, long startRecordingTime, long mediaId) {
+            String fileName, long startRecordingTime, long mediaId) {
         this.phoneNumber = phoneNumber;
         this.creationTime = creationTime;
         this.fileName = fileName;

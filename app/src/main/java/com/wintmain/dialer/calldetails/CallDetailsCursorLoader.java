@@ -19,7 +19,6 @@ package com.wintmain.dialer.calldetails;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
-
 import com.wintmain.dialer.CoalescedIds;
 import com.wintmain.dialer.calldetails.CallDetailsEntries.CallDetailsEntry;
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
@@ -135,7 +134,8 @@ public final class CallDetailsCursorLoader extends CursorLoader {
                 .setCallMappingId(cursor.getString(CALL_MAPPING_ID));
 
         String phoneAccountComponentName = cursor.getString(PHONE_ACCOUNT_COMPONENT_NAME);
-        entry.setIsDuoCall(DuoComponent.get(context).getDuo().isDuoAccount(phoneAccountComponentName));
+        entry.setIsDuoCall(DuoComponent.get(context).getDuo()
+                .isDuoAccount(phoneAccountComponentName));
 
         return entry.build();
     }
@@ -143,13 +143,17 @@ public final class CallDetailsCursorLoader extends CursorLoader {
     @Override
     public void onContentChanged() {
         // Do nothing here.
-        // This is to prevent the loader to reload data when Loader.ForceLoadContentObserver detects a
+        // This is to prevent the loader to reload data when Loader.ForceLoadContentObserver
+        // detects a
         // change.
-        // Without this, the app will crash when the user deletes call details as the deletion triggers
-        // the data loading but no data can be fetched and we want to ensure the data set is not empty
+        // Without this, the app will crash when the user deletes call details as the deletion
+        // triggers
+        // the data loading but no data can be fetched and we want to ensure the data set is not
+        // empty
         // when building CallDetailsEntries proto (see toCallDetailsEntries(Cursor)).
         //
-        // OldCallDetailsActivity doesn't respond to underlying data changes and we decided to keep it
+        // OldCallDetailsActivity doesn't respond to underlying data changes and we decided to
+        // keep it
         // that way in CallDetailsActivity.
     }
 }

@@ -20,9 +20,7 @@ import android.content.res.Resources;
 import android.provider.CallLog.Calls;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-
 import androidx.annotation.WorkerThread;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.calllog.calllogcache.CallLogCache;
 import com.wintmain.dialer.calllogutils.PhoneCallDetails;
@@ -62,7 +60,8 @@ import com.wintmain.dialer.common.LogUtil;
     }
 
     /**
-     * Update phone call details. This is called before any drawing to avoid expensive operation on UI
+     * Update phone call details. This is called before any drawing to avoid expensive operation
+     * on UI
      * thread.
      */
     @WorkerThread
@@ -123,7 +122,8 @@ import com.wintmain.dialer.common.LogUtil;
 
         views.createNewContactButtonView.setContentDescription(
                 TextUtils.expandTemplate(
-                        resources.getString(R.string.description_create_new_contact_action), nameOrNumber));
+                        resources.getString(R.string.description_create_new_contact_action),
+                        nameOrNumber));
 
         views.addToExistingContactButtonView.setContentDescription(
                 TextUtils.expandTemplate(
@@ -164,11 +164,13 @@ import com.wintmain.dialer.common.LogUtil;
      *
      * <p>For outgoing calls: If outgoing: Call to {Name/Number] {Call Type} {Call Time}.
      *
-     * <p>Where: {Name/Number} is the name or number of the caller (as shown in call log). {Call type}
+     * <p>Where: {Name/Number} is the name or number of the caller (as shown in call log). {Call
+     * type}
      * is the contact phone number type (eg mobile) or location. {Call Time} is the time since the
      * last call for the contact occurred.
      *
-     * <p>The {Phone Account} refers to the account/SIM through which the call was placed or received
+     * <p>The {Phone Account} refers to the account/SIM through which the call was placed or
+     * received
      * in multi-SIM devices.
      *
      * <p>Examples: 3 calls. New Voicemail. Missed call from Joe Smith mobile 2 hours ago on SIM 1.
@@ -203,7 +205,8 @@ import com.wintmain.dialer.common.LogUtil;
 
         String accountLabel = callLogCache.getAccountLabel(details.accountHandle);
         CharSequence onAccountLabel =
-                PhoneCallDetails.createAccountLabelDescription(resources, details.viaNumber, accountLabel);
+                PhoneCallDetails.createAccountLabelDescription(resources, details.viaNumber,
+                        accountLabel);
 
         int stringID = getCallDescriptionStringID(details.callTypes, details.isRead);
         callDescription.append(
@@ -241,7 +244,8 @@ import com.wintmain.dialer.common.LogUtil;
             //Message: (Unread) [V/v]oicemail from <NameOrNumber>, <TypeOrLocation>, <TimeOfCall>,
             //<PhoneAccount>.
             stringID =
-                    isRead ? R.string.description_read_voicemail : R.string.description_unread_voicemail;
+                    isRead ? R.string.description_read_voicemail
+                            : R.string.description_unread_voicemail;
         } else {
             //Message: Call to <NameOrNumber>, <TypeOrLocation>, <TimeOfCall>, <PhoneAccount>.
             stringID = R.string.description_outgoing_call;

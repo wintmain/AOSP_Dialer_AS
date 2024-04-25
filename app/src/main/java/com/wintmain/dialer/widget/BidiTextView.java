@@ -19,11 +19,9 @@ package com.wintmain.dialer.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
-
-import com.wintmain.dialer.i18n.DialerBidiFormatter;
 import com.google.android.material.textview.MaterialTextView;
+import com.wintmain.dialer.i18n.DialerBidiFormatter;
 
 /**
  * A {@link TextView} that applies bidirectional formatting to its text.

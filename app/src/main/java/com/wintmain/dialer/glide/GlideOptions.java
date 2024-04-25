@@ -3,14 +3,7 @@ package com.wintmain.dialer.glide;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-
-import androidx.annotation.CheckResult;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.FloatRange;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import androidx.annotation.*;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.Key;
@@ -21,7 +14,8 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 /**
- * Automatically generated from {@link com.bumptech.glide.annotation.GlideExtension} annotated classes.
+ * Automatically generated from {@link com.bumptech.glide.annotation.GlideExtension} annotated
+ * classes.
  *
  * @see RequestOptions
  */
@@ -116,7 +110,7 @@ public final class GlideOptions extends RequestOptions implements Cloneable {
     @CheckResult
     @NonNull
     public static GlideOptions overrideOf(@IntRange(from = 0) int arg0,
-                                          @IntRange(from = 0) int arg1) {
+            @IntRange(from = 0) int arg1) {
         return new GlideOptions().override(arg0, arg1);
     }
 
@@ -569,7 +563,7 @@ public final class GlideOptions extends RequestOptions implements Cloneable {
     @NonNull
     @CheckResult
     public <T> GlideOptions optionalTransform(@NonNull Class<T> arg0,
-                                              @NonNull Transformation<T> arg1) {
+            @NonNull Transformation<T> arg1) {
         return (GlideOptions) super.optionalTransform(arg0, arg1);
     }
 

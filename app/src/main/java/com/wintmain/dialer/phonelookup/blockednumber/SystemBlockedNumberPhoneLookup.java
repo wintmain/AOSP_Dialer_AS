@@ -20,10 +20,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.BlockedNumberContract.BlockedNumbers;
 import android.util.ArraySet;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import com.wintmain.dialer.DialerPhoneNumber;
 import com.wintmain.dialer.blocking.FilteredNumberCompat;
 import com.wintmain.dialer.calllog.observer.MarkDirtyObserver;
@@ -38,15 +41,9 @@ import com.wintmain.dialer.phonelookup.PhoneLookupInfo.BlockedState;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.Builder;
 import com.wintmain.dialer.phonelookup.PhoneLookupInfo.SystemBlockedNumberInfo;
 import com.wintmain.dialer.phonenumberproto.PartitionedNumbers;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-
-import java.util.Set;
 
 import javax.inject.Inject;
+import java.util.Set;
 
 /**
  * Lookup blocked numbers in the system database. Requires N+ and migration from dialer database
@@ -132,7 +129,8 @@ public class SystemBlockedNumberPhoneLookup implements PhoneLookup<SystemBlocked
                                      rawSelection.getSelectionArgs(),
                                      null)) {
             while (cursor != null && cursor.moveToNext()) {
-                blockedNumbers.addAll(partitionedNumbers.dialerPhoneNumbersForInvalid(cursor.getString(0)));
+                blockedNumbers.addAll(
+                        partitionedNumbers.dialerPhoneNumbersForInvalid(cursor.getString(0)));
             }
         }
 
@@ -144,7 +142,8 @@ public class SystemBlockedNumberPhoneLookup implements PhoneLookup<SystemBlocked
                     number,
                     SystemBlockedNumberInfo.newBuilder()
                             .setBlockedState(
-                                    blockedNumbers.contains(number) ? BlockedState.BLOCKED : BlockedState.NOT_BLOCKED)
+                                    blockedNumbers.contains(number) ? BlockedState.BLOCKED
+                                            : BlockedState.NOT_BLOCKED)
                             .build());
         }
 

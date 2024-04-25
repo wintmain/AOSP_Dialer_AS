@@ -17,20 +17,17 @@
 package com.wintmain.dialer.common.concurrent;
 
 import android.content.Context;
-
 import androidx.fragment.app.FragmentManager;
-
+import com.google.common.util.concurrent.ListeningExecutorService;
 import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
 import com.wintmain.dialer.common.concurrent.Annotations.LightweightExecutor;
 import com.wintmain.dialer.common.concurrent.Annotations.NonUiParallel;
 import com.wintmain.dialer.common.concurrent.Annotations.Ui;
 import com.wintmain.dialer.inject.HasRootComponent;
 import com.wintmain.dialer.inject.IncludeInDialerRoot;
-import com.google.common.util.concurrent.ListeningExecutorService;
+import dagger.Subcomponent;
 
 import java.util.concurrent.ExecutorService;
-
-import dagger.Subcomponent;
 
 /**
  * Dagger component which provides a {@link DialerExecutorFactory}.

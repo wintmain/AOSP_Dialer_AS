@@ -18,9 +18,7 @@ package com.wintmain.dialer.smartdial.util;
 
 import android.content.Context;
 import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
-
 import com.wintmain.dialer.smartdial.map.CompositeSmartDialMap;
 import com.wintmain.dialer.smartdial.util.SmartDialPrefix.PhoneNumberTokens;
 
@@ -80,7 +78,8 @@ public class SmartDialNameMatcher {
     }
 
     /**
-     * Constructs empty highlight mask. Bit 0 at a position means there is no match, Bit 1 means there
+     * Constructs empty highlight mask. Bit 0 at a position means there is no match, Bit 1 means
+     * there
      * is a match and should be highlighted in the TextView.
      *
      * @param builder StringBuilder object
@@ -109,7 +108,8 @@ public class SmartDialNameMatcher {
      *
      * @param phoneNumber - Raw phone number
      * @param query       - Normalized query (only contains numbers from 0-9)
-     * @return {@literal null} if the number and the query don't match, a valid SmartDialMatchPosition
+     * @return {@literal null} if the number and the query don't match, a valid
+     * SmartDialMatchPosition
      * with the matching positions otherwise
      */
     @Nullable
@@ -124,7 +124,8 @@ public class SmartDialNameMatcher {
         SmartDialMatchPosition matchPos =
                 matchesNumberWithOffset(context, phoneNumber, query, /* offset = */ 0);
         if (matchPos == null) {
-            PhoneNumberTokens phoneNumberTokens = SmartDialPrefix.parsePhoneNumber(context, phoneNumber);
+            PhoneNumberTokens phoneNumberTokens = SmartDialPrefix.parsePhoneNumber(context,
+                    phoneNumber);
 
             if (phoneNumberTokens.countryCodeOffset != 0) {
                 matchPos =
@@ -133,7 +134,8 @@ public class SmartDialNameMatcher {
             }
             if (matchPos == null && phoneNumberTokens.nanpCodeOffset != 0) {
                 matchPos =
-                        matchesNumberWithOffset(context, phoneNumber, query, phoneNumberTokens.nanpCodeOffset);
+                        matchesNumberWithOffset(context, phoneNumber, query,
+                                phoneNumberTokens.nanpCodeOffset);
             }
         }
         if (matchPos != null) {
@@ -147,7 +149,8 @@ public class SmartDialNameMatcher {
      * taking into account country code prefixes and special NANP number treatment.
      *
      * @param phoneNumber - Raw phone number
-     * @return {@literal null} if the number and the query don't match, a valid SmartDialMatchPosition
+     * @return {@literal null} if the number and the query don't match, a valid
+     * SmartDialMatchPosition
      * with the matching positions otherwise
      */
     public SmartDialMatchPosition matchesNumber(Context context, String phoneNumber) {
@@ -159,9 +162,11 @@ public class SmartDialNameMatcher {
      *
      * @param phoneNumber - Raw phone number
      * @param query       - Normalized query (only contains numbers from 0-9)
-     * @param offset      - The position in the number to start the match against (used to ignore leading
+     * @param offset      - The position in the number to start the match against (used to ignore
+     *                    leading
      *                    prefixes/country codes)
-     * @return {@literal null} if the number and the query don't match, a valid SmartDialMatchPosition
+     * @return {@literal null} if the number and the query don't match, a valid
+     * SmartDialMatchPosition
      * with the matching positions otherwise
      */
     private SmartDialMatchPosition matchesNumberWithOffset(
@@ -203,11 +208,14 @@ public class SmartDialNameMatcher {
     }
 
     /**
-     * This function iterates through each token in the display name, trying to match the query to the
+     * This function iterates through each token in the display name, trying to match the query
+     * to the
      * numeric equivalent of the token.
      *
-     * <p>A token is defined as a range in the display name delimited by characters that have no latin
-     * alphabet equivalents (e.g. spaces - ' ', periods - ',', underscores - '_' or chinese characters
+     * <p>A token is defined as a range in the display name delimited by characters that have no
+     * latin
+     * alphabet equivalents (e.g. spaces - ' ', periods - ',', underscores - '_' or chinese
+     * characters
      * - '王'). Transliteration from non-latin characters to latin character will be done on a best
      * effort basis - e.g. 'Ü' - 'u'.
      *
@@ -223,7 +231,8 @@ public class SmartDialNameMatcher {
      * @param displayName The normalized(no accented characters) display name we intend to match
      *                    against.
      * @param query       The string of digits that we want to match the display name to.
-     * @param matchList   An array list of {@link SmartDialMatchPosition}s that we add matched positions
+     * @param matchList   An array list of {@link SmartDialMatchPosition}s that we add matched
+     *                    positions
      *                    to.
      * @return Returns true if a combination of the tokens in displayName match the query string
      * contained in query. If the function returns true, matchList will contain an ArrayList of
@@ -316,7 +325,8 @@ public class SmartDialNameMatcher {
                         // As much as possible, we prioritize a full token match over a sub token
                         // one so if we find a full token match, we can return right away
                         matchList.add(
-                                new SmartDialMatchPosition(tokenStart, queryLength + tokenStart + seperatorCount));
+                                new SmartDialMatchPosition(tokenStart,
+                                        queryLength + tokenStart + seperatorCount));
                         for (SmartDialMatchPosition match : matchList) {
                             replaceBitInMask(builder, match);
                         }
@@ -330,7 +340,8 @@ public class SmartDialNameMatcher {
                         for (j = nameStart; j < nameLength; j++) {
                             if (!CompositeSmartDialMap.isValidDialpadCharacter(
                                     context,
-                                    CompositeSmartDialMap.normalizeCharacter(context, displayName.charAt(j)))) {
+                                    CompositeSmartDialMap.normalizeCharacter(context,
+                                            displayName.charAt(j)))) {
                                 break;
                             }
                         }
@@ -339,11 +350,13 @@ public class SmartDialNameMatcher {
                             final String remainder = displayName.substring(j + 1);
                             final ArrayList<SmartDialMatchPosition> partialTemp = new ArrayList<>();
                             if (matchesCombination(
-                                    context, remainder, query.substring(queryStart + 1), partialTemp)) {
+                                    context, remainder, query.substring(queryStart + 1),
+                                    partialTemp)) {
 
                                 // store the list of possible match positions
                                 SmartDialMatchPosition.advanceMatchPositions(partialTemp, j + 1);
-                                partialTemp.add(0, new SmartDialMatchPosition(nameStart, nameStart + 1));
+                                partialTemp.add(0,
+                                        new SmartDialMatchPosition(nameStart, nameStart + 1));
                                 // we found a partial token match, store the data in a
                                 // temp buffer and return it if we end up not finding a full
                                 // token match
@@ -385,11 +398,14 @@ public class SmartDialNameMatcher {
     }
 
     /**
-     * This function iterates through each token in the display name, trying to match the query to the
+     * This function iterates through each token in the display name, trying to match the query
+     * to the
      * numeric equivalent of the token.
      *
-     * <p>A token is defined as a range in the display name delimited by characters that have no latin
-     * alphabet equivalents (e.g. spaces - ' ', periods - ',', underscores - '_' or chinese characters
+     * <p>A token is defined as a range in the display name delimited by characters that have no
+     * latin
+     * alphabet equivalents (e.g. spaces - ' ', periods - ',', underscores - '_' or chinese
+     * characters
      * - '王'). Transliteration from non-latin characters to latin character will be done on a best
      * effort basis - e.g. 'Ü' - 'u'.
      *

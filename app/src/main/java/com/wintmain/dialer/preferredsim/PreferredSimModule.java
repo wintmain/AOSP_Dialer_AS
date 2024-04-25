@@ -17,7 +17,6 @@
 package com.wintmain.dialer.preferredsim;
 
 import com.wintmain.dialer.preferredsim.impl.PreferredAccountWorkerImpl;
-
 import dagger.Binds;
 import dagger.Module;
 

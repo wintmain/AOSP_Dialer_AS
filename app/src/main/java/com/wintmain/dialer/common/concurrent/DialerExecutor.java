@@ -125,10 +125,12 @@ public interface DialerExecutor<InputT> {
     void executeSerial(@Nullable InputT input);
 
     /**
-     * Executes the task after waiting {@code waitMillis}. If called while the previous invocation is
+     * Executes the task after waiting {@code waitMillis}. If called while the previous
+     * invocation is
      * still waiting to be started, the original invocation is cancelled.
      *
-     * <p>This is useful for tasks which might get scheduled many times in very quick succession, but
+     * <p>This is useful for tasks which might get scheduled many times in very quick succession,
+     * but
      * it is only the last one that actually needs to be executed.
      */
     @MainThread
@@ -182,18 +184,23 @@ public interface DialerExecutor<InputT> {
         /**
          * Optional. Default is no-op.
          *
-         * @param successListener a function executed on the main thread upon task success. There are no
-         *                        restraints on this as it is executed on the main thread, so lambdas, anonymous, or inner
+         * @param successListener a function executed on the main thread upon task success. There
+         *                        are no
+         *                        restraints on this as it is executed on the main thread, so
+         *                        lambdas, anonymous, or inner
          *                        classes of your activity or fragment are all fine.
          */
         @NonNull
         Builder<InputT, OutputT> onSuccess(@NonNull SuccessListener<OutputT> successListener);
 
         /**
-         * Optional. If this is not set and your worker throws an exception, the application will crash.
+         * Optional. If this is not set and your worker throws an exception, the application will
+         * crash.
          *
-         * @param failureListener a function executed on the main thread upon task failure. There are no
-         *                        restraints on this as it is executed on the main thread, so lambdas, anonymous, or inner
+         * @param failureListener a function executed on the main thread upon task failure. There
+         *                        are no
+         *                        restraints on this as it is executed on the main thread, so
+         *                        lambdas, anonymous, or inner
          *                        classes of your activity or fragment are all fine.
          */
         @NonNull

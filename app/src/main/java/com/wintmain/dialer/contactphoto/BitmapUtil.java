@@ -16,14 +16,8 @@
 
 package com.wintmain.dialer.contactphoto;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 
 /**
  * Provides static functions to decode bitmaps at the optimal size
@@ -53,7 +47,8 @@ public class BitmapUtil {
      *
      * @param originalSmallerExtent Width or height of the picture, whichever is smaller
      * @param targetExtent          Width or height of the target view, whichever is bigger.
-     *                              <p>If either one of the parameters is 0 or smaller, no sampling is applied
+     *                              <p>If either one of the parameters is 0 or smaller, no
+     *                              sampling is applied
      */
     public static int findOptimalSampleSize(int originalSmallerExtent, int targetExtent) {
         // If we don't know sizes, we can't do sampling.
@@ -110,7 +105,8 @@ public class BitmapUtil {
         final Bitmap.Config inputConfig = input.getConfig();
         final Bitmap result =
                 Bitmap.createBitmap(
-                        targetWidth, targetHeight, inputConfig != null ? inputConfig : Bitmap.Config.ARGB_8888);
+                        targetWidth, targetHeight,
+                        inputConfig != null ? inputConfig : Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(result);
         final Paint paint = new Paint();
         canvas.drawARGB(0, 0, 0, 0);

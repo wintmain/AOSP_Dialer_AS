@@ -17,12 +17,10 @@
 package com.wintmain.dialer.searchfragment.list;
 
 import android.database.MatrixCursor;
-
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.searchfragment.common.SearchCursor;
 

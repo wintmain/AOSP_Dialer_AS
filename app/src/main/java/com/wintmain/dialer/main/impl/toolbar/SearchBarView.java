@@ -28,11 +28,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
 import com.wintmain.dialer.common.Assert;
@@ -54,7 +52,8 @@ final class SearchBarView extends FrameLayout {
     private SearchBarListener listener;
     private EditText searchBox;
     private TextView searchBoxTextView;
-    // This useful for when the query didn't actually change. We want to avoid making excessive calls
+    // This useful for when the query didn't actually change. We want to avoid making excessive
+    // calls
     // where we can since IPCs can take a long time on slow networks.
     private boolean skipLatestTextChange;
 
@@ -115,7 +114,8 @@ final class SearchBarView extends FrameLayout {
      *
      * @param requestFocus should be false if showing the dialpad
      */
-    /* package-private */ void expand(boolean animate, Optional<String> text, boolean requestFocus) {
+    /* package-private */ void expand(boolean animate, Optional<String> text,
+            boolean requestFocus) {
         if (isExpanded) {
             return;
         }
@@ -141,8 +141,10 @@ final class SearchBarView extends FrameLayout {
                         if (text.isPresent()) {
                             searchBox.setText(text.get());
                         }
-                        // Don't request focus unless we're actually showing the search box, otherwise
-                        // physical/bluetooth keyboards will type into this box when the dialpad is open.
+                        // Don't request focus unless we're actually showing the search box,
+                        // otherwise
+                        // physical/bluetooth keyboards will type into this box when the dialpad
+                        // is open.
                         if (requestFocus) {
                             searchBox.requestFocus();
                         }
@@ -235,10 +237,12 @@ final class SearchBarView extends FrameLayout {
     private class SearchBoxTextWatcher implements TextWatcher {
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
 
         @Override
         public void afterTextChanged(Editable s) {
@@ -248,9 +252,12 @@ final class SearchBarView extends FrameLayout {
                 return;
             }
 
-            // afterTextChanged is called each time the device is rotated (or the activity is recreated).
-            // That means that this method could potentially be called before the listener is set and
-            // we should check if it's null. In the case that it is null, assert that the query is empty
+            // afterTextChanged is called each time the device is rotated (or the activity is
+            // recreated).
+            // That means that this method could potentially be called before the listener is set
+            // and
+            // we should check if it's null. In the case that it is null, assert that the query
+            // is empty
             // because the listener must be notified of non-empty queries.
             if (listener != null) {
                 listener.onSearchQueryUpdated(s.toString());

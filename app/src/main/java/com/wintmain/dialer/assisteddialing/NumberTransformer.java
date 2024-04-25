@@ -17,12 +17,11 @@
 package com.wintmain.dialer.assisteddialing;
 
 import android.text.TextUtils;
-
-import com.wintmain.dialer.common.LogUtil;
-import com.wintmain.dialer.strictmode.StrictModeUtils;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+import com.wintmain.dialer.common.LogUtil;
+import com.wintmain.dialer.strictmode.StrictModeUtils;
 
 import java.util.Optional;
 
@@ -61,10 +60,12 @@ final class NumberTransformer {
                 StrictModeUtils.bypass(
                         () -> {
                             try {
-                                return phoneNumberUtil.parse(numbertoTransform, userHomeCountryCode);
+                                return phoneNumberUtil.parse(numbertoTransform,
+                                        userHomeCountryCode);
                             } catch (NumberParseException e) {
                                 LogUtil.i(
-                                        "NumberTransformer.doAssistedDialingTransformation", "number failed to parse");
+                                        "NumberTransformer.doAssistedDialingTransformation",
+                                        "number failed to parse");
                                 return null;
                             }
                         });

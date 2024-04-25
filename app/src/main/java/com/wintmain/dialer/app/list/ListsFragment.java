@@ -16,18 +16,14 @@
 
 package com.wintmain.dialer.app.list;
 
-import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Trace;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
-
 import com.android.contacts.common.list.ViewPagerTabs;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.app.calllog.CallLogFragment;
@@ -43,6 +39,8 @@ import com.wintmain.dialer.logging.UiAction;
 import com.wintmain.dialer.performancereport.PerformanceReport;
 
 import java.util.ArrayList;
+
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 
 /**
  * Fragment that is used as the main screen of the Dialer.
@@ -97,7 +95,8 @@ public class ListsFragment extends Fragment
         }
 
         callLogQueryHandler =
-                new CallLogQueryHandler(getActivity(), requireActivity().getContentResolver(), this);
+                new CallLogQueryHandler(getActivity(), requireActivity().getContentResolver(),
+                        this);
         callLogQueryHandler.fetchMissedCallsUnreadCount();
         Trace.endSection();
         currentPage = adapter.getItem(viewPager.getCurrentItem());
@@ -129,7 +128,8 @@ public class ListsFragment extends Fragment
         actionTypeList = new UiAction.Type[DialtactsPagerAdapter.TAB_COUNT_DEFAULT];
         actionTypeList[DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL] =
                 UiAction.Type.CHANGE_TAB_TO_FAVORITE;
-        actionTypeList[DialtactsPagerAdapter.TAB_INDEX_HISTORY] = UiAction.Type.CHANGE_TAB_TO_CALL_LOG;
+        actionTypeList[DialtactsPagerAdapter.TAB_INDEX_HISTORY] =
+                UiAction.Type.CHANGE_TAB_TO_CALL_LOG;
         actionTypeList[DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS] =
                 UiAction.Type.CHANGE_TAB_TO_CONTACTS;
 
@@ -158,7 +158,8 @@ public class ListsFragment extends Fragment
         int[] tabIcons = new int[DialtactsPagerAdapter.TAB_COUNT_DEFAULT];
         tabIcons[DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL] = R.drawable.quantum_ic_grade_white_24;
         tabIcons[DialtactsPagerAdapter.TAB_INDEX_HISTORY] = R.drawable.quantum_ic_schedule_white_24;
-        tabIcons[DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS] = R.drawable.quantum_ic_people_white_24;
+        tabIcons[DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS] =
+                R.drawable.quantum_ic_people_white_24;
 
         viewPager = parentView.findViewById(R.id.lists_pager);
 
@@ -212,7 +213,8 @@ public class ListsFragment extends Fragment
 
         final int count = onPageChangeListeners.size();
         for (int i = 0; i < count; i++) {
-            onPageChangeListeners.get(i).onPageScrolled(position, positionOffset, positionOffsetPixels);
+            onPageChangeListeners.get(i).onPageScrolled(position, positionOffset,
+                    positionOffsetPixels);
         }
     }
 
@@ -320,7 +322,8 @@ public class ListsFragment extends Fragment
     public boolean hasFrequents() {
         OldSpeedDialFragment page =
                 (OldSpeedDialFragment)
-                        adapter.getItem(adapter.getRtlPosition(DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL));
+                        adapter.getItem(
+                                adapter.getRtlPosition(DialtactsPagerAdapter.TAB_INDEX_SPEED_DIAL));
         return page.hasFrequents();
     }
 

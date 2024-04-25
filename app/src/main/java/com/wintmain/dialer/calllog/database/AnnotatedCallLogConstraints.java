@@ -18,9 +18,7 @@ package com.wintmain.dialer.calllog.database;
 
 import android.content.ContentValues;
 import android.provider.CallLog.Calls;
-
 import androidx.annotation.IntDef;
-
 import com.wintmain.dialer.calllog.database.contract.AnnotatedCallLogContract.AnnotatedCallLog;
 import com.wintmain.dialer.common.Assert;
 
@@ -76,7 +74,8 @@ final class AnnotatedCallLogConstraints {
                 contentValues,
                 operationType,
                 contentValuesToCheck -> {
-                    Integer callType = contentValuesToCheck.getAsInteger(AnnotatedCallLog.CALL_TYPE);
+                    Integer callType = contentValuesToCheck.getAsInteger(
+                            AnnotatedCallLog.CALL_TYPE);
                     return callType != null
                             && (callType == Calls.INCOMING_TYPE
                             || callType == Calls.OUTGOING_TYPE

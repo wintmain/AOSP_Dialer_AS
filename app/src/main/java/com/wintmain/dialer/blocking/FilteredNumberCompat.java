@@ -26,12 +26,10 @@ import android.provider.BlockedNumberContract;
 import android.provider.BlockedNumberContract.BlockedNumbers;
 import android.telecom.TelecomManager;
 import android.telephony.PhoneNumberUtils;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
-
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.configprovider.ConfigProviderComponent;
 import com.wintmain.dialer.database.FilteredNumberContract.FilteredNumber;
@@ -66,7 +64,8 @@ public class FilteredNumberCompat {
     }
 
     /**
-     * @return The column name for type in the filtered number database. Will be {@code null} for the
+     * @return The column name for type in the filtered number database. Will be {@code null} for
+     * the
      * framework blocking implementation.
      */
     @Nullable
@@ -175,7 +174,8 @@ public class FilteredNumberCompat {
     /**
      * Removes any null column names from the given projection array. This method is intended to be
      * used to strip out any column names that aren't available in every version of number blocking.
-     * Example: {@literal getContext().getContentResolver().query( someUri, // Filtering ensures that
+     * Example: {@literal getContext().getContentResolver().query( someUri, // Filtering ensures
+     * that
      * no non-existent columns are queried FilteredNumberCompat.filter(new String[]
      * {FilteredNumberCompat.getIdColumnName(), FilteredNumberCompat.getTypeColumnName()},
      * FilteredNumberCompat.getE164NumberColumnName() + " = ?", new String[] {e164Number}); }
@@ -207,7 +207,8 @@ public class FilteredNumberCompat {
      * @throws NullPointerException If number is null.
      */
     public static ContentValues newBlockNumberContentValues(
-            Context context, String number, @Nullable String e164Number, @Nullable String countryIso) {
+            Context context, String number, @Nullable String e164Number,
+            @Nullable String countryIso) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(getOriginalNumberColumnName(context), Objects.requireNonNull(number));
         if (!useNewFiltering(context)) {
@@ -226,16 +227,19 @@ public class FilteredNumberCompat {
      * Shows block number migration dialog if necessary.
      *
      * @param fragmentManager The {@link FragmentManager} used to show fragments.
-     * @param listener        The {@link BlockedNumbersMigrator.Listener} to call when migration is complete.
+     * @param listener        The {@link BlockedNumbersMigrator.Listener} to call when migration
+     *                        is complete.
      * @return boolean True if migration dialog is shown.
      */
     public static boolean maybeShowBlockNumberMigrationDialog(
-            Context context, FragmentManager fragmentManager, BlockedNumbersMigrator.Listener listener) {
+            Context context, FragmentManager fragmentManager,
+            BlockedNumbersMigrator.Listener listener) {
         if (shouldShowMigrationDialog(context)) {
             LogUtil.i(
                     "FilteredNumberCompat.maybeShowBlockNumberMigrationDialog",
                     "maybeShowBlockNumberMigrationDialog - showing migration dialog");
-            MigrateBlockedNumbersDialogFragment.newInstance(new BlockedNumbersMigrator(context), listener)
+            MigrateBlockedNumbersDialogFragment.newInstance(new BlockedNumbersMigrator(context),
+                            listener)
                     .show(fragmentManager, "MigrateBlockedNumbers");
             return false;
         }
@@ -255,7 +259,8 @@ public class FilteredNumberCompat {
     public static Intent createManageBlockedNumbersIntent(Context context) {
         // Explicit version check to aid static analysis
         if (canUseNewFiltering() && hasMigratedToNewBlocking(context)) {
-            return context.getSystemService(TelecomManager.class).createManageBlockedNumbersIntent();
+            return context.getSystemService(TelecomManager.class)
+                    .createManageBlockedNumbersIntent();
         }
         Intent intent = new Intent("com.wintmain.dialer.action.BLOCKED_NUMBERS_SETTINGS");
         intent.setPackage(context.getPackageName());
@@ -298,7 +303,8 @@ public class FilteredNumberCompat {
      * available, using this method ensures that the Dialer doesn't crash when on that screen.
      *
      * @param context The {@link Context}.
-     * @return the result of BlockedNumberContract#canCurrentUserBlockNumbers, or {@code false} if an
+     * @return the result of BlockedNumberContract#canCurrentUserBlockNumbers, or {@code false}
+     * if an
      * exception was thrown.
      */
     private static boolean safeBlockedNumbersContractCanCurrentUserBlockNumbers(Context context) {

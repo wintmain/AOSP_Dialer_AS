@@ -18,11 +18,14 @@ package com.wintmain.dialer.precall.impl;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -36,11 +39,6 @@ import com.wintmain.dialer.precall.PreCallAction;
 import com.wintmain.dialer.precall.PreCallComponent;
 import com.wintmain.dialer.precall.PreCallCoordinator;
 import com.wintmain.dialer.telecom.TelecomUtil;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
 
 /**
  * Implements {@link PreCallCoordinator}. Listens to the life cycle of {@link PreCallActivity} to
@@ -76,7 +74,8 @@ public class PreCallCoordinatorImpl implements PreCallCoordinator {
         }
         uiListener =
                 DialerExecutorComponent.get(activity)
-                        .createUiListener(uiListener.getChildFragmentManager(), "PreCallCoordinatorImpl.uiListener");
+                        .createUiListener(uiListener.getChildFragmentManager(),
+                                "PreCallCoordinatorImpl.uiListener");
     }
 
     void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -110,7 +109,8 @@ public class PreCallCoordinatorImpl implements PreCallCoordinator {
             activity.finish();
             return;
         }
-        LogUtil.i("PreCallCoordinatorImpl.runNextAction", "running " + actions.get(currentActionIndex));
+        LogUtil.i("PreCallCoordinatorImpl.runNextAction",
+                "running " + actions.get(currentActionIndex));
         currentAction = actions.get(currentActionIndex);
         actions.get(currentActionIndex).runWithUi(this);
         if (pendingAction == null) {
@@ -168,7 +168,8 @@ public class PreCallCoordinatorImpl implements PreCallCoordinator {
 
         uiListener.listen(
                 activity,
-                Futures.transform(future, (output) -> (Object) output, MoreExecutors.directExecutor()),
+                Futures.transform(future, (output) -> (Object) output,
+                        MoreExecutors.directExecutor()),
                 output -> successListener.accept((OutputT) output),
                 failureListener::accept);
     }
@@ -183,7 +184,8 @@ public class PreCallCoordinatorImpl implements PreCallCoordinator {
                 activity.startActivityForResult(intent.get(), 0);
                 return;
             } else {
-                LogUtil.e("PreCallCoordinatorImpl.placeCall", "duo.getCallIntent() returned absent");
+                LogUtil.e("PreCallCoordinatorImpl.placeCall",
+                        "duo.getCallIntent() returned absent");
             }
         }
         TelecomUtil.placeCall(activity, builder.build());

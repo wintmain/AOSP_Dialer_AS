@@ -35,7 +35,8 @@ public interface Promotion {
     int getType();
 
     /**
-     * Returns if this promotion should be shown. This usually means the promotion is enabled and not
+     * Returns if this promotion should be shown. This usually means the promotion is enabled and
+     * not
      * dismissed yet.
      */
     boolean isEligibleToBeShown();

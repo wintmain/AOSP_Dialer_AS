@@ -16,8 +16,6 @@
 
 package com.wintmain.dialer.searchfragment.list;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -32,7 +30,6 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -43,7 +40,6 @@ import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.contacts.common.extensions.PhoneDirectoryExtenderAccessor;
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.animation.AnimUtils;
@@ -81,6 +77,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 /**
  * Fragment used for searching contacts.
  */
@@ -96,7 +94,8 @@ public final class NewSearchFragment extends Fragment
     // Since some of our queries can generate network requests, we should delay them until the user
     // stops typing to prevent generating too much network traffic.
     private static final int NETWORK_SEARCH_DELAY_MILLIS = 300;
-    // To prevent constant capabilities updates refreshing the adapter, we want to add a delay between
+    // To prevent constant capabilities updates refreshing the adapter, we want to add a delay
+    // between
     // updates so they are bundled together
     private static final int ENRICHED_CALLING_CAPABILITIES_UPDATED_DELAY = 400;
     private static final String KEY_LOCATION_PROMPT_DISMISSED = "search_location_prompt_dismissed";
@@ -125,13 +124,15 @@ public final class NewSearchFragment extends Fragment
     private final Runnable loadNearbyPlacesRunnable =
             () -> {
                 if (getHost() != null) {
-                    LoaderManager.getInstance(this).restartLoader(NEARBY_PLACES_LOADER_ID, null, this);
+                    LoaderManager.getInstance(this).restartLoader(NEARBY_PLACES_LOADER_ID, null,
+                            this);
                 }
             };
     private final Runnable loadDirectoryContactsRunnable =
             () -> {
                 if (getHost() != null) {
-                    LoaderManager.getInstance(this).restartLoader(DIRECTORY_CONTACTS_LOADER_ID, null, this);
+                    LoaderManager.getInstance(this).restartLoader(DIRECTORY_CONTACTS_LOADER_ID,
+                            null, this);
                 }
             };
     private EmptyContentView emptyContentView;
@@ -155,7 +156,8 @@ public final class NewSearchFragment extends Fragment
     @NonNull
     @Override
     public View onCreateView(
-            LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
+            LayoutInflater inflater, @Nullable ViewGroup parent,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, parent, false);
         adapter = new SearchAdapter(getContext(), new SearchCursorManager(), this);
         adapter.setQuery(query, rawNumber);
@@ -180,7 +182,8 @@ public final class NewSearchFragment extends Fragment
         if (savedInstanceState != null) {
             setQuery(
                     savedInstanceState.getString(KEY_QUERY),
-                    CallInitiationType.Type.forNumber(savedInstanceState.getInt(KEY_CALL_INITIATION_TYPE)));
+                    CallInitiationType.Type.forNumber(
+                            savedInstanceState.getInt(KEY_CALL_INITIATION_TYPE)));
         }
 
         if (updatePositionRunnable != null) {
@@ -208,8 +211,10 @@ public final class NewSearchFragment extends Fragment
         if (id == CONTACTS_LOADER_ID) {
             return new SearchContactsCursorLoader(getContext(), query, isRegularSearch());
         } else if (id == NEARBY_PLACES_LOADER_ID) {
-            // Directories represent contact data sources on the device, but since nearby places aren't
-            // stored on the device, they don't have a directory ID. We pass the list of all existing IDs
+            // Directories represent contact data sources on the device, but since nearby places
+            // aren't
+            // stored on the device, they don't have a directory ID. We pass the list of all
+            // existing IDs
             // so that we can find one that doesn't collide.
             List<Long> directoryIds = new ArrayList<>();
             for (Directory directory : directories) {
@@ -327,7 +332,8 @@ public final class NewSearchFragment extends Fragment
                 .setInterpolator(interpolator)
                 .setDuration(duration)
                 .setUpdateListener(
-                        animation -> setHeight(startHeight, endHeight, animation.getAnimatedFraction()));
+                        animation -> setHeight(startHeight, endHeight,
+                                animation.getAnimatedFraction()));
         updatePositionRunnable = null;
     }
 
@@ -378,7 +384,8 @@ public final class NewSearchFragment extends Fragment
             LogUtil.i(
                     "NewSearchFragment.onEmptyViewActionButtonClicked",
                     "Requesting permissions: " + Arrays.toString(deniedPermissions));
-            FragmentUtils.getParentUnsafe(this, SearchFragmentListener.class).requestingPermission();
+            FragmentUtils.getParentUnsafe(this, SearchFragmentListener.class)
+                    .requestingPermission();
             requestPermissions(deniedPermissions, READ_CONTACTS_PERMISSION_REQUEST_CODE);
         }
     }
@@ -418,7 +425,8 @@ public final class NewSearchFragment extends Fragment
     /**
      * Loads nearby places.
      *
-     * <p>Should not be called before finishing loading info about all directories (local and remote).
+     * <p>Should not be called before finishing loading info about all directories (local and
+     * remote).
      */
     private void loadNearbyPlacesCursor() {
         // If we're requesting the location permission, don't load nearby places cursor.
@@ -426,7 +434,8 @@ public final class NewSearchFragment extends Fragment
             return;
         }
 
-        // If the user dismissed the prompt without granting us the permission, don't load the cursor.
+        // If the user dismissed the prompt without granting us the permission, don't load the
+        // cursor.
         if (getContext() == null || !PermissionsUtil.hasLocationPermissions(getContext())) {
             return;
         }
@@ -488,7 +497,8 @@ public final class NewSearchFragment extends Fragment
     public void onCapabilitiesUpdated() {
         ThreadUtil.getUiThreadHandler().removeCallbacks(capabilitiesUpdatedRunnable);
         ThreadUtil.getUiThreadHandler()
-                .postDelayed(capabilitiesUpdatedRunnable, ENRICHED_CALLING_CAPABILITIES_UPDATED_DELAY);
+                .postDelayed(capabilitiesUpdatedRunnable,
+                        ENRICHED_CALLING_CAPABILITIES_UPDATED_DELAY);
     }
 
 

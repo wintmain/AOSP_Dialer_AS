@@ -19,9 +19,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.provider.CallLog.Calls;
 import android.telephony.TelephonyManager;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 import com.wintmain.dialer.common.PackageUtils;
@@ -35,7 +33,8 @@ import java.lang.reflect.Method;
  */
 public class MotorolaUtils {
 
-    // This is used to check if a Motorola device supports WiFi call feature, by checking if a certain
+    // This is used to check if a Motorola device supports WiFi call feature, by checking if a
+    // certain
     // package is enabled.
     @VisibleForTesting
     public static final String WIFI_CALL_PACKAGE_NAME = "com.motorola.sprintwfc";
@@ -53,7 +52,7 @@ public class MotorolaUtils {
     // This is used to check if a Motorola device supports HD voice call feature, which comes from
     // system feature setting.
     private static final String HD_CALL_FEATRURE = "com.motorola.software.sprint.hd_call";
-    private static Boolean disablePhoneNumberFormattingForTest = null;
+    private static final Boolean disablePhoneNumberFormattingForTest = null;
     private static boolean hasCheckedSprintWifiCall;
     private static boolean supportSprintWifiCall;
 
@@ -112,11 +111,13 @@ public class MotorolaUtils {
         return ConfigProviderComponent.get(context)
                 .getConfigProvider()
                 .getBoolean(CONFIG_DISABLE_PHONE_NUMBER_FORMATTING, true)
-                && context.getResources().getBoolean(R.bool.motorola_disable_phone_number_formatting);
+                && context.getResources().getBoolean(
+                R.bool.motorola_disable_phone_number_formatting);
     }
 
     /**
-     * Handle special char sequence entered in dialpad. This may launch special intent based on input.
+     * Handle special char sequence entered in dialpad. This may launch special intent based on
+     * input.
      *
      * @param context context
      * @param input   input string

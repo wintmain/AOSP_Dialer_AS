@@ -21,7 +21,6 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.os.Handler;
 import android.util.SparseIntArray;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -66,7 +65,8 @@ abstract class GroupingListAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * Finds all groups of adjacent items in the cursor and calls {@link #addGroup} for each of them.
+     * Finds all groups of adjacent items in the cursor and calls {@link #addGroup} for each of
+     * them.
      */
     protected abstract void addGroups(Cursor cursor);
 
@@ -119,7 +119,8 @@ abstract class GroupingListAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * Given the position of a list item, returns the size of the group of items corresponding to that
+     * Given the position of a list item, returns the size of the group of items corresponding to
+     * that
      * position.
      */
     public int getGroupSize(int listPosition) {

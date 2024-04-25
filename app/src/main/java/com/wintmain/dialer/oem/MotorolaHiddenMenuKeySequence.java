@@ -22,9 +22,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-
 import androidx.annotation.VisibleForTesting;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.LogUtil;
 
@@ -58,16 +56,20 @@ public class MotorolaHiddenMenuKeySequence {
         if (MotorolaUtils.isSupportingHiddenMenu(context)) {
             Collections.addAll(
                     hiddenKeySequences,
-                    context.getResources().getStringArray(R.array.motorola_hidden_menu_key_sequence));
+                    context.getResources()
+                            .getStringArray(R.array.motorola_hidden_menu_key_sequence));
             Collections.addAll(
                     hiddenKeySequenceIntents,
-                    context.getResources().getStringArray(R.array.motorola_hidden_menu_key_sequence_intents));
+                    context.getResources()
+                            .getStringArray(R.array.motorola_hidden_menu_key_sequence_intents));
             Collections.addAll(
                     hiddenKeyPatterns,
-                    context.getResources().getStringArray(R.array.motorola_hidden_menu_key_pattern));
+                    context.getResources()
+                            .getStringArray(R.array.motorola_hidden_menu_key_pattern));
             Collections.addAll(
                     hiddenKeyPatternIntents,
-                    context.getResources().getStringArray(R.array.motorola_hidden_menu_key_pattern_intents));
+                    context.getResources()
+                            .getStringArray(R.array.motorola_hidden_menu_key_pattern_intents));
             featureHiddenMenuEnabled = true;
         }
 
@@ -172,11 +174,13 @@ public class MotorolaHiddenMenuKeySequence {
                 context.startActivity(intent);
                 return true;
             } else {
-                LogUtil.w("MotorolaHiddenMenuKeySequence.sendIntent", "not able to resolve the intent");
+                LogUtil.w("MotorolaHiddenMenuKeySequence.sendIntent",
+                        "not able to resolve the intent");
             }
         } catch (ActivityNotFoundException e) {
             LogUtil.e(
-                    "MotorolaHiddenMenuKeySequence.sendIntent", "handleHiddenMenu Key Pattern Exception", e);
+                    "MotorolaHiddenMenuKeySequence.sendIntent",
+                    "handleHiddenMenu Key Pattern Exception", e);
         }
         return false;
     }

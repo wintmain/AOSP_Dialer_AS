@@ -23,13 +23,11 @@ import android.content.res.Resources;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-
 import androidx.annotation.DrawableRes;
-
-import com.wintmain.dialer.R;
-import com.wintmain.dialer.common.Assert;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
+import com.wintmain.dialer.R;
+import com.wintmain.dialer.common.Assert;
 
 /**
  * Controls the movement and appearance of the FAB (Floating Action Button).
@@ -56,7 +54,8 @@ public class FloatingActionButtonController {
                 resources.getDimensionPixelSize(R.dimen.floating_action_button_width);
         floatingActionButtonMarginRight =
                 resources.getDimensionPixelOffset(R.dimen.floating_action_button_margin_right);
-        animationDuration = resources.getInteger(R.integer.floating_action_button_animation_duration);
+        animationDuration = resources.getInteger(
+                R.integer.floating_action_button_animation_duration);
         this.fab = fab;
     }
 
@@ -171,7 +170,8 @@ public class FloatingActionButtonController {
     }
 
     /**
-     * Calculates the X offset of the FAB to the given alignment, adjusted for whether or not the view
+     * Calculates the X offset of the FAB to the given alignment, adjusted for whether or not the
+     * view
      * is in RTL mode.
      *
      * @param align One of ALIGN_MIDDLE, ALIGN_QUARTER_RIGHT, or ALIGN_RIGHT.
@@ -189,7 +189,8 @@ public class FloatingActionButtonController {
                 break;
             case ALIGN_END:
                 // Moves the FAB half the screen width. Same as aligning right with a marginRight.
-                result = screenWidth / 2 - floatingActionButtonWidth / 2 - floatingActionButtonMarginRight;
+                result = screenWidth / 2 - floatingActionButtonWidth / 2
+                        - floatingActionButtonMarginRight;
                 break;
             default:
                 throw Assert.createIllegalStateFailException("Invalid alignment value: " + align);

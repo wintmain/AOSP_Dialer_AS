@@ -18,9 +18,7 @@ package com.wintmain.dialer.app.filterednumber;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
-
 import androidx.fragment.app.FragmentManager;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.blocking.FilteredNumbersUtil;
 import com.wintmain.dialer.contactphoto.ContactPhotoManager;

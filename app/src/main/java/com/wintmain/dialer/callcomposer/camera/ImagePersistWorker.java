@@ -20,10 +20,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
-
+import com.google.auto.value.AutoValue;
 import com.wintmain.dialer.callcomposer.camera.ImagePersistWorker.Result;
 import com.wintmain.dialer.callcomposer.camera.exif.ExifInterface;
 import com.wintmain.dialer.callcomposer.util.BitmapResizer;
@@ -31,7 +30,6 @@ import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.DialerExecutor.Worker;
 import com.wintmain.dialer.constants.Constants;
 import com.wintmain.dialer.util.DialerUtils;
-import com.google.auto.value.AutoValue;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,7 +84,8 @@ public class ImagePersistWorker implements Worker<Void, Result> {
         final ExifInterface exifInterface = new ExifInterface();
         try {
             exifInterface.readExif(bytes);
-            final Integer orientationValue = exifInterface.getTagIntValue(ExifInterface.TAG_ORIENTATION);
+            final Integer orientationValue = exifInterface.getTagIntValue(
+                    ExifInterface.TAG_ORIENTATION);
             if (orientationValue != null) {
                 orientation = orientationValue;
             }
@@ -118,7 +117,8 @@ public class ImagePersistWorker implements Worker<Void, Result> {
         Bitmap clippedBitmap =
                 Bitmap.createBitmap(bitmap, offsetLeft, offsetTop, clippedWidth, clippedHeight);
         clippedBitmap = BitmapResizer.resizeForEnrichedCalling(clippedBitmap, params.rotation);
-        // EXIF data can take a big chunk of the file size and we've already manually rotated our image,
+        // EXIF data can take a big chunk of the file size and we've already manually rotated our
+        // image,
         // so remove all of the exif data.
         exifInterface.clearExif();
         exifInterface.writeExif(clippedBitmap, outputStream);

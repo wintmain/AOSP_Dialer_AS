@@ -17,9 +17,7 @@
 package com.wintmain.dialer.precall;
 
 import android.content.Context;
-
 import androidx.annotation.MainThread;
-
 import com.wintmain.dialer.callintent.CallIntentBuilder;
 
 /**
@@ -34,7 +32,8 @@ import com.wintmain.dialer.callintent.CallIntentBuilder;
 public interface PreCallAction {
 
     /**
-     * Whether the action requires an activity to operate. This method is called on all actions before
+     * Whether the action requires an activity to operate. This method is called on all actions
+     * before
      * {@link #runWithUi(PreCallCoordinator)} is called. If {@link true} is returned, {@link
      * #runWithUi(PreCallCoordinator)} will be guaranteed to be called on the execution phase.
      * Otherwise {@link #runWithoutUi(Context, CallIntentBuilder)} may be called instead and the
@@ -51,17 +50,22 @@ public interface PreCallAction {
     void runWithoutUi(Context context, CallIntentBuilder builder);
 
     /**
-     * Runs the action. Should block on the main thread until the action is finished. If the action is
-     * not instantaneous, {@link PreCallCoordinator#startPendingAction()} should be called to release
+     * Runs the action. Should block on the main thread until the action is finished. If the
+     * action is
+     * not instantaneous, {@link PreCallCoordinator#startPendingAction()} should be called to
+     * release
      * the thread and continue later.
      */
     @MainThread
     void runWithUi(PreCallCoordinator coordinator);
 
     /**
-     * Called when the UI is being paused when a {@link PreCallCoordinator.PendingAction} is started,
-     * and the action is going to be discarded. If the action is showing a dialog the dialog should be
-     * dismissed. The action should not retain state, a new instance of the action will be re-run when
+     * Called when the UI is being paused when a {@link PreCallCoordinator.PendingAction} is
+     * started,
+     * and the action is going to be discarded. If the action is showing a dialog the dialog
+     * should be
+     * dismissed. The action should not retain state, a new instance of the action will be re-run
+     * when
      * the UI is resumed.
      */
     @MainThread

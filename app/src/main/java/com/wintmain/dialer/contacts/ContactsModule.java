@@ -18,7 +18,6 @@ package com.wintmain.dialer.contacts;
 
 import android.content.Context;
 import android.os.UserManager;
-
 import com.wintmain.dialer.contacts.displaypreference.ContactDisplayPreferences;
 import com.wintmain.dialer.contacts.displaypreference.ContactDisplayPreferencesImpl;
 import com.wintmain.dialer.contacts.displaypreference.ContactDisplayPreferencesStub;
@@ -27,7 +26,6 @@ import com.wintmain.dialer.contacts.hiresphoto.HighResolutionPhotoRequesterImpl;
 import com.wintmain.dialer.inject.ApplicationContext;
 import com.wintmain.dialer.inject.DialerVariant;
 import com.wintmain.dialer.inject.InstallIn;
-
 import dagger.Binds;
 import dagger.Lazy;
 import dagger.Module;

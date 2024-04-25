@@ -17,14 +17,14 @@
 package com.wintmain.dialer.calllog;
 
 import android.content.SharedPreferences;
-
-import com.wintmain.dialer.common.LogUtil;
-import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
-import com.wintmain.dialer.storage.Unencrypted;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.wintmain.dialer.common.LogUtil;
+import com.wintmain.dialer.common.concurrent.Annotations.BackgroundExecutor;
+import com.wintmain.dialer.storage.Unencrypted;
+
 import javax.inject.Inject;
 
 /**
@@ -50,7 +50,8 @@ public final class AnnotatedCallLogMigrator {
     }
 
     /**
-     * Builds the annotated call log on application create once after the feature is enabled to reduce
+     * Builds the annotated call log on application create once after the feature is enabled to
+     * reduce
      * the latency the first time call log is shown.
      */
     public ListenableFuture<Void> migrate() {

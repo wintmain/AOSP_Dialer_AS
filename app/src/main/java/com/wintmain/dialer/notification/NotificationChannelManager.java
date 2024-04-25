@@ -24,11 +24,9 @@ import android.media.AudioAttributes;
 import android.os.Build;
 import android.telecom.PhoneAccountHandle;
 import android.util.ArraySet;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.os.BuildCompat;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.LogUtil;
@@ -39,6 +37,9 @@ import java.util.Set;
 @TargetApi(Build.VERSION_CODES.O)
 public final class NotificationChannelManager {
 
+    private NotificationChannelManager() {
+    }
+
     /**
      * Creates all the notification channels Dialer will need. This method is called at app startup
      * and must be fast. Currently it takes between 3 to 7 milliseconds on a Pixel XL.
@@ -47,8 +48,10 @@ public final class NotificationChannelManager {
      * notification. The advatange to precreating channels is that:
      *
      * <ul>
-     *   <li>channels will be available to user right away. For example, users can customize voicemail
-     *       sounds when they first get their device without waiting for a voicemail to arrive first.
+     *   <li>channels will be available to user right away. For example, users can customize
+     *   voicemail
+     *       sounds when they first get their device without waiting for a voicemail to arrive
+     *       first.
      *   <li>code that posts a notification can be simpler
      *   <li>channel management code is simpler and it's easier to ensure that the correct set of
      *       channels are visible.
@@ -58,7 +61,8 @@ public final class NotificationChannelManager {
         Assert.checkArgument(BuildCompat.isAtLeastO());
         Assert.isNotNull(context);
 
-        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        NotificationManager notificationManager = context.getSystemService(
+                NotificationManager.class);
         Set<String> desiredChannelIds = getAllDesiredChannelIds(context);
         Set<String> existingChannelIds = getAllExistingChannelIds(context);
 
@@ -69,13 +73,17 @@ public final class NotificationChannelManager {
                 "NotificationChannelManager.initChannels",
                 "doing an expensive initialization of all notification channels");
         LogUtil.i(
-                "NotificationChannelManager.initChannels", "desired channel IDs: " + desiredChannelIds);
+                "NotificationChannelManager.initChannels",
+                "desired channel IDs: " + desiredChannelIds);
         LogUtil.i(
-                "NotificationChannelManager.initChannels", "existing channel IDs: " + existingChannelIds);
+                "NotificationChannelManager.initChannels",
+                "existing channel IDs: " + existingChannelIds);
 
-        // Delete any old channels that we don't use any more. This is safe because if we're recreate
+        // Delete any old channels that we don't use any more. This is safe because if we're
+        // recreate
         // this later then any user settings will be restored. An example is SIM specific voicemail
-        // channel that gets deleted when the user removes the SIM and is then restored when the user
+        // channel that gets deleted when the user removes the SIM and is then restored when the
+        // user
         // re-inserts the SIM.
         for (String existingChannelId : existingChannelIds) {
             if (!desiredChannelIds.contains(existingChannelId)) {
@@ -101,7 +109,8 @@ public final class NotificationChannelManager {
 
     private static Set<String> getAllExistingChannelIds(@NonNull Context context) {
         Set<String> result = new ArraySet<>();
-        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        NotificationManager notificationManager = context.getSystemService(
+                NotificationManager.class);
         for (NotificationChannel channel : notificationManager.getNotificationChannels()) {
             result.add(channel.getId());
         }
@@ -128,7 +137,8 @@ public final class NotificationChannelManager {
         channel.enableLights(true);
         channel.enableVibration(false);
         channel.setSound(
-                null, new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
+                null,
+                new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
 
@@ -142,7 +152,8 @@ public final class NotificationChannelManager {
         channel.enableLights(false);
         channel.enableVibration(false);
         channel.setSound(
-                null, new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
+                null,
+                new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
 
@@ -156,7 +167,8 @@ public final class NotificationChannelManager {
         channel.enableLights(true);
         channel.enableVibration(true);
         channel.setSound(
-                null, new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
+                null,
+                new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build());
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
 
@@ -171,6 +183,4 @@ public final class NotificationChannelManager {
         channel.enableVibration(true);
         context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
-
-    private NotificationChannelManager() {}
 }

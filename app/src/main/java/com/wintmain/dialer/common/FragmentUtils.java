@@ -20,7 +20,6 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.wintmain.dialer.main.MainActivityPeer;
 
 /**
@@ -49,7 +48,8 @@ public class FragmentUtils {
             // Casts are checked using runtime methods
             return ((FragmentUtilListener) fragment.getActivity()).getImpl(callbackInterface);
         } else if (fragment.getActivity() instanceof MainActivityPeer.PeerSupplier) {
-            MainActivityPeer peer = ((MainActivityPeer.PeerSupplier) fragment.getActivity()).getPeer();
+            MainActivityPeer peer =
+                    ((MainActivityPeer.PeerSupplier) fragment.getActivity()).getPeer();
             if (peer instanceof FragmentUtilListener) {
                 return ((FragmentUtilListener) peer).getImpl(callbackInterface);
             }

@@ -20,12 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wintmain.dialer.R;
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.common.concurrent.DialerExecutorComponent;
@@ -52,7 +50,8 @@ public class RttTranscriptActivity extends AppCompatActivity {
         Intent intent = new Intent(context, RttTranscriptActivity.class);
         intent.putExtra(RttTranscriptActivity.EXTRA_TRANSCRIPT_ID, transcriptId);
         intent.putExtra(RttTranscriptActivity.EXTRA_PRIMARY_TEXT, primaryText);
-        ProtoParsers.put(intent, RttTranscriptActivity.EXTRA_PHOTO_INFO, Assert.isNotNull(photoInfo));
+        ProtoParsers.put(intent, RttTranscriptActivity.EXTRA_PHOTO_INFO,
+                Assert.isNotNull(photoInfo));
         return intent;
     }
 
@@ -98,7 +97,8 @@ public class RttTranscriptActivity extends AppCompatActivity {
                 ProtoParsers.getTrusted(intent, EXTRA_PHOTO_INFO, PhotoInfo.getDefaultInstance());
         // Photo shown here shouldn't have video or RTT badge.
         PhotoInfo sanitizedPhotoInfo =
-                PhotoInfo.newBuilder().mergeFrom(photoInfo).setIsRtt(false).setIsVideo(false).build();
+                PhotoInfo.newBuilder().mergeFrom(photoInfo).setIsRtt(false).setIsVideo(false)
+                        .build();
         adapter.setPhotoInfo(sanitizedPhotoInfo);
     }
 

@@ -22,7 +22,6 @@ import android.hardware.Camera;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
-
 import com.wintmain.dialer.common.Assert;
 import com.wintmain.dialer.util.PermissionsUtil;
 
@@ -156,7 +155,8 @@ public class CameraPreview {
     }
 
     /**
-     * Starts the camera preview on the current surface. Abstracts out the differences in API from the
+     * Starts the camera preview on the current surface. Abstracts out the differences in API
+     * from the
      * CameraManager
      *
      * @throws IOException Which is caught by the CameraManager to display an error

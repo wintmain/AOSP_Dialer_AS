@@ -17,11 +17,10 @@
 package com.wintmain.dialer.activecalls.impl;
 
 import androidx.annotation.MainThread;
-
+import com.google.common.collect.ImmutableList;
 import com.wintmain.dialer.activecalls.ActiveCallInfo;
 import com.wintmain.dialer.activecalls.ActiveCalls;
 import com.wintmain.dialer.common.Assert;
-import com.google.common.collect.ImmutableList;
 
 import javax.inject.Inject;
 

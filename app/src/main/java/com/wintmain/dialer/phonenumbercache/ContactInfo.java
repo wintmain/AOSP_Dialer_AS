@@ -18,9 +18,7 @@ package com.wintmain.dialer.phonenumbercache;
 
 import android.net.Uri;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
-
 import com.android.contacts.common.ContactsUtils.UserType;
 import com.wintmain.dialer.logging.ContactSource;
 import com.wintmain.dialer.util.UriUtils;
@@ -33,7 +31,8 @@ public class ContactInfo {
     public static final ContactInfo EMPTY = new ContactInfo();
     public Uri lookupUri;
     /**
-     * Contact lookup key. Note this may be a lookup key for a corp contact, in which case "lookup by
+     * Contact lookup key. Note this may be a lookup key for a corp contact, in which case
+     * "lookup by
      * lookup key" doesn't work on the personal profile.
      */
     public String lookupKey;

@@ -24,11 +24,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringDef;
-
 import com.wintmain.dialer.R;
 
 import java.lang.annotation.Retention;
@@ -65,7 +63,8 @@ public class NetworkUtil {
     }
 
     /**
-     * Returns the current network type as a string. For mobile network types the subtype name of the
+     * Returns the current network type as a string. For mobile network types the subtype name of
+     * the
      * network is appended.
      */
     @RequiresPermission("android.permission.ACCESS_NETWORK_STATE")
